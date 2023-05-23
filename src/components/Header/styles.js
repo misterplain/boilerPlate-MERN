@@ -53,6 +53,12 @@ const styles = {
             fontSize: "1.5rem",
         }
 
+    }),
+    avatar: (theme)=>({
+        width: "32px",
+        height: "32px",
+        border: "1px solid white",
+        borderRadius: "50%",
     })
 }
 

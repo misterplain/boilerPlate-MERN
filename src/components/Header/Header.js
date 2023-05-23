@@ -21,7 +21,7 @@ const Header = ({ isActive }) => {
         </Link>
       </Box>
       <Box sx={styles.linksWrapper}>
-        <Link
+        {/* <Link
           component={NavLink}
           to="/shop"
           style={({ isActive }) =>
@@ -42,8 +42,15 @@ const Header = ({ isActive }) => {
         >
           {" "}
           <Typography sx={styles.headerButton}>contact</Typography>
-        </Link>
-        <Link
+        </Link> */}
+        <Box
+          component="img"
+          src="https://picsum.photos/200"
+          alt=""
+          sx={styles.avatar}
+        />
+        <Typography sx={styles.headerButton}>user</Typography>
+        {/* <Link
           component={NavLink}
           to="/cart"
           style={({ isActive }) =>
@@ -55,7 +62,7 @@ const Header = ({ isActive }) => {
           <Box sx={styles.headerButton}>
             <AiOutlineShoppingCart />
           </Box>
-        </Link>
+        </Link> */}
         <Link
           component={NavLink}
           to="/auth"
@@ -65,9 +72,10 @@ const Header = ({ isActive }) => {
           sx={{ textDecoration: "none" }}
         >
           {" "}
-          <Box sx={styles.headerButton}>
-            <BiUserCircle />
-          </Box>
+          <Typography sx={styles.headerButton}>
+            {/* <BiUserCircle /> */}
+           Logout
+          </Typography>
         </Link>
       </Box>
     </Box>

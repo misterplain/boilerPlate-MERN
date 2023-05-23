@@ -1,22 +1,23 @@
 import React from "react";
 import Layout from "./components/Layout/Layout";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import ContactScreen from "./screens/ContactScreen";
 import ShopScreen from "./screens/ShopScreen";
 import CartScreen from "./screens/CartScreen";
 import AuthScreen from "./screens/AuthScreen";
+import PostScreen from "./screens/PostScreen";
 //viewport display
 import { useState, useEffect } from "react";
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
-console.log("layout", Layout);
-
 const App = () => {
   const theme = useTheme();
   const [viewport, setViewport] = useState("");
+
+  const user = true;
 
   useEffect(() => {
     function handleResize() {
@@ -48,14 +49,18 @@ const App = () => {
           <Route path={"/shop"} element={<ShopScreen />} />
           <Route path={"/contact"} element={<ContactScreen />} />
           <Route path={"/cart"} element={<CartScreen />} />
-          <Route path={"/auth"} element={<AuthScreen />} />
+          <Route
+            path={"/auth"}
+            element={user ? <Navigate to="/" /> : <AuthScreen />}
+          />
+          <Route path={"/post/:id"} element={user? <PostScreen /> : <Navigate to="/auth"/> } />
         </Routes>
       </Layout>
       <Box
-        position='fixed'
+        position="fixed"
         bottom={0}
         left={0}
-        bgcolor='rgba(255, 255, 255, 0.5)'
+        bgcolor="rgba(255, 255, 255, 0.5)"
         padding={1}
         borderRadius={5}
       >
