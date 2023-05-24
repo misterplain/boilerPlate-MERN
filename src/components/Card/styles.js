@@ -1,7 +1,7 @@
 const styles = {
     wrapper: {
         border: "1px solid blue",
-        width: "30%",
+        width: "80%",
         borderRadius: "10px",
         padding: "10px",
     }, 

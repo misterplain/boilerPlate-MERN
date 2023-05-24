@@ -11,7 +11,14 @@ import { CgProfile } from "react-icons/cg";
 
 import styles from "./styles";
 
-const Header = ({ isActive }) => {
+const Header = ({ isActive, user }) => {
+
+  const logout = () => {
+    window.open("http://localhost:5000/auth/logout", "_self");
+  };
+
+
+  console.log(user)
   return (
     <Box sx={styles.wrapper}>
       <Box sx={styles.logoWrapper}>
@@ -43,14 +50,30 @@ const Header = ({ isActive }) => {
           {" "}
           <Typography sx={styles.headerButton}>contact</Typography>
         </Link> */}
-        <Box
-          component="img"
-          src="https://picsum.photos/200"
-          alt=""
-          sx={styles.avatar}
-        />
-        <Typography sx={styles.headerButton}>user</Typography>
-        {/* <Link
+        {user ? (
+          <>
+            <Box
+              component="img"
+              src={user?.photos[0].value}
+              alt=""
+              sx={styles.avatar}
+            />
+            <Typography sx={styles.headerButton}>{user.displayName}</Typography>
+            <Link
+            component={NavLink}
+            to="/auth"
+            style={({ isActive }) =>
+              isActive ? { color: "black" } : { color: "white" }
+            }
+            sx={{ textDecoration: "none" }}
+          >
+            {" "}
+            <Typography sx={styles.headerButton} onClick={logout}>
+              {/* <BiUserCircle /> */}
+              Logout
+            </Typography>
+          </Link>
+            {/* <Link
           component={NavLink}
           to="/cart"
           style={({ isActive }) =>
@@ -63,20 +86,23 @@ const Header = ({ isActive }) => {
             <AiOutlineShoppingCart />
           </Box>
         </Link> */}
-        <Link
-          component={NavLink}
-          to="/auth"
-          style={({ isActive }) =>
-            isActive ? { color: "black" } : { color: "white" }
-          }
-          sx={{ textDecoration: "none" }}
-        >
-          {" "}
-          <Typography sx={styles.headerButton}>
-            {/* <BiUserCircle /> */}
-           Logout
-          </Typography>
-        </Link>
+          </>
+        ) : (
+          <Link
+            component={NavLink}
+            to="/auth"
+            style={({ isActive }) =>
+              isActive ? { color: "black" } : { color: "white" }
+            }
+            sx={{ textDecoration: "none" }}
+          >
+            {" "}
+            <Typography sx={styles.headerButton}>
+              {/* <BiUserCircle /> */}
+              Login
+            </Typography>
+          </Link>
+        )}
       </Box>
     </Box>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "./components/Layout/Layout";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
@@ -8,7 +8,6 @@ import CartScreen from "./screens/CartScreen";
 import AuthScreen from "./screens/AuthScreen";
 import PostScreen from "./screens/PostScreen";
 //viewport display
-import { useState, useEffect } from "react";
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -16,8 +15,32 @@ import Box from "@mui/material/Box";
 const App = () => {
   const theme = useTheme();
   const [viewport, setViewport] = useState("");
+  const [user, setUser] = useState(null);
 
-  const user = true;
+  useEffect(() => {
+    const getUser = async () => {
+      fetch("http://localhost:5000/auth/login/success", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+        },
+      })
+        .then((response) => {
+          if (response.status === 200) return response.json();
+          throw new Error("authentication has been failed!");
+        })
+        .then((resObject) => {
+          setUser(resObject.user);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    getUser();
+  },[]);
 
   useEffect(() => {
     function handleResize() {
@@ -43,7 +66,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <Layout>
+      <Layout user={user}>
         <Routes>
           <Route index element={<HomeScreen />} />
           <Route path={"/shop"} element={<ShopScreen />} />
@@ -53,7 +76,10 @@ const App = () => {
             path={"/auth"}
             element={user ? <Navigate to="/" /> : <AuthScreen />}
           />
-          <Route path={"/post/:id"} element={user? <PostScreen /> : <Navigate to="/auth"/> } />
+          <Route
+            path={"/post/:id"}
+            element={user ? <PostScreen /> : <Navigate to="/auth" />}
+          />
         </Routes>
       </Layout>
       <Box

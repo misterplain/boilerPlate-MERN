@@ -43,12 +43,25 @@ const styles = {
 };
 
 const AuthScreen = () => {
+
+  const google = () => {
+    window.open("http://localhost:5000/auth/google", "_self");
+  };
+
+  // const github = () => {
+  //   window.open("http://localhost:5000/auth/github", "_self");
+  // };
+
+  // const facebook = () => {
+  //   window.open("http://localhost:5000/auth/facebook", "_self");
+  // };
+
   return (
     <Box sx={styles.wrapper}>
       <Box sx={styles.title}>Choose a Login Method</Box>
       <Box sx={styles.loginWrapper}>
         <Box sx={styles.socialsWrapper}>
-          <Box sx={styles.loginButton} style={{ backgroundColor: "#df4930" }}>
+          <Box sx={styles.loginButton} style={{ backgroundColor: "#df4930" }} onClick={google}>
             <Box component="img" src={Google} alt="" sx={styles.google} />
             Google
           </Box>

@@ -5,11 +5,11 @@ import Header from "../Header/Header";
 
 import styles from "./styles";
 
-const Layout = ({ children }) => {
+const Layout = ({ children, user }) => {
   return (
     <Box sx={styles.wrapper}>
       {" "}
-      <Header/>
+      <Header user={user}/>
       <main>{children}</main>
       <Footer/>
     </Box>
