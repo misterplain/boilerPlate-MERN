@@ -3,10 +3,14 @@ import Layout from "./components/Layout/Layout";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import ContactScreen from "./screens/ContactScreen";
-import ShopScreen from "./screens/ShopScreen";
+import ProductScreen from "./screens/ProductScreen";
+import EditProductScreen from "./screens/EditProductScreen";
+import EditProfileScreen from "./screens/EditProfileScreen";
+import Favorites from "./screens/FavoritesScreen";
 import CartScreen from "./screens/CartScreen";
-import AuthScreen from "./screens/AuthScreen";
-import PostScreen from "./screens/PostScreen";
+import LoginScreen from "./screens/LoginScreen";
+import RegisterScreen from "./screens/RegisterScreen";
+
 //viewport display
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
@@ -40,7 +44,7 @@ const App = () => {
         });
     };
     getUser();
-  },[]);
+  }, []);
 
   useEffect(() => {
     function handleResize() {
@@ -69,16 +73,29 @@ const App = () => {
       <Layout user={user}>
         <Routes>
           <Route index element={<HomeScreen />} />
-          <Route path={"/shop"} element={<ShopScreen />} />
+          <Route path={"/"} element={<HomeScreen />} />
           <Route path={"/contact"} element={<ContactScreen />} />
           <Route path={"/cart"} element={<CartScreen />} />
           <Route
             path={"/auth"}
-            element={user ? <Navigate to="/" /> : <AuthScreen />}
+            element={user ? <Navigate to="/" /> : <LoginScreen />}
           />
           <Route
-            path={"/post/:id"}
-            element={user ? <PostScreen /> : <Navigate to="/auth" />}
+            path={"/register"}
+            element={user ? <Navigate to="/" /> : <RegisterScreen />}
+          />
+          <Route path={"/product/:id"} element={<ProductScreen />} />
+          <Route
+            path={"/editproduct/:id"}
+            element={user ? <EditProductScreen /> : <Navigate to="/" />}
+          />
+          <Route
+            path={"/favorites"}
+            element={user ? <Favorites /> : <Navigate to="/" />}
+          />
+          <Route
+            path={"/editprofile"}
+            element={user ? <EditProfileScreen /> : <Navigate to="/" />}
           />
         </Routes>
       </Layout>

@@ -33,7 +33,7 @@
 
 ## Item 
 
-1. [] collection, photos, title, description, longDescription, alt, stock, reviews(ratings)
+1. [] collection, photos, title, description, longDescription, alt, stock, reviews(ratings), isFeatured, tags
 
 ##
 

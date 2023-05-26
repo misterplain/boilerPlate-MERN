@@ -4,8 +4,6 @@ import Card from "../components/Card/Card";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
 
-import { posts } from "../data";
-
 const styles = {
   wrapper: {
     border: "1px solid black",
@@ -14,19 +12,13 @@ const styles = {
     padding: "50px 20px",
     justifyContent: "center",
     alignItems: "center",
-    // flexWrap: "wrap",
 
   },
 };
 const HomeScreen = () => {
   return (
     <Box  sx={styles.wrapper}>
-      {posts.map((post) => (
-        <Link component={NavLink} to={`/post/${post.id}`} >
-          {" "}
-          <Card post={post} key={post.id} />
-        </Link>
-      ))}
+<Typography>HOME SCREEN</Typography>
     </Box>
   );
 };
