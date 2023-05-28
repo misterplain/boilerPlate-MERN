@@ -12,13 +12,12 @@ const styles = {
     padding: "50px 20px",
     justifyContent: "center",
     alignItems: "center",
-
   },
 };
 const HomeScreen = () => {
   return (
-    <Box  sx={styles.wrapper}>
-<Typography>HOME SCREEN</Typography>
+    <Box sx={styles.wrapper}>
+      <Typography>HOME SCREEN</Typography>
     </Box>
   );
 };

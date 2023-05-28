@@ -15,9 +15,12 @@ passport.use(
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
       callbackURL: "/auth/google/callback",
+      profileFields: ["id", "displayName", "email"],
     },
     //it is within this function that you can create a callback function (done) becomes a different callback function to search the database for the user etc.
-    function (accessToken, refreshToken, profile, done) {
+    function (accessToken, refreshToken, profile, email, done) {
+     console.log(profile + "profile")
+     console.log(email+ "email")
       done(null, profile);
     }
   )
@@ -29,6 +32,7 @@ passport.use(
       clientID: GITHUB_CLIENT_ID,
       clientSecret: GITHUB_CLIENT_SECRET,
       callbackURL: "/auth/github/callback",
+      profileFields: ["id", "displayName", "email"],
     },
     function (accessToken, refreshToken, profile, done) {
       done(null, profile);

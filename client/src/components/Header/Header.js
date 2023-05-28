@@ -43,7 +43,7 @@ const Header = ({ isActive, user }) => {
       <Box sx={styles.linksWrapper}>
         {user ? (
           <>
-            <Typography sx={styles.headerButton}>{user.displayName}</Typography>
+            <Typography sx={styles.headerButton}>{user?.displayName}</Typography>
 
             <IconButton
               size="large"
@@ -93,7 +93,15 @@ const Header = ({ isActive, user }) => {
                   Edit Profile
                 </Link>
               </MenuItem>
-              <MenuItem onClick={logout}>Logout</MenuItem>
+              <MenuItem onClick={logout}>
+                <Link
+                  component={NavLink}
+                  to="/"
+                  sx={{ textDecoration: "none" }}
+                >
+                  Logout
+                </Link>
+              </MenuItem>
             </Menu>
           </>
         ) : (
