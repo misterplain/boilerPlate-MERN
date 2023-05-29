@@ -27,23 +27,31 @@ const userSchema = new mongoose.Schema(
       required: true,
       default: false,
     },
-    //   favorites: {
-    //     type: [
-    //       {
-    //         type: Schema.Types.ObjectId,
-    //         ref: "Product", // ref allows populate function to work properly, the function replaces id with its corresponding blog object
-    //       },
-    //     ],
-    //     default: [],
-    //   },
-    //   cart: {
-    //     type: [
-    //       {
-    //         type: Schema.Types.ObjectId,
-    //         ref: "Product", // ref allows populate function to work properly, the function replaces id with its corresponding blog object
-    //       },
-    //     ],
-    //   },
+    favorites: {
+      type: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "Product", // ref allows populate function to work properly, the function replaces id with its corresponding blog object
+        },
+      ],
+      default: [],
+    },
+    cart: {
+      type: [
+        {
+          product: {
+            type: Schema.Types.ObjectId,
+            ref: "Product",
+          },
+          quantity: {
+            type: Number,
+            required: true,
+            default: 0,
+          },
+        },
+      ],
+      default: [],
+    },
   },
   {
     collection: "boilerPlateUsers",
@@ -62,7 +70,5 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.isPasswordMatch = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
-
-
 
 module.exports = mongoose.model("User", userSchema);

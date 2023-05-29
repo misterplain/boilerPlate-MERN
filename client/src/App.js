@@ -22,13 +22,11 @@ const App = () => {
   const [viewport, setViewport] = useState("");
 
   const userAuthState = useSelector((state) => state.userAuth);
-  const {authenticated} = userAuthState;
+  const { authenticated } = userAuthState;
   const userDetailsState = useSelector((state) => state.userDetails);
-  const {email, username, isAdmin} = userDetailsState;
+  const { email, username, isAdmin } = userDetailsState;
 
-  useEffect(() => {
-
-  }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     function handleResize() {
@@ -68,10 +66,12 @@ const App = () => {
             path={"/register"}
             element={authenticated ? <Navigate to="/" /> : <RegisterScreen />}
           />
-          <Route path={"/product/:id"} element={<ProductScreen />} />
+          <Route path={"/product/:productId"} element={<ProductScreen />} />
           <Route
-            path={"/editproduct/:id"}
-            element={authenticated ? <EditProductScreen /> : <Navigate to="/" />}
+            path={"/editproduct/:productId"}
+            element={
+              authenticated ? <EditProductScreen /> : <Navigate to="/" />
+            }
           />
           <Route
             path={"/favorites"}
@@ -79,7 +79,9 @@ const App = () => {
           />
           <Route
             path={"/editprofile"}
-            element={authenticated ? <EditProfileScreen /> : <Navigate to="/" />}
+            element={
+              authenticated ? <EditProfileScreen /> : <Navigate to="/" />
+            }
           />
         </Routes>
       </Layout>

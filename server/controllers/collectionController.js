@@ -2,7 +2,7 @@ const Collection = require("../models/collectionModel");
 
 //get collection by collection ID
 const getCollection = async (req, res) => {
-  const { collectionId } = req.body;
+  const { collectionId } = req.params;
 
   try {
     const foundCollection = await Collection.findById(collectionId).populate(
@@ -48,4 +48,72 @@ const newCollection = async (req, res) => {
   }
 };
 
-module.exports = { newCollection, getCollection };
+//delete collection
+const deleteCollection = async (req, res) => {
+  const { collectionId } = req.params;
+
+  if (!collectionId)
+    return res.status(400).json({ message: "No collection id provided" });
+
+  try {
+    const collectionToDelete = await Collection.findById(collectionId);
+    if (!collectionToDelete)
+      return res
+        .status(400)
+        .json({ message: "No collection found with that id" });
+    console.log(collectionToDelete);
+    //if collection contains products
+    if (collectionToDelete.products && collectionToDelete.products.length > 0) {
+      return res.status(400).json({
+        message: "Collection contains products. Please delete products first.",
+      });
+    } else {
+      //delete collection
+      await collectionToDelete.remove();
+      const reply = {
+        message: "Collection deleted",
+        collectionToDelete,
+      };
+      res.status(200).json(reply);
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+    console.log(error);
+  }
+};
+
+const updateCollection = async (req, res) => {
+  const { collectionId } = req.params;
+  const { name } = req.body;
+
+  if (!collectionId)
+    return res.status(400).json({ message: "No collection id provided" });
+
+  try {
+    const collectionToUpdate = await Collection.findById(collectionId);
+    if (!collectionToUpdate)
+      return res
+        .status(400)
+        .json({ message: "No collection found with that id" });
+
+    collectionToUpdate.name = name;
+    await collectionToUpdate.save();
+
+    const reply = {
+      message: "Collection Name updated",
+      collectionToUpdate,
+    }
+
+    res.status(200).json(reply);
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+    console.log(error);
+  }
+};
+
+module.exports = {
+  newCollection,
+  getCollection,
+  deleteCollection,
+  updateCollection,
+};

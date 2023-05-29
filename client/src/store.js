@@ -5,13 +5,13 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { authReducer } from "./reducers/authReducers";
 import { userReducer } from "./reducers/userReducers";
 // import { cartReducer } from "./reducers/cartReducers";
-// import { productListReducer } from "./reducers/productReducers";
+import { productListReducer } from "./reducers/productReducers";
 
 const reducer = combineReducers({
 
   userAuth: authReducer,
   userDetails: userReducer,
-  // productList: productListReducer,
+  productList: productListReducer,
   // cartItems: cartReducer,
 });
 

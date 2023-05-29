@@ -25,7 +25,7 @@ const newProduct = async (req, res) => {
     const collectionToPopulate = await Collection.findById(
       newProduct.collectionId
     );
-    collectionToPopulate.products.push(newProduct);
+    collectionToPopulate.products?.push(newProduct);
     await collectionToPopulate.save();
 
     Collection.findById(newProduct.collectionId)
@@ -48,9 +48,25 @@ const newProduct = async (req, res) => {
   }
 };
 
+//get all products
+const getAllProducts = async (req, res) => {
+  try {
+    const allProducts = await Product.find({});
+    const reply = {
+      message: "All products",
+      allProducts,
+    };
+    res.status(200).json(reply);
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+
+    console.log(error);
+  }
+};
+
 //delete product
 const deleteProduct = async (req, res) => {
-  const { productId } = req.body;
+  const { productId } = req.params;
 
   if (!productId)
     return res.status(400).json({ message: "No product id provided" });
@@ -62,11 +78,51 @@ const deleteProduct = async (req, res) => {
 
   const deletedProduct = await Product.findByIdAndDelete(productId);
 
+  //remove product from collection
+  const collectionToUpdate = await Collection.findById(
+    deletedProduct.collectionId
+  );
+  collectionToUpdate.products.pull(deletedProduct);
+  await collectionToUpdate.save();
+
   const reply = {
     message: "Product deleted",
     deletedProduct,
+    collectionToUpdate,
   };
   res.json(reply);
 };
 
-module.exports = { newProduct, deleteProduct };
+//update product
+const updateProduct = async (req, res) => {
+  const { productId } = req.params;
+  const { name, price, photos, description, stock } = req.body;
+
+  if (!productId)
+    return res.status(400).json({ message: "No product id provided" });
+
+  const productToUpdate = await Product.findById(productId);
+
+  if (!productToUpdate)
+    return res.status(400).json({ message: "No product found with that id" });
+
+  const updatedProduct = await Product.findByIdAndUpdate(
+    productId,
+    {
+      name,
+      price,
+      photos,
+      description,
+      stock,
+    },
+    { new: true }
+  );
+
+  const reply = {
+    message: "Product updated",
+    updatedProduct,
+  };
+  res.json(reply);
+};
+
+module.exports = { newProduct, getAllProducts, deleteProduct, updateProduct };
