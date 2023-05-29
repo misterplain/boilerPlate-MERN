@@ -20,7 +20,7 @@ const signin = async (req, res) => {
 
     const { accessToken, refreshToken } = generateUserTokens(foundUser);
 
-    res.status(200).json({ result: foundUser, accessToken, refreshToken });
+    res.status(200).json({ foundUser, accessToken, refreshToken });
   } catch (err) {
     res.status(500).json({ message: "Something went wrong" });
   }

@@ -14,6 +14,10 @@ import {
   REFRESH_TOKEN,
   USER_LOGOUT,
 } from "../constants/authConstants";
+import {
+  CLEAR_USER_DETAILS,
+  SET_USER_DETAILS,
+} from "../constants/userConstants";
 import axios from "../api/axios";
 
 export const loginForm = (email, password) => async (dispatch) => {
@@ -29,6 +33,10 @@ export const loginForm = (email, password) => async (dispatch) => {
       type: FORM_LOGIN_SUCCESS,
       payload: data,
     });
+    dispatch({
+        type: SET_USER_DETAILS,
+        payload: data.data.foundUser
+      })
   } catch (error) {
     console.log(error.response.data.message);
     dispatch({
@@ -57,8 +65,13 @@ export const registerForm =
         type: FORM_REGISTER_SUCCESS,
         payload: data,
       });
+
+      dispatch({
+        type: SET_USER_DETAILS,
+        payload: data.data.newUser
+      })
     } catch (error) {
-      console.log(error.response.data.message);
+
       dispatch({
         type: FORM_REGISTER_FAIL,
         payload: error.response.data.message,
@@ -85,13 +98,18 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
         if (event.origin !== "http://localhost:5000") {
           return;
         }
-        console.log(event.data.user)
+        // console.log(event.data.user);
         const { accessToken, refreshToken } = event.data;
-        console.log(`Received tokens: ${accessToken}, ${refreshToken}`);
+        // console.log(`Received tokens: ${accessToken}, ${refreshToken}`);
 
         dispatch({
           type: OAUTH_LOGIN_SUCCESS,
           payload: { accessToken, refreshToken },
+        });
+
+        dispatch({
+          type: SET_USER_DETAILS,
+          payload: event.data.user,
         });
 
         oauthWindow.close();
@@ -107,13 +125,15 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
   }
 };
 
-
 export const logoutUser = () => async (dispatch) => {
   try {
     dispatch({
       type: USER_LOGOUT,
     });
     window.open("http://localhost:5000/auth/logout", "_self");
+    dispatch({
+      type: CLEAR_USER_DETAILS,
+    });
   } catch (error) {
     console.log(error);
   }

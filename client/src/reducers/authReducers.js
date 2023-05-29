@@ -24,13 +24,14 @@ export const authReducer = (state = { accessToken: null }, action) => {
       localStorage.setItem("profile", action.payload.data.refreshToken);
       return {
         loading: false,
+        authenticated: true,
         accessToken: action.payload.data.accessToken,
         refreshToken: action.payload.data.refreshToken,
         errors: null,
       };
 
     case FORM_LOGIN_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, error: action.payload, authenticated: false };
     case OAUTH_LOGIN_REQUEST:
       return { loading: true };
 
@@ -38,13 +39,14 @@ export const authReducer = (state = { accessToken: null }, action) => {
       localStorage.setItem("profile", action.payload.refreshToken);
       return {
         loading: false,
+        authenticated: true,
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
         errors: null,
       };
 
     case OAUTH_LOGIN_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, error: action.payload, authenticated: false };
 
     //register
     case FORM_REGISTER_REQUEST:
@@ -55,18 +57,22 @@ export const authReducer = (state = { accessToken: null }, action) => {
       return {
         accessToken: action.payload.data.accessToken,
         refreshToken: action.payload.data.refreshToken,
+        authenticated: true,
         loading: false,
         errors: null,
       };
+    case FORM_REGISTER_FAIL:
+      return { loading: false, error: action.payload, authenticated: false };
 
     case OAUTH_REGISTER_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, error: action.payload, authenticated: false };
     case FORM_REGISTER_REQUEST:
       return { loading: true };
 
     case OAUTH_REGISTER_SUCCESS:
       localStorage.setItem("profile", action.payload.refreshToken);
       return {
+        authenticated: true,
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
         loading: false,
@@ -74,13 +80,14 @@ export const authReducer = (state = { accessToken: null }, action) => {
       };
 
     case OAUTH_REGISTER_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, error: action.payload, authenticated: false };
 
     //LOGOUT AND REFRESH TOKEN
     case USER_LOGOUT:
       localStorage.removeItem("profile");
       return {
         ...state,
+        authenticated: false,
         accessToken: null,
         refreshToken: null,
       };

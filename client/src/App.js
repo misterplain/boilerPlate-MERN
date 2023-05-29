@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Layout from "./components/Layout/Layout";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
@@ -19,35 +20,15 @@ import Box from "@mui/material/Box";
 const App = () => {
   const theme = useTheme();
   const [viewport, setViewport] = useState("");
-  const [user, setUser] = useState(null);
+
+  const userAuthState = useSelector((state) => state.userAuth);
+  const {authenticated} = userAuthState;
+  const userDetailsState = useSelector((state) => state.userDetails);
+  const {email, username, isAdmin} = userDetailsState;
 
   useEffect(() => {
-    // const getUser = async () => {
-    //   fetch("http://localhost:5000/auth/login/success", {
-    //     method: "GET",
-    //     credentials: "include",
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Content-Type": "application/json",
-    //       "Access-Control-Allow-Credentials": true,
-    //     },
-    //   })
-    //     .then((response) => {
-    //       if (response.status === 200) return response.json();
-    //       throw new Error("authentication has been failed!");
-    //     })
-    //     .then((resObject) => {
-    //       console.log(resObject)
-    //       setUser(resObject.user);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // };
-    // getUser();
-  }, []);
 
-  // console.log(user)
+  }, []);
 
   useEffect(() => {
     function handleResize() {
@@ -73,7 +54,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <Layout user={user}>
+      <Layout>
         <Routes>
           <Route index element={<HomeScreen />} />
           <Route path={"/"} element={<HomeScreen />} />
@@ -81,24 +62,24 @@ const App = () => {
           <Route path={"/cart"} element={<CartScreen />} />
           <Route
             path={"/auth"}
-            element={user ? <Navigate to="/" /> : <LoginScreen />}
+            element={authenticated ? <Navigate to="/" /> : <LoginScreen />}
           />
           <Route
             path={"/register"}
-            element={user ? <Navigate to="/" /> : <RegisterScreen />}
+            element={authenticated ? <Navigate to="/" /> : <RegisterScreen />}
           />
           <Route path={"/product/:id"} element={<ProductScreen />} />
           <Route
             path={"/editproduct/:id"}
-            element={user ? <EditProductScreen /> : <Navigate to="/" />}
+            element={authenticated ? <EditProductScreen /> : <Navigate to="/" />}
           />
           <Route
             path={"/favorites"}
-            element={user ? <Favorites /> : <Navigate to="/" />}
+            element={authenticated ? <Favorites /> : <Navigate to="/" />}
           />
           <Route
             path={"/editprofile"}
-            element={user ? <EditProfileScreen /> : <Navigate to="/" />}
+            element={authenticated ? <EditProfileScreen /> : <Navigate to="/" />}
           />
         </Routes>
       </Layout>

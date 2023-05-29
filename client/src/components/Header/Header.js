@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
@@ -17,9 +17,15 @@ import { CgProfile } from "react-icons/cg";
 
 import styles from "./styles";
 
-const Header = ({ isActive, user }) => {
+const Header = ({ isActive }) => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const userAuthState = useSelector((state) => state.userAuth);
+  const { authenticated } = userAuthState;
+  const userDetailsState = useSelector((state) => state.userDetails);
+  const { email, username, isAdmin } = userDetailsState?.userDetails || {};
+
   const logout = () => {
     // window.open("http://localhost:5000/auth/logout", "_self");
     dispatch(logoutUser());
@@ -45,10 +51,10 @@ const Header = ({ isActive, user }) => {
         </Link>
       </Box>
       <Box sx={styles.linksWrapper}>
-        {user ? (
+        {authenticated ? (
           <>
             <Typography sx={styles.headerButton}>
-              {user?.displayName}
+              {username ? username : null}
             </Typography>
 
             <IconButton
@@ -59,12 +65,9 @@ const Header = ({ isActive, user }) => {
               onClick={handleMenu}
               color="inherit"
             >
-              <Box
-                component="img"
-                src={user?.photos[0].value}
-                alt=""
-                sx={styles.avatar}
-              />
+              <Box sx={styles.avatar}>
+                <CgProfile />
+              </Box>
             </IconButton>
             <Menu
               id="menu-appbar"
