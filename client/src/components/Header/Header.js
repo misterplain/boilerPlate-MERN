@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import { useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
@@ -7,6 +8,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
+import { logoutUser } from "../../actions/authActions";
 
 //icons
 import { AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
@@ -16,9 +18,11 @@ import { CgProfile } from "react-icons/cg";
 import styles from "./styles";
 
 const Header = ({ isActive, user }) => {
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const logout = () => {
-    window.open("http://localhost:5000/auth/logout", "_self");
+    // window.open("http://localhost:5000/auth/logout", "_self");
+    dispatch(logoutUser());
     setAnchorEl(null);
   };
 
@@ -31,7 +35,7 @@ const Header = ({ isActive, user }) => {
     setAnchorEl(null);
   };
 
-  console.log(user);
+  // console.log(user);
   return (
     <Box sx={styles.wrapper}>
       <Box sx={styles.logoWrapper}>
@@ -43,7 +47,9 @@ const Header = ({ isActive, user }) => {
       <Box sx={styles.linksWrapper}>
         {user ? (
           <>
-            <Typography sx={styles.headerButton}>{user?.displayName}</Typography>
+            <Typography sx={styles.headerButton}>
+              {user?.displayName}
+            </Typography>
 
             <IconButton
               size="large"

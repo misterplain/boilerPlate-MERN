@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
 const UserModel = require("../models/userModel.js");
+const generateUserTokens = require("../middleware/generateToken.js");
 
 const signin = async (req, res) => {
   const { email, password } = req.body;
@@ -17,20 +18,7 @@ const signin = async (req, res) => {
     if (!isPasswordCorrect)
       return res.status(401).json({ message: "Invalid credentials" });
 
-    const accessToken = jwt.sign(
-      {
-        id: foundUser._id,
-        email: foundUser.email,
-      },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "1h" }
-    );
-
-    const refreshToken = jwt.sign(
-      { email: foundUser.email, id: foundUser._id },
-      process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "30d" }
-    );
+    const { accessToken, refreshToken } = generateUserTokens(foundUser);
 
     res.status(200).json({ result: foundUser, accessToken, refreshToken });
   } catch (err) {
@@ -62,20 +50,8 @@ const signup = async (req, res) => {
     });
 
 
-    const accessToken = jwt.sign(
-      {
-        id: newUser._id,
-        email: newUser.email,
-      },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "1h" }
-    );
-
-    const refreshToken = jwt.sign(
-      { email: newUser.email, id: newUser._id },
-      process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "30d" }
-    );
+    const { accessToken, refreshToken } = generateUserTokens(newUser);
+    
     res.status(201).json({ newUser, accessToken, refreshToken });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });

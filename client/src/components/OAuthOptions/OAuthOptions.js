@@ -1,8 +1,10 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import {useDispatch } from "react-redux";
 import Google from "../../img/google.png";
 import Facebook from "../../img/facebook.png";
 import Github from "../../img/github.png";
+import { loginOAuth } from "../../actions/authActions";
 
 const styles = {
   loginButton: {
@@ -14,24 +16,18 @@ const styles = {
 };
 
 const OAuthOptions = () => {
-  const google = () => {
-    window.open("http://localhost:5000/auth/google", "_self");
-  };
+  const dispatch = useDispatch()
 
-  const github = () => {
-    window.open("http://localhost:5000/auth/github", "_self");
-  };
-
-  const facebook = () => {
-    window.open("http://localhost:5000/auth/facebook", "_self");
-  };
+  const handleSubmit = (provider) => {
+    dispatch(loginOAuth(provider))
+  }
 
   return (
     <>
       <Box
         sx={styles.loginButton}
         style={{ backgroundColor: "#df4930" }}
-        onClick={google}
+        onClick={()=>handleSubmit("google")}
       >
         <Box component="img" src={Google} alt="" sx={styles.google} />
         Google
@@ -39,7 +35,7 @@ const OAuthOptions = () => {
       <Box
         sx={styles.loginButton}
         style={{ backgroundColor: "#507cc0" }}
-        onClick={facebook}
+        onClick={()=>handleSubmit("facebook")}
       >
         <Box component="img" src={Facebook} alt="" sx={styles.facebook} />
         Facebook
@@ -47,7 +43,7 @@ const OAuthOptions = () => {
       <Box
         sx={styles.loginButton}
         style={{ backgroundColor: "#000" }}
-        onClick={github}
+        onClick={()=>handleSubmit("github")}
       >
         <Box component="img" src={Github} alt="" sx={styles.github} />
         Github

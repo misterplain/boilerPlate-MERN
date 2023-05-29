@@ -12,6 +12,8 @@ const session = require("express-session");
 const passport = require("./middleware/passport");
 //boilerPlate routes
 const authRoutes = require("./routes/auth");
+//model
+const UserModel = require("./models/userModel");
 
 const app = express();
 
@@ -26,6 +28,7 @@ app.use(
     saveUninitialized: true,
     cookie: {
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      secure: true,
     },
   })
 );
@@ -49,6 +52,7 @@ app.use(express.json());
 const whitelist = [
   "http://localhost:3000",
   "http://localhost:5000",
+  "https://accounts.google.com",
   "https://hpnotepad.onrender.com",
   "https://fantasticfy.onrender.com",
   "https://patrickobrien.onrender.com",

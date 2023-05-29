@@ -1,36 +1,44 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
+import logger from "redux-logger";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { productListReducer } from "./reducers/productReducers";
-import { userAuthReducer } from "./reducers/authReducers";
-import { userDetailsReducer } from "./reducers/userReducers";
-import { cartReducer } from "./reducers/cartReducers";
+import { authReducer } from "./reducers/authReducers";
+// import { userDetailsReducer } from "./reducers/userReducers";
+// import { cartReducer } from "./reducers/cartReducers";
+// import { productListReducer } from "./reducers/productReducers";
 
 const reducer = combineReducers({
-  productList: productListReducer,
-  userAuth: userAuthReducer,
-  userDetails: userDetailsReducer,
-  cartItems: cartReducer,
+
+  userAuth: authReducer,
+  // userDetails: userDetailsReducer,
+  // productList: productListReducer,
+  // cartItems: cartReducer,
 });
 
 //cart items and token can be stored here in intial state
-const cartItemsFromStorage = localStorage.getItem("cartItems")
-  ? JSON.parse(localStorage.getItem("cartItems"))
-  : [];
+// const cartItemsFromStorage = localStorage.getItem("cartItems")
+//   ? JSON.parse(localStorage.getItem("cartItems"))
+//   : [];
 
 //userInfo stored in local storage
-const userInfoFromStorage = localStorage.getItem("userInfo")
-  ? JSON.parse(localStorage.getItem("userInfo"))
-  : null;
+// const userInfoFromStorage = localStorage.getItem("userInfo")
+//   ? JSON.parse(localStorage.getItem("userInfo"))
+//   : null;
 
-const initialState = {
-  cart: {
-    cartItems: cartItemsFromStorage,
-    userLogin: { userInfo: userInfoFromStorage },
-  },
-};
+// const initialState = {
+//   cart: {
+//     cartItems: cartItemsFromStorage,
+//     userLogin: { userInfo: userInfoFromStorage },
+//   },
+// };
+
+const initialState = {};
 
 const middleware = [thunk];
+
+if (process.env.NODE_ENV === 'development') {
+  middleware.push(logger);
+}
 
 const store = createStore(
   reducer,

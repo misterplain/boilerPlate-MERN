@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -9,6 +10,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 // import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { Formik } from "formik";
+import { registerForm } from "../../actions/authActions";
 
 const styles = {
   formContainer: {
@@ -47,11 +49,19 @@ const RegisterForm = () => {
   const [password, setPassword] = useState("");
   // const [authenticated, setAuthenticated] = useState(false);
   // const navigate = useNavigate();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   // const location = useLocation();
 
   const handleSubmit = (values) => {
     console.log(values);
+    dispatch(
+      registerForm(
+        values.username,
+        values.email,
+        values.password,
+        values.confirmPassword
+      )
+    );
   };
 
   return (
