@@ -12,6 +12,8 @@ const session = require("express-session");
 const passport = require("./middleware/passport");
 //boilerPlate routes
 const authRoutes = require("./routes/auth");
+const collectionRoutes = require("./routes/collectionRoutes");
+const productRoutes = require("./routes/productRoutes");
 //model
 const UserModel = require("./models/userModel");
 
@@ -76,6 +78,8 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/auth", authRoutes);
+app.use("/collection", collectionRoutes);
+app.use("/product", productRoutes)
 
 const port = process.env.PORT || 5000;
 app.listen(port, console.log(`server listing to port 5000 only`));
