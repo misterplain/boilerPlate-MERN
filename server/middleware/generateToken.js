@@ -5,13 +5,13 @@ const UserModel = require("../models/userModel.js");
 
 const generateUserTokens = (user) => {
   const accessToken = jwt.sign(
-    { id: user._id, email: user.email },
+    { id: user._id, email: user.email, isAdmin: user.isAdmin },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: "1h" }
   );
 
   const refreshToken = jwt.sign(
-    { email: user.email, id: user._id },
+    { email: user.email, id: user._id, isAdmin: user.isAdmin },
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: "30d" }
   );

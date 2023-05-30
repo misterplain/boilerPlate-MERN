@@ -1,13 +1,37 @@
 const Collection = require("../models/collectionModel");
 
+//get all collections
+const getAllCollections = async (req, res) => {
+  try {
+    const allCollections = await Collection.find({}).populate({
+      path: 'products',
+      populate: {
+        path: 'reviews'
+      }
+    });
+    const reply = {
+      message: "All collections",
+      allCollections,
+    };
+    res.status(200).json(reply);
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+
+    console.log(error);
+  }
+}
+
 //get collection by collection ID
 const getCollection = async (req, res) => {
   const { collectionId } = req.params;
 
   try {
-    const foundCollection = await Collection.findById(collectionId).populate(
-      "products"
-    );
+    const foundCollection = await Collection.findById(collectionId).populate({
+      path: 'products',
+      populate: {
+        path: 'reviews'
+      }
+    });
 
     if (!foundCollection)
       return res.status(400).json({ message: "Collection not found" });
@@ -113,6 +137,7 @@ const updateCollection = async (req, res) => {
 
 module.exports = {
   newCollection,
+  getAllCollections,
   getCollection,
   deleteCollection,
   updateCollection,

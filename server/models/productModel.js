@@ -42,9 +42,14 @@ const productSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    favorites: {
-      type: Number,
-      default: 0,
+    likes: {
+      type: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "User", // ref allows populate function to work properly, the function replaces id with its corresponding blog object
+        },
+      ],
+      default: [],
     },
   },
   {

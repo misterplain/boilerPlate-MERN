@@ -18,10 +18,7 @@ const ProductScreen = () => {
     (product) => product._id === productId
   );
 
-  console.log({
-    message: "displayedProduct",
-    displayedProduct,
-  });
+  console.log(displayedProduct);
 
   const styles = {
     wrapper: {
@@ -34,6 +31,8 @@ const ProductScreen = () => {
   return (
     <Box sx={styles.wrapper}>
       <Typography variant="h3">Product Screen</Typography>
+      <Typography variant="h5">{displayedProduct?.name}</Typography>
+      <Typography variant="h5">{displayedProduct?.price}</Typography>
     </Box>
   );
 };
