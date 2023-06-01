@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { NavLink } from "react-router-dom";
@@ -53,9 +54,16 @@ const Header = ({ isActive }) => {
       <Box sx={styles.linksWrapper}>
         {authenticated ? (
           <>
-            <Typography sx={styles.headerButton}>
+            <Typography sx={styles.headerButton} marginRight>
               {username ? username : null}
             </Typography>
+            {isAdmin && (
+              <Link component={NavLink} to="/admin">
+                <Button variant="contained">
+                  Admin Panel
+                </Button>
+              </Link>
+            )}
 
             <IconButton
               size="large"
@@ -100,6 +108,15 @@ const Header = ({ isActive }) => {
                   sx={{ textDecoration: "none" }}
                 >
                   Edit Profile
+                </Link>
+              </MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Link
+                  component={NavLink}
+                  to="/orders"
+                  sx={{ textDecoration: "none" }}
+                >
+                  Order History
                 </Link>
               </MenuItem>
               <MenuItem onClick={logout}>

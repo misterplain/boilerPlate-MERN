@@ -7,25 +7,16 @@ import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import { fetchAllProducts } from "../actions/productActions";
 
-// const styles = {
-//   wrapper: {
-//     border: "1px solid black",
-//     display: "flex",
-//     flexDirection: "row",
-//     padding: "50px 20px",
-//     justifyContent: "center",
-//     alignItems: "center",
-//   },
-// };
+
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
 
-  useEffect(() => {
-    if (productList && productList?.products.length === 0) {
-      dispatch(fetchAllProducts());
-    }
-  }, [dispatch]);
+  // useEffect(() => {
+  //   if (productList && productList?.products.length === 0) {
+  //     dispatch(fetchAllProducts());
+  //   }
+  // }, [dispatch]);
 
   return (
     <Grid

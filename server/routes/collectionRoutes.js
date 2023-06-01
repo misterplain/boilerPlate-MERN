@@ -1,13 +1,20 @@
-const router = require("express").Router()
-const  {newCollection, getAllCollections, getCollection, deleteCollection, updateCollection}  = require("../controllers/collectionController.js");
-const {verifyAdminToken} = require("../middleware/verifyAdminToken.js");
+const router = require("express").Router();
+const {
+  newCollection,
+  getAllCollections,
+  getCollection,
+  deleteCollection,
+  updateCollection,
+} = require("../controllers/collectionController.js");
+const { verifyToken } = require("../middleware/verifyToken.js");
 
-//create new collection
-router.post("/new", verifyAdminToken, newCollection);
+//public routes
 router.get("/get", getAllCollections);
-router.get("/get/:collectionId", getCollection)
-router.delete("/delete/:collectionId", verifyAdminToken, deleteCollection);
-router.put("/edit/:collectionId",verifyAdminToken, updateCollection);
+router.get("/get/:collectionId", getCollection);
 
+//admin only - protected routes 
+router.post("/new", verifyToken, newCollection);
+router.delete("/delete/:collectionId", verifyToken, deleteCollection);
+router.put("/edit/:collectionId", verifyToken, updateCollection);
 
 module.exports = router;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Layout from "./components/Layout/Layout";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
@@ -7,6 +7,8 @@ import ContactScreen from "./screens/ContactScreen";
 import ProductScreen from "./screens/ProductScreen";
 import EditProductScreen from "./screens/EditProductScreen";
 import EditProfileScreen from "./screens/EditProfileScreen";
+import OrderHistoryScreen from "./screens/OrderHistoryScreen";
+import AdminScreen from "./screens/AdminScreen";
 import Favorites from "./screens/FavoritesScreen";
 import CartScreen from "./screens/CartScreen";
 import LoginScreen from "./screens/LoginScreen";
@@ -16,17 +18,31 @@ import RegisterScreen from "./screens/RegisterScreen";
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import { fetchAllProducts } from "./actions/productActions";
+import {fetchAllCollections} from "./actions/collectionsActions";
+
 
 const App = () => {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const [viewport, setViewport] = useState("");
 
   const userAuthState = useSelector((state) => state.userAuth);
   const { authenticated } = userAuthState;
   const userDetailsState = useSelector((state) => state.userDetails);
-  const { email, username, isAdmin } = userDetailsState;
+  const { email, username, isAdmin } = userDetailsState?.userDetails || {};
+  const productList = useSelector((state) => state.productList);
+  const collectionsList = useSelector((state) => state.collections);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (productList && productList?.products.length === 0) {
+      dispatch(fetchAllProducts());
+    }
+    if (collectionsList && collectionsList?.collections.length === 0) {
+      dispatch(fetchAllCollections());
+    }
+
+  }, [dispatch]);
 
   useEffect(() => {
     function handleResize() {
@@ -81,6 +97,18 @@ const App = () => {
             path={"/editprofile"}
             element={
               authenticated ? <EditProfileScreen /> : <Navigate to="/" />
+            }
+          />
+          <Route
+            path={"/admin"}
+            element={
+              authenticated && isAdmin ? <AdminScreen /> : <Navigate to="/" />
+            }
+          />
+          <Route
+            path={"/orders"}
+            element={
+              authenticated ? <OrderHistoryScreen /> : <Navigate to="/" />
             }
           />
         </Routes>

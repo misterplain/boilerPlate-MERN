@@ -5,9 +5,9 @@ const {
 //   deleteReview,
 //   updateReview,
 } = require("../controllers/reviewController.js");
-const { verifyUserToken } = require("../middleware/verifyUserToken.js");
+const { verifyToken } = require("../middleware/verifyToken.js");
 
-router.post("/new/:productId", verifyUserToken, createReview);
+router.post("/new/:productId", verifyToken, createReview);
 // router.get("/:productId", getReviewsForProduct);
 // router.delete("/delete/:reviewId", deleteReview);
 // router.put("/edit/:reviewId", updateReview);

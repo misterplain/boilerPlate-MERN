@@ -5,11 +5,14 @@ const {
   deleteProduct,
   updateProduct,
 } = require("../controllers/productController.js");
+const { verifyToken } = require("../middleware/verifyToken.js");
 
-//create new collection
-router.post("/new", newProduct)
+//public routes
 router.get("/get", getAllProducts);
-router.delete("/delete/:productId", deleteProduct);
-router.put("/edit/:productId", updateProduct);
+
+//protected routes
+router.post("/new",verifyToken, newProduct)
+router.delete("/delete/:productId", verifyToken, deleteProduct);
+router.put("/edit/:productId", verifyToken, updateProduct);
 
 module.exports = router;

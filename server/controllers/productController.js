@@ -2,8 +2,14 @@ const Product = require("../models/productModel");
 const Collection = require("../models/collectionModel");
 
 //new product
+//protected route - admin only
 const newProduct = async (req, res) => {
   const { collectionId, name, price, photos, description, stock } = req.body;
+  const { isAdmin } = req;
+
+  if (!isAdmin){
+    return res.status(403).json({ message: "Not an admin" });
+  }
 
   try {
     const foundProduct = await Product.findOne({ name });
@@ -49,6 +55,7 @@ const newProduct = async (req, res) => {
 };
 
 //get all products
+//public route
 const getAllProducts = async (req, res) => {
   try {
     const allProducts = await Product.find({});
@@ -65,8 +72,14 @@ const getAllProducts = async (req, res) => {
 };
 
 //delete product
+//protected route - admin only
 const deleteProduct = async (req, res) => {
   const { productId } = req.params;
+  const { isAdmin } = req;
+
+  if (!isAdmin){
+    return res.status(403).json({ message: "Not an admin" });
+  }
 
   if (!productId)
     return res.status(400).json({ message: "No product id provided" });
@@ -94,9 +107,15 @@ const deleteProduct = async (req, res) => {
 };
 
 //update product
+//protected route - admin only
 const updateProduct = async (req, res) => {
   const { productId } = req.params;
   const { name, price, photos, description, stock } = req.body;
+  const { isAdmin } = req;
+
+  if (!isAdmin){
+    return res.status(403).json({ message: "Not an admin" });
+  }
 
   if (!productId)
     return res.status(400).json({ message: "No product id provided" });
