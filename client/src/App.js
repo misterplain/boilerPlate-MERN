@@ -22,6 +22,7 @@ import { fetchAllProducts } from "./actions/productActions";
 import {fetchAllCollections} from "./actions/collectionsActions";
 
 console.log("test commit")
+console.log("test commit response from work computer")
 
 
 const App = () => {
