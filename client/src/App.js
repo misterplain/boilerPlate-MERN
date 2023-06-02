@@ -21,6 +21,8 @@ import Box from "@mui/material/Box";
 import { fetchAllProducts } from "./actions/productActions";
 import {fetchAllCollections} from "./actions/collectionsActions";
 
+console.log("test commit")
+
 
 const App = () => {
   const theme = useTheme();
