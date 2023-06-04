@@ -5,7 +5,6 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import ContactScreen from "./screens/ContactScreen";
 import ProductScreen from "./screens/ProductScreen";
-import EditProductScreen from "./screens/EditProductScreen";
 import EditProfileScreen from "./screens/EditProfileScreen";
 import OrderHistoryScreen from "./screens/OrderHistoryScreen";
 import AdminScreen from "./screens/AdminScreen";
@@ -86,12 +85,12 @@ const App = () => {
             element={authenticated ? <Navigate to="/" /> : <RegisterScreen />}
           />
           <Route path={"/product/:productId"} element={<ProductScreen />} />
-          <Route
+          {/* <Route
             path={"/editproduct/:productId"}
             element={
               authenticated ? <EditProductScreen /> : <Navigate to="/" />
             }
-          />
+          /> */}
           <Route
             path={"/favorites"}
             element={authenticated ? <Favorites /> : <Navigate to="/" />}
@@ -103,7 +102,7 @@ const App = () => {
             }
           />
           <Route
-            path={"/admin"}
+            path={"/admin/*"}
             element={
               authenticated && isAdmin ? <AdminScreen /> : <Navigate to="/" />
             }

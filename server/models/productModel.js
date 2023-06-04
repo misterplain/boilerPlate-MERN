@@ -42,6 +42,10 @@ const productSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    isDisplayed: {
+      type: Boolean,
+      default: false,
+    },
     likes: {
       type: [
         {

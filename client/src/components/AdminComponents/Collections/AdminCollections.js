@@ -9,11 +9,14 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { NavLink } from "react-router-dom";
+import { Link } from "@mui/material";
 import {
   createNewCollection,
   updateCollectionName,
   deleteCollection,
 } from "../../../actions/collectionsActions";
+import { deleteProduct } from "../../../actions/productActions";
 
 import styles from "./styles";
 
@@ -134,11 +137,11 @@ const AdminCollections = () => {
         <Typography>Collections</Typography>
         <Box sx={styles.collectionsList}>
           {collectionsList?.collections?.map((collection) => (
-            <Box key={collection._id} sx={styles.collectionTitle}>
+            <Box key={collection._id} sx={styles.collectionName}>
               <Button
                 onClick={() => {
-                  console.log(collection._id);
                   setCollectionProductsId(collection._id);
+                  setCollectionName(collection.name);
                 }}
               >
                 {collection.name} - {collection.products.length} products
@@ -171,15 +174,35 @@ const AdminCollections = () => {
 
       {collectionProductsId !== null && (
         <Box sx={styles.productsWrapper}>
-          <Typography>Products within selected Collection</Typography>
+          <Typography>Products within {collectionName} Collection</Typography>
           <Box sx={styles.productsList}>
             {products
               ?.filter(
                 (product) => product.collectionId === collectionProductsId
               )
               .map((product) => (
-                <Box key={product._id} sx={styles.product}>
-                  <Typography>{product.name}</Typography>
+                <Box sx={styles.productName}  key={product._id} >
+                  <Link component={NavLink} to={`/product/${product._id}`}>
+                    <Button sx={styles.productLink}>
+                      {product.name}
+                    </Button>
+                  </Link>
+
+                  <Box sx={styles.productOptions}>
+                    <Link
+                      component={NavLink}
+                      to={`/admin/products/edit/${product._id}`}
+                    >
+                      <Button>Edit Product</Button>
+                    </Link>
+                    <Button
+                      onClick={() => {
+                        dispatch(deleteProduct(product._id, token));
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </Box>
                 </Box>
               ))}
           </Box>

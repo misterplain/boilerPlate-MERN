@@ -11,8 +11,8 @@ const { verifyToken } = require("../middleware/verifyToken.js");
 router.get("/get", getAllProducts);
 
 //protected routes
-router.post("/new",verifyToken, newProduct)
+router.post("/new", verifyToken, newProduct);
 router.delete("/delete/:productId", verifyToken, deleteProduct);
 router.put("/edit/:productId", verifyToken, updateProduct);
 
-module.exports = router;
+module.exports = router

@@ -101,7 +101,7 @@ const deleteProduct = async (req, res) => {
   const reply = {
     message: "Product deleted",
     deletedProduct,
-    collectionToUpdate,
+    collectionToUpdate
   };
   res.json(reply);
 };
@@ -110,8 +110,10 @@ const deleteProduct = async (req, res) => {
 //protected route - admin only
 const updateProduct = async (req, res) => {
   const { productId } = req.params;
-  const { name, price, photos, description, stock } = req.body;
+  const { name, price, photos, description, stock, isFeatured, isDisplayed, collectionId } = req.body;
   const { isAdmin } = req;
+
+  const initialCollectionId = collectionId
 
   if (!isAdmin){
     return res.status(403).json({ message: "Not an admin" });
@@ -125,6 +127,16 @@ const updateProduct = async (req, res) => {
   if (!productToUpdate)
     return res.status(400).json({ message: "No product found with that id" });
 
+    const oldCollectionId = productToUpdate.collectionId;
+
+    // Remove product from old collection
+    if (oldCollectionId !== collectionId) {
+      await Collection.updateOne(
+        { _id: oldCollectionId },
+        { $pull: { products: productId } }
+      );
+    }
+
   const updatedProduct = await Product.findByIdAndUpdate(
     productId,
     {
@@ -133,13 +145,26 @@ const updateProduct = async (req, res) => {
       photos,
       description,
       stock,
+      isFeatured,
+      isDisplayed,
+      collectionId,
     },
     { new: true }
   );
 
+  // Add product to new collection
+  if (oldCollectionId !== collectionId) {
+    await Collection.updateOne(
+      { _id: collectionId },
+      { $push: { products: productId } }
+    );
+  }
+
+
   const reply = {
     message: "Product updated",
     updatedProduct,
+    oldCollectionId
   };
   res.json(reply);
 };
