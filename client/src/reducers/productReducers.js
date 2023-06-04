@@ -6,6 +6,8 @@ import {
   PRODUCT_DELETE_FAIL,
   PRODUCT_EDIT_FAIL,
   PRODUCT_EDIT_SUCCESS,
+  PRODUCT_ADD_FAIL,
+  PRODUCT_ADD_SUCCESS,
 } from "../constants/productConstants";
 
 const productListReducer = (state = { products: [] }, action) => {
@@ -50,6 +52,17 @@ const productListReducer = (state = { products: [] }, action) => {
       };
     case PRODUCT_EDIT_FAIL:
       console.log(action.payload);
+      return {
+        loading: false,
+        error: action.payload.data.message,
+      };
+
+    case PRODUCT_ADD_SUCCESS:
+      return {
+        loading: false,
+        products: [...state.products, action.payload.data.newProduct],
+      };
+    case PRODUCT_ADD_FAIL:
       return {
         loading: false,
         error: action.payload.data.message,

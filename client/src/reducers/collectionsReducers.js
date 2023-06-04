@@ -108,7 +108,7 @@ const collectionsReducer = (state = { collections: [] }, action) => {
       );
       const oldCollectionUpdatedProducts = oldCollection.products.filter(
         (productId) => productId !== updatedProduct._id
-    );
+      );
       console.log({
         message: "oldCollection",
         oldCollection,
@@ -137,21 +137,21 @@ const collectionsReducer = (state = { collections: [] }, action) => {
         newCollectionUpdatedProducts,
       });
 
-    // Update the collections in the state
-    const updatedCollections = state.collections.map((collection) => {
-      if (collection._id === oldCollectionId) {
-        return { ...collection, products: oldCollectionUpdatedProducts };
-      } else if (collection._id === newCollectionId) {
-        return { ...collection, products: newCollectionUpdatedProducts };
-      } else {
-        return collection;
-      }
-    });
+      // Update the collections in the state
+      const updatedCollections = state.collections.map((collection) => {
+        if (collection._id === oldCollectionId) {
+          return { ...collection, products: oldCollectionUpdatedProducts };
+        } else if (collection._id === newCollectionId) {
+          return { ...collection, products: newCollectionUpdatedProducts };
+        } else {
+          return collection;
+        }
+      });
 
-    return {
-      loading: false,
-      collections: updatedCollections,
-    };
+      return {
+        loading: false,
+        collections: updatedCollections,
+      };
 
     case PRODUCT_EDIT_COLLECTION_FAIL:
       return {
@@ -175,6 +175,28 @@ const collectionsReducer = (state = { collections: [] }, action) => {
       };
 
     case PRODUCT_DELTE_COLLECTION_FAIL:
+      return {
+        loading: false,
+        error: action.payload.data.message,
+        collections: [...state.collections],
+      };
+
+    case PRODUCT_ADD_COLLECTION_SUCCESS:
+      const collectionToAdd = action.payload.data.newProduct.collectionId;
+      const productToAdd = action.payload.data.newProduct._id;
+      return {
+        loading: false,
+        collections: state.collections.map((collection) =>
+          collection._id === collectionToAdd
+            ? {
+                ...collection,
+                products: [...collection.products, productToAdd],
+              }
+            : collection
+        ),
+      };
+
+    case PRODUCT_ADD_COLLECTION_FAIL:
       return {
         loading: false,
         error: action.payload.data.message,

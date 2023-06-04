@@ -175,36 +175,49 @@ const AdminCollections = () => {
       {collectionProductsId !== null && (
         <Box sx={styles.productsWrapper}>
           <Typography>Products within {collectionName} Collection</Typography>
+          <Box sx={styles.addProductButton}>
+            <Link component={NavLink} to={'/admin/products/new'}>
+              <Button>New Product</Button>
+            </Link>
+          </Box>
           <Box sx={styles.productsList}>
-            {products
-              ?.filter(
-                (product) => product.collectionId === collectionProductsId
-              )
-              .map((product) => (
-                <Box sx={styles.productName}  key={product._id} >
-                  <Link component={NavLink} to={`/product/${product._id}`}>
-                    <Button sx={styles.productLink}>
-                      {product.name}
-                    </Button>
-                  </Link>
-
-                  <Box sx={styles.productOptions}>
-                    <Link
-                      component={NavLink}
-                      to={`/admin/products/edit/${product._id}`}
-                    >
-                      <Button>Edit Product</Button>
+            {products &&
+            products.filter(
+              (product) => product.collectionId === collectionProductsId
+            ).length > 0 ? (
+              products
+                .filter(
+                  (product) => product.collectionId === collectionProductsId
+                )
+                .map((product) => (
+                  <Box sx={styles.productName} key={product._id}>
+                    <Link component={NavLink} to={`/product/${product._id}`}>
+                      <Button sx={styles.productLink}>{product.name}</Button>
                     </Link>
-                    <Button
-                      onClick={() => {
-                        dispatch(deleteProduct(product._id, token));
-                      }}
-                    >
-                      Delete
-                    </Button>
+
+                    <Box sx={styles.productOptions}>
+                      <Link
+                        component={NavLink}
+                        to={`/admin/products/edit/${product._id}`}
+                      >
+                        <Button>Edit Product</Button>
+                      </Link>
+                      <Button
+                        onClick={() => {
+                          dispatch(deleteProduct(product._id, token));
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </Box>
                   </Box>
-                </Box>
-              ))}
+                ))
+            ) : (
+              <Box sx={styles.noItems}>
+                {" "}
+                <Typography>No items within this category</Typography>
+              </Box>
+            )}
           </Box>
         </Box>
       )}

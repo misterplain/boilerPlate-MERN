@@ -6,6 +6,8 @@ import {
   PRODUCT_DELETE_FAIL,
   PRODUCT_EDIT_SUCCESS,
   PRODUCT_EDIT_FAIL,
+  PRODUCT_ADD_FAIL,
+  PRODUCT_ADD_SUCCESS,
 } from "../constants/productConstants";
 import {
   PRODUCT_EDIT_COLLECTION_FAIL,
@@ -113,4 +115,38 @@ const editProduct = (productId, token, product) => async (dispatch) => {
   }
 };
 
-export { fetchAllProducts, deleteProduct, editProduct };
+const newProduct = (token, product) => async (dispatch) => {
+  try {
+    const options = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const data = await axios.post("/product/new", product, options);
+
+    dispatch({
+      type: PRODUCT_ADD_SUCCESS,
+      payload: data,
+    });
+
+    dispatch({
+      type: PRODUCT_ADD_COLLECTION_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    console.log(error);
+
+    dispatch({
+      type: PRODUCT_ADD_FAIL,
+      payload: error.message,
+    });
+
+    dispatch({
+      type: PRODUCT_ADD_COLLECTION_FAIL,
+      payload: error.message,
+    });
+  }
+};
+
+export { fetchAllProducts, deleteProduct, editProduct, newProduct };
