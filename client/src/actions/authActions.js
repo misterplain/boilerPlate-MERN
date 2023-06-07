@@ -18,6 +18,11 @@ import {
   CLEAR_USER_DETAILS,
   SET_USER_DETAILS,
 } from "../constants/userConstants";
+import {
+  GET_CARTITEMS_USER_FAIL,
+  GET_CARTITEMS_USER_SUCCESS,
+  EMPTY_CART,
+} from "../constants/cartConstants";
 import axios from "../api/axios";
 
 export const loginForm = (email, password) => async (dispatch) => {
@@ -34,9 +39,14 @@ export const loginForm = (email, password) => async (dispatch) => {
       payload: data,
     });
     dispatch({
-        type: SET_USER_DETAILS,
-        payload: data.data.foundUser
-      })
+      type: SET_USER_DETAILS,
+      payload: data.data.foundUser,
+    });
+
+    dispatch({
+      type: GET_CARTITEMS_USER_SUCCESS,
+      payload: data.data.foundUser,
+    });
   } catch (error) {
     console.log(error.response.data.message);
     dispatch({
@@ -68,10 +78,9 @@ export const registerForm =
 
       dispatch({
         type: SET_USER_DETAILS,
-        payload: data.data.newUser
-      })
+        payload: data.data.newUser,
+      });
     } catch (error) {
-
       dispatch({
         type: FORM_REGISTER_FAIL,
         payload: error.response.data.message,
@@ -112,6 +121,11 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
           payload: event.data.user,
         });
 
+        dispatch({
+          type: GET_CARTITEMS_USER_SUCCESS,
+          payload: event.data.user,
+        });
+
         oauthWindow.close();
       },
       false
@@ -134,6 +148,10 @@ export const logoutUser = () => async (dispatch) => {
     dispatch({
       type: CLEAR_USER_DETAILS,
     });
+
+    dispatch({
+      type: EMPTY_CART,
+    })
   } catch (error) {
     console.log(error);
   }

@@ -37,10 +37,10 @@ const App = () => {
   const collectionsList = useSelector((state) => state.collections);
 
   useEffect(() => {
-    if (productList && productList?.products.length === 0) {
+    if (productList && productList?.products?.length === 0) {
       dispatch(fetchAllProducts());
     }
-    if (collectionsList && collectionsList?.collections.length === 0) {
+    if (collectionsList && collectionsList?.collections?.length === 0) {
       dispatch(fetchAllCollections());
     }
 

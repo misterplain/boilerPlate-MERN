@@ -140,6 +140,9 @@ const collectionsReducer = (state = { collections: [] }, action) => {
       // Update the collections in the state
       const updatedCollections = state.collections.map((collection) => {
         if (collection._id === oldCollectionId) {
+          if (oldCollectionId === newCollectionId) {
+            return collection;
+          }
           return { ...collection, products: oldCollectionUpdatedProducts };
         } else if (collection._id === newCollectionId) {
           return { ...collection, products: newCollectionUpdatedProducts };

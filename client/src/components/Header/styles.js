@@ -5,7 +5,7 @@ const styles = {
         boxSizing: "border-box",
         display: "flex",
         justifyContent: "space-between",
-        backgroundColor: "grey",
+        backgroundColor: "#b3b3cc",
         padding: "0 15px",
         margin: "0 0px",
         [theme.breakpoints.up("sm")]: {

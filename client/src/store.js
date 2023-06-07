@@ -4,7 +4,7 @@ import logger from "redux-logger";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { authReducer } from "./reducers/authReducers";
 import { userReducer } from "./reducers/userReducers";
-// import { cartReducer } from "./reducers/cartReducers";
+import { cartReducer } from "./reducers/cartReducers";
 import { productListReducer } from "./reducers/productReducers";
 import { collectionsReducer } from "./reducers/collectionsReducers";
 
@@ -14,7 +14,7 @@ const reducer = combineReducers({
   userDetails: userReducer,
   collections: collectionsReducer, 
   productList: productListReducer,
-  // cartItems: cartReducer,
+  shoppingCart: cartReducer,
 });
 
 //cart items and token can be stored here in intial state

@@ -15,6 +15,7 @@ const authRoutes = require("./routes/auth");
 const collectionRoutes = require("./routes/collectionRoutes");
 const productRoutes = require("./routes/productRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
+const cartRoutes = require("./routes/cartRoutes");
 //model
 const UserModel = require("./models/userModel");
 
@@ -82,6 +83,7 @@ app.use("/auth", authRoutes);
 app.use("/collection", collectionRoutes);
 app.use("/product", productRoutes)
 app.use("/review", reviewRoutes)
+app.use("/cart", cartRoutes)
 
 const port = process.env.PORT || 5000;
 app.listen(port, console.log(`server listing to port 5000 only`));
