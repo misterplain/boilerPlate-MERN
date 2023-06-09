@@ -42,18 +42,11 @@ const EditProduct = () => {
     (collection) => collection._id === product.collectionId
   );
   const allCollections = collections.map((collection) => collection);
-//   console.log({
-//     message: "all collections",
-//     allCollections,
-//   });
-//   console.log({ message: "initial collection", initialCollection });
 
     //get token from state
     const userAuthState = useSelector((state) => state.userAuth);
     const [collectionProductsId, setCollectionProductsId] = useState(null);
     const token = userAuthState?.accessToken;
-    // console.log({ message: "token", token })
-
 
   //states
   const [collection, setCollection] = useState(initialCollection);
@@ -72,15 +65,7 @@ const EditProduct = () => {
         }}
         validationSchema={validationSchema}
         onSubmit={async (values, { resetForm }) => {
-          console.log({
-            collectionId: values.collectionId,
-            isDisplayed: values.isDisplayed === "true" ? true : false,
-            isFeatured: values.isFeatured === "true" ? true : false,
-            name: values.name,
-            price: values.price,
-            stock: values.stock,
-            description: values.description,
-          })
+
 
           const productData = {
             collectionId: values.collectionId,

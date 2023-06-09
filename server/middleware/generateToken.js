@@ -15,11 +15,7 @@ const generateUserTokens = (user) => {
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: "30d" }
   );
-  // console.log({
-  //   message: "from generateUserTokens",
-  //   accessToken: accessToken,
-  //   refreshToken: refreshToken,
-  // });
+
   return { accessToken, refreshToken };
 };
 

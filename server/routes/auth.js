@@ -60,8 +60,6 @@ router.get("/google/callback", function (req, res, next) {
     const tokens = generateUserTokens(user);
     const { accessToken, refreshToken } = tokens;
 
-    // console.log(`Sending tokens: ${accessToken}, ${refreshToken}`);
-    // res.json({ accessToken, refreshToken, user });
     res.send(`
     <script>
       window.opener.postMessage(

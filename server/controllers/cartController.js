@@ -29,8 +29,7 @@ const addCartItem = async (req, res) => {
     const itemIndex = user.cart.findIndex(
       (item) => item.product.toString() === productId.toString()
     );
-    console.log(itemIndex + "item index");
-    console.log(productId.toString());
+
     if (itemIndex > -1) {
       //item already exists in cart
       user.cart[itemIndex].quantity += quantity;
@@ -58,6 +57,8 @@ const deleteCartItem = async (req, res) => {
   const { userId } = req;
   const { quantity } = req.body;
   const { productId } = req.params;
+  console.log("quantity", quantity)
+  console.log("productId", productId)
 
   try {
     const user = await User.findById(userId);
@@ -66,10 +67,10 @@ const deleteCartItem = async (req, res) => {
     );
     if (itemIndex > -1) {
       //item exists in cart
-      //   user.cart[itemIndex].quantity -= 1;
-      //   if (user.cart[itemIndex].quantity === 0) {
-      //     user.cart.splice(itemIndex, 1);
-      //   }
+        user.cart[itemIndex].quantity -= 1;
+        if (user.cart[itemIndex].quantity === 0) {
+          user.cart.splice(itemIndex, 1);
+        }
       user.cart.splice(itemIndex, 1);
 
       await user.save();

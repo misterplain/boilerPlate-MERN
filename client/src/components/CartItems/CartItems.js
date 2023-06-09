@@ -21,7 +21,7 @@ const CartItems = () => {
   const cartState = useSelector((state) => state.shoppingCart);
   const { cartItems } = cartState;
 
-  const detailedCartItems = cartItems.map((item) => {
+  const detailedCartItems = cartItems?.map((item) => {
     const productDetails = products.find((p) => p._id === item.product);
     return { ...item, product: productDetails };
   });
@@ -35,7 +35,7 @@ const cartItemTotal = (item) => {
 
   return (
     <Box sx={styles.wrapper}>
-      {cartItems.length === 0 ? (
+      {cartItems?.length === 0 ? (
         <Box sx={styles.emptyCart}>
           <Typography variant="h5">Your cart is empty</Typography>
         </Box>
@@ -45,7 +45,7 @@ const cartItemTotal = (item) => {
             <Typography variant="h5">Your cart</Typography>
           </Box>
           <Box sx={styles.cartItemsWrapper}>
-            {detailedCartItems.map((item) => (
+            {detailedCartItems?.map((item) => (
               <Box sx={styles.cartItem} key={item._id}>
                 {/* {item.product.name} - {item.quantity} */}
                 <Box sx={styles.imageTitleDeleteWrapper}>

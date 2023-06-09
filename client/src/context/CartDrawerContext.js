@@ -15,7 +15,6 @@ export const CartDrawerProvider = ({ children }) => {
 
 export const useCartDrawer = () => {
   const context = useContext(CartDrawerContext);
-  console.log(context)
   if (!context) {
     throw new Error('useCartDrawer must be used within a CartDrawerProvider');
   }

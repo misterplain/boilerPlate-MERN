@@ -43,6 +43,7 @@ const deleteProduct = (productId, token) => async (dispatch) => {
   try {
     const options = {
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     };
@@ -73,12 +74,7 @@ const deleteProduct = (productId, token) => async (dispatch) => {
 };
 
 const editProduct = (productId, token, product) => async (dispatch) => {
-  console.log({
-    message: "editProduct action",
-    productId,
-    token,
-    product,
-  });
+
   try {
     const options = {
       headers: {

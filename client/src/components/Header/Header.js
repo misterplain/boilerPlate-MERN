@@ -34,7 +34,6 @@ const Header = ({ isActive }) => {
   const { cartItems, loading, error } = cartState || {};
 
   const { isOpen, setIsOpen } = useCartDrawer();
-  console.log(isOpen);
 
   const logout = () => {
     // window.open("http://localhost:5000/auth/logout", "_self");
@@ -53,7 +52,7 @@ const Header = ({ isActive }) => {
 
   const handleOpenCart = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
-    console.log(isOpen);
+
   };
   return (
     <>

@@ -39,8 +39,7 @@ const newProduct = async (req, res) => {
       .exec(function (err, populatedCollection) {
         if (err)
           return res.status(500).json({ message: "Something went wrong" });
-        // console.log("The products are: ", populatedCollection.products);
-        // res.json(populatedCollection);
+
       });
     const reply = {
       message: "Product created",

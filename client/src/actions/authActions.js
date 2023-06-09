@@ -32,7 +32,6 @@ export const loginForm = (email, password) => async (dispatch) => {
     });
 
     const data = await axios.post("/auth/signin", { email, password });
-    console.log(data);
 
     dispatch({
       type: FORM_LOGIN_SUCCESS,
@@ -48,7 +47,6 @@ export const loginForm = (email, password) => async (dispatch) => {
       payload: data.data.foundUser,
     });
   } catch (error) {
-    console.log(error.response.data.message);
     dispatch({
       type: FORM_LOGIN_FAIL,
       payload: error.response.data.message,
@@ -69,7 +67,6 @@ export const registerForm =
         password,
         confirmPassword,
       });
-      console.log(data);
 
       dispatch({
         type: FORM_REGISTER_SUCCESS,
@@ -94,7 +91,6 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
     dispatch({
       type: OAUTH_LOGIN_REQUEST,
     });
-    console.log(provider);
 
     const oauthWindow = window.open(
       `http://localhost:5000/auth/${provider}`,
@@ -107,9 +103,8 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
         if (event.origin !== "http://localhost:5000") {
           return;
         }
-        // console.log(event.data.user);
+
         const { accessToken, refreshToken } = event.data;
-        // console.log(`Received tokens: ${accessToken}, ${refreshToken}`);
 
         dispatch({
           type: OAUTH_LOGIN_SUCCESS,
@@ -131,7 +126,6 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
       false
     );
   } catch (error) {
-    console.log(error);
     dispatch({
       type: OAUTH_LOGIN_FAIL,
       payload: error.message,

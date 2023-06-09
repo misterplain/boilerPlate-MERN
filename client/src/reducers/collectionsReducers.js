@@ -49,16 +49,14 @@ const collectionsReducer = (state = { collections: [] }, action) => {
 
     case NAME_UPDATE_SUCCESS:
       const editedCollectionId = action.payload.data.collectionToUpdate._id;
-      console.log(editedCollectionId);
       let newEditedCollections = [...state.collections];
       const editedCollection = action.payload.data.collectionToUpdate;
-      console.log(editedCollection);
       let collectionToEdit = newEditedCollections.find(
         (collection) => collection._id === editedCollectionId
       );
-      console.log(collectionToEdit);
+
       collectionToEdit.name = editedCollection.name;
-      console.log(collectionToEdit);
+
       return {
         loading: false,
         collections: newEditedCollections,
@@ -89,18 +87,7 @@ const collectionsReducer = (state = { collections: [] }, action) => {
     case PRODUCT_EDIT_COLLECTION_SUCCESS:
       const { updatedProduct, oldCollectionId } = action.payload.data;
       const newCollectionId = updatedProduct.collectionId;
-      console.log({
-        message: "updatedProduct",
-        updatedProduct,
-      });
-      console.log({
-        message: "oldCollectionId",
-        oldCollectionId,
-      });
-      console.log({
-        message: "newCollectionId",
-        newCollectionId,
-      });
+
 
       // Find the old collection and remove the product
       const oldCollection = state.collections.find(
@@ -109,14 +96,6 @@ const collectionsReducer = (state = { collections: [] }, action) => {
       const oldCollectionUpdatedProducts = oldCollection.products.filter(
         (productId) => productId !== updatedProduct._id
       );
-      console.log({
-        message: "oldCollection",
-        oldCollection,
-      });
-      console.log({
-        message: "oldCollectionaAfterUpdatedProducts",
-        oldCollectionUpdatedProducts,
-      });
 
       // Find the new collection and add the product
       const newCollection = state.collections.find(
@@ -127,15 +106,6 @@ const collectionsReducer = (state = { collections: [] }, action) => {
         updatedProduct._id,
       ];
 
-      console.log({
-        message: "newCollection",
-        newCollection,
-      });
-
-      console.log({
-        message: "newCollectionUpdatedProducts",
-        newCollectionUpdatedProducts,
-      });
 
       // Update the collections in the state
       const updatedCollections = state.collections.map((collection) => {

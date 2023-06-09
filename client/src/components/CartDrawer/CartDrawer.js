@@ -11,7 +11,6 @@ import CartItems from "../CartItems/CartItems";
 
 const CartDrawer = () => {
   const { isOpen, setIsOpen } = useCartDrawer();
-  console.log(isOpen + "from within cart drawer");
 
   const toggleDrawer = (open) => () => {
     setIsOpen(open);

@@ -36,7 +36,6 @@ const fetchAllCollections = () => async (dispatch) => {
 //create new collection - admin only
 const createNewCollection = (name, token) => async (dispatch) => {
   try {
-    console.log(name, token);
 
     const options = {
       headers: {
@@ -60,11 +59,7 @@ const createNewCollection = (name, token) => async (dispatch) => {
 };
 
 const updateCollectionName = (name, id, token) => async (dispatch) => {
-  // console.log({
-  //   name: name,
-  //   id: id,
-  //   token: token,
-  // });
+
   try {
     const options = {
       headers: {
@@ -74,7 +69,7 @@ const updateCollectionName = (name, id, token) => async (dispatch) => {
     };
 
     const data = await axios.put(`/collection/edit/${id}`, { name }, options);
-    console.log(data)
+
 
     dispatch({
       type: NAME_UPDATE_SUCCESS,
@@ -98,7 +93,6 @@ const deleteCollection = (id, token) => async (dispatch) => {
     };
 
     const data = await axios.delete(`/collection/delete/${id}`, options);
-    console.log(data)
 
     dispatch({
       type: DELETE_COLLECTION_SUCCESS,

@@ -6,7 +6,7 @@ const verifyToken = (req, res, next) => {
   const token = req.headers.authorization.split(" ")[1];
 
   if (!token) {
-    return res.status(403).send({ message: "No token provided." });
+    return res.status(403).send({ message: "No token provided." })
   }
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, userDecoded) => {
@@ -16,10 +16,7 @@ const verifyToken = (req, res, next) => {
     }
     req.userId = userDecoded.id;
     req.isAdmin = userDecoded.isAdmin;
-    // console.log({
-    //   id: userDecoded.id,
-    //   isAdmin: userDecoded.isAdmin,
-    // });
+
     next(); // proceed to the next middleware or the route handler
   });
 };

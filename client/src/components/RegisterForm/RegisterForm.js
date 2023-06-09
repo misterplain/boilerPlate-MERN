@@ -53,7 +53,7 @@ const RegisterForm = () => {
   // const location = useLocation();
 
   const handleSubmit = (values) => {
-    console.log(values);
+
     dispatch(
       registerForm(
         values.username,

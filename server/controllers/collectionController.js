@@ -86,7 +86,7 @@ const newCollection = async (req, res) => {
 const deleteCollection = async (req, res) => {
   const { collectionId } = req.params;
   const { isAdmin } = req;
-  console.log(isAdmin);
+
 
   if (!isAdmin){
     return res.status(403).json({ message: "Not an admin" });

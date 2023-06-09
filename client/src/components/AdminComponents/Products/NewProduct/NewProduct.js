@@ -48,7 +48,6 @@ const NewProduct = () => {
   const userAuthState = useSelector((state) => state.userAuth);
   const [collectionProductsId, setCollectionProductsId] = useState(null);
   const token = userAuthState?.accessToken;
-  // console.log({ message: "token", token })
 
   //states
   const [collection, setCollection] = useState("");
@@ -61,21 +60,13 @@ const NewProduct = () => {
           isDisplayed: false,
           isFeatured: false,
           name: "",
-          price: null,
-          stock: null,
+          price: "",
+          stock: "",
           description: "",
         }}
         validationSchema={validationSchema}
         onSubmit={async (values, { resetForm }) => {
-          console.log({
-            collectionId: values.collectionId,
-            isDisplayed: values.isDisplayed === "true" ? true : false,
-            isFeatured: values.isFeatured === "true" ? true : false,
-            name: values.name,
-            price: values.price,
-            stock: values.stock,
-            description: values.description,
-          });
+
 
           const productData = {
             collectionId: values.collectionId,
@@ -88,7 +79,7 @@ const NewProduct = () => {
           };
 
           dispatch(newProduct(token, productData));
-          console.log({ message: "productData", productData });
+
         }}
       >
         {({

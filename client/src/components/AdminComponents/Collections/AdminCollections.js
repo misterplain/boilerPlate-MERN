@@ -87,11 +87,6 @@ const AdminCollections = () => {
               initialValues={collectionName}
               validationSchema={validationSchema}
               onSubmit={async (values, { resetForm }) => {
-                // dispatch(createNewCollection(values.name, token));
-                // console.log("edit collection title", values.name);
-                // console.log("collectionProductsId", collectionProductsId);
-                // console.log("collection name", collectionName);
-                console.log(token);
                 setIsEditTitle(false);
                 setCollectionName("");
                 dispatch(
@@ -152,8 +147,6 @@ const AdminCollections = () => {
                     setIsEditTitle(true);
                     setCollectionName(collection.name);
                     setCollectionProductsId(collection._id);
-                    console.log(collectionName);
-                    console.log(collectionProductsId);
                   }}
                 >
                   Edit Name
