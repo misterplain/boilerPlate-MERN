@@ -2,12 +2,21 @@ import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
+import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
+import {
+  getCartItems,
+  addCartItemUser,
+  addCartItemGuest,
+  removeCartItemUser,
+  removeCartItemGuest,
+} from "../../actions/cartActions";
 
 import styles from "./styles";
+// import { use } from "../../../../server/routes/auth";
 
 const CartItems = () => {
   const dispatch = useDispatch();
@@ -20,6 +29,7 @@ const CartItems = () => {
   const { email, username, isAdmin } = userDetailsState?.userDetails || {};
   const cartState = useSelector((state) => state.shoppingCart);
   const { cartItems } = cartState;
+const token = userAuthState?.accessToken;
 
   const detailedCartItems = cartItems?.map((item) => {
     const productDetails = products.find((p) => p._id === item.product);
@@ -28,10 +38,35 @@ const CartItems = () => {
 
   console.log(detailedCartItems);
 
-const cartItemTotal = (item) => {
-    return item.product.price * item.quantity
-}
+  const cartItemTotal = (item) => {
+    return item.product.price * item.quantity;
+  };
 
+  const handleIncreaseQuantity = (item) => {
+    console.log("increase quantity");
+    if (authenticated) { 
+      // dispatch(addCartItemUser(item.product._id, token, 1));
+      dispatch(addCartItemUser({
+        productId: item.product._id,
+        quantity: 1,
+        token
+      }));
+    } else {
+      dispatch(addCartItemGuest(item.product._id, 1));
+    }
+  }
+
+  const handleDecreaseQuantity = (item) => {
+    if(authenticated) {
+      dispatch(removeCartItemUser({
+        productId: item.product._id,
+        quantity: 1,
+        token
+      }));
+    } else {
+      dispatch(removeCartItemGuest(item.product._id, 1));
+    }
+  }
 
   return (
     <Box sx={styles.wrapper}>
@@ -45,35 +80,44 @@ const cartItemTotal = (item) => {
             <Typography variant="h5">Your cart</Typography>
           </Box>
           <Box sx={styles.cartItemsWrapper}>
-            {detailedCartItems?.map((item) => (
-              <Box sx={styles.cartItem} key={item._id}>
-                {/* {item.product.name} - {item.quantity} */}
-                <Box sx={styles.imageTitleDeleteWrapper}>
-                  <Box sx={styles.imageTitle}>
-                    <Box
-                      component="img"
-                      src={
-                        item.product.photos.length >= 1
-                          ? item.product.photos[0]
-                          : "https://placehold.co/80x80"
-                      }
-                    />
-                    <Box sx={styles.title}>{item.product.name}</Box>
+            {detailedCartItems &&
+              detailedCartItems?.map((item) => (
+                <Box sx={styles.cartItem} key={item.product._id}>
+                  {/* {item.product.name} - {item.quantity} */}
+                  <Box sx={styles.imageTitleDeleteWrapper}>
+                    <Box sx={styles.imageTitle}>
+                      <Box
+                        component="img"
+                        src={
+                          item.product.photos.length >= 1
+                            ? item.product.photos[0]
+                            : "https://placehold.co/80x80"
+                        }
+                      />
+                      <Box sx={styles.title}>{item.product.name}</Box>
+                    </Box>
+                    <Box sx={styles.deleteWrapper}>
+                      <DeleteOutlineIcon />
+                    </Box>
                   </Box>
-                  <Box sx={styles.deleteWrapper}>
-                  <DeleteOutlineIcon/>
+                  <Box sx={styles.cartItemInfoWrapper}>
+                    <Box sx={styles.cartItemInfoText}>Price</Box>
+                    <Box sx={styles.cartItemInfo}>${cartItemTotal(item)}</Box>
+                  </Box>
+                  <Box sx={styles.cartItemInfoWrapper}>
+                    <Box sx={styles.cartItemInfoText}>Quantity</Box>
+                    <Box sx={styles.quantity}>
+                      <Box sx={styles.quantityIcon} onClick={()=>handleIncreaseQuantity(item)}>
+                        <AiOutlinePlus />
+                      </Box>
+                      <Box sx={styles.cartItemInfo}>{item.quantity}</Box>
+                      <Box sx={styles.quantityIcon} onClick={()=>handleDecreaseQuantity(item)}>
+                        <AiOutlineMinus />
+                      </Box>
+                    </Box>
                   </Box>
                 </Box>
-                <Box sx={styles.cartItemInfoWrapper}>
-                  <Box sx={styles.cartItemInfoText}>Price</Box>
-                  <Box sx={styles.cartItemInfo}>${cartItemTotal(item)}</Box>
-                </Box>
-                <Box sx={styles.cartItemInfoWrapper}>
-                  <Box sx={styles.cartItemInfoText}>Quantity</Box>
-                  <Box sx={styles.cartItemInfo}>{item.quantity}</Box>
-                </Box>
-              </Box>
-            ))}
+              ))}
           </Box>
         </>
       )}

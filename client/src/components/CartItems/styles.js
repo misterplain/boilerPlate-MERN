@@ -26,6 +26,9 @@ borderBottom: "1px solid black"
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
+    },
+    quantity: {
+        display: "flex",
     }
 }
 

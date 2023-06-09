@@ -49,6 +49,8 @@ const ProductScreen = () => {
     (item) => item.product === displayedProduct._id
   );
 
+  console.log({ message: "productInBasket", productInBasket });
+
   const validationSchema = Yup.object({
     quantity: Yup.number().required("Required"),
   });
@@ -92,22 +94,33 @@ const ProductScreen = () => {
               }}
               validationSchema={validationSchema}
               onSubmit={async (values, { resetForm }) => {
-                console.log(values);
+                // console.log(values);
                 if (authenticated) {
                   if (!productInBasket) {
                     dispatch(
-                      addCartItemUser(token, productId, values.quantity)
+                      addCartItemUser({
+                        token,
+                        productId,
+                        quantity: values.quantity,
+                      })
                     );
                   } else {
+                    console.log(productInBasket);
                     dispatch(
-                      removeCartItemUser(token, productId, values.quantity)
+                      removeCartItemUser({
+                        token,
+                        productId,
+                        quantity: productInBasket.quantity,
+                      })
                     );
                   }
                 } else {
                   if (!productInBasket) {
                     dispatch(addCartItemGuest(productId, values.quantity));
                   } else {
-                    dispatch(removeCartItemGuest(productId, values.quantity));
+                    dispatch(
+                      removeCartItemGuest(productId, productInBasket.quantity)
+                    );
                   }
                 }
 

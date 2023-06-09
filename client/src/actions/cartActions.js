@@ -39,7 +39,7 @@ const getCartItems = (token) => async (dispatch) => {
 };
 
 //add cart item user
-const addCartItemUser = (token, productId, quantity) => async (dispatch) => {
+const addCartItemUser = ({token, productId, quantity}) => async (dispatch) => {
   try {
     const options = {
       headers: {
@@ -104,7 +104,9 @@ const addCartItemGuest =
   };
 
 //remove cart item user
-const removeCartItemUser = (token, productId, quantity) => async (dispatch) => {
+const removeCartItemUser = ({token, productId, quantity}) => async (dispatch) => {
+
+    console.log({token, productId, quantity})
   try {
     const options = {
         headers: {
@@ -112,9 +114,6 @@ const removeCartItemUser = (token, productId, quantity) => async (dispatch) => {
           Authorization: `Bearer ${token}`,
         },
       };
-    console.log(productId);
-    console.log(quantity);
-    console.log(token)
     const data = await axios({
         method: 'delete',
         url: `/cart/delete/${productId}`,

@@ -67,11 +67,11 @@ const deleteCartItem = async (req, res) => {
     );
     if (itemIndex > -1) {
       //item exists in cart
-        user.cart[itemIndex].quantity -= 1;
-        if (user.cart[itemIndex].quantity === 0) {
+        user.cart[itemIndex].quantity -= quantity;
+        if (user.cart[itemIndex].quantity <= 0) {
           user.cart.splice(itemIndex, 1);
         }
-      user.cart.splice(itemIndex, 1);
+
 
       await user.save();
       res.status(200).json({
