@@ -27,7 +27,6 @@ const newProduct = async (req, res) => {
       stock,
     });
 
-    // add product to collection
     const collectionToPopulate = await Collection.findById(
       newProduct.collectionId
     );
@@ -90,7 +89,6 @@ const deleteProduct = async (req, res) => {
 
   const deletedProduct = await Product.findByIdAndDelete(productId);
 
-  //remove product from collection
   const collectionToUpdate = await Collection.findById(
     deletedProduct.collectionId
   );
@@ -112,7 +110,6 @@ const updateProduct = async (req, res) => {
   const { name, price, photos, description, stock, isFeatured, isDisplayed, collectionId } = req.body;
   const { isAdmin } = req;
 
-  const initialCollectionId = collectionId
 
   if (!isAdmin){
     return res.status(403).json({ message: "Not an admin" });
@@ -128,7 +125,6 @@ const updateProduct = async (req, res) => {
 
     const oldCollectionId = productToUpdate.collectionId;
 
-    // Remove product from old collection
     if (oldCollectionId !== collectionId) {
       await Collection.updateOne(
         { _id: oldCollectionId },
@@ -151,7 +147,6 @@ const updateProduct = async (req, res) => {
     { new: true }
   );
 
-  // Add product to new collection
   if (oldCollectionId !== collectionId) {
     await Collection.updateOne(
       { _id: collectionId },

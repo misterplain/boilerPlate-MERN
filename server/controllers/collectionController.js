@@ -4,12 +4,6 @@ const Collection = require("../models/collectionModel");
 //public
 const getAllCollections = async (req, res) => {
   try {
-    // const allCollections = await Collection.find({}).populate({
-    //   path: "products",
-    //   populate: {
-    //     path: "reviews",
-    //   },
-    // });
     const allCollections = await Collection.find({})
     const reply = {
       message: "All collections",
@@ -102,13 +96,11 @@ const deleteCollection = async (req, res) => {
         .status(400)
         .json({ message: "No collection found with that id" });
     console.log(collectionToDelete);
-    //if collection contains products
     if (collectionToDelete.products && collectionToDelete.products.length > 0) {
       return res.status(400).json({
         message: "Collection contains products. Please delete products first.",
       });
     } else {
-      //delete collection
       await collectionToDelete.remove();
       const reply = {
         message: "Collection deleted",

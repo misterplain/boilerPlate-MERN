@@ -27,11 +27,20 @@ const userSchema = new mongoose.Schema(
       required: true,
       default: false,
     },
+    addresses: [
+      {
+        street: { type: String, required: true },
+        city: { type: String, required: true },
+        postalCode: { type: String, required: true },
+        country: { type: String, required: true },
+        isDefault: { type: Boolean, default: false },
+      },
+    ],
     favorites: {
       type: [
         {
           type: Schema.Types.ObjectId,
-          ref: "Product", // ref allows populate function to work properly, the function replaces id with its corresponding blog object
+          ref: "Product", 
         },
       ],
       default: [],
@@ -48,6 +57,15 @@ const userSchema = new mongoose.Schema(
             required: true,
             default: 0,
           },
+        },
+      ],
+      default: [],
+    },
+    orders: {
+      type: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "Orders", 
         },
       ],
       default: [],

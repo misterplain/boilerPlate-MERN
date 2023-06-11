@@ -3,11 +3,17 @@ const jwt = require("jsonwebtoken");
 const secret = "test";
 
 const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1];
-
-  if (!token) {
+  if (!req.headers.authorization) {
     return res.status(403).send({ message: "No token provided." })
   }
+
+  const authParts = req.headers.authorization.split(" ");
+
+  if (authParts.length < 2) {
+    return res.status(403).send({ message: "Malformed token." })
+  }
+
+  const token = authParts[1];
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, userDecoded) => {
     if (err) {

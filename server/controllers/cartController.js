@@ -1,9 +1,5 @@
 const User = require("../models/userModel");
 
-//cart item id is in params
-//user id is in req.user
-//quantity for add is 1 and remove is 1
-
 const getCartItems = async (req, res) => {
   const { userId } = req;
 
@@ -31,7 +27,6 @@ const addCartItem = async (req, res) => {
     );
 
     if (itemIndex > -1) {
-      //item already exists in cart
       user.cart[itemIndex].quantity += quantity;
       await user.save();
       res.status(200).json({
@@ -39,7 +34,6 @@ const addCartItem = async (req, res) => {
         cart: user.cart,
       });
     } else {
-      //item does not exist in cart
       const item = {
         product: productId,
         quantity: quantity,
@@ -66,7 +60,6 @@ const deleteCartItem = async (req, res) => {
       (item) => item.product.toString() === productId.toString()
     );
     if (itemIndex > -1) {
-      //item exists in cart
         user.cart[itemIndex].quantity -= quantity;
         if (user.cart[itemIndex].quantity <= 0) {
           user.cart.splice(itemIndex, 1);
@@ -79,7 +72,6 @@ const deleteCartItem = async (req, res) => {
         cart: user.cart,
       });
     } else {
-      //item does not exist in cart
       res.status(200).json({
         message: "Item does not exist in cart",
         cart: user.cart,

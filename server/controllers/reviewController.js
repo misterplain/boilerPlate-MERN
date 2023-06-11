@@ -16,7 +16,6 @@ const createReview = asyncHandler(async (req, res) => {
       return res.status(400).json({ message: "No product id provided" });
     }
 
-    //create new review
     const newReview = await Review.create({
       rating,
       comment,
@@ -24,7 +23,6 @@ const createReview = asyncHandler(async (req, res) => {
       productId: productId,
     });
 
-    //find product to populate
     const productToPopulate = await Product.findById(productId);
     productToPopulate.reviews?.push(newReview);
     await productToPopulate.save();
