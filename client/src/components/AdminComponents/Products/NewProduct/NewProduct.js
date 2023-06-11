@@ -4,7 +4,6 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import TextField from "@mui/material/TextField";
@@ -13,7 +12,6 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-import TextareaAutosize from "@mui/base/TextareaAutosize";
 import { newProduct } from "../../../../actions/productActions";
 
 const styles = {
@@ -32,25 +30,14 @@ const validationSchema = Yup.object({
 
 const NewProduct = () => {
   const dispatch = useDispatch();
-  const { productId } = useParams();
 
   const productList = useSelector((state) => state.productList);
-  const { products } = productList;
   const collectionsState = useSelector((state) => state.collections);
   const { collections } = collectionsState;
-  // const product = products.find((product) => product._id === productId);
-  // const initialCollection = collections.find(
-  //   (collection) => collection._id === product.collectionId
-  // );
   const allCollections = collections.map((collection) => collection);
 
-  //get token from state
   const userAuthState = useSelector((state) => state.userAuth);
-  const [collectionProductsId, setCollectionProductsId] = useState(null);
   const token = userAuthState?.accessToken;
-
-  //states
-  const [collection, setCollection] = useState("");
 
   return (
     <Box sx={styles.wrapper}>

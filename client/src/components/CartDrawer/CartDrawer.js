@@ -8,6 +8,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import CartItems from "../CartItems/CartItems";
+import CartSummary from "../CartSummary/CartSummary";
 
 const CartDrawer = () => {
   const { isOpen, setIsOpen } = useCartDrawer();
@@ -18,19 +19,13 @@ const CartDrawer = () => {
 
   const list = () => (
     <Box
-      sx={{ width: 400 }} // change width to 50% to cover half screen
+      sx={{ width: 400 }}
       role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >
-      {/* <List>
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemText primary="Item 1" />
-          </ListItemButton>
-        </ListItem>
-      </List> */}
       <CartItems />
+      <CartSummary/>
     </Box>
   );
 

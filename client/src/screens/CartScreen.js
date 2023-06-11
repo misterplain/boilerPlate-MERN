@@ -15,7 +15,6 @@ const CartScreen = () => {
       <Box>
         <Typography variant="h2">Shopping Cart</Typography>
       </Box>
-      {/* <Grid container direction={{ xs: "column-reverse", md: "row" }}> */}
       <Grid
         container
         sx={{

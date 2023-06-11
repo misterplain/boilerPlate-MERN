@@ -18,14 +18,12 @@ export const cartReducer = (
 ) => {
   switch (action.type) {
     case GET_CARTITEMS_USER_SUCCESS:
-      console.log("GET_CARTITEMS_USER_SUCCESS");
       return {
         ...state,
         cartItems: action.payload.cart,
       };
 
     case ADD_ITEM_USER_SUCCESS:
-      console.log(action.payload.data.cart)
       return {
         ...state,
         cartItems: action.payload.data.cart,
@@ -53,7 +51,6 @@ export const cartReducer = (
       );
 
       if (itemIndex > -1) {
-        // If item already exists in the cart, update its quantity
         return {
           ...state,
           cartItems: state.cartItems.map((item, index) =>
@@ -61,7 +58,6 @@ export const cartReducer = (
           ),
         };
       } else {
-        // If item does not exist in the cart, add it
         return {
           ...state,
           cartItems: [...state.cartItems, action.payload],
@@ -74,7 +70,6 @@ export const cartReducer = (
       };
     case REMOVE_ITEM_GUEST_SUCCESS:
       if (action.payload.quantity > 0) {
-        // If new quantity is greater than 0, update the item's quantity
         return {
           ...state,
           cartItems: state.cartItems.map((item) =>
@@ -84,7 +79,6 @@ export const cartReducer = (
           ),
         };
       } else {
-        // If new quantity is 0, remove the item from the cart
         return {
           ...state,
           cartItems: state.cartItems.filter(

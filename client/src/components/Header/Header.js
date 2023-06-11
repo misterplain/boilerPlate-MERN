@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -13,8 +12,6 @@ import { logoutUser } from "../../actions/authActions";
 import { useCartDrawer } from "../../context/CartDrawerContext";
 
 //icons
-import { AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
-import { BiUserCircle } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import Badge from "@mui/material/Badge";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
@@ -29,14 +26,13 @@ const Header = ({ isActive }) => {
   const userAuthState = useSelector((state) => state.userAuth);
   const { authenticated } = userAuthState;
   const userDetailsState = useSelector((state) => state.userDetails);
-  const { email, username, isAdmin } = userDetailsState?.userDetails || {};
+  const { username, isAdmin } = userDetailsState?.userDetails || {};
   const cartState = useSelector((state) => state.shoppingCart);
-  const { cartItems, loading, error } = cartState || {};
+  const { cartItems} = cartState || {};
 
   const { isOpen, setIsOpen } = useCartDrawer();
 
   const logout = () => {
-    // window.open("http://localhost:5000/auth/logout", "_self");
     dispatch(logoutUser());
     setAnchorEl(null);
   };
@@ -126,19 +122,10 @@ const Header = ({ isActive }) => {
                 <MenuItem onClick={handleClose}>
                   <Link
                     component={NavLink}
-                    to="/editprofile"
+                    to="/useraccount"
                     sx={{ textDecoration: "none" }}
                   >
-                    Edit Profile
-                  </Link>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <Link
-                    component={NavLink}
-                    to="/orders"
-                    sx={{ textDecoration: "none" }}
-                  >
-                    Order History
+                    Account
                   </Link>
                 </MenuItem>
                 <MenuItem onClick={logout}>

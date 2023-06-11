@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
@@ -46,18 +45,8 @@ const adminButtons = [
   },
 ];
 
-// const componentMap = {
-//   Collections: AdminCollections,
-//   Products: AdminProducts,
-//   Users: AdminUsers,
-//   Orders: AdminOrders,
-//   Reviews: AdminReviews,
-// };
 
 const AdminScreen = () => {
-  const [currentComponent, setCurrentComponent] = useState("Collections");
-
-  // const Component = componentMap[currentComponent];
 
   return (
     <Grid container>

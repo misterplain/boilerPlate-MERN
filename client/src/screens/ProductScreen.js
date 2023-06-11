@@ -10,10 +10,8 @@ import { useCartDrawer } from "../context/CartDrawerContext";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import TextField from "@mui/material/TextField";
 import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
+import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import {
@@ -44,12 +42,9 @@ const ProductScreen = () => {
     (product) => product._id === productId
   );
 
-  //determine if product is already in basket state
   const productInBasket = cartItems?.find(
     (item) => item.product === displayedProduct._id
   );
-
-  console.log({ message: "productInBasket", productInBasket });
 
   const validationSchema = Yup.object({
     quantity: Yup.number().required("Required"),
@@ -94,7 +89,6 @@ const ProductScreen = () => {
               }}
               validationSchema={validationSchema}
               onSubmit={async (values, { resetForm }) => {
-                // console.log(values);
                 if (authenticated) {
                   if (!productInBasket) {
                     dispatch(
@@ -162,8 +156,6 @@ const ProductScreen = () => {
             </Formik>
           </>
         )}
-
-        {/* {!productInBasket ? (<Button type="submit">Add to Basket</Button>) : (<Button type="submit">Remove from Basket</Button>)} */}
       </Grid>
     </Grid>
   );

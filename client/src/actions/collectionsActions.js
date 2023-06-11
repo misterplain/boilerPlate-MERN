@@ -11,8 +11,6 @@ import {
 } from "../constants/collectionsConstants";
 import axios from "../api/axios";
 
-import { useSelector, useDispatch } from "react-redux";
-
 const fetchAllCollections = () => async (dispatch) => {
   try {
     dispatch({
@@ -33,7 +31,7 @@ const fetchAllCollections = () => async (dispatch) => {
   }
 };
 
-//create new collection - admin only
+//create new collection
 const createNewCollection = (name, token) => async (dispatch) => {
   try {
 

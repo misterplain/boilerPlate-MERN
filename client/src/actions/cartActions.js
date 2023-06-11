@@ -78,13 +78,11 @@ const addCartItemGuest =
 
       let newCartItem;
       if (itemIndex > -1) {
-        //item already exists in cart
         newCartItem = {
           ...cartItems[itemIndex],
           quantity: cartItems[itemIndex].quantity + quantity,
         };
       } else {
-        //item does not exist in cart
         newCartItem = {
           product: productId,
           quantity: quantity,
@@ -140,7 +138,6 @@ const removeCartItemGuest =
       const shoppingCartState = getState().shoppingCart;
       const { cartItems } = shoppingCartState;
 
-      //find index
       const itemIndex = cartItems.findIndex(
         (item) => item.product.toString() === productId.toString()
       );

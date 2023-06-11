@@ -12,12 +12,6 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
 
-  // useEffect(() => {
-  //   if (productList && productList?.products.length === 0) {
-  //     dispatch(fetchAllProducts());
-  //   }
-  // }, [dispatch]);
-
   return (
     <Grid
       container

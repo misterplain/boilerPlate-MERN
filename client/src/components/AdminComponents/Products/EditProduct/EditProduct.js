@@ -14,7 +14,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
-import {editProduct} from "../../../../actions/productActions";
+import { editProduct } from "../../../../actions/productActions";
 
 const styles = {
   wrapper: {
@@ -43,13 +43,8 @@ const EditProduct = () => {
   );
   const allCollections = collections.map((collection) => collection);
 
-    //get token from state
-    const userAuthState = useSelector((state) => state.userAuth);
-    const [collectionProductsId, setCollectionProductsId] = useState(null);
-    const token = userAuthState?.accessToken;
-
-  //states
-  const [collection, setCollection] = useState(initialCollection);
+  const userAuthState = useSelector((state) => state.userAuth);
+  const token = userAuthState?.accessToken;
 
   return (
     <Box sx={styles.wrapper}>
@@ -65,8 +60,6 @@ const EditProduct = () => {
         }}
         validationSchema={validationSchema}
         onSubmit={async (values, { resetForm }) => {
-
-
           const productData = {
             collectionId: values.collectionId,
             isDisplayed: values.isDisplayed === "true" ? true : false,
@@ -75,9 +68,9 @@ const EditProduct = () => {
             price: values.price,
             stock: values.stock,
             description: values.description,
-          }
+          };
 
-          dispatch(editProduct( productId, token, productData))
+          dispatch(editProduct(productId, token, productData));
         }}
       >
         {({

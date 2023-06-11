@@ -1,14 +1,10 @@
 import React, { useState } from "react";
-import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useSelector, useDispatch } from "react-redux";
-import { NavLink } from "react-router-dom";
-import { Link } from "@mui/material";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import {
-  getCartItems,
   addCartItemUser,
   addCartItemGuest,
   removeCartItemUser,
@@ -16,17 +12,14 @@ import {
 } from "../../actions/cartActions";
 
 import styles from "./styles";
-// import { use } from "../../../../server/routes/auth";
 
 const CartItems = () => {
   const dispatch = useDispatch();
-  const [anchorEl, setAnchorEl] = useState(null);
 
   const userAuthState = useSelector((state) => state.userAuth);
   const { authenticated } = userAuthState;
   const userDetailsState = useSelector((state) => state.userDetails);
   const { products } = useSelector((state) => state.productList);
-  const { email, username, isAdmin } = userDetailsState?.userDetails || {};
   const cartState = useSelector((state) => state.shoppingCart);
   const { cartItems } = cartState;
 const token = userAuthState?.accessToken;
@@ -36,16 +29,13 @@ const token = userAuthState?.accessToken;
     return { ...item, product: productDetails };
   });
 
-  console.log(detailedCartItems);
 
   const cartItemTotal = (item) => {
     return item.product.price * item.quantity;
   };
 
   const handleIncreaseQuantity = (item) => {
-    console.log("increase quantity");
     if (authenticated) { 
-      // dispatch(addCartItemUser(item.product._id, token, 1));
       dispatch(addCartItemUser({
         productId: item.product._id,
         quantity: 1,

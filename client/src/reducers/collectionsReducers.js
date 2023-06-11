@@ -88,8 +88,6 @@ const collectionsReducer = (state = { collections: [] }, action) => {
       const { updatedProduct, oldCollectionId } = action.payload.data;
       const newCollectionId = updatedProduct.collectionId;
 
-
-      // Find the old collection and remove the product
       const oldCollection = state.collections.find(
         (collection) => collection._id === oldCollectionId
       );
@@ -97,7 +95,6 @@ const collectionsReducer = (state = { collections: [] }, action) => {
         (productId) => productId !== updatedProduct._id
       );
 
-      // Find the new collection and add the product
       const newCollection = state.collections.find(
         (collection) => collection._id === newCollectionId
       );
@@ -106,8 +103,6 @@ const collectionsReducer = (state = { collections: [] }, action) => {
         updatedProduct._id,
       ];
 
-
-      // Update the collections in the state
       const updatedCollections = state.collections.map((collection) => {
         if (collection._id === oldCollectionId) {
           if (oldCollectionId === newCollectionId) {

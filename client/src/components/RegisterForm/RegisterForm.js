@@ -1,13 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-// import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
-// import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { registerForm } from "../../actions/authActions";
@@ -25,7 +20,6 @@ const styles = {
   },
   formGroup: {
     width: "100%",
-    // marginTop: "20px",
   },
 };
 
@@ -47,10 +41,7 @@ const loginSchema = Yup.object({
 const RegisterForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [authenticated, setAuthenticated] = useState(false);
-  // const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const location = useLocation();
 
   const handleSubmit = (values) => {
 
@@ -71,7 +62,6 @@ const RegisterForm = () => {
         initialValues={{ email: "", password: "" }}
         validationSchema={loginSchema}
         onSubmit={(values) => handleSubmit(values)}
-        // style={{ width: "100%" }}
       >
         {({
           handleSubmit,

@@ -5,21 +5,19 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import ContactScreen from "./screens/ContactScreen";
 import ProductScreen from "./screens/ProductScreen";
-import EditProfileScreen from "./screens/EditProfileScreen";
 import OrderHistoryScreen from "./screens/OrderHistoryScreen";
 import AdminScreen from "./screens/AdminScreen";
+import UserAccountScreen from "./screens/UserAccountScreen";
 import Favorites from "./screens/FavoritesScreen";
 import CartScreen from "./screens/CartScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
-
-//viewport display
+import CheckoutScreen from "./screens/CheckoutScreen";
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { fetchAllProducts } from "./actions/productActions";
-import {fetchAllCollections} from "./actions/collectionsActions";
-
+import { fetchAllCollections } from "./actions/collectionsActions";
 
 const App = () => {
   const theme = useTheme();
@@ -40,7 +38,6 @@ const App = () => {
     if (collectionsList && collectionsList?.collections?.length === 0) {
       dispatch(fetchAllCollections());
     }
-
   }, [dispatch]);
 
   useEffect(() => {
@@ -82,20 +79,14 @@ const App = () => {
             element={authenticated ? <Navigate to="/" /> : <RegisterScreen />}
           />
           <Route path={"/product/:productId"} element={<ProductScreen />} />
-          {/* <Route
-            path={"/editproduct/:productId"}
-            element={
-              authenticated ? <EditProductScreen /> : <Navigate to="/" />
-            }
-          /> */}
           <Route
             path={"/favorites"}
             element={authenticated ? <Favorites /> : <Navigate to="/" />}
           />
           <Route
-            path={"/editprofile"}
+            path={"/useraccount/*"}
             element={
-              authenticated ? <EditProfileScreen /> : <Navigate to="/" />
+              authenticated ? <UserAccountScreen /> : <Navigate to="/" />
             }
           />
           <Route
@@ -110,6 +101,7 @@ const App = () => {
               authenticated ? <OrderHistoryScreen /> : <Navigate to="/" />
             }
           />
+          <Route path={"/checkout"} element={<CheckoutScreen />} />
         </Routes>
       </Layout>
       <Box
