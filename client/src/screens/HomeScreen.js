@@ -97,7 +97,7 @@ const HomeScreen = () => {
           Overline
         </Typography>
         <Typography sx={styles.fontChange1} variant="overline">
-          test commit
+          test commit reply
         </Typography>
       </Grid>
     </Grid>
