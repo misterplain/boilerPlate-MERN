@@ -51,8 +51,8 @@ const deleteCartItem = async (req, res) => {
   const { userId } = req;
   const { quantity } = req.body;
   const { productId } = req.params;
-  console.log("quantity", quantity)
-  console.log("productId", productId)
+  console.log("quantity", quantity);
+  console.log("productId", productId);
 
   try {
     const user = await User.findById(userId);
@@ -60,11 +60,10 @@ const deleteCartItem = async (req, res) => {
       (item) => item.product.toString() === productId.toString()
     );
     if (itemIndex > -1) {
-        user.cart[itemIndex].quantity -= quantity;
-        if (user.cart[itemIndex].quantity <= 0) {
-          user.cart.splice(itemIndex, 1);
-        }
-
+      user.cart[itemIndex].quantity -= quantity;
+      if (user.cart[itemIndex].quantity <= 0) {
+        user.cart.splice(itemIndex, 1);
+      }
 
       await user.save();
       res.status(200).json({
@@ -82,8 +81,31 @@ const deleteCartItem = async (req, res) => {
   }
 };
 
+const updateCart = async (req, res) => {
+  const { userId } = req;
+  const { cartItems } = req.body;
+
+  try {
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.cart = cartItems;
+
+    // save the updated user
+    const updatedUser = await user.save();
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
 module.exports = {
   getCartItems,
   addCartItem,
   deleteCartItem,
+  updateCart,
 };

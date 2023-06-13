@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -43,6 +43,9 @@ const RegisterForm = () => {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
+  const shoppingCartState = useSelector((state) => state.shoppingCart);
+  const { cartItems } = shoppingCartState;
+
   const handleSubmit = (values) => {
 
     dispatch(
@@ -50,7 +53,8 @@ const RegisterForm = () => {
         values.username,
         values.email,
         values.password,
-        values.confirmPassword
+        values.confirmPassword,
+        cartItems
       )
     );
   };

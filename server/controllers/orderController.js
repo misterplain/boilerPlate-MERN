@@ -24,6 +24,7 @@ const getAllOrders = async (req, res) => {
 const placeOrder = async (req, res) => {
   const { userId } = req;
   const { orderedItems } = req.body;
+  const { street, city, postalCode, country } = req.body.shippingAddress;
 
   try {
     const userOrdered = await User.findById(userId);
@@ -32,12 +33,12 @@ const placeOrder = async (req, res) => {
       userId: userId,
       orderedItems: orderedItems,
       emailAddress: userOrdered.email,
-      // shippingAddress: {
-      //   address,
-      //   city,
-      //   postalCode,
-      //   country,
-      // },
+      shippingAddress: {
+        street,
+        city,
+        postalCode,
+        country,
+      },
       // paymentMethod,
       // itemsPrice,
       // taxPrice,

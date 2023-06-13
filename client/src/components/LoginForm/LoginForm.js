@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -16,7 +16,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center", 
+    alignItems: "center",
   },
   formGroup: {
     width: "100%",
@@ -38,8 +38,11 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
+  const shoppingCartState = useSelector((state) => state.shoppingCart);
+  const { cartItems } = shoppingCartState;
+
   const handleSubmit = (values) => {
-    dispatch(loginForm(values.email, values.password))
+    dispatch(loginForm(values.email, values.password, cartItems));
   };
 
   return (

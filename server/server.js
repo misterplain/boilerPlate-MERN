@@ -89,5 +89,5 @@ app.use("/review", reviewRoutes)
 app.use("/cart", cartRoutes)
 app.use("/orders", orderRoutes)
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5000
 app.listen(port, console.log(`server listing to port 5000 only`));

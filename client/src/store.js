@@ -7,14 +7,15 @@ import { userReducer } from "./reducers/userReducers";
 import { cartReducer } from "./reducers/cartReducers";
 import { productListReducer } from "./reducers/productReducers";
 import { collectionsReducer } from "./reducers/collectionsReducers";
+import { orderReducer } from "./reducers/orderReducers";
 
 const reducer = combineReducers({
-
   userAuth: authReducer,
   userDetails: userReducer,
-  collections: collectionsReducer, 
+  collections: collectionsReducer,
   productList: productListReducer,
   shoppingCart: cartReducer,
+  order: orderReducer,
 });
 
 //cart items and token can be stored here in intial state
@@ -38,7 +39,7 @@ const initialState = {};
 
 const middleware = [thunk];
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === "development") {
   middleware.push(logger);
 }
 

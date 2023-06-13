@@ -1,10 +1,10 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import {useDispatch } from "react-redux";
+import {useDispatch, useSelector } from "react-redux";
 import Google from "../../img/google.png";
 import Facebook from "../../img/facebook.png";
 import Github from "../../img/github.png";
-import { loginOAuth } from "../../actions/authActions";
+import { loginOAuthAndSyncCart } from "../../actions/authActions";
 
 const styles = {
   loginButton: {
@@ -18,8 +18,12 @@ const styles = {
 const OAuthOptions = () => {
   const dispatch = useDispatch()
 
+  const shoppingCartState = useSelector((state) => state.shoppingCart);
+  const { cartItems } = shoppingCartState;
+  console.log(cartItems)
+
   const handleSubmit = (provider) => {
-    dispatch(loginOAuth(provider))
+    dispatch(loginOAuthAndSyncCart(provider, cartItems))
   }
 
   return (

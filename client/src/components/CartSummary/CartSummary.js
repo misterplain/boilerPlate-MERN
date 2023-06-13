@@ -2,17 +2,20 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
+import { setInitialOrderInfo } from "../../actions/orderActions";
 
 import styles from "./styles";
 
 const CartSummary = () => {
-
+  const dispatch = useDispatch();
   const { products } = useSelector((state) => state.productList);
   const cartState = useSelector((state) => state.shoppingCart);
   const { cartItems } = cartState;
+  const userDetailsState = useSelector((state) => state.userDetails);
+  const { isGuest } = userDetailsState;
 
   const detailedCartItems = cartItems?.map((item) => {
     const productDetails = products.find((p) => p._id === item.product);
@@ -46,7 +49,19 @@ const CartSummary = () => {
         <Box sx={styles.button}>
           <Link component={NavLink} to="/checkout">
             {" "}
-            <Button>Proceed to checkout</Button>
+            <Button
+              onClick={() => {
+                dispatch(
+                  setInitialOrderInfo({
+                    isGuest,
+                   cartItems, 
+                    totalPrice: cartTotal,
+                  })
+                );
+              }}
+            >
+              Proceed to checkout
+            </Button>
           </Link>
         </Box>
       </Box>

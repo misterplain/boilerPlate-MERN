@@ -22,16 +22,19 @@ import {
   GET_CARTITEMS_USER_FAIL,
   GET_CARTITEMS_USER_SUCCESS,
   EMPTY_CART,
+  OAUTH_UPDATE_CART_FAIL,
+  OAUTH_UPDATE_CART_SUCCESS,
 } from "../constants/cartConstants";
+import { CLEAR_ORDER } from "../constants/orderConstants";
 import axios from "../api/axios";
 
-export const loginForm = (email, password) => async (dispatch) => {
+export const loginForm = (email, password, cart) => async (dispatch) => {
   try {
     dispatch({
       type: FORM_LOGIN_REQUEST,
     });
 
-    const data = await axios.post("/auth/signin", { email, password });
+    const data = await axios.post("/auth/signin", { email, password, cart });
 
     dispatch({
       type: FORM_LOGIN_SUCCESS,
@@ -46,6 +49,9 @@ export const loginForm = (email, password) => async (dispatch) => {
       type: GET_CARTITEMS_USER_SUCCESS,
       payload: data.data.foundUser,
     });
+    dispatch({
+      type: CLEAR_ORDER,
+    });
   } catch (error) {
     dispatch({
       type: FORM_LOGIN_FAIL,
@@ -55,7 +61,7 @@ export const loginForm = (email, password) => async (dispatch) => {
 };
 
 export const registerForm =
-  (username, email, password, confirmPassword) => async (dispatch) => {
+  (username, email, password, confirmPassword, cart) => async (dispatch) => {
     try {
       dispatch({
         type: FORM_REGISTER_REQUEST,
@@ -66,6 +72,7 @@ export const registerForm =
         email,
         password,
         confirmPassword,
+        cart,
       });
 
       dispatch({
@@ -76,6 +83,9 @@ export const registerForm =
       dispatch({
         type: SET_USER_DETAILS,
         payload: data.data.newUser,
+      });
+      dispatch({
+        type: CLEAR_ORDER,
       });
     } catch (error) {
       dispatch({
@@ -117,8 +127,7 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
         });
 
         dispatch({
-          type: GET_CARTITEMS_USER_SUCCESS,
-          payload: event.data.user,
+          type: CLEAR_ORDER,
         });
 
         oauthWindow.close();
@@ -133,6 +142,62 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
   }
 };
 
+export const loginOAuthAndSyncCart =
+  (provider, code, cart) => async (dispatch) => {
+    try {
+      const { user, accessToken, refreshToken } = await dispatch(
+        loginOAuth(provider, code)
+      );
+      if (cart.length > 0) {
+        try {
+          const options = {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          };
+
+          const data = await axios.post("/cart/update", cart, options);
+          console.log(data);
+          dispatch({
+            type: OAUTH_UPDATE_CART_SUCCESS,
+            payload: data,
+          });
+        } catch (error) {
+          console.log(error);
+          dispatch({
+            type: OAUTH_UPDATE_CART_FAIL,
+            payload: error.response.data.message,
+          });
+        }
+      } else {
+        try {
+          const options = {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          };
+
+          const data = await axios.get("/cart/get", options);
+          console.log(data);
+
+          dispatch({
+            type: OAUTH_UPDATE_CART_SUCCESS,
+            payload: data.data.cart,
+          });
+        } catch (error) {
+          console.log(error);
+          dispatch({
+            type: OAUTH_UPDATE_CART_FAIL,
+            payload: error.response.data.message,
+          });
+        }
+      }
+      // The rest of your logic goes here
+    } catch (error) {
+      // Handle the error
+    }
+  };
+
 export const logoutUser = () => async (dispatch) => {
   try {
     dispatch({
@@ -145,7 +210,10 @@ export const logoutUser = () => async (dispatch) => {
 
     dispatch({
       type: EMPTY_CART,
-    })
+    });
+    dispatch({
+      type: CLEAR_ORDER,
+    });
   } catch (error) {
     console.log(error);
   }

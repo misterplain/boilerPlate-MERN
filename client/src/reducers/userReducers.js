@@ -7,7 +7,7 @@ import {
   REMOVE_ADDRESS_FAIL,
 } from "../constants/userConstants";
 
-export const userReducer = (state = {}, action) => {
+export const userReducer = (state = {isGuest: true}, action) => {
   switch (action.type) {
     case SET_USER_DETAILS:
       return {
@@ -19,6 +19,7 @@ export const userReducer = (state = {}, action) => {
           isGuest: false,
           addresses: action.payload.addresses,
         },
+        isGuest: false,
       };
     case CLEAR_USER_DETAILS:
       return {
@@ -30,6 +31,7 @@ export const userReducer = (state = {}, action) => {
           isGuest: true,
           addresses: [],
         },
+        isGuest: true,
       };
 
     case ADD_ADDRESS_SUCCESS:
