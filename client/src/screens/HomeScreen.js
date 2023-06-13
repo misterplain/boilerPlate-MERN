@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import { Grid } from "@mui/material";
 import ProductCard from "../components/ProductCard/ProductCard";
 import { NavLink } from "react-router-dom";
@@ -9,7 +9,22 @@ import { fetchAllProducts } from "../actions/productActions";
 
 const styles = {
   fontChange1: {
-    fontFamily: "Montserrat",
+    //fontFamily: "Montserrat",
+    //fontFamily: "Nunito, sans-serif",
+    //fontFamily: "Poppins, sans-serif",
+    //fontFamily: "PT Sans, sans-serif",
+    //fontFamily: "Raleway, sans-serif",
+    //fontFamily: "Roboto, sans-serif",
+    //fontFamily: "Work Sans, sans-serif",
+    //fontFamily: "Space Grotesk, sans-serif",
+    fontFamily: "Source Code Pro, monospace",
+    //fontFamily: "Rubik, sans-serif",
+    //fontFamily: "Quicksand, sans-serif",
+    //fontFamily: "Maven Pro, sans-serif",
+    //fontFamily: "Manrope, sans-serif",
+    //fontFamily: "Lato, sans-serif",
+    //fontFamily: "Inconsolata, monospace",
+
   },
 };
 
@@ -88,6 +103,9 @@ const HomeScreen = () => {
         <Typography sx={styles.fontChange1} variant="button">
           Button
         </Typography>
+        <Button sx={styles.fontChange1}>
+          Button
+        </Button>
         <br></br>
         <Typography sx={styles.fontChange1} variant="caption">
           Caption
