@@ -3,8 +3,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
-const { logger } = require("./middleware/logger");
-const { logEvents } = require("./middleware/logger");
+// const { logger } = require("./middleware/logger");
+// const { logEvents } = require("./middleware/logger");
 //config
 const connectDB = require("./config/connectDB");
 //boilerPlate
@@ -43,14 +43,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //custom middleware logger
-app.use(logger);
-mongoose.connection.on("error", (err) => {
-  console.log(err);
-  logEvents(
-    `${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`,
-    "mongoErrLog.log"
-  );
-});
+// app.use(logger);
+// mongoose.connection.on("error", (err) => {
+//   console.log(err);
+//   logEvents(
+//     `${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`,
+//     "mongoErrLog.log"
+//   );
+// });
 
 app.use("/", express.static(path.resolve(path.join(__dirname, "./build"))));
 
