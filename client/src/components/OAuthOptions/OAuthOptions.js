@@ -23,7 +23,7 @@ const OAuthOptions = () => {
   console.log(cartItems)
 
   const handleSubmit = (provider) => {
-    dispatch(loginOAuthAndSyncCart(provider, cartItems))
+    dispatch(loginOAuthAndSyncCart(provider,  cartItems))
   }
 
   return (

@@ -95,59 +95,121 @@ export const registerForm =
     }
   };
 
+// export const loginOAuth = (provider, code) => async (dispatch) => {
+//   const CLIENT_URL = "http://localhost:3000";
+//   try {
+//     dispatch({
+//       type: OAUTH_LOGIN_REQUEST,
+//     });
+
+//     const oauthWindow = window.open(
+//       `http://localhost:5000/auth/${provider}`,
+//       "_blank"
+//     );
+
+//     window.addEventListener(
+//       "message",
+//       function (event) {
+//         if (event.origin !== "http://localhost:5000") {
+//           return;
+//         }
+
+//         const { accessToken, refreshToken } = event.data;
+
+//         dispatch({
+//           type: OAUTH_LOGIN_SUCCESS,
+//           payload: { accessToken, refreshToken },
+//         });
+
+//         dispatch({
+//           type: SET_USER_DETAILS,
+//           payload: event.data.user,
+//         });
+
+//         dispatch({
+//           type: CLEAR_ORDER,
+//         });
+
+//         oauthWindow.close();
+//       },
+//       false
+//     );
+//   } catch (error) {
+//     dispatch({
+//       type: OAUTH_LOGIN_FAIL,
+//       payload: error.message,
+//     });
+//   }
+// };
+
 export const loginOAuth = (provider, code) => async (dispatch) => {
   const CLIENT_URL = "http://localhost:3000";
-  try {
-    dispatch({
-      type: OAUTH_LOGIN_REQUEST,
-    });
+  
+  return new Promise((resolve, reject) => {
+    try {
+      dispatch({
+        type: OAUTH_LOGIN_REQUEST,
+      });
+  
+      const oauthWindow = window.open(
+        `http://localhost:5000/auth/${provider}`,
+        "_blank"
+      );
+  
+      window.addEventListener(
+        "message",
+        function (event) {
+          if (event.origin !== "http://localhost:5000") {
+            return;
+          }
+  
+          const { accessToken, refreshToken } = event.data;
+  
+          dispatch({
+            type: OAUTH_LOGIN_SUCCESS,
+            payload: { accessToken, refreshToken },
+          });
+  
+          dispatch({
+            type: SET_USER_DETAILS,
+            payload: event.data.user,
+          });
+  
+          dispatch({
+            type: CLEAR_ORDER,
+          });
+  
+          oauthWindow.close();
 
-    const oauthWindow = window.open(
-      `http://localhost:5000/auth/${provider}`,
-      "_blank"
-    );
+          resolve({
+            user: event.data.user,
+            accessToken,
+            refreshToken,
+          });
+        },
+        false
+      );
+    } catch (error) {
+      dispatch({
+        type: OAUTH_LOGIN_FAIL,
+        payload: error.message,
+      });
 
-    window.addEventListener(
-      "message",
-      function (event) {
-        if (event.origin !== "http://localhost:5000") {
-          return;
-        }
-
-        const { accessToken, refreshToken } = event.data;
-
-        dispatch({
-          type: OAUTH_LOGIN_SUCCESS,
-          payload: { accessToken, refreshToken },
-        });
-
-        dispatch({
-          type: SET_USER_DETAILS,
-          payload: event.data.user,
-        });
-
-        dispatch({
-          type: CLEAR_ORDER,
-        });
-
-        oauthWindow.close();
-      },
-      false
-    );
-  } catch (error) {
-    dispatch({
-      type: OAUTH_LOGIN_FAIL,
-      payload: error.message,
-    });
-  }
+      reject(error);
+    }
+  });
 };
 
+
 export const loginOAuthAndSyncCart =
-  (provider, code, cart) => async (dispatch) => {
+  (provider, cart) => async (dispatch) => {
+    console.log(cart)
     try {
       const { user, accessToken, refreshToken } = await dispatch(
-        loginOAuth(provider, code)
+        loginOAuth(provider)
       );
+
+      console.log(cart.length)
       if (cart.length > 0) {
         try {
           const options = {
@@ -156,11 +218,11 @@ export const loginOAuthAndSyncCart =
             },
           };
 
-          const data = await axios.post("/cart/update", cart, options);
+          const data = await axios.post("/cart/update", {cartItems: cart}, options);
           console.log(data);
           dispatch({
             type: OAUTH_UPDATE_CART_SUCCESS,
-            payload: data,
+            payload: data.data.cart,
           });
         } catch (error) {
           console.log(error);

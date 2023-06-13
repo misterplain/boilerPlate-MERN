@@ -94,6 +94,12 @@ export const cartReducer = (
         ...state,
         error: action.payload,
       };
+
+    case OAUTH_UPDATE_CART_SUCCESS:
+      return {
+        ...state,
+        cartItems: action.payload,
+      };
   }
   return state;
 };

@@ -84,9 +84,11 @@ const deleteCartItem = async (req, res) => {
 const updateCart = async (req, res) => {
   const { userId } = req;
   const { cartItems } = req.body;
+  console.log(cartItems)
+
 
   try {
-    const user = await UserModel.findById(userId);
+    const user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -94,12 +96,13 @@ const updateCart = async (req, res) => {
 
     user.cart = cartItems;
 
-    // save the updated user
+ 
     const updatedUser = await user.save();
-
+console.log(updatedUser)
     res.status(200).json(updatedUser);
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
+    console.log(error)
   }
 };
 
