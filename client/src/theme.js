@@ -3,6 +3,25 @@ import createBreakpoints from '@mui/system/createTheme/createBreakpoints'
 
 const breakpoints = createBreakpoints({})
 
+//const fontVariable = "Nunito, sans-serif"
+// const fontVariable = "Poppins, sans-serif"
+// const fontVariable = "PT Sans, sans-serif"
+// const fontVariable = "Raleway, sans-serif"
+// const fontVariable = "Roboto, sans-serif"
+// const fontVariable = "Work Sans, sans-serif"
+// const fontVariable = "Montserrat"
+// const fontVariable = "Space Grotesk, sans-serif"
+ const fontVariable = "Source Code Pro, monospace"
+// const fontVariable = "Rubik, sans-serif"
+// const fontVariable = "Quicksand, sans-serif"
+// const fontVariable = "Maven Pro, sans-serif"
+ //const fontVariable = "Manrope, sans-serif"
+// const fontVariable = "Lato, sans-serif"
+ //const fontVariable = "Inconsolata, monospace"
+
+
+
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -27,44 +46,73 @@ const theme = createTheme({
       main: '#F3b1c8'
     }
   },
-  // typography: {
-  //   h2: {
-  //     fontFamily: 'Montserrat',
-  //     fontWeight: 600,
-  //     fontSize: '32px',
-  //     lineHeight: '39px',
-  //   //   textTransform: 'uppercase',
-  //     color: 'blue',
-  //     [breakpoints.up('md')]: {
-  //       fontSize: '64px',
-  //       lineHeight: '78px',
-  //     },
-  //   },
-  //   h3: {
-  //     fontFamily: 'Montserrat',
-  //     fontWeight: 700,
-  //     fontSize: '24px',
-  //     lineHeight: '29px',
-  //     textTransform: 'capitalize',
-  //     color: '#000000',
-  //   },
-  //   body1: {
-  //     fontFamily: 'Montserrat, sans-serif',
-  //     fontWeight: 400,
-  //     fontSize: '14px',
-  //     lineHeight: '17px',
-  //     color: '#686868',
-  //     [breakpoints.up('md')]: {
-  //       fontSize: '24px',
-  //       lineHeight: '29px',
-  //       fontWeight: 500,
-  //     },
-  //   },
-  //   someStyle: {
-  //     fontFamily: 'Montserrat,sans-serif',
-  //     textTransform: 'capitalize',
-  //   },
-  // },
+   typography: {
+    h1 : {
+      fontFamily: fontVariable,
+    },
+     h2: {
+       fontFamily: fontVariable,
+      //  fontWeight: 600,
+      //  fontSize: '32px',
+      //  lineHeight: '39px',
+       [breakpoints.up('md')]: {
+        //  fontSize: '64px',
+        //  lineHeight: '78px',
+       },
+     },
+     h3: {
+       fontFamily: fontVariable,
+      //  fontWeight: 700,
+      //  fontSize: '24px',
+      //  lineHeight: '29px',
+      //  textTransform: 'capitalize',
+      //  color: '#000000',
+     },
+     h4 : {
+      fontFamily: fontVariable,
+    },
+    h5 : {
+      fontFamily: fontVariable,
+    },
+    h6 : {
+      fontFamily: fontVariable,
+    },
+     body1: {
+       fontFamily: fontVariable,
+      //  fontWeight: 400,
+      //  fontSize: '14px',
+      //  lineHeight: '17px',
+      //  color: '#686868',
+       [breakpoints.up('md')]: {
+        //  fontSize: '24px',
+        //  lineHeight: '29px',
+        //  fontWeight: 500,
+       },
+     },
+     body2 : {
+      fontFamily: fontVariable,
+    },
+    subtitle1 : {
+      fontFamily: fontVariable,
+    },
+    subtitle2 : {
+      fontFamily: fontVariable,
+    },
+    button : {
+      fontFamily: fontVariable,
+    },
+    caption : {
+      fontFamily: fontVariable,
+    },
+    overline : {
+      fontFamily: fontVariable,
+    },
+     
+     someStyle: {
+       fontFamily: fontVariable,
+       textTransform: 'capitalize',
+     },
+   },
   // components: {
   //   // Name of the component
   //   MuiOutlinedInput: {

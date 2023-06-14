@@ -70,53 +70,7 @@ const HomeScreen = () => {
         <br></br>
         <Typography variant="overline">Overline</Typography>
         <hr></hr>
-        <Typography sx={styles.fontChange1} variant="h1">
-          Heading 1
-        </Typography>
-        <Typography sx={styles.fontChange1} variant="h2">
-          Heading 2
-        </Typography>
-        <Typography sx={styles.fontChange1} variant="h3">
-          Heading 3
-        </Typography>
-        <Typography sx={styles.fontChange1} variant="h4">
-          Heading 4
-        </Typography>
-        <Typography sx={styles.fontChange1} variant="h5">
-          Heading 5
-        </Typography>
-        <Typography sx={styles.fontChange1} variant="h6">
-          Heading 6
-        </Typography>
-        <Typography sx={styles.fontChange1} variant="subtitle1">
-          Subtitle 1
-        </Typography>
-        <Typography sx={styles.fontChange1} variant="subtitle2">
-          Subtitle 2
-        </Typography>
-        <Typography sx={styles.fontChange1} variant="body1">
-          Body 1
-        </Typography>
-        <Typography sx={styles.fontChange1} variant="body2">
-          Body 2
-        </Typography>
-        <Typography sx={styles.fontChange1} variant="button">
-          Button
-        </Typography>
-        <Button sx={styles.fontChange1}>
-          Button
-        </Button>
-        <br></br>
-        <Typography sx={styles.fontChange1} variant="caption">
-          Caption
-        </Typography>
-        <br></br>
-        <Typography sx={styles.fontChange1} variant="overline">
-          Overline
-        </Typography>
-        <Typography sx={styles.fontChange1} variant="overline">
-          test commit reply
-        </Typography>
+        
       </Grid>
     </Grid>
   );
