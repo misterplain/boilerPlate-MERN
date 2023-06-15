@@ -19,10 +19,10 @@ import CheckoutUser from "../components/Checkout/User/CheckoutUser";
 import CheckoutAddress from "../components/Checkout/Address/CheckoutAddress";
 import CheckoutPayment from "../components/Checkout/Payment/CheckoutPayment";
 import CheckoutSummary from "../components/Checkout/Summary/CheckoutSummary";
+import OrderConfirmation from "../components/Checkout/Confirmation/OrderConfirmation";
 
 const CheckoutScreen = () => {
   const dispatch = useDispatch();
-  const [step, setStep] = useState(1);
 
   const userAuthState = useSelector((state) => state.userAuth);
   const { authenticated } = userAuthState;
@@ -33,6 +33,8 @@ const CheckoutScreen = () => {
   const { cartItems } = cartState;
   const token = userAuthState?.accessToken;
 
+  const [step, setStep] = useState(1);
+
   const renderStep = () => {
     switch (step) {
       case 1:
@@ -40,9 +42,11 @@ const CheckoutScreen = () => {
       case 2:
         return <CheckoutAddress proceedToNextStep={() => setStep(3)} />;
       case 3:
-        return <CheckoutPayment proceedToNextStep={() => setStep(4)} />;
+        return <CheckoutSummary proceedToNextStep={() => setStep(4)} />;
       case 4:
-        return <CheckoutSummary proceedToNextStep={() => setStep(5)} />;
+        return <CheckoutPayment proceedToNextStep={() => setStep(5)} />;
+      case 5:
+        return <OrderConfirmation />;
       default:
         return <div>Order Confirmed!</div>;
     }

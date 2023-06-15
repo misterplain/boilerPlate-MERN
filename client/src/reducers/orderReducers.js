@@ -17,16 +17,16 @@ const orderReducer = (state = {}, action) => {
       return { ...state, isGuest: action.payload };
     case SET_ITEMS:
       return { ...state, cartItems: action.payload };
-    // case SET_ADDRESS:
-    //   return { ...state, shippingAddress: action.payload };
+    case SET_ADDRESS:
+      return { ...state, shippingAddress: action.payload };
     // case SET_PAYMENT_METHOD:
     //   return { ...state, paymentMethod: action.payload };
     case SET_TOTAL_PRICE:
       return { ...state, totalPrice: action.payload };
     // case SET_ISCANCELLED:
     //   return { ...state, isCancelled: action.payload };
-    // case SET_ISPAID:
-    //   return { ...state, isPaid: action.payload };
+    case SET_ISPAID:
+      return { ...state, isPaid: action.payload };
     // case SET_ISSHIPPEDTOCOURIER:
     //   return { ...state, isShippedToCourier: action.payload };
     // case SET_ISDELIVERED:

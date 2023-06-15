@@ -254,9 +254,9 @@ export const loginOAuthAndSyncCart =
           });
         }
       }
-      // The rest of your logic goes here
+      
     } catch (error) {
-      // Handle the error
+      console.log(error);
     }
   };
 
