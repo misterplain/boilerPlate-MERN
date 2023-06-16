@@ -6,11 +6,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import { setInitialOrderInfo } from "../../actions/orderActions";
+import { useCartDrawer } from "../../context/CartDrawerContext";
 
 import styles from "./styles";
 
 const CartSummary = () => {
   const dispatch = useDispatch();
+  const cartDrawerContext = useCartDrawer();
   const { products } = useSelector((state) => state.productList);
   const cartState = useSelector((state) => state.shoppingCart);
   const { cartItems } = cartState;
@@ -44,7 +46,8 @@ const CartSummary = () => {
       </Box>
       <Box sx={styles.buttonsWrapper}>
         <Box sx={styles.button}>
-          <Button>Continue shopping</Button>
+          <Button onClick={()=>cartDrawerContext.setIsOpen(false)}>Continue shopping</Button>
+          {/* <Button >Continue shopping</Button> */}
         </Box>
         <Box sx={styles.button}>
           <Link component={NavLink} to="/checkout">
@@ -54,10 +57,11 @@ const CartSummary = () => {
                 dispatch(
                   setInitialOrderInfo({
                     isGuest,
-                   cartItems, 
+                    cartItems,
                     totalPrice: cartTotal,
                   })
                 );
+                cartDrawerContext.setIsOpen(false)
               }}
             >
               Proceed to checkout

@@ -21,7 +21,7 @@ const CartDrawer = () => {
     <Box
       sx={{ width: 400 }}
       role="presentation"
-      onClick={toggleDrawer(false)}
+      // onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >
       <CartItems />
@@ -32,7 +32,7 @@ const CartDrawer = () => {
   return (
     <div>
       <SwipeableDrawer
-        anchor="right" // drawer will slide in from the right
+        anchor="right"
         open={isOpen}
         onClose={toggleDrawer(false)}
         onOpen={toggleDrawer(true)}

@@ -1,5 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import {useDispatch, useSelector } from "react-redux";
 import Google from "../../img/google.png";
 import Facebook from "../../img/facebook.png";
@@ -12,7 +13,13 @@ const styles = {
     borderRadius: "5px",
     color: "white",
     marginBottom: "10px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
+  socialIcon: {
+    marginRight: "10px",
+  }
 };
 
 const OAuthOptions = () => {
@@ -33,24 +40,24 @@ const OAuthOptions = () => {
         style={{ backgroundColor: "#df4930" }}
         onClick={()=>handleSubmit("google")}
       >
-        <Box component="img" src={Google} alt="" sx={styles.google} />
-        Google
+        <Box component="img" src={Google} alt="" sx={styles.socialIcon} />
+        <Typography variant="body1">Google</Typography>
       </Box>
       <Box
         sx={styles.loginButton}
         style={{ backgroundColor: "#507cc0" }}
         onClick={()=>handleSubmit("facebook")}
       >
-        <Box component="img" src={Facebook} alt="" sx={styles.facebook} />
-        Facebook
+        <Box component="img" src={Facebook} alt="" sx={styles.socialIcon} />
+        <Typography variant="body1"> Facebook</Typography>
       </Box>
       <Box
         sx={styles.loginButton}
         style={{ backgroundColor: "#000" }}
         onClick={()=>handleSubmit("github")}
       >
-        <Box component="img" src={Github} alt="" sx={styles.github} />
-        Github
+        <Box component="img" src={Github} alt="" sx={styles.socialIcon} />
+        <Typography variant="body1">Github</Typography>
       </Box>
     </>
   );
