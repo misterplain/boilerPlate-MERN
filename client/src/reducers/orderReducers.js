@@ -2,6 +2,7 @@ import {
   SET_ISGUEST,
   SET_ITEMS,
   SET_ADDRESS,
+  SET_EMAIL_ADDRESS,
   SET_PAYMENT_METHOD,
   SET_TOTAL_PRICE,
   SET_ISCANCELLED,
@@ -19,6 +20,8 @@ const orderReducer = (state = {}, action) => {
       return { ...state, cartItems: action.payload };
     case SET_ADDRESS:
       return { ...state, shippingAddress: action.payload };
+    case SET_EMAIL_ADDRESS:
+      return { ...state, emailAddress: action.payload };
     // case SET_PAYMENT_METHOD:
     //   return { ...state, paymentMethod: action.payload };
     case SET_TOTAL_PRICE:

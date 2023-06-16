@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useHistory, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -12,12 +13,14 @@ import styles from "./styles";
 
 const CartSummary = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cartDrawerContext = useCartDrawer();
   const { products } = useSelector((state) => state.productList);
   const cartState = useSelector((state) => state.shoppingCart);
   const { cartItems } = cartState;
   const userDetailsState = useSelector((state) => state.userDetails);
-  const { isGuest } = userDetailsState;
+  const { isGuest, userDetails } = userDetailsState;
+  const userEmail = userDetails?.email;
 
   const detailedCartItems = cartItems?.map((item) => {
     const productDetails = products.find((p) => p._id === item.product);
@@ -31,6 +34,12 @@ const CartSummary = () => {
   const cartTotal = detailedCartItems?.reduce((acc, item) => {
     return acc + cartItemTotal(item);
   }, 0);
+
+  // useEffect(() => {
+  //   if (!detailedCartItems || detailedCartItems.length === 0) {
+  //     navigate('/');
+  //   }
+  // }, [detailedCartItems, navigate]);
 
   return (
     <Box sx={styles.wrapper}>
@@ -46,28 +55,38 @@ const CartSummary = () => {
       </Box>
       <Box sx={styles.buttonsWrapper}>
         <Box sx={styles.button}>
-          <Button onClick={()=>cartDrawerContext.setIsOpen(false)}>Continue shopping</Button>
+          <Button
+            onClick={() => {
+              cartDrawerContext.setIsOpen(false);
+              navigate("/");
+            }}
+          >
+            Continue shopping
+          </Button>
           {/* <Button >Continue shopping</Button> */}
         </Box>
-        <Box sx={styles.button}>
-          <Link component={NavLink} to="/checkout">
-            {" "}
-            <Button
-              onClick={() => {
-                dispatch(
-                  setInitialOrderInfo({
-                    isGuest,
-                    cartItems,
-                    totalPrice: cartTotal,
-                  })
-                );
-                cartDrawerContext.setIsOpen(false)
-              }}
-            >
-              Proceed to checkout
-            </Button>
-          </Link>
-        </Box>
+        {detailedCartItems && detailedCartItems.length !== 0 && (
+          <Box sx={styles.button}>
+            <Link component={NavLink} to="/checkout">
+              {" "}
+              <Button
+                onClick={() => {
+                  console.log(userEmail);
+                  dispatch(
+                    setInitialOrderInfo({
+                      isGuest,
+                      cartItems,
+                      totalPrice: cartTotal,
+                    })
+                  );
+                  cartDrawerContext.setIsOpen(false);
+                }}
+              >
+                Proceed to checkout
+              </Button>
+            </Link>
+          </Box>
+        )}
       </Box>
     </Box>
   );

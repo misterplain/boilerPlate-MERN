@@ -95,52 +95,6 @@ export const registerForm =
     }
   };
 
-// export const loginOAuth = (provider, code) => async (dispatch) => {
-//   const CLIENT_URL = "http://localhost:3000";
-//   try {
-//     dispatch({
-//       type: OAUTH_LOGIN_REQUEST,
-//     });
-
-//     const oauthWindow = window.open(
-//       `http://localhost:5000/auth/${provider}`,
-//       "_blank"
-//     );
-
-//     window.addEventListener(
-//       "message",
-//       function (event) {
-//         if (event.origin !== "http://localhost:5000") {
-//           return;
-//         }
-
-//         const { accessToken, refreshToken } = event.data;
-
-//         dispatch({
-//           type: OAUTH_LOGIN_SUCCESS,
-//           payload: { accessToken, refreshToken },
-//         });
-
-//         dispatch({
-//           type: SET_USER_DETAILS,
-//           payload: event.data.user,
-//         });
-
-//         dispatch({
-//           type: CLEAR_ORDER,
-//         });
-
-//         oauthWindow.close();
-//       },
-//       false
-//     );
-//   } catch (error) {
-//     dispatch({
-//       type: OAUTH_LOGIN_FAIL,
-//       payload: error.message,
-//     });
-//   }
-// };
 
 export const loginOAuth = (provider, code) => async (dispatch) => {
   const CLIENT_URL = "http://localhost:3000";

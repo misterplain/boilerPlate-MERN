@@ -131,21 +131,24 @@ const ProductScreen = () => {
                 touched,
               }) => (
                 <form onSubmit={handleSubmit}>
-                  <FormControl>
-                    <FormLabel id="quantity">Quantity</FormLabel>
-                    <FormGroup>
-                      <TextField
-                        name="quantity"
-                        variant="filled"
-                        color="success"
-                        type="number"
-                        value={values.quantity}
-                        onChange={handleChange}
-                        helperText={errors.quantity}
-                        InputProps={{ inputProps: { min: 1 } }}
-                      />
-                    </FormGroup>
-                  </FormControl>
+                  {!productInBasket && (
+                    <FormControl>
+                      <FormLabel id="quantity">Quantity</FormLabel>
+                      <FormGroup>
+                        <TextField
+                          name="quantity"
+                          variant="filled"
+                          color="success"
+                          type="number"
+                          value={values.quantity}
+                          onChange={handleChange}
+                          helperText={errors.quantity}
+                          InputProps={{ inputProps: { min: 1 } }}
+                        />
+                      </FormGroup>
+                    </FormControl>
+                  )}
+
                   {!productInBasket ? (
                     <Button type="submit">Add to Basket</Button>
                   ) : (

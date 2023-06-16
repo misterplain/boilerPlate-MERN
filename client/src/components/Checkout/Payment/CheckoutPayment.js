@@ -28,7 +28,7 @@ const CheckoutPayment = ({proceedToNextStep}) => {
 
   return (
     <Box sx={styles.wrapper}>
-      <Button onClick={payAndProceed}>Pay</Button>
+      <Button onClick={()=>payAndProceed()}>Pay</Button>
     </Box>
   )
 }

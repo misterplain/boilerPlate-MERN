@@ -7,7 +7,12 @@ import Button from "@mui/material/Button";
 const styles = {
   wrapper: {
     border: "1px solid black",
+    width: "90%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
   },
+
 };
 
 const CheckoutSummary = ({ proceedToNextStep }) => {
@@ -31,21 +36,28 @@ const CheckoutSummary = ({ proceedToNextStep }) => {
   return (
     <Box sx={styles.wrapper}>
       <Box sx={styles.orderTitle}>
-        <Typography variant="h5">Order Summary</Typography>
+        <Typography variant="h4">Order Summary</Typography>
       </Box>
       <Box sx={styles.orderItems}>
-        <Typography variant="h6">Items</Typography>
+        <Typography variant="h6" marginBottom>Items</Typography>
+        {detailedCartItems &&
+        detailedCartItems.length === 0 && (
+          <Typography variant="body1">No items in cart</Typography>
+        )}
         {detailedCartItems &&
           detailedCartItems.map((item) => (
             <Box key={item.product._id}>
               <Typography variant="body1">{item.product.name}</Typography>
               <Typography variant="body1">x{item.quantity}</Typography>
               <Typography variant="body1">${item.product.price}</Typography>
-              <hr></hr>
             </Box>
           ))}
       </Box>
-      <hr></hr>
+
+      <Box sx={styles.price}>
+        <Typography variant="h6">Shipping - $0</Typography>
+        <Typography variant="h6">Total - ${totalPrice}</Typography>
+      </Box>
       <Box sx={styles.shippingAddress}>
         <Typography variant="h6">Shipping Address</Typography>
         {shippingAddress && (
@@ -59,9 +71,8 @@ const CheckoutSummary = ({ proceedToNextStep }) => {
         )}
       </Box>
       <Box sx={styles.payNowButton}>
-        <Button onClick={proceedToNextStep}>Pay Now</Button>
+        <Button onClick={proceedToNextStep}>Confirm and Pay Now</Button>
       </Box>
-
     </Box>
   );
 };

@@ -3,6 +3,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -23,7 +24,7 @@ const validationSchema = Yup.object({
   country: Yup.string().required("Country is required"),
 });
 
-const CheckoutAddress = ({proceedToNextStep}) => {
+const CheckoutAddress = ({ proceedToNextStep }) => {
   const dispatch = useDispatch();
   const userAuthState = useSelector((state) => state.userAuth);
   const userDetailsState = useSelector((state) => state.userDetails);
@@ -34,9 +35,43 @@ const CheckoutAddress = ({proceedToNextStep}) => {
 
   return (
     <Box sx={styles.wrapper}>
-      <Box sx={styles.userAddresses}>
-        {authenticated && <Box> existing addresses</Box>}
-      </Box>
+      {authenticated && (
+        <Box sx={styles.userAddresses}>
+          <Typography>Use an existing address</Typography>
+          <Box>
+            {" "}
+            {userDetails?.addresses?.map((address) => (
+              <Box key={address._id}>
+                <Typography variant="body1">{address.street}</Typography>
+                <Typography variant="body1">{address.city}</Typography>
+                <Typography variant="body1">{address.postalCode}</Typography>
+                <Typography variant="body1">{address.country}</Typography>
+                <Typography variant="body1">
+                  {address.isDefault ? "Default" : ""}
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => {
+                    const shippingAddress = {
+                      street: address.street,
+                      city: address.city,
+                      postalCode: address.postalCode,
+                      country: address.country,
+                    }
+                    // dispatch(deleteAddress(token, address._id));
+                    dispatch(setShippingAddress(shippingAddress));
+                    proceedToNextStep();
+                  }}
+                >
+                  Use
+                </Button>
+              </Box>
+            ))}
+          </Box>
+        </Box>
+      )}
+
       <Box sx={styles.newAddress}>
         {" "}
         <Formik

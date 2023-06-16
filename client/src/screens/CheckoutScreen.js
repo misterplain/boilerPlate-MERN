@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -21,6 +21,21 @@ import CheckoutPayment from "../components/Checkout/Payment/CheckoutPayment";
 import CheckoutSummary from "../components/Checkout/Summary/CheckoutSummary";
 import OrderConfirmation from "../components/Checkout/Confirmation/OrderConfirmation";
 
+const styles = {
+  wrapper: {
+    border: "1px solid black",
+    display: "flex",
+    flexDirection: "column",
+  },
+  stepsWrapper: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    padding: "1rem",
+  },
+};
+
 const CheckoutScreen = () => {
   const dispatch = useDispatch();
 
@@ -29,8 +44,8 @@ const CheckoutScreen = () => {
   const userDetailsState = useSelector((state) => state.userDetails);
   const { products } = useSelector((state) => state.productList);
   const { email, username, isAdmin } = userDetailsState?.userDetails || {};
-  const cartState = useSelector((state) => state.shoppingCart);
-  const { cartItems } = cartState;
+  const orderState = useSelector((state) => state.order);
+  const {cartItems, emailAddress, shippingAddress} = orderState;
   const token = userAuthState?.accessToken;
 
   const [step, setStep] = useState(1);
@@ -52,12 +67,19 @@ const CheckoutScreen = () => {
     }
   };
 
-  const styles = {
-    wrapper: {
-      border: "1px solid black",
-    },
-  };
-  return <Box sx={styles.wrapper}>{renderStep()}</Box>;
+  return (
+    <Box sx={styles.wrapper}>
+      <Box sx={styles.stepsWrapper}>
+        {!authenticated && (
+          <Button variant="contained" onClick={() => setStep(1)}>User and Email</Button>
+        )}
+        <Button  variant="contained"  onClick={() => setStep(2)} disabled={!emailAddress || !cartItems }>Address</Button>
+        <Button variant="contained" onClick={() => setStep(3)} disabled={!emailAddress || !cartItems || !shippingAddress}>Summary</Button>
+        <Button variant="contained" onClick={() => setStep(4)} disabled={!emailAddress || cartItems.length === 0 || !shippingAddress}>Payment</Button>
+      </Box>
+      <Box sx={styles.renderedComponent}>{renderStep()}</Box>
+    </Box>
+  );
 };
 
 export default CheckoutScreen;

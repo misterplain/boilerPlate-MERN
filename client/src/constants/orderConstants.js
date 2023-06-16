@@ -1,6 +1,7 @@
 export const SET_ISGUEST = "SET_ISGUEST";
 export const SET_ITEMS = "SET_ITEMS";
 export const SET_ADDRESS = "SET_ADDRESS";
+export const SET_EMAIL_ADDRESS = "SET_EMAIL_ADDRESS";
 export const SET_PAYMENT_METHOD = "SET_PAYMENT_METHOD";
 export const SET_TOTAL_PRICE = "SET_TOTAL_PRICE";
 export const SET_ISCANCELLED = "SET_ISCANCELLED";

@@ -103,8 +103,6 @@ const addCartItemGuest =
 
 //remove cart item user
 const removeCartItemUser = ({token, productId, quantity}) => async (dispatch) => {
-
-    console.log({token, productId, quantity})
   try {
     const options = {
         headers: {

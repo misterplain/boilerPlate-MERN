@@ -52,21 +52,14 @@ const theme = createTheme({
     },
      h2: {
        fontFamily: fontVariable,
-      //  fontWeight: 600,
-      //  fontSize: '32px',
-      //  lineHeight: '39px',
+
        [breakpoints.up('md')]: {
-        //  fontSize: '64px',
-        //  lineHeight: '78px',
+
        },
      },
      h3: {
        fontFamily: fontVariable,
-      //  fontWeight: 700,
-      //  fontSize: '24px',
-      //  lineHeight: '29px',
-      //  textTransform: 'capitalize',
-      //  color: '#000000',
+
      },
      h4 : {
       fontFamily: fontVariable,
@@ -79,14 +72,9 @@ const theme = createTheme({
     },
      body1: {
        fontFamily: fontVariable,
-      //  fontWeight: 400,
-      //  fontSize: '14px',
-      //  lineHeight: '17px',
-      //  color: '#686868',
+
        [breakpoints.up('md')]: {
-        //  fontSize: '24px',
-        //  lineHeight: '29px',
-        //  fontWeight: 500,
+
        },
      },
      body2 : {
