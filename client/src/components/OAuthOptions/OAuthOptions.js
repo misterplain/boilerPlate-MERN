@@ -27,7 +27,6 @@ const OAuthOptions = () => {
 
   const shoppingCartState = useSelector((state) => state.shoppingCart);
   const { cartItems } = shoppingCartState;
-  console.log(cartItems)
 
   const handleSubmit = (provider) => {
     dispatch(loginOAuthAndSyncCart(provider,  cartItems))

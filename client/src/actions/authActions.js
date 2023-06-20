@@ -157,13 +157,10 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
 
 export const loginOAuthAndSyncCart =
   (provider, cart) => async (dispatch) => {
-    console.log(cart)
     try {
       const { user, accessToken, refreshToken } = await dispatch(
         loginOAuth(provider)
       );
-
-      console.log(cart.length)
       if (cart.length > 0) {
         try {
           const options = {
@@ -173,7 +170,6 @@ export const loginOAuthAndSyncCart =
           };
 
           const data = await axios.post("/cart/update", {cartItems: cart}, options);
-          console.log(data);
           dispatch({
             type: OAUTH_UPDATE_CART_SUCCESS,
             payload: data.data.cart,

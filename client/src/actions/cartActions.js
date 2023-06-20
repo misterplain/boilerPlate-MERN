@@ -48,7 +48,6 @@ const addCartItemUser =
           Authorization: `Bearer ${token}`,
         },
       };
-      console.log(price);
       const data = await axios.post(
         `/cart/add/${productId}`,
         { quantity, price },
@@ -107,7 +106,7 @@ const addCartItemGuest =
 
 //remove cart item user
 const removeCartItemUser =
-  ({ token, productId, quantity }) =>
+  ({ token, productId, quantity, price }) =>
   async (dispatch) => {
     try {
       const options = {
@@ -119,7 +118,7 @@ const removeCartItemUser =
       const data = await axios({
         method: "delete",
         url: `/cart/delete/${productId}`,
-        data: { quantity },
+        data: { quantity, price },
         headers: options.headers,
       });
 
@@ -137,7 +136,7 @@ const removeCartItemUser =
 
 //remove cart item guest
 const removeCartItemGuest =
-  (productId, quantity) => async (dispatch, getState) => {
+  (productId, quantity, pricePerUnit) => async (dispatch, getState) => {
     try {
       const shoppingCartState = getState().shoppingCart;
       const { cartItems } = shoppingCartState;
@@ -155,6 +154,7 @@ const removeCartItemGuest =
             payload: {
               product: productId,
               quantity: newQuantity,
+              pricePerUnit: pricePerUnit,
             },
           });
         } else {

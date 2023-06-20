@@ -29,6 +29,7 @@ export const cartReducer = (
       return {
         ...state,
         cartItems: action.payload.data.cart,
+        error: null,
 
       };
 
@@ -41,6 +42,7 @@ export const cartReducer = (
       return {
         ...state,
         cartItems: action.payload.data.cart,
+        error: null,
       };
     case REMOVE_ITEM_USER_FAIL:
       return {
@@ -59,13 +61,15 @@ export const cartReducer = (
           cartItems: state.cartItems.map((item, index) =>
             index === itemIndex ? action.payload : item
           ),
-          pricePerUnit: action.payload.pricePerUnit
+          error: null,
+         
           
         };
       } else {
         return {
           ...state,
           cartItems: [...state.cartItems, action.payload],
+          error: null,
         };
       }
     case ADD_ITEM_GUEST_FAIL:
@@ -82,6 +86,7 @@ export const cartReducer = (
               ? action.payload
               : item
           ),
+          error: null,
         };
       } else {
         return {
@@ -90,6 +95,7 @@ export const cartReducer = (
             (item) =>
               item.product.toString() !== action.payload.product.toString()
           ),
+          error: null,
         };
       }
     case REMOVE_ITEM_GUEST_FAIL:

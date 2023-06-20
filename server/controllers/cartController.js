@@ -19,7 +19,6 @@ const addCartItem = async (req, res) => {
   const { userId } = req;
   const { productId } = req.params;
   const { quantity, price } = req.body;
-  console.log(price)
 
   try {
     const user = await User.findById(userId);
@@ -52,10 +51,8 @@ const addCartItem = async (req, res) => {
 
 const deleteCartItem = async (req, res) => {
   const { userId } = req;
-  const { quantity } = req.body;
+  const { quantity, price } = req.body;
   const { productId } = req.params;
-  console.log("quantity", quantity);
-  console.log("productId", productId);
 
   try {
     const user = await User.findById(userId);
@@ -64,6 +61,7 @@ const deleteCartItem = async (req, res) => {
     );
     if (itemIndex > -1) {
       user.cart[itemIndex].quantity -= quantity;
+      user.cart[itemIndex].pricePerUnit = price;
       if (user.cart[itemIndex].quantity <= 0) {
         user.cart.splice(itemIndex, 1);
       }

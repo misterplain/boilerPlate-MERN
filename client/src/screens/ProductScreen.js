@@ -101,7 +101,6 @@ const ProductScreen = () => {
                       })
                     );
                   } else {
-                    console.log(productInBasket);
                     dispatch(
                       removeCartItemUser({
                         token,

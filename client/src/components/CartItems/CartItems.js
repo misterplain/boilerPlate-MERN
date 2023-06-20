@@ -48,10 +48,11 @@ const CartItems = () => {
           productId: item.product._id,
           quantity: 1,
           token,
+          price: item.product.price,
         })
       );
     } else {
-      dispatch(addCartItemGuest(item.product._id, 1));
+      dispatch(addCartItemGuest(item.product._id, 1,item.product.price));
     }
   };
 
@@ -62,10 +63,11 @@ const CartItems = () => {
           productId: item.product._id,
           quantity: 1,
           token,
+          price: item.product.price,
         })
       );
     } else {
-      dispatch(removeCartItemGuest(item.product._id, 1));
+      dispatch(removeCartItemGuest(item.product._id, 1, item.product.price));
     }
   };
 

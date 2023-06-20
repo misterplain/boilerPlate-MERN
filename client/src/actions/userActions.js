@@ -7,7 +7,7 @@ import {
 import axios from "../api/axios";
 
 const addAddress = (token, address) => async (dispatch) => {
-  console.log("add address");
+
   try {
     const options = {
       headers: {
@@ -33,7 +33,7 @@ const addAddress = (token, address) => async (dispatch) => {
 };
 
 const deleteAddress = (token, addressId) => async (dispatch) => {
-  console.log("remove address");
+
   try {
     const options = {
       headers: {

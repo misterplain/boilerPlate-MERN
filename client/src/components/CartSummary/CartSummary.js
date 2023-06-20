@@ -71,7 +71,7 @@ const CartSummary = () => {
               {" "}
               <Button
                 onClick={() => {
-                  console.log(userEmail);
+
                   dispatch(
                     setInitialOrderInfo({
                       isGuest,

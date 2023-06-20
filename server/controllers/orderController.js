@@ -26,13 +26,17 @@ const placeOrder = async (req, res) => {
   const { cartItems, isGuest, totalPrice, emailAddress } = req.body;
   const { street, city, postalCode, country } = req.body.shippingAddress;
 
-  console.log(cartItems)
-
   try {
     const userOrdered = await User.findById(userId);
     const orderPlaced = await Order.create({
       userId: userId,
-      orderedItems: cartItems,
+      orderedItems: cartItems.map((item) => {
+        return {
+          product: item.product, // use 'product' if your schema has a 'product' field, else 'productId'
+          quantity: item.quantity,
+          price: item.pricePerUnit,
+        };
+      }),
       isGuest: isGuest,
       emailAddress,
       shippingAddress: {
