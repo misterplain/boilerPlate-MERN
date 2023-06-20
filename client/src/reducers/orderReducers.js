@@ -10,6 +10,10 @@ import {
   SET_ISSHIPPEDTOCOURIER,
   SET_ISDELIVERED,
   CLEAR_ORDER,
+  NEW_USER_ORDER_SUCCESS,
+  NEW_USER_ORDER_FAIL,
+  NEW_GUEST_ORDER_SUCCESS,
+  NEW_GUEST_ORDER_FAIL,
 } from "../constants/orderConstants";
 
 const orderReducer = (state = {}, action) => {

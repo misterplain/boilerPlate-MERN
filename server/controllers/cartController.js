@@ -18,7 +18,8 @@ const getCartItems = async (req, res) => {
 const addCartItem = async (req, res) => {
   const { userId } = req;
   const { productId } = req.params;
-  const { quantity } = req.body;
+  const { quantity, price } = req.body;
+  console.log(price)
 
   try {
     const user = await User.findById(userId);
@@ -28,6 +29,7 @@ const addCartItem = async (req, res) => {
 
     if (itemIndex > -1) {
       user.cart[itemIndex].quantity += quantity;
+      user.cart[itemIndex].pricePerUnit = price;
       await user.save();
       res.status(200).json({
         message: `Item already in cart, quantity increased by ${quantity}`,
@@ -37,6 +39,7 @@ const addCartItem = async (req, res) => {
       const item = {
         product: productId,
         quantity: quantity,
+        pricePerUnit: price,
       };
       user.cart.push(item);
       await user.save();
@@ -84,8 +87,7 @@ const deleteCartItem = async (req, res) => {
 const updateCart = async (req, res) => {
   const { userId } = req;
   const { cartItems } = req.body;
-  console.log(cartItems)
-
+  console.log(cartItems);
 
   try {
     const user = await User.findById(userId);
@@ -96,13 +98,12 @@ const updateCart = async (req, res) => {
 
     user.cart = cartItems;
 
- 
     const updatedUser = await user.save();
-console.log(updatedUser)
+    console.log(updatedUser);
     res.status(200).json(updatedUser);
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
-    console.log(error)
+    console.log(error);
   }
 };
 

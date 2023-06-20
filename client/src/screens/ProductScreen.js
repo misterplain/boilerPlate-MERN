@@ -96,6 +96,8 @@ const ProductScreen = () => {
                         token,
                         productId,
                         quantity: values.quantity,
+                        price: displayedProduct.price,
+
                       })
                     );
                   } else {
@@ -105,15 +107,16 @@ const ProductScreen = () => {
                         token,
                         productId,
                         quantity: productInBasket.quantity,
+                        price: displayedProduct.price,
                       })
                     );
                   }
                 } else {
                   if (!productInBasket) {
-                    dispatch(addCartItemGuest(productId, values.quantity));
+                    dispatch(addCartItemGuest(productId, values.quantity, displayedProduct.price,));
                   } else {
                     dispatch(
-                      removeCartItemGuest(productId, productInBasket.quantity)
+                      removeCartItemGuest(productId, productInBasket.quantity, displayedProduct.price,)
                     );
                   }
                 }

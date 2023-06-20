@@ -38,6 +38,7 @@
     "passport-github2": "^0.1.12",
     "passport-google-oauth20": "^2.0.0",
     "path": "^0.12.7",
+    "shortid": "^2.2.16",
     "uuid": "^9.0.0"
   }
 }

@@ -1,10 +1,12 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const Schema = mongoose.Schema;
+const shortid = require("shortid");
 
 const orderSchema = new Schema(
   {
-    userId: { type: mongoose.Schema.Types.ObjectId,  ref: "User" },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    shortId: { type: String, default: shortid.generate },
     isGuest: { type: Boolean, required: true, default: false },
     emailAddress: { type: String },
     orderedItems: [

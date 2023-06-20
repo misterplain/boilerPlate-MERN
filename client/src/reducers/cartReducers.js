@@ -29,6 +29,7 @@ export const cartReducer = (
       return {
         ...state,
         cartItems: action.payload.data.cart,
+
       };
 
     case ADD_ITEM_USER_FAIL:
@@ -58,6 +59,8 @@ export const cartReducer = (
           cartItems: state.cartItems.map((item, index) =>
             index === itemIndex ? action.payload : item
           ),
+          pricePerUnit: action.payload.pricePerUnit
+          
         };
       } else {
         return {

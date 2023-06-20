@@ -23,16 +23,18 @@ const getAllOrders = async (req, res) => {
 
 const placeOrder = async (req, res) => {
   const { userId } = req;
-  const { orderedItems } = req.body;
+  const { cartItems, isGuest, totalPrice, emailAddress } = req.body;
   const { street, city, postalCode, country } = req.body.shippingAddress;
+
+  console.log(cartItems)
 
   try {
     const userOrdered = await User.findById(userId);
-    console.log(userOrdered);
     const orderPlaced = await Order.create({
       userId: userId,
-      orderedItems: orderedItems,
-      emailAddress: userOrdered.email,
+      orderedItems: cartItems,
+      isGuest: isGuest,
+      emailAddress,
       shippingAddress: {
         street,
         city,
@@ -43,7 +45,7 @@ const placeOrder = async (req, res) => {
       // itemsPrice,
       // taxPrice,
       // shippingPrice,
-      // totalPrice,
+      totalPrice,
     });
 
     //add order to user
@@ -52,6 +54,8 @@ const placeOrder = async (req, res) => {
     const reply = {
       message: "Order placed",
       orderPlaced,
+      userOrder: "userOrdered",
+      userOrdered
     };
     res.status(201).json(reply);
   } catch (error) {
@@ -66,7 +70,7 @@ const placeGuestOrder = async (req, res) => {
   const orderedItems = req.body.orderedItems;
   const isGuest = req.body.isGuest;
   const emailAddress = req.body.emailAddress;
-  console.log({ orderedItems, isGuest, emailAddress }); 
+  console.log({ orderedItems, isGuest, emailAddress });
   // const { address, city, postalCode, country } = req.body.shippingAddress;
   // const { paymentMethod } = req.body;
   if (!orderedItems || !isGuest || !emailAddress) {

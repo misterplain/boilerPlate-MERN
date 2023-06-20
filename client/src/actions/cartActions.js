@@ -39,35 +39,37 @@ const getCartItems = (token) => async (dispatch) => {
 };
 
 //add cart item user
-const addCartItemUser = ({token, productId, quantity}) => async (dispatch) => {
-  try {
-    const options = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+const addCartItemUser =
+  ({ token, productId, quantity, price }) =>
+  async (dispatch) => {
+    try {
+      const options = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      console.log(price);
+      const data = await axios.post(
+        `/cart/add/${productId}`,
+        { quantity, price },
+        options
+      );
 
-    const data = await axios.post(
-      `/cart/add/${productId}`,
-      { quantity },
-      options
-    );
-
-    dispatch({
-      type: ADD_ITEM_USER_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: ADD_ITEM_USER_FAIL,
-      payload: error.message,
-    });
-  }
-};
+      dispatch({
+        type: ADD_ITEM_USER_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ADD_ITEM_USER_FAIL,
+        payload: error.message,
+      });
+    }
+  };
 
 //add cart item guest
 const addCartItemGuest =
-  (productId, quantity) => async (dispatch, getState) => {
+  (productId, quantity, pricePerUnit) => async (dispatch, getState) => {
     try {
       const shoppingCartState = getState().shoppingCart;
       const { cartItems } = shoppingCartState;
@@ -81,11 +83,13 @@ const addCartItemGuest =
         newCartItem = {
           ...cartItems[itemIndex],
           quantity: cartItems[itemIndex].quantity + quantity,
+          pricePerUnit: pricePerUnit,
         };
       } else {
         newCartItem = {
           product: productId,
           quantity: quantity,
+          pricePerUnit: pricePerUnit,
         };
       }
 
@@ -102,32 +106,34 @@ const addCartItemGuest =
   };
 
 //remove cart item user
-const removeCartItemUser = ({token, productId, quantity}) => async (dispatch) => {
-  try {
-    const options = {
+const removeCartItemUser =
+  ({ token, productId, quantity }) =>
+  async (dispatch) => {
+    try {
+      const options = {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       };
-    const data = await axios({
-        method: 'delete',
+      const data = await axios({
+        method: "delete",
         url: `/cart/delete/${productId}`,
         data: { quantity },
-        headers: options.headers
+        headers: options.headers,
       });
 
-    dispatch({
-      type: REMOVE_ITEM_USER_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: REMOVE_ITEM_USER_FAIL,
-      payload: error.message,
-    });
-  }
-};
+      dispatch({
+        type: REMOVE_ITEM_USER_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: REMOVE_ITEM_USER_FAIL,
+        payload: error.message,
+      });
+    }
+  };
 
 //remove cart item guest
 const removeCartItemGuest =
