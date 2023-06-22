@@ -40,8 +40,9 @@ const getCartItems = (token) => async (dispatch) => {
 
 //add cart item user
 const addCartItemUser =
-  ({ token, productId, quantity, price }) =>
+  ({ token, productId, quantity, price, name }) =>
   async (dispatch) => {
+
     try {
       const options = {
         headers: {
@@ -50,9 +51,11 @@ const addCartItemUser =
       };
       const data = await axios.post(
         `/cart/add/${productId}`,
-        { quantity, price },
+        { quantity, price,name },
         options
       );
+
+
 
       dispatch({
         type: ADD_ITEM_USER_SUCCESS,
@@ -68,7 +71,7 @@ const addCartItemUser =
 
 //add cart item guest
 const addCartItemGuest =
-  (productId, quantity, pricePerUnit) => async (dispatch, getState) => {
+  ({productId, quantity, pricePerUnit, name}) => async (dispatch, getState) => {
     try {
       const shoppingCartState = getState().shoppingCart;
       const { cartItems } = shoppingCartState;
@@ -83,14 +86,17 @@ const addCartItemGuest =
           ...cartItems[itemIndex],
           quantity: cartItems[itemIndex].quantity + quantity,
           pricePerUnit: pricePerUnit,
+          name: name,
         };
       } else {
         newCartItem = {
           product: productId,
           quantity: quantity,
           pricePerUnit: pricePerUnit,
+          name: name,
         };
       }
+
 
       dispatch({
         type: ADD_ITEM_GUEST_SUCCESS,
@@ -106,7 +112,7 @@ const addCartItemGuest =
 
 //remove cart item user
 const removeCartItemUser =
-  ({ token, productId, quantity, price }) =>
+  ({ token, productId, quantity, price,name }) =>
   async (dispatch) => {
     try {
       const options = {
@@ -118,7 +124,7 @@ const removeCartItemUser =
       const data = await axios({
         method: "delete",
         url: `/cart/delete/${productId}`,
-        data: { quantity, price },
+        data: { quantity, price,name },
         headers: options.headers,
       });
 
@@ -136,7 +142,7 @@ const removeCartItemUser =
 
 //remove cart item guest
 const removeCartItemGuest =
-  (productId, quantity, pricePerUnit) => async (dispatch, getState) => {
+  ({productId, quantity, pricePerUnit, name}) => async (dispatch, getState) => {
     try {
       const shoppingCartState = getState().shoppingCart;
       const { cartItems } = shoppingCartState;
@@ -149,12 +155,14 @@ const removeCartItemGuest =
         const newQuantity = cartItems[itemIndex].quantity - quantity;
 
         if (newQuantity > 0) {
+
           dispatch({
             type: REMOVE_ITEM_GUEST_SUCCESS,
             payload: {
               product: productId,
               quantity: newQuantity,
               pricePerUnit: pricePerUnit,
+              name: name,
             },
           });
         } else {
@@ -163,6 +171,7 @@ const removeCartItemGuest =
             payload: {
               product: productId,
               quantity: 0,
+              name: name,
             },
           });
         }

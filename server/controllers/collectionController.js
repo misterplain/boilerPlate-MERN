@@ -95,7 +95,6 @@ const deleteCollection = async (req, res) => {
       return res
         .status(400)
         .json({ message: "No collection found with that id" });
-    console.log(collectionToDelete);
     if (collectionToDelete.products && collectionToDelete.products.length > 0) {
       return res.status(400).json({
         message: "Collection contains products. Please delete products first.",

@@ -84,7 +84,7 @@ const AccountAddress = () => {
               postalCode: values.postalCode,
               country: values.country,
             };
-            console.log(addressData);
+
             dispatch(addAddress(token, addressData));
           }}
         >

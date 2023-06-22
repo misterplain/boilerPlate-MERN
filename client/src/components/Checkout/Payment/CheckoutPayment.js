@@ -30,7 +30,7 @@ const CheckoutPayment = ({ proceedToNextStep }) => {
     if (authenticated) {
       dispatch(placeNewUserOrder(token, orderDetails, proceedToNextStep));
     } else {
-      console.log('guest order dispatch')
+
       dispatch(placeNewOrderGuest(orderDetails, proceedToNextStep));
     }
 

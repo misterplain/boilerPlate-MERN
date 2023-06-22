@@ -109,6 +109,11 @@ export const cartReducer = (
         ...state,
         cartItems: action.payload,
       };
+      case EMPTY_CART:
+        return {
+          ...state,
+          cartItems: [],
+        };
   }
   return state;
 };

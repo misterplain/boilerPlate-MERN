@@ -89,7 +89,7 @@ const CheckoutAddress = ({ proceedToNextStep }) => {
               postalCode: values.postalCode,
               country: values.country,
             };
-            console.log(addressData);
+
             dispatch(setShippingAddress(addressData));
             proceedToNextStep();
           }}

@@ -1,11 +1,12 @@
 const router = require("express").Router();
 const {
-getAllOrders, placeOrder, deleteOrder, updateOrder, placeGuestOrder
+getAllOrders, getUserOrder, placeOrder, deleteOrder, updateOrder, placeGuestOrder
 } = require("../controllers/orderController.js");
 const { verifyToken } = require("../middleware/verifyToken.js");
 
 //public routes
 router.get("/get", getAllOrders);
+router.get("/getuser", verifyToken, getUserOrder);
 
 //admin only - protected routes 
 router.post("/new", verifyToken, placeOrder);

@@ -18,6 +18,7 @@ const orderSchema = new Schema(
         },
         quantity: { type: Number, required: true },
         price: { type: Number, required: true },
+        name: { type: String, required: true },
       },
     ],
     shippingAddress: {

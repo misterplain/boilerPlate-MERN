@@ -15,7 +15,7 @@ const addAddress = (token, address) => async (dispatch) => {
       },
     };
 
-    console.log(address);
+
 
     const data = await axios.post(`/user/addaddress`, address, options);
 

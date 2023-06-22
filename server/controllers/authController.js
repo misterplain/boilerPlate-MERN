@@ -6,14 +6,12 @@ const generateUserTokens = require("../middleware/generateToken.js");
 
 const signin = async (req, res) => {
   const { email, password, cart } = req.body;
-  console.log(req.body);
-  console.log(typeof req.body.email);
-  console.log(typeof req.body.password);
-  console.log(typeof req.body.cart);
+  // console.log(typeof req.body.email);
+  // console.log(typeof req.body.password);
+  // console.log(typeof req.body.cart);
 
   try {
     const foundUser = await UserModel.findOne({ email });
-    console.log(foundUser.cart + "foundUser.cart")
 
     if (!foundUser)
       return res.status(404).json({ message: "User doesn't exist" });

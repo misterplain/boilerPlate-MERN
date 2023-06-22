@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema(
       type: [
         {
           type: Schema.Types.ObjectId,
-          ref: "Product", 
+          ref: "Product",
         },
       ],
       default: [],
@@ -61,7 +61,11 @@ const userSchema = new mongoose.Schema(
             type: Number,
             required: true,
             default: 0,
-          }
+          },
+          name: {
+            type: String,
+            required: true,
+          },
         },
       ],
       default: [],
@@ -70,7 +74,7 @@ const userSchema = new mongoose.Schema(
       type: [
         {
           type: Schema.Types.ObjectId,
-          ref: "Orders", 
+          ref: "Orders",
         },
       ],
       default: [],

@@ -97,7 +97,7 @@ const ProductScreen = () => {
                         productId,
                         quantity: values.quantity,
                         price: displayedProduct.price,
-
+                        name: displayedProduct.name,
                       })
                     );
                   } else {
@@ -107,15 +107,28 @@ const ProductScreen = () => {
                         productId,
                         quantity: productInBasket.quantity,
                         price: displayedProduct.price,
+                        name: displayedProduct.name,
                       })
                     );
                   }
                 } else {
                   if (!productInBasket) {
-                    dispatch(addCartItemGuest(productId, values.quantity, displayedProduct.price,));
+                    dispatch(
+                      addCartItemGuest({
+                        productId,
+                        quantity: values.quantity,
+                        pricePerUnit: displayedProduct.price,
+                        name: displayedProduct.name,
+                      })
+                    );
                   } else {
                     dispatch(
-                      removeCartItemGuest(productId, productInBasket.quantity, displayedProduct.price,)
+                      removeCartItemGuest({
+                        productId,
+                        quantity: productInBasket.quantity,
+                        pricePerUnit: displayedProduct.price,
+                        name: displayedProduct.name,
+                      })
                     );
                   }
                 }

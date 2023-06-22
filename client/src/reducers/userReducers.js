@@ -5,6 +5,8 @@ import {
   ADD_ADDRESS_FAIL,
   REMOVE_ADDRESS_SUCCESS,
   REMOVE_ADDRESS_FAIL,
+  FETCH_USER_ORDERS_SUCCESS,
+  FETCH_USER_ORDERS_FAIL,
 } from "../constants/userConstants";
 
 export const userReducer = (state = {isGuest: true}, action) => {
@@ -20,6 +22,7 @@ export const userReducer = (state = {isGuest: true}, action) => {
           addresses: action.payload.addresses,
         },
         isGuest: false,
+        orderHistory: action.payload.orders,
       };
     case CLEAR_USER_DETAILS:
       return {
@@ -68,6 +71,13 @@ export const userReducer = (state = {isGuest: true}, action) => {
         ...state,
         error: action.payload.data.message,
       };
+
+      case FETCH_USER_ORDERS_SUCCESS:
+
+        return { ...state, orderHistory: action.payload };
+  
+      case FETCH_USER_ORDERS_FAIL:
+        return { ...state, error: action.payload };
     default:
       return state;
   }

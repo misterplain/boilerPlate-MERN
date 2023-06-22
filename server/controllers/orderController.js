@@ -18,6 +18,24 @@ const getAllOrders = async (req, res) => {
   }
 };
 
+//get user order
+
+const getUserOrder = async (req, res) => {
+  const { userId } = req;
+  try {
+    const user = await User.findById(userId).populate("orders");
+    const reply = {
+      message: "User orders",
+      userOrders: user.orders,
+    };
+    res.status(200).json(reply);
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+
+    console.log(error);
+  }
+}
+
 //place order
 //protected
 
@@ -31,10 +49,13 @@ const placeOrder = async (req, res) => {
     const orderPlaced = await Order.create({
       userId: userId,
       orderedItems: cartItems.map((item) => {
+        console.log(item)
         return {
           product: item.product, 
+          name: item.name,
           quantity: item.quantity,
           price: item.pricePerUnit,
+          name: item.name,
         };
       }),
       isGuest: isGuest,
@@ -53,8 +74,16 @@ const placeOrder = async (req, res) => {
       totalPrice,
     });
 
+    await orderPlaced.save();
+
+    // const orderWithProductDetails = await Order.findById(orderPlaced._id).populate('orderedItems.product');
+    // console.log(orderWithProductDetails.orderedItems[0].product)
+
+    // await orderWithProductDetails.save();
+
     //add order to user
     userOrdered.orders.push(orderPlaced);
+    userOrdered.cart = [];
     await userOrdered.save();
     const reply = {
       message: "Order placed",
@@ -84,6 +113,7 @@ const placeGuestOrder = async (req, res) => {
           product: item.product, 
           quantity: item.quantity,
           price: item.pricePerUnit,
+          name: item.name,
         };
       }),
       isGuest: isGuest,
@@ -98,14 +128,14 @@ const placeGuestOrder = async (req, res) => {
       totalPrice, 
     });
 
-    console.log("Order created:", guestOrderPlaced);
+
 
     const reply = {
       message: "Order placed",
       guestOrderPlaced,
     };
 
-    console.log("Reply:", reply);
+
 
     res.status(201).json(reply);
   } catch (error) {
@@ -186,6 +216,7 @@ const updateOrder = async (req, res) => {
 
 module.exports = {
   getAllOrders,
+  getUserOrder,
   placeOrder,
   placeGuestOrder,
   deleteOrder,
