@@ -26,7 +26,6 @@ const setInitialOrderInfo =
     userEmail,
   }) =>
   (dispatch) => {
-
     dispatch({ type: SET_ISGUEST, payload: isGuest ? true : false });
     dispatch({ type: SET_ITEMS, payload: cartItems ? cartItems : [] });
     // dispatch({ type: SET_EMAIL_ADDRESS, payload: userEmail });
@@ -44,7 +43,6 @@ const setIsPaid = (isPaid) => (dispatch) => {
 };
 
 const setEmailAddress = (emailAddress) => (dispatch) => {
-
   dispatch({ type: SET_EMAIL_ADDRESS, payload: emailAddress });
 };
 
@@ -54,7 +52,6 @@ const placeNewUserOrder =
     // dispatch({ type: SET_ISPAID, payload: false });
     // dispatch({ type: SET_ISSHIPPEDTOCOURIER, payload: false });
     // dispatch({ type: SET_ISDELIVERED, payload: false });
-
 
     try {
       const options = {
@@ -74,10 +71,24 @@ const placeNewUserOrder =
     }
   };
 
+const placeNewOrderGuest = (order, proceedToNextStep) => async (dispatch) => {
+  console.log("placeNewOrderGuest")
+  try {
+    const data = await axios.post("/orders/newguest", order);
+
+    dispatch({ type: NEW_GUEST_ORDER_SUCCESS, payload: data });
+    proceedToNextStep();
+  } catch (error) {
+    console.log(error);
+    dispatch({ type: NEW_GUEST_ORDER_FAIL, payload: error });
+  }
+};
+
 export {
   setInitialOrderInfo,
   setShippingAddress,
   setIsPaid,
   placeNewUserOrder,
+  placeNewOrderGuest,
   setEmailAddress,
 };

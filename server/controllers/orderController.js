@@ -23,7 +23,7 @@ const getAllOrders = async (req, res) => {
 
 const placeOrder = async (req, res) => {
   const { userId } = req;
-  const { cartItems, isGuest, totalPrice, emailAddress } = req.body;
+  const { cartItems, isGuest, totalPrice, emailAddress, isPaid } = req.body;
   const { street, city, postalCode, country } = req.body.shippingAddress;
 
   try {
@@ -32,12 +32,13 @@ const placeOrder = async (req, res) => {
       userId: userId,
       orderedItems: cartItems.map((item) => {
         return {
-          product: item.product, // use 'product' if your schema has a 'product' field, else 'productId'
+          product: item.product, 
           quantity: item.quantity,
           price: item.pricePerUnit,
         };
       }),
       isGuest: isGuest,
+      isPaid: isPaid,
       emailAddress,
       shippingAddress: {
         street,
@@ -70,22 +71,31 @@ const placeOrder = async (req, res) => {
 };
 
 const placeGuestOrder = async (req, res) => {
-  //   const { orderedItems, isGuest, emailAddress } = req.body;
-  const orderedItems = req.body.orderedItems;
-  const isGuest = req.body.isGuest;
-  const emailAddress = req.body.emailAddress;
-  console.log({ orderedItems, isGuest, emailAddress });
-  // const { address, city, postalCode, country } = req.body.shippingAddress;
-  // const { paymentMethod } = req.body;
-  if (!orderedItems || !isGuest || !emailAddress) {
+  const { cartItems, isGuest, totalPrice, emailAddress, isPaid } = req.body;
+  const { street, city, postalCode, country } = req.body.shippingAddress;
+
+  if (!cartItems || !isGuest || !emailAddress) {
     return res.status(400).json({ message: "Missing required data" });
   }
   try {
-    console.log(emailAddress.toString() + "within trycatch");
     const guestOrderPlaced = await Order.create({
-      orderedItems,
-      isGuest,
+      orderedItems: cartItems.map((item) => {
+        return {
+          product: item.product, 
+          quantity: item.quantity,
+          price: item.pricePerUnit,
+        };
+      }),
+      isGuest: isGuest,
+      isPaid: isPaid,
       emailAddress,
+      shippingAddress: {
+        street,
+        city,
+        postalCode,
+        country,
+      },
+      totalPrice, 
     });
 
     console.log("Order created:", guestOrderPlaced);
@@ -98,7 +108,6 @@ const placeGuestOrder = async (req, res) => {
     console.log("Reply:", reply);
 
     res.status(201).json(reply);
-    console.log("Response sent");
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ message: "Something went wrong" });

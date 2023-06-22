@@ -11,6 +11,6 @@ router.get("/get", getAllOrders);
 router.post("/new", verifyToken, placeOrder);
 router.post("/newguest", placeGuestOrder);
 router.delete("/delete/:orderId", verifyToken, deleteOrder);
-router.put("/update/:orderId", verifyToken, updateOrder);
+router.put("/update/:orderId", verifyToken, updateOrder)
 
 module.exports = router;

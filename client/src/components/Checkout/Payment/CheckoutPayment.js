@@ -2,8 +2,11 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { setIsPaid, placeNewUserOrder } from "../../../actions/orderActions";
-
+import {
+  setIsPaid,
+  placeNewUserOrder,
+  placeNewOrderGuest,
+} from "../../../actions/orderActions";
 
 const styles = {
   wrapper: {
@@ -11,8 +14,7 @@ const styles = {
   },
 };
 
-const CheckoutPayment = ({proceedToNextStep}) => {
-
+const CheckoutPayment = ({ proceedToNextStep }) => {
   const dispatch = useDispatch();
   //get token from state
   const userAuthState = useSelector((state) => state.userAuth);
@@ -24,16 +26,22 @@ const CheckoutPayment = ({proceedToNextStep}) => {
   const orderDetails = useSelector((state) => state.order);
 
   const payAndProceed = () => {
-    dispatch(setIsPaid(true))
-    dispatch(placeNewUserOrder(token, orderDetails, proceedToNextStep))
+    dispatch(setIsPaid(true));
+    if (authenticated) {
+      dispatch(placeNewUserOrder(token, orderDetails, proceedToNextStep));
+    } else {
+      console.log('guest order dispatch')
+      dispatch(placeNewOrderGuest(orderDetails, proceedToNextStep));
+    }
+
     // proceedToNextStep()
-  }
+  };
 
   return (
     <Box sx={styles.wrapper}>
-      <Button onClick={()=>payAndProceed()}>Pay</Button>
+      <Button onClick={() => payAndProceed()}>Pay</Button>
     </Box>
-  )
-}
+  );
+};
 
-export default CheckoutPayment
+export default CheckoutPayment;
