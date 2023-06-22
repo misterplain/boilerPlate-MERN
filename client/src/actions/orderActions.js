@@ -18,6 +18,8 @@ import {
 import {
   FETCH_USER_ORDERS_SUCCESS,
   FETCH_USER_ORDERS_FAIL,
+  CANCEL_ORDER_SUCCESS,
+  CANCEL_ORDER_FAIL,
 } from "../constants/userConstants";
 import { EMPTY_CART } from "../constants/cartConstants";
 import axios from "../api/axios";
@@ -44,8 +46,11 @@ const setShippingAddress = (shippingAddress) => (dispatch) => {
   dispatch({ type: SET_ADDRESS, payload: shippingAddress });
 };
 
-const setIsPaid = (isPaid) => (dispatch) => {
-  dispatch({ type: SET_ISPAID, payload: isPaid });
+const setIsPaid = (isPaid) => async (dispatch) => {
+  return new Promise((resolve, reject) => {
+    dispatch({ type: SET_ISPAID, payload: isPaid });
+    resolve();
+  });
 };
 
 const setEmailAddress = (emailAddress) => (dispatch) => {
@@ -59,7 +64,7 @@ const placeNewUserOrder =
     // dispatch({ type: SET_ISSHIPPEDTOCOURIER, payload: false });
     // dispatch({ type: SET_ISDELIVERED, payload: false });
 
-
+    console.log(order);
     try {
       const options = {
         headers: {
@@ -69,7 +74,7 @@ const placeNewUserOrder =
       };
 
       const data = await axios.post("/orders/new", order, options);
-
+      console.log(order);
 
       dispatch({
         type: NEW_USER_ORDER_SUCCESS,
@@ -85,10 +90,9 @@ const placeNewUserOrder =
   };
 
 const placeNewOrderGuest = (order, proceedToNextStep) => async (dispatch) => {
-
   try {
     const data = await axios.post("/orders/newguest", order);
-
+    console.log(order);
 
     dispatch({
       type: NEW_GUEST_ORDER_SUCCESS,
@@ -116,14 +120,39 @@ const fetchUserOrders = (token) => async (dispatch) => {
 
     const data = await axios.get("/orders/getuser", options);
 
-
-
     dispatch({
       type: FETCH_USER_ORDERS_SUCCESS,
       payload: data.data.userOrders,
     });
   } catch (error) {
     dispatch({ type: FETCH_USER_ORDERS_FAIL, payload: error });
+  }
+};
+
+const cancelOrder = (token, orderId) => async (dispatch) => {
+  console.log("cancelOrder");
+
+  const options = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  try {
+    const data = await axios.put(`/orders/cancel/${orderId}`, {}, options);
+    console.log(data);
+
+    dispatch({
+      type: CANCEL_ORDER_SUCCESS,
+      payload: data.data.orderCancelled,
+    });
+
+    // dispatch(fetchUserOrders(token));
+
+  } catch (error) {
+    dispatch({ type: CANCEL_ORDER_FAIL, payload: error });
+    console.log(error);
   }
 };
 
@@ -135,4 +164,5 @@ export {
   placeNewOrderGuest,
   setEmailAddress,
   fetchUserOrders,
+  cancelOrder,
 };

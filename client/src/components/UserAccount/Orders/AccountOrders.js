@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
-import { fetchUserOrders } from "../../../actions/orderActions";
+import { fetchUserOrders, cancelOrder } from "../../../actions/orderActions";
 
 const styles = {
   wrapper: {
@@ -23,10 +23,39 @@ const AccountOrders = () => {
   const token = userAuthState?.accessToken;
 
   useEffect(() => {
-    dispatch(fetchUserOrders(token))
+    dispatch(fetchUserOrders(token));
   }, []);
 
-  return <Box sx={styles.wrapper}></Box>;
+  console.log(orderHistory);
+
+  return (
+    <Box sx={styles.wrapper}>
+      {orderHistory?.map((order) => (
+        <Box key={order._id}>
+          <Typography variant="h6">Order #: {order.shortId}</Typography>
+          <Box>
+            {order?.orderedItems?.map((item) => (
+              <Box key={item._id}>
+                <Typography variant="body1">Name: {item.name}</Typography>
+                <Typography variant="body1">
+                  Quantity: {item.quantity}
+                </Typography>
+                <Typography variant="body1">Price: {item.price}</Typography>
+              </Box>
+            ))}
+          </Box>
+          <Typography variant="body1">Total: {order.totalPrice}</Typography>
+          {!order.isShippedToCourier && !order.isCancelled && (
+            <Button onClick={() => dispatch(cancelOrder(token, order._id))}>
+              Cancel Order
+            </Button>
+          )}
+          {order.isCancelled && <Button variant="contained" disabled>Cancelled</Button>}
+          <hr></hr>
+        </Box>
+      ))}
+    </Box>
+  );
 };
 
 export default AccountOrders;

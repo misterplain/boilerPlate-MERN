@@ -6,6 +6,7 @@ const shortid = require("shortid");
 const orderSchema = new Schema(
   {
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    datePlaced: { type: Date, required: true, default: Date.now },
     shortId: { type: String, default: shortid.generate },
     isGuest: { type: Boolean, required: true, default: false },
     emailAddress: { type: String },
@@ -36,7 +37,7 @@ const orderSchema = new Schema(
     // },
     totalPrice: { type: Number, required: true, default: 0.0 },
     isCancelled: { type: Boolean, required: true, default: false },
-    isPaid: { type: Boolean, required: true, default: false },
+    isPaid: { type: Boolean, required: true, default: true },
     // paidAt: { type: Date },
     isShippedToCourier: { type: Boolean, required: true, default: false },
     isDelivered: { type: Boolean, required: true, default: false },

@@ -38,6 +38,8 @@ const CartItems = () => {
   //   (item) => item.product === displayedProduct._id
   // );
 
+  // console.log(detailedCartItems)
+
   const cartItemTotal = (item) => {
     return item.product.price * item.quantity;
   };
@@ -66,7 +68,6 @@ const CartItems = () => {
   };
 
   const handleDecreaseQuantity = (item) => {
-    console.log(item);
     if (authenticated) {
       dispatch(
         removeCartItemUser({
@@ -82,7 +83,7 @@ const CartItems = () => {
         removeCartItemGuest({
           productId: item.product._id,
           quantity: 1,
-          price: item.product.price,
+          pricePerUnit: item.product.price,
           name: item.product.name,
         })
       );

@@ -45,7 +45,7 @@ const CheckoutScreen = () => {
   const { products } = useSelector((state) => state.productList);
   const { email, username, isAdmin } = userDetailsState?.userDetails || {};
   const orderState = useSelector((state) => state.order);
-  const {cartItems, emailAddress, shippingAddress} = orderState;
+  const { cartItems, emailAddress, shippingAddress } = orderState;
   const token = userAuthState?.accessToken;
 
   const [step, setStep] = useState(1);
@@ -71,11 +71,42 @@ const CheckoutScreen = () => {
     <Box sx={styles.wrapper}>
       <Box sx={styles.stepsWrapper}>
         {!authenticated && (
-          <Button variant="contained" onClick={() => setStep(1)}>User and Email</Button>
+          <Button
+            variant="contained"
+            onClick={() => setStep(1)}
+            disabled={step === 5}
+          >
+            User and Email
+          </Button>
         )}
-        <Button  variant="contained"  onClick={() => setStep(2)} disabled={!emailAddress || !cartItems }>Address</Button>
-        <Button variant="contained" onClick={() => setStep(3)} disabled={!emailAddress || !cartItems || !shippingAddress}>Summary</Button>
-        <Button variant="contained" onClick={() => setStep(4)} disabled={!emailAddress || cartItems.length === 0 || !shippingAddress}>Payment</Button>
+        <Button
+          variant="contained"
+          onClick={() => setStep(2)}
+          disabled={!emailAddress || !cartItems || step === 5}
+        >
+          Address
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => setStep(3)}
+          disabled={
+            !emailAddress || !cartItems || !shippingAddress || step === 5
+          }
+        >
+          Summary
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => setStep(4)}
+          disabled={
+            !emailAddress ||
+            cartItems.length === 0 ||
+            !shippingAddress ||
+            step === 5
+          }
+        >
+          Payment
+        </Button>
       </Box>
       <Box sx={styles.renderedComponent}>{renderStep()}</Box>
     </Box>

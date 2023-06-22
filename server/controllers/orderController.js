@@ -28,13 +28,14 @@ const getUserOrder = async (req, res) => {
       message: "User orders",
       userOrders: user.orders,
     };
+    console.log(user.orders);
     res.status(200).json(reply);
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
 
     console.log(error);
   }
-}
+};
 
 //place order
 //protected
@@ -44,14 +45,15 @@ const placeOrder = async (req, res) => {
   const { cartItems, isGuest, totalPrice, emailAddress, isPaid } = req.body;
   const { street, city, postalCode, country } = req.body.shippingAddress;
 
+  console.log(isPaid);
   try {
     const userOrdered = await User.findById(userId);
     const orderPlaced = await Order.create({
       userId: userId,
       orderedItems: cartItems.map((item) => {
-        console.log(item)
+        console.log(item);
         return {
-          product: item.product, 
+          product: item.product,
           name: item.name,
           quantity: item.quantity,
           price: item.pricePerUnit,
@@ -89,7 +91,7 @@ const placeOrder = async (req, res) => {
       message: "Order placed",
       orderPlaced,
       userOrder: "userOrdered",
-      userOrdered
+      userOrdered,
     };
     res.status(201).json(reply);
   } catch (error) {
@@ -107,10 +109,14 @@ const placeGuestOrder = async (req, res) => {
     return res.status(400).json({ message: "Missing required data" });
   }
   try {
+    console.log({
+      message: "ispaid",
+      isPaid,
+    });
     const guestOrderPlaced = await Order.create({
       orderedItems: cartItems.map((item) => {
         return {
-          product: item.product, 
+          product: item.product,
           quantity: item.quantity,
           price: item.pricePerUnit,
           name: item.name,
@@ -125,17 +131,13 @@ const placeGuestOrder = async (req, res) => {
         postalCode,
         country,
       },
-      totalPrice, 
+      totalPrice,
     });
-
-
 
     const reply = {
       message: "Order placed",
       guestOrderPlaced,
     };
-
-
 
     res.status(201).json(reply);
   } catch (error) {
@@ -145,28 +147,39 @@ const placeGuestOrder = async (req, res) => {
 };
 //delete order
 //protected route - admin only
-const deleteOrder = async (req, res) => {
+const cancelOrder = async (req, res) => {
   const { orderId } = req.params;
   const { userId, isAdmin } = req;
+  console.log(orderId);
+  console.log(userId);
 
   try {
     const order = await Order.findById(orderId);
+    console.log({
+      message: "order",
+      order,
+    })
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
 
     if (isAdmin || order.userId.toString() === userId.toString()) {
-      const deletedOrder = await Order.findByIdAndDelete(orderId);
+      const orderCancelled = await Order.findByIdAndUpdate(
+        orderId,
+        { isCancelled: true },
+        { new: true } // This option returns the updated document
+      );
+      await orderCancelled.save();
+      // if (!orderCancelled.isGuest) {
+      //   const user = await User.findById(orderCancelled.userId);
+      //   user.orders.pull(orderCancelled);
+      //   await user.save();
+      // }
       const reply = {
-        message: "Order deleted",
-        deletedOrder,
+        message: "Order cancelled",
+        orderCancelled,
       };
-      if (!deletedOrder.isGuest) {
-        const user = await User.findById(deletedOrder.userId);
-        user.orders.pull(deletedOrder);
-        await user.save();
-      }
-
+      console.log(reply)
       res.status(200).json(reply);
     } else {
       res.status(401).json({ message: "Not authorized" });
@@ -219,6 +232,6 @@ module.exports = {
   getUserOrder,
   placeOrder,
   placeGuestOrder,
-  deleteOrder,
+  cancelOrder,
   updateOrder,
 };

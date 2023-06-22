@@ -7,9 +7,11 @@ import {
   REMOVE_ADDRESS_FAIL,
   FETCH_USER_ORDERS_SUCCESS,
   FETCH_USER_ORDERS_FAIL,
+  CANCEL_ORDER_SUCCESS,
+  CANCEL_ORDER_FAIL,
 } from "../constants/userConstants";
 
-export const userReducer = (state = {isGuest: true}, action) => {
+export const userReducer = (state = { isGuest: true }, action) => {
   switch (action.type) {
     case SET_USER_DETAILS:
       return {
@@ -72,12 +74,18 @@ export const userReducer = (state = {isGuest: true}, action) => {
         error: action.payload.data.message,
       };
 
-      case FETCH_USER_ORDERS_SUCCESS:
+    case FETCH_USER_ORDERS_SUCCESS:
+      return { ...state, orderHistory: action.payload };
 
-        return { ...state, orderHistory: action.payload };
-  
-      case FETCH_USER_ORDERS_FAIL:
-        return { ...state, error: action.payload };
+    case FETCH_USER_ORDERS_FAIL:
+      return { ...state, error: action.payload };
+    case CANCEL_ORDER_SUCCESS:
+      return {
+        ...state,
+        orderHistory: state.orderHistory.map((order) =>
+          order._id === action.payload._id ? action.payload : order
+        ),
+      };
     default:
       return state;
   }
