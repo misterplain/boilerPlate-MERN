@@ -6,7 +6,6 @@ const Review = require("../models/reviewModel.js");
 const Product = require("../models/productModel.js");
 const generateUserTokens = require("../middleware/generateToken.js");
 
-//new review after userToken is validated, req.userId is available
 const createReview = asyncHandler(async (req, res) => {
   const { productId } = req.params;
   const userId = req.userId;

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -18,7 +19,13 @@ const styles = {
   wrapper: {
     border: "1px solid black",
   },
+  imageToUpload: {
+    width: "300px",
+    height: "auto",
+  },
 };
+
+
 
 const validationSchema = Yup.object({
   collectionId: Yup.string().required("Required"),
@@ -30,6 +37,8 @@ const validationSchema = Yup.object({
 
 const NewProduct = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
 
   const productList = useSelector((state) => state.productList);
   const collectionsState = useSelector((state) => state.collections);
@@ -38,6 +47,24 @@ const NewProduct = () => {
 
   const userAuthState = useSelector((state) => state.userAuth);
   const token = userAuthState?.accessToken;
+
+  const [selectedFile, setSelectedFile] = useState(null);
+
+const inputFileRef = useRef();
+
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    setFileToBase(file);
+    console.log(file);
+  };
+
+  const setFileToBase = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setSelectedFile(reader.result);
+    };
+  };
 
   return (
     <Box sx={styles.wrapper}>
@@ -53,8 +80,6 @@ const NewProduct = () => {
         }}
         validationSchema={validationSchema}
         onSubmit={async (values, { resetForm }) => {
-
-
           const productData = {
             collectionId: values.collectionId,
             isDisplayed: values.isDisplayed === "true" ? true : false,
@@ -63,10 +88,15 @@ const NewProduct = () => {
             price: values.price,
             stock: values.stock,
             description: values.description,
+            images: selectedFile,
           };
 
           dispatch(newProduct(token, productData));
-
+          setSelectedFile(null);
+          if (inputFileRef.current) {
+            inputFileRef.current.value = '';
+          }
+          navigate("/admin/collections");
         }}
       >
         {({
@@ -199,6 +229,31 @@ const NewProduct = () => {
                   helperText={errors.description}
                 />
               </FormGroup>
+            </FormControl>
+            <hr></hr>
+            <FormControl>
+              <FormLabel id="images">New Image</FormLabel>
+              <Box>
+                {" "}
+                <input
+                ref={inputFileRef}
+                  onChange={handleImage}
+                  type="file"
+                  id="formupload"
+                  name="image"
+                  className="form-control"
+                />
+                <label className="form-label" htmlFor="form4Example2">
+                  Image
+                </label>
+              </Box>
+
+              <Box
+                sx={styles.imageToUpload}
+                component="img"
+                src={selectedFile}
+                alt=""
+              />
             </FormControl>
             <hr></hr>
             <Button type="submit">Create Product</Button>

@@ -8,4 +8,4 @@ const { verifyToken } = require("../middleware/verifyToken.js");
 router.post("/addaddress", verifyToken, addAddress);
 router.delete("/deleteaddress/:addressId", verifyToken, deleteAddress);
 
-module.exports = router;
+module.exports = router

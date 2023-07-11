@@ -51,6 +51,7 @@ const productListReducer = (state = { products: [] }, action) => {
         ),
       };
     case PRODUCT_EDIT_FAIL:
+      console.log(action.payload)
       return {
         loading: false,
         error: action.payload.data.message,

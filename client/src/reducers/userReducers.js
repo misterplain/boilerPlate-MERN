@@ -9,6 +9,8 @@ import {
   FETCH_USER_ORDERS_FAIL,
   CANCEL_ORDER_SUCCESS,
   CANCEL_ORDER_FAIL,
+  EDIT_ORDER_SUCCESS,
+  EDIT_ORDER_FAIL,
 } from "../constants/userConstants";
 
 export const userReducer = (state = { isGuest: true }, action) => {
@@ -85,6 +87,19 @@ export const userReducer = (state = { isGuest: true }, action) => {
         orderHistory: state.orderHistory.map((order) =>
           order._id === action.payload._id ? action.payload : order
         ),
+      };
+
+    case EDIT_ORDER_SUCCESS:
+      return {
+        ...state,
+        orderHistory: state.orderHistory.map((order) =>
+          order._id === action.payload._id ? action.payload : order
+        ),
+      };
+    case EDIT_ORDER_FAIL:
+      return {
+        ...state,
+        error: action.payload.message,
       };
     default:
       return state;

@@ -10,6 +10,7 @@ const connectDB = require("./config/connectDB");
 //boilerPlate
 const session = require("express-session");
 const passport = require("./middleware/passport");
+const bodyParser = require('body-parser');
 //boilerPlate routes
 const authRoutes = require("./routes/authRoutes");
 const collectionRoutes = require("./routes/collectionRoutes");
@@ -41,6 +42,10 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+//body parser for upload limits
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 //custom middleware logger
 // app.use(logger);

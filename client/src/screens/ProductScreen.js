@@ -21,6 +21,7 @@ import {
   removeCartItemUser,
   removeCartItemGuest,
 } from "../actions/cartActions";
+import ProductCarousel from "../components/ProductCarousel/ProductCarousel";
 
 const ProductScreen = () => {
   const location = useLocation();
@@ -61,15 +62,7 @@ const ProductScreen = () => {
   return (
     <Grid container sx={{ display: "flex", justifyContent: "center" }}>
       <Grid item xs={10} sm={4}>
-        <Box
-          component="img"
-          src={
-            displayedProduct?.photos?.length > 1
-              ? displayedProduct?.photos[0]
-              : "https://placehold.co/400x500"
-          }
-          sx={{ width: "100%", height: "auto" }}
-        ></Box>
+        <ProductCarousel product={displayedProduct} />
       </Grid>
       <Grid item xs={10} sm={6}>
         {displayedProduct && (

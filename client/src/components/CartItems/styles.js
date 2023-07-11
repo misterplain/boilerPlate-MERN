@@ -5,6 +5,10 @@ const styles = {
     cartTitle: {
 
     },
+    image: {
+        width: "80px",
+        height: "80px",
+    },
     cartItemsWrapper: {
 borderBottom: "1px solid black"
     },

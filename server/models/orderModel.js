@@ -40,7 +40,10 @@ const orderSchema = new Schema(
     isPaid: { type: Boolean, required: true, default: true },
     // paidAt: { type: Date },
     isShippedToCourier: { type: Boolean, required: true, default: false },
+    dateShipped: { type: Date, required: false },
+    courierTrackingNumber: { type: String, required: false },
     isDelivered: { type: Boolean, required: true, default: false },
+    dateDelivered: { type: Date, required: false },
     // deliveredAt: { type: Date },
   },
   {

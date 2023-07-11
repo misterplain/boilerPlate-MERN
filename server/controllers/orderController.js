@@ -1,6 +1,7 @@
 const Order = require("../models/orderModel");
 const Product = require("../models/productModel");
 const User = require("../models/userModel");
+const shortid = require("shortid");
 
 //get all orders
 const getAllOrders = async (req, res) => {
@@ -19,7 +20,6 @@ const getAllOrders = async (req, res) => {
 };
 
 //get user order
-
 const getUserOrder = async (req, res) => {
   const { userId } = req;
   try {
@@ -39,7 +39,6 @@ const getUserOrder = async (req, res) => {
 
 //place order
 //protected
-
 const placeOrder = async (req, res) => {
   const { userId } = req;
   const { cartItems, isGuest, totalPrice, emailAddress, isPaid } = req.body;
@@ -78,10 +77,6 @@ const placeOrder = async (req, res) => {
 
     await orderPlaced.save();
 
-    // const orderWithProductDetails = await Order.findById(orderPlaced._id).populate('orderedItems.product');
-    // console.log(orderWithProductDetails.orderedItems[0].product)
-
-    // await orderWithProductDetails.save();
 
     //add order to user
     userOrdered.orders.push(orderPlaced);
@@ -158,7 +153,7 @@ const cancelOrder = async (req, res) => {
     console.log({
       message: "order",
       order,
-    })
+    });
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
@@ -167,19 +162,14 @@ const cancelOrder = async (req, res) => {
       const orderCancelled = await Order.findByIdAndUpdate(
         orderId,
         { isCancelled: true },
-        { new: true } // This option returns the updated document
+        { new: true } 
       );
       await orderCancelled.save();
-      // if (!orderCancelled.isGuest) {
-      //   const user = await User.findById(orderCancelled.userId);
-      //   user.orders.pull(orderCancelled);
-      //   await user.save();
-      // }
       const reply = {
         message: "Order cancelled",
         orderCancelled,
       };
-      console.log(reply)
+      console.log(reply);
       res.status(200).json(reply);
     } else {
       res.status(401).json({ message: "Not authorized" });
@@ -190,36 +180,48 @@ const cancelOrder = async (req, res) => {
   }
 };
 
-const updateOrder = async (req, res) => {
+const editOrder = async (req, res) => {
   const { orderId } = req.params;
   const { isAdmin } = req;
-  const { isPaid, isShippedToCourier, isCancelled, isDelivered } = req.body;
+  const { editRequest } = req.body;
+  console.log(editRequest);
 
   try {
     const order = await Order.findById(orderId);
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
-    if (isAdmin || order.userId.toString() === userId.toString()) {
-      const editedOrder = await Order.findByIdAndUpdate(
-        orderId,
-        {
-          isPaid,
-          isShippedToCourier,
-          isCancelled,
-          isDelivered,
-        },
-        { new: true }
-      );
+
+    let update = {};
+    switch (editRequest.type) {
+      case "shippedToCourier":
+        const shortId = shortid.generate();
+        update = {
+          isShippedToCourier: true,
+          dateShipped: new Date(),
+          courierTrackingNumber: shortId,
+        };
+        break;
+      case "isDelivered":
+        update = {
+          isDelivered: true,
+          dateDelivered: new Date(),
+        };
+        break;
+      default:
+        return res.status(400).json({ message: "Invalid edit type" });
+    }
+
+    if (isAdmin) {
+      const editedOrder = await Order.findByIdAndUpdate(orderId, update, {
+        new: true,
+      });
+
       const reply = {
-        message: "Order deleted",
+        message: "Order updated",
         editedOrder,
       };
 
-      //find user and delete order from user
-      // const user = await User.findById(deletedOrder.userId);
-      // user.orders.pull(deletedOrder);
-      // await user.save();
       res.status(200).json(reply);
     } else {
       res.status(401).json({ message: "Not authorized" });
@@ -233,5 +235,5 @@ module.exports = {
   placeOrder,
   placeGuestOrder,
   cancelOrder,
-  updateOrder,
+  editOrder,
 };

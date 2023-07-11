@@ -33,6 +33,7 @@ const CartItems = () => {
     return { ...item, product: productDetails, name: productDetails.name };
   });
 
+  console.log(detailedCartItems)
 
   // const productInBasket = cartItems?.find(
   //   (item) => item.product === displayedProduct._id
@@ -135,10 +136,11 @@ const CartItems = () => {
                     >
                       <Box sx={styles.imageTitle}>
                         <Box
+                        sx={styles.image}
                           component="img"
                           src={
-                            item.product.photos.length >= 1
-                              ? item.product.photos[0]
+                            item.product.images.length >= 1
+                              ? item.product.images[0].url
                               : "https://placehold.co/80x80"
                           }
                         />

@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const Schema = mongoose.Schema;
 
-
 const productSchema = new Schema(
   {
     collectionId: {
@@ -17,11 +16,19 @@ const productSchema = new Schema(
       type: Number,
       required: true,
     },
-    photos: {
-      type: [String],
-      default: [],
-      required: false,
-    },
+    images: [
+      {
+        public_id: {
+            type: String,
+            required: true
+        },
+        url: {
+            type: String,
+            required: true
+        }
+      }
+    ],
+
     reviews: {
       type: [
         {
@@ -51,7 +58,7 @@ const productSchema = new Schema(
       type: [
         {
           type: Schema.Types.ObjectId,
-          ref: "User", // ref allows populate function to work properly, the function replaces id with its corresponding blog object
+          ref: "User", 
         },
       ],
       default: [],

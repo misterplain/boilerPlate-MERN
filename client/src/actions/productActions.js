@@ -19,6 +19,7 @@ import {
 } from "../constants/collectionsConstants";
 import axios from "../api/axios";
 
+
 const fetchAllProducts = () => async (dispatch) => {
   try {
     dispatch({
@@ -111,6 +112,36 @@ const editProduct = (productId, token, product) => async (dispatch) => {
   }
 };
 
+const deleteImage = (productId, token, image) => async (dispatch) => {
+  console.log(image)
+  try {
+    const options = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const data = await axios.put(
+      `/product/deleteImage/${productId}`,
+      image,
+      options
+    );
+
+    dispatch({
+      type: PRODUCT_EDIT_SUCCESS,
+      payload: data,
+    });
+
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: PRODUCT_EDIT_FAIL,
+      payload: error.message,
+    });
+
+  }
+}
+
 const newProduct = (token, product) => async (dispatch) => {
   try {
     const options = {
@@ -130,6 +161,8 @@ const newProduct = (token, product) => async (dispatch) => {
       type: PRODUCT_ADD_COLLECTION_SUCCESS,
       payload: data,
     });
+
+
   } catch (error) {
     console.log(error);
 
@@ -145,4 +178,4 @@ const newProduct = (token, product) => async (dispatch) => {
   }
 };
 
-export { fetchAllProducts, deleteProduct, editProduct, newProduct };
+export { fetchAllProducts, deleteProduct, editProduct, newProduct, deleteImage };

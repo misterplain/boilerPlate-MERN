@@ -52,7 +52,7 @@ const HomeScreen = () => {
           </Link>
         </Grid>
       ))}{" "}
-      <Grid item={12}>
+      {/* <Grid item={12}>
         <></>
         <Typography variant="h1">Heading 1</Typography>
         <Typography variant="h2">Heading 2</Typography>
@@ -71,7 +71,7 @@ const HomeScreen = () => {
         <Typography variant="overline">Overline</Typography>
         <hr></hr>
         
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 };

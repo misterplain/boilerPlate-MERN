@@ -6,7 +6,8 @@ import Button from "@mui/material/Button";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
-import { fetchUserOrders, cancelOrder } from "../../../actions/orderActions";
+import { fetchAllOrders, cancelOrder } from "../../../actions/orderActions";
+import { format } from "date-fns";
 
 const styles = {
   wrapper: {
@@ -23,37 +24,90 @@ const AccountOrders = () => {
   const token = userAuthState?.accessToken;
 
   useEffect(() => {
-    dispatch(fetchUserOrders(token));
+    dispatch(fetchAllOrders(token));
   }, []);
+
+  function formatDate(date) {
+    return new Intl.DateTimeFormat().format(new Date(date));
+  }
 
   console.log(orderHistory);
 
+  function getOrderStatus(order) {
+    if (order.isCancelled) {
+      return "Cancelled";
+    }
+    if (!order.isShippedToCourier) {
+      return "Awaiting Shipment";
+    }
+    if (order.isShippedToCourier) {
+      return "Shipped";
+    }
+    return "Unknown";
+  }
+
   return (
     <Box sx={styles.wrapper}>
-      {orderHistory?.map((order) => (
-        <Box key={order._id}>
-          <Typography variant="h6">Order #: {order.shortId}</Typography>
-          <Box>
-            {order?.orderedItems?.map((item) => (
-              <Box key={item._id}>
-                <Typography variant="body1">Name: {item.name}</Typography>
-                <Typography variant="body1">
-                  Quantity: {item.quantity}
+      {orderHistory
+        ?.sort((a, b) => new Date(b.datePlaced) - new Date(a.datePlaced))
+        .map((order) => (
+          <Box key={order._id}>
+            <Typography variant="h6">Order #: {order.shortId}</Typography>
+            <Box>
+              {order?.orderedItems?.map((item) => (
+                <Box key={item._id}>
+                  <Typography variant="body1">
+                    {item.name} - {item.quantity} units at ${item.price} each
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+            <Typography variant="body1">Total: {order.totalPrice}</Typography>
+            {order.isPaid && <Typography>Paid: Yes</Typography>}{" "}
+            <Typography sx={{ display: "inline-flex" }}>
+              Status: <Typography>{getOrderStatus(order)}</Typography>
+            </Typography>
+            <Typography>
+              Date Placed:{" "}
+              {order.datePlaced &&
+                format(new Date(order.datePlaced), "dd/MM/yyyy, HH:mm")}
+            </Typography>
+            {order.isShippedToCourier && (
+              <>
+                {" "}
+                <Typography>
+                  Data Shipped:{" "}
+                  {order.isShippedToCourier &&
+                    format(new Date(order.dateShipped), "dd/MM/yyyy, HH:mm")}
                 </Typography>
-                <Typography variant="body1">Price: {item.price}</Typography>
-              </Box>
-            ))}
+                {order.isDelivered && (
+                  <Typography>
+                    Data Delivered:{" "}
+                    {order.isDelivered &&
+                      format(
+                        new Date(order.dateDelivered),
+                        "dd/MM/yyyy, HH:mm"
+                      )}
+                  </Typography>
+                )}
+                <Typography>
+                  Courier Tracking Number: {order.courierTrackingNumber}
+                </Typography>
+              </>
+            )}
+            {!order.isShippedToCourier && !order.isCancelled && (
+              <Button onClick={() => dispatch(cancelOrder(token, order._id))}>
+                Cancel Order
+              </Button>
+            )}
+            {order.isCancelled && (
+              <Button variant="contained" disabled>
+                Cancelled
+              </Button>
+            )}
+            <hr></hr>
           </Box>
-          <Typography variant="body1">Total: {order.totalPrice}</Typography>
-          {!order.isShippedToCourier && !order.isCancelled && (
-            <Button onClick={() => dispatch(cancelOrder(token, order._id))}>
-              Cancel Order
-            </Button>
-          )}
-          {order.isCancelled && <Button variant="contained" disabled>Cancelled</Button>}
-          <hr></hr>
-        </Box>
-      ))}
+        ))}
     </Box>
   );
 };

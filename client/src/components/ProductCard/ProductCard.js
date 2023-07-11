@@ -4,8 +4,17 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 const styles = {
-  wrapper: {
-    border: "1px solid black",
+  cardWrapper: {
+    border: "1px solid purple",
+    display: "flex",
+    width: "90%",
+    height: "390px",
+    flexDirection: "column",
+
+  },
+  cardImage: {
+    width: "100%",
+    height: "70%",
   },
 };
 
@@ -15,7 +24,11 @@ const ProductCard = ({ product }) => {
       <Box
         sx={styles.cardImage}
         component="img"
-        src="https://placehold.co/200"
+        src={
+          product.images.length >= 1
+            ? product.images[0].url
+            : "https://placehold.co/200"
+        }
       />
       <Box sx={styles.namePriceWrapper}>
         <Typography sx={styles.name} variant="h5" component="div">
@@ -37,7 +50,6 @@ const ProductCard = ({ product }) => {
         </Button>
       </Box>
     </Box>
-
   );
 };
 

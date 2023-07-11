@@ -1,13 +1,14 @@
 const Product = require("../models/productModel");
 const Collection = require("../models/collectionModel");
+const cloudinary = require("../utils/cloudinary");
 
 //new product
 //protected route - admin only
 const newProduct = async (req, res) => {
-  const { collectionId, name, price, photos, description, stock } = req.body;
+  const { collectionId, name, price, images, description, stock } = req.body;
   const { isAdmin } = req;
 
-  if (!isAdmin){
+  if (!isAdmin) {
     return res.status(403).json({ message: "Not an admin" });
   }
 
@@ -18,11 +19,21 @@ const newProduct = async (req, res) => {
       return res.status(400).json({ message: "Product already exists" });
     }
 
+    //cloudinary
+    const imageUploadResult = await cloudinary.uploader.upload(images, {
+      folder: "products",
+      width: 300,
+      crop: "scale",
+    });
+
     const newProduct = await Product.create({
       collectionId,
       name,
       price,
-      photos,
+      images: {
+        public_id: imageUploadResult.public_id,
+        url: imageUploadResult.secure_url,
+      },
       description,
       stock,
     });
@@ -38,13 +49,60 @@ const newProduct = async (req, res) => {
       .exec(function (err, populatedCollection) {
         if (err)
           return res.status(500).json({ message: "Something went wrong" });
-
       });
     const reply = {
       message: "Product created",
       newProduct,
     };
     res.status(201).json(reply);
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+
+    console.log(error);
+  }
+};
+
+//delete image from mongoDB database and cloudinary
+//protected route - admin only
+const deleteImage = async (req, res) => {
+  const { productId } = req.params;
+const image = req.body;
+  const { isAdmin } = req;
+
+
+  if (!isAdmin) {
+    return res.status(403).json({ message: "Not an admin" });
+  }
+
+  if (!productId)
+    return res.status(400).json({ message: "No product id provided" });
+
+  try {
+    const productToUpdate = await Product.findById(productId);
+
+    if (!productToUpdate)
+      return res.status(400).json({ message: "No product found with that id" });
+
+    const imageToRemove = productToUpdate.images.find(
+      (img) => img._id == image._id
+    );
+
+    if (!imageToRemove)
+      return res.status(400).json({ message: "No image found with that id" });
+
+    await cloudinary.uploader.destroy(image.public_id);
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      productId,
+      { $pull: { images: { _id: image._id } } },
+      { new: true }
+    );
+
+    const reply = {
+      message: "Image deleted",
+      updatedProduct,
+    };
+    res.json(reply);
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
 
@@ -75,7 +133,7 @@ const deleteProduct = async (req, res) => {
   const { productId } = req.params;
   const { isAdmin } = req;
 
-  if (!isAdmin){
+  if (!isAdmin) {
     return res.status(403).json({ message: "Not an admin" });
   }
 
@@ -98,7 +156,7 @@ const deleteProduct = async (req, res) => {
   const reply = {
     message: "Product deleted",
     deletedProduct,
-    collectionToUpdate
+    collectionToUpdate,
   };
   res.json(reply);
 };
@@ -107,11 +165,19 @@ const deleteProduct = async (req, res) => {
 //protected route - admin only
 const updateProduct = async (req, res) => {
   const { productId } = req.params;
-  const { name, price, photos, description, stock, isFeatured, isDisplayed, collectionId } = req.body;
+  const {
+    name,
+    price,
+    images,
+    description,
+    stock,
+    isFeatured,
+    isDisplayed,
+    collectionId,
+  } = req.body;
   const { isAdmin } = req;
 
-
-  if (!isAdmin){
+  if (!isAdmin) {
     return res.status(403).json({ message: "Not an admin" });
   }
 
@@ -123,29 +189,41 @@ const updateProduct = async (req, res) => {
   if (!productToUpdate)
     return res.status(400).json({ message: "No product found with that id" });
 
-    const oldCollectionId = productToUpdate.collectionId;
+  const oldCollectionId = productToUpdate.collectionId;
 
-    if (oldCollectionId !== collectionId) {
-      await Collection.updateOne(
-        { _id: oldCollectionId },
-        { $pull: { products: productId } }
-      );
-    }
+  if (oldCollectionId !== collectionId) {
+    await Collection.updateOne(
+      { _id: oldCollectionId },
+      { $pull: { products: productId } }
+    );
+  }
 
-  const updatedProduct = await Product.findByIdAndUpdate(
-    productId,
-    {
-      name,
-      price,
-      photos,
-      description,
-      stock,
-      isFeatured,
-      isDisplayed,
-      collectionId,
-    },
-    { new: true }
-  );
+    // cloudinary
+    const imageUploadResult = await cloudinary.uploader.upload(images, {
+      folder: "products",
+      width: 300,
+      crop: "scale",
+    });
+
+    const newImageData = {
+      public_id: imageUploadResult.public_id,
+      url: imageUploadResult.secure_url,
+    };
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      productId,
+      {
+        name,
+        price,
+        $push: { images: newImageData },
+        description,
+        stock,
+        isFeatured,
+        isDisplayed,
+        collectionId,
+      },
+      { new: true }
+    );
 
   if (oldCollectionId !== collectionId) {
     await Collection.updateOne(
@@ -154,13 +232,18 @@ const updateProduct = async (req, res) => {
     );
   }
 
-
   const reply = {
     message: "Product updated",
     updatedProduct,
-    oldCollectionId
+    oldCollectionId,
   };
   res.json(reply);
 };
 
-module.exports = { newProduct, getAllProducts, deleteProduct, updateProduct };
+module.exports = {
+  newProduct,
+  getAllProducts,
+  deleteProduct,
+  updateProduct,
+  deleteImage,
+};

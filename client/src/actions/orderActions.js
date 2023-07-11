@@ -20,6 +20,8 @@ import {
   FETCH_USER_ORDERS_FAIL,
   CANCEL_ORDER_SUCCESS,
   CANCEL_ORDER_FAIL,
+  EDIT_ORDER_SUCCESS,
+  EDIT_ORDER_FAIL,
 } from "../constants/userConstants";
 import { EMPTY_CART } from "../constants/cartConstants";
 import axios from "../api/axios";
@@ -122,7 +124,7 @@ const fetchUserOrders = (token) => async (dispatch) => {
 
     dispatch({
       type: FETCH_USER_ORDERS_SUCCESS,
-      payload: data.data.userOrders,
+      payload: data.data.allOrders,
     });
   } catch (error) {
     dispatch({ type: FETCH_USER_ORDERS_FAIL, payload: error });
@@ -149,12 +151,60 @@ const cancelOrder = (token, orderId) => async (dispatch) => {
     });
 
     // dispatch(fetchUserOrders(token));
-
   } catch (error) {
     dispatch({ type: CANCEL_ORDER_FAIL, payload: error });
     console.log(error);
   }
 };
+
+const fetchAllOrders = (token) => async (dispatch) => {
+  console.log("fetchAllOrders");
+
+  try {
+    const options = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const data = await axios.get("/orders/get", options);
+
+    dispatch({
+      type: FETCH_USER_ORDERS_SUCCESS,
+      payload: data.data.allOrders,
+    });
+  } catch (error) {
+    dispatch({ type: FETCH_USER_ORDERS_FAIL, payload: error });
+  }
+};
+
+const editOrder =
+  ({ token, orderId, requestData }) =>
+  async (dispatch) => {
+    const options = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      const data = await axios.put(
+        `/orders/edit/${orderId}`,
+        {editRequest: requestData},
+        options
+      );
+
+      // console.log(data.data)
+
+      // Dispatch success action with response data
+      dispatch({ type: EDIT_ORDER_SUCCESS, payload: data.data.editedOrder });
+    } catch (error) {
+      // Dispatch failure action with error
+      dispatch({ type: EDIT_ORDER_FAIL, payload: error });
+    }
+  };
 
 export {
   setInitialOrderInfo,
@@ -165,4 +215,6 @@ export {
   setEmailAddress,
   fetchUserOrders,
   cancelOrder,
+  fetchAllOrders,
+  editOrder,
 };

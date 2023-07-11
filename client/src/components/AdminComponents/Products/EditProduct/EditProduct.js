@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -14,13 +14,29 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
-import { editProduct } from "../../../../actions/productActions";
+import { editProduct, deleteImage } from "../../../../actions/productActions";
+import { AiOutlineDelete } from "react-icons/ai";
+import axios from "axios";
+import { imageListItemClasses } from "@mui/material";
 
 const styles = {
   wrapper: {
     border: "1px solid black",
   },
+  imageToUpload: {
+    width: "300px",
+    height: "auto",
+  },
+  existingImagesWrapper: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  existingImages: {
+    width: "100px",
+    height: "auto",
+  },
 };
+
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Required"),
@@ -46,6 +62,24 @@ const EditProduct = () => {
   const userAuthState = useSelector((state) => state.userAuth);
   const token = userAuthState?.accessToken;
 
+  const [selectedFile, setSelectedFile] = useState(null);
+
+const inputFileRef = useRef();
+
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    setFileToBase(file);
+    console.log(file);
+  };
+
+  const setFileToBase = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setSelectedFile(reader.result);
+    };
+  };
+
   return (
     <Box sx={styles.wrapper}>
       <Formik
@@ -57,6 +91,7 @@ const EditProduct = () => {
           price: product.price,
           stock: product.stock,
           description: product.description,
+        
         }}
         validationSchema={validationSchema}
         onSubmit={async (values, { resetForm }) => {
@@ -68,9 +103,14 @@ const EditProduct = () => {
             price: values.price,
             stock: values.stock,
             description: values.description,
+            images: selectedFile,
           };
 
           dispatch(editProduct(productId, token, productData));
+          setSelectedFile(null);
+          if (inputFileRef.current) {
+            inputFileRef.current.value = '';
+          }
         }}
       >
         {({
@@ -205,6 +245,53 @@ const EditProduct = () => {
                 />
               </FormGroup>
             </FormControl>
+            <hr></hr>
+            <FormControl>
+              <FormLabel id="images">New Image</FormLabel>
+              <Box>
+                {" "}
+                <input
+                ref={inputFileRef}
+                  onChange={handleImage}
+                  type="file"
+                  id="formupload"
+                  name="image"
+                  className="form-control"
+                />
+                <label className="form-label" htmlFor="form4Example2">
+                  New Image
+                </label>
+              </Box>
+
+              <Box
+                sx={styles.imageToUpload}
+                component="img"
+                src={selectedFile}
+                alt=""
+              />
+            </FormControl>
+            <Box>
+              <Typography>Existing Images</Typography>
+              {product.images.map((image) => (
+                <Box sx={styles.existingImagesWrapper}>
+                  <Box
+                    sx={styles.existingImages}
+                    component="img"
+                    src={image.url}
+                    alt=""
+                  />
+                  <Button
+                    style={{ width: "100px", display: "block" }}
+                    onClick={() => {
+                      console.log(image)
+                      dispatch(deleteImage(productId, token, image));
+                    }}
+                  >
+                    <AiOutlineDelete />
+                  </Button>
+                </Box>
+              ))}
+            </Box>
             <hr></hr>
             <Button type="submit">Send Edit</Button>{" "}
           </form>

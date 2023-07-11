@@ -4,7 +4,6 @@ const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel.js");
 const generateUserTokens = require("../middleware/generateToken.js");
 
-//new review after userToken is validated, req.userId is available
 const addAddress = asyncHandler(async (req, res) => {
   const { userId } = req;
   const { street, city, postalCode, country, isDefault } = req.body;
