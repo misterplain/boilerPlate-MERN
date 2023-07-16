@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
@@ -21,7 +21,10 @@ import {
   removeCartItemUser,
   removeCartItemGuest,
 } from "../actions/cartActions";
+import { fetchReviews, clearReviews } from "../actions/reviewsActions";
 import ProductCarousel from "../components/ProductCarousel/ProductCarousel";
+import ProductReviews from "../components/ProductReviews/ProductReviews";
+
 
 const ProductScreen = () => {
   const location = useLocation();
@@ -36,8 +39,12 @@ const ProductScreen = () => {
   const cartState = useSelector((state) => state.shoppingCart);
   const { cartItems, loading, error } = cartState || {};
   const token = userAuthState?.accessToken;
+  const reviewsState = useSelector((state) => state.reviews);
+  const { reviews } = reviewsState || {};
 
   const { isOpen, setIsOpen } = useCartDrawer();
+
+  // const [fetched, setFetched] = useState(false);
 
   const displayedProduct = productList.products.find(
     (product) => product._id === productId
@@ -50,6 +57,18 @@ const ProductScreen = () => {
   const validationSchema = Yup.object({
     quantity: Yup.number().required("Required"),
   });
+
+  useEffect(() => {
+    if (!displayedProduct || !displayedProduct._id) return;
+
+    if (reviews && reviews?.length >= 1 && displayedProduct._id !== reviews[0]?.productId) {
+      dispatch(clearReviews());
+    }
+    // setFetched(true);
+    console.log("fetching reviews");
+    dispatch(fetchReviews(displayedProduct._id));
+  }, [dispatch, token, displayedProduct]);
+
 
   const styles = {
     wrapper: {
@@ -167,6 +186,10 @@ const ProductScreen = () => {
             </Formik>
           </>
         )}
+      </Grid>
+      <Grid item xs={10} sm={10}>
+        <ProductReviews />
+        {/* <ReviewModal open={open} handleClose={handleCloseModal} /> */}
       </Grid>
     </Grid>
   );

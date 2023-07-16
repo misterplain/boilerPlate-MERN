@@ -11,6 +11,8 @@ import {
   CANCEL_ORDER_FAIL,
   EDIT_ORDER_SUCCESS,
   EDIT_ORDER_FAIL,
+  UPDATE_FAVORITE_SUCCESS,
+  UPDATE_FAVORITE_FAIL,
 } from "../constants/userConstants";
 
 export const userReducer = (state = { isGuest: true }, action) => {
@@ -20,10 +22,12 @@ export const userReducer = (state = { isGuest: true }, action) => {
         ...state,
         userDetails: {
           username: action.payload.username,
+          userId: action.payload._id,
           email: action.payload.email,
           isAdmin: action.payload.isAdmin,
           isGuest: false,
           addresses: action.payload.addresses,
+          favorites: action.payload.favorites,
         },
         isGuest: false,
         orderHistory: action.payload.orders,
@@ -97,6 +101,20 @@ export const userReducer = (state = { isGuest: true }, action) => {
         ),
       };
     case EDIT_ORDER_FAIL:
+      return {
+        ...state,
+        error: action.payload.message,
+      };
+
+    case UPDATE_FAVORITE_SUCCESS:
+      return {
+        ...state,
+        userDetails: {
+          ...state.userDetails,
+          favorites: action.payload,
+        },
+      };
+    case UPDATE_FAVORITE_FAIL:
       return {
         ...state,
         error: action.payload.message,

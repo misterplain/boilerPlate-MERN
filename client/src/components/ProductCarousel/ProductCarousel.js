@@ -23,9 +23,9 @@ const ProductCarousel = ({ product }) => {
     <Grid container>
       <Grid item xs={12} sm={6} sx={{ marginBottom: "50px" }}>
         {" "}
-        {product.images &&
-          product.images.map((step, index) => (
-            <Grid container item xs={12} key={step.id}>
+        {product && product?.images &&
+          product?.images?.map((step, index) => (
+            <Grid container item xs={12} key={index}>
               {selectedImageStep === index ? (
                 <>
                   <Grid item xs={12}>
@@ -40,7 +40,7 @@ const ProductCarousel = ({ product }) => {
               ) : null}
             </Grid>
           ))}
-        {product.images.length > 1 ? (
+        {product?.images?.length > 1 ? (
           <Grid item xs={12}>
             {" "}
             <MobileStepper

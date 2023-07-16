@@ -3,19 +3,18 @@ import {
   ADD_ADDRESS_SUCCESS,
   REMOVE_ADDRESS_FAIL,
   REMOVE_ADDRESS_SUCCESS,
+  UPDATE_FAVORITE_SUCCESS,
+  UPDATE_FAVORITE_FAIL,
 } from "../constants/userConstants";
 import axios from "../api/axios";
 
 const addAddress = (token, address) => async (dispatch) => {
-
   try {
     const options = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-
-
 
     const data = await axios.post(`/user/addaddress`, address, options);
 
@@ -33,7 +32,6 @@ const addAddress = (token, address) => async (dispatch) => {
 };
 
 const deleteAddress = (token, addressId) => async (dispatch) => {
-
   try {
     const options = {
       headers: {
@@ -59,4 +57,34 @@ const deleteAddress = (token, addressId) => async (dispatch) => {
   }
 };
 
-export { addAddress, deleteAddress };
+const updateFavorites = ({token, method, productId}) => async (dispatch) => {
+
+  try {
+    const options = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const data = await axios.post(
+      `/user/updatefavorites`,
+      { method, productId },
+      options
+    );
+
+    console.log(data)
+
+    dispatch({
+      type: UPDATE_FAVORITE_SUCCESS,
+      payload: data.data.updatedUser.favorites,
+    });
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: UPDATE_FAVORITE_FAIL,
+      payload: error.message,
+    });
+  }
+};
+
+export { addAddress, deleteAddress, updateFavorites };

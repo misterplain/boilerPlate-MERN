@@ -190,7 +190,6 @@ export const loginOAuthAndSyncCart =
           };
 
           const data = await axios.get("/cart/get", options);
-          console.log(data);
 
           dispatch({
             type: OAUTH_UPDATE_CART_SUCCESS,

@@ -33,8 +33,8 @@ const AdminCollections = () => {
   const { products } = productsList;
   //get token from state
   const userAuthState = useSelector((state) => state.userAuth);
-  const [collectionProductsId, setCollectionProductsId] = useState(null);
   const token = userAuthState?.accessToken;
+  const [collectionProductsId, setCollectionProductsId] = useState(null);
 
   return (
     <Box sx={styles.wrapper}>
@@ -168,7 +168,7 @@ const AdminCollections = () => {
         <Box sx={styles.productsWrapper}>
           <Typography>Products within {collectionName} Collection</Typography>
           <Box sx={styles.addProductButton}>
-            <Link component={NavLink} to={'/admin/products/new'}>
+            <Link component={NavLink} to={"/admin/products/new"}>
               <Button>New Product</Button>
             </Link>
           </Box>

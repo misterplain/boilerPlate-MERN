@@ -9,6 +9,10 @@ import {
   PRODUCT_ADD_FAIL,
   PRODUCT_ADD_SUCCESS,
 } from "../constants/productConstants";
+import {
+  DELETE_REVIEW_FAIL,
+  DELETE_REVIEW_SUCCESS,
+} from "../constants/reviewsConstants";
 
 const productListReducer = (state = { products: [] }, action) => {
   switch (action.type) {
@@ -51,7 +55,7 @@ const productListReducer = (state = { products: [] }, action) => {
         ),
       };
     case PRODUCT_EDIT_FAIL:
-      console.log(action.payload)
+      console.log(action.payload);
       return {
         loading: false,
         error: action.payload.data.message,
@@ -66,6 +70,23 @@ const productListReducer = (state = { products: [] }, action) => {
       return {
         loading: false,
         error: action.payload.data.message,
+      };
+
+    case DELETE_REVIEW_SUCCESS:
+
+    console.log(action.payload.data)
+      return {
+        ...state,
+        products: state.products.map((product) =>
+          product._id === action.payload.data.productId
+            ? {
+                ...product,
+                reviews: product.reviews.filter(
+                  (review) => review !== action.payload.data.reviewId
+                ),
+              }
+            : product
+        ),
       };
 
     default:

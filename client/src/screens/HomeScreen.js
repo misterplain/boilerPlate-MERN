@@ -47,9 +47,9 @@ const HomeScreen = () => {
       </Grid>
       {productList?.products?.map((product) => (
         <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
-          <Link component={NavLink} to={`/product/${product._id}`}>
+
             <ProductCard product={product} />
-          </Link>
+
         </Grid>
       ))}{" "}
       {/* <Grid item={12}>

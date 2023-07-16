@@ -33,8 +33,6 @@ const CartItems = () => {
     return { ...item, product: productDetails, name: productDetails.name };
   });
 
-  console.log(detailedCartItems)
-
   // const productInBasket = cartItems?.find(
   //   (item) => item.product === displayedProduct._id
   // );
