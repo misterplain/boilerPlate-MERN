@@ -25,7 +25,6 @@ import { fetchReviews, clearReviews } from "../actions/reviewsActions";
 import ProductCarousel from "../components/ProductCarousel/ProductCarousel";
 import ProductReviews from "../components/ProductReviews/ProductReviews";
 
-
 const ProductScreen = () => {
   const location = useLocation();
   const { productId } = useParams();
@@ -61,14 +60,17 @@ const ProductScreen = () => {
   useEffect(() => {
     if (!displayedProduct || !displayedProduct._id) return;
 
-    if (reviews && reviews?.length >= 1 && displayedProduct._id !== reviews[0]?.productId) {
+    if (
+      reviews &&
+      reviews?.length >= 1 &&
+      displayedProduct._id !== reviews[0]?.productId
+    ) {
       dispatch(clearReviews());
     }
     // setFetched(true);
     console.log("fetching reviews");
-    dispatch(fetchReviews(displayedProduct._id));
+    dispatch(fetchReviews(token, displayedProduct._id));
   }, [dispatch, token, displayedProduct]);
-
 
   const styles = {
     wrapper: {
@@ -188,7 +190,10 @@ const ProductScreen = () => {
         )}
       </Grid>
       <Grid item xs={10} sm={10}>
-        <ProductReviews />
+        {displayedProduct && (
+          <ProductReviews productId={displayedProduct._id} />
+        )}
+
         {/* <ReviewModal open={open} handleClose={handleCloseModal} /> */}
       </Grid>
     </Grid>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -34,7 +35,7 @@ const style = {
   p: 4,
 };
 
-const ReviewModal = ({ open, handleClose, review }) => {
+const ReviewModal = ({ open, handleClose, review, productId }) => {
   const dispatch = useDispatch();
   const userAuthState = useSelector((state) => state.userAuth);
   const { authenticated } = userAuthState;
@@ -45,12 +46,6 @@ const ReviewModal = ({ open, handleClose, review }) => {
 
   const reviewsState = useSelector((state) => state.reviews);
   const { reviews } = reviewsState || {};
-
-  //   const [open, setOpen] = React.useState(false);
-  //   const handleOpen = () => setOpen(true);
-  //   const handleClose = () => setOpen(false);
-
-  console.log(review);
 
   const validationSchema = Yup.object({
     reviewTitle: Yup.string().required("Required"),
@@ -67,9 +62,6 @@ const ReviewModal = ({ open, handleClose, review }) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            {review && review.reviewTitle}
-          </Typography>
           <Box>
             <Formik
               initialValues={{
@@ -79,7 +71,27 @@ const ReviewModal = ({ open, handleClose, review }) => {
               }}
               validationSchema={validationSchema}
               onSubmit={async (values, { resetForm }) => {
-                const productData = {};
+                const reviewData = {
+                  reviewTitle: values.reviewTitle,
+                  rating: values.reviewRating,
+                  comment: values.reviewContent,
+                  approvedByAdmin: false,
+                  awaitingModeration: true,
+                };
+                try {
+                  review
+                    ? await dispatch(
+                        editReview(token, review._id, reviewData)
+                      )
+                    : await dispatch(
+                        createReview(token, productId, reviewData)
+                      );
+
+                  handleClose();
+                  resetForm();
+                } catch (error) {
+                  console.log("Review operation failed", error);
+                }
               }}
             >
               {({

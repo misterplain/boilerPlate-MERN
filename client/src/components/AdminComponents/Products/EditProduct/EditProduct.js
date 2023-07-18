@@ -103,7 +103,7 @@ const inputFileRef = useRef();
             price: values.price,
             stock: values.stock,
             description: values.description,
-            images: selectedFile,
+            images: selectedFile
           };
 
           dispatch(editProduct(productId, token, productData));
