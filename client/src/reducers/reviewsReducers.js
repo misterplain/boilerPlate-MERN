@@ -3,6 +3,8 @@ import {
   CREATE_REVIEW_FAIL,
   FETCH_REVIEWS_SUCCESS,
   FETCH_REVIEWS_FAIL,
+  FETCH_UNMODERATED_REVIEWS_SUCCESS,
+  FETCH_UNMODERATED_REVIEWS_FAIL,
   CLEAR_REVIEWS,
   DELETE_REVIEW_SUCCESS,
   DELETE_REVIEW_FAIL,
@@ -18,7 +20,8 @@ export const reviewsReducer = (state = {}, action) => {
       const updatedReviews = [...state.reviews, action.payload];
       return {
         ...state,
-        reviews: updatedReviews,
+        reviews: [...state.reviews],
+        userReview: [action.payload],
       };
     case CREATE_REVIEW_FAIL:
       return {
@@ -26,7 +29,6 @@ export const reviewsReducer = (state = {}, action) => {
         error: action.payload.error.message,
       };
     case FETCH_REVIEWS_SUCCESS:
-        console.log(action.payload)
       return {
         ...state,
         error: null,
@@ -39,15 +41,29 @@ export const reviewsReducer = (state = {}, action) => {
         ...state,
         error: action.payload,
       };
+
+    case FETCH_UNMODERATED_REVIEWS_SUCCESS:
+      return {
+        ...state,
+        error: null,
+        reviews: action.payload,
+      };
+
+    case FETCH_UNMODERATED_REVIEWS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
     case DELETE_REVIEW_SUCCESS:
-      const updatedReviewsDelete = state.reviews.filter(
-        (review) => review._id !== action.payload._id
-      );
+      // const updatedReviewsDelete = state.reviews.filter(
+      //   (review) => review._id !== action.payload._id
+      // );
 
       return {
         ...state,
         error: null,
-        reviews: updatedReviewsDelete,
+        reviews: [...state.reviews],
+        userReview: [action.payload],
       };
     case DELETE_REVIEW_FAIL:
       return {
@@ -82,16 +98,15 @@ export const reviewsReducer = (state = {}, action) => {
       console.log(action.payload);
       return {
         ...state,
-        reviews: state.reviews.map((review) =>
-          review._id === action.payload._id ? action.payload : review
-        ),
+        reviews: [...state.reviews],
+        userReview: [action.payload],
       };
 
-      case EDIT_REVIEW_FAIL:
-        return {
-            ...state,
-            error: action.payload,
-        }
+    case EDIT_REVIEW_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
 
     default:
       return state;

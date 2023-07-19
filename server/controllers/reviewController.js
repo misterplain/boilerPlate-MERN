@@ -191,7 +191,10 @@ const editReview = asyncHandler(async (req, res) => {
     reviewToEdit.comment = reviewData.comment; 
     reviewToEdit.approvedByAdmin = false;
     reviewToEdit.awaitingModeration = true;
+    reviewToEdit.isDeleted = false;
     await reviewToEdit.save();
+
+
 
     const reply = {
       message: "Review edited",

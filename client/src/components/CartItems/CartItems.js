@@ -29,8 +29,8 @@ const CartItems = () => {
   const token = userAuthState?.accessToken;
 
   const detailedCartItems = cartItems?.map((item) => {
-    const productDetails = products.find((p) => p._id === item.product);
-    return { ...item, product: productDetails, name: productDetails.name };
+    const productDetails = products?.find((p) => p._id === item.product);
+    return { ...item, product: productDetails, name: productDetails?.name };
   });
 
   // const productInBasket = cartItems?.find(
@@ -120,64 +120,69 @@ const CartItems = () => {
           </Box>
           <Box sx={styles.cartItemsWrapper}>
             {detailedCartItems &&
-              detailedCartItems?.map((item) => (
-                <Box sx={styles.cartItem} key={item.product._id}>
-                  {/* {item.product.name} - {item.quantity} */}
-                  <Box sx={styles.imageTitleDeleteWrapper}>
-                    {" "}
-                    <Link
-                      component={NavLink}
-                      to={`/product/${item.product._id}`}
-                      onClick={() => {
-                        cartDrawerContext.setIsOpen(false);
-                      }}
-                    >
-                      <Box sx={styles.imageTitle}>
+              detailedCartItems?.map((item) => {
+                if (!item.product) {
+                  return null;
+                }
+                return (
+                  <Box sx={styles.cartItem} key={item.product._id}>
+                    {/* {item.product.name} - {item.quantity} */}
+                    <Box sx={styles.imageTitleDeleteWrapper}>
+                      {" "}
+                      <Link
+                        component={NavLink}
+                        to={`/product/${item.product._id}`}
+                        onClick={() => {
+                          cartDrawerContext.setIsOpen(false);
+                        }}
+                      >
+                        <Box sx={styles.imageTitle}>
+                          <Box
+                            sx={styles.image}
+                            component="img"
+                            src={
+                              item.product.images.length >= 1
+                                ? item.product.images[0].url
+                                : "https://placehold.co/80x80"
+                            }
+                          />
+                          <Box sx={styles.title}>{item.product.name}</Box>
+                        </Box>{" "}
+                      </Link>
+                      <Box
+                        sx={styles.deleteWrapper}
+                        onClick={() => {
+                          handleDeleteItem(item);
+                        }}
+                      >
+                        <DeleteOutlineIcon />
+                      </Box>
+                    </Box>
+                    <Box sx={styles.cartItemInfoWrapper}>
+                      <Box sx={styles.cartItemInfoText}>Price</Box>
+                      <Box sx={styles.cartItemInfo}>${cartItemTotal(item)}</Box>
+                    </Box>
+                    <Box sx={styles.cartItemInfoWrapper}>
+                      <Box sx={styles.cartItemInfoText}>Quantity</Box>
+                      <Box sx={styles.quantity}>
                         <Box
-                        sx={styles.image}
-                          component="img"
-                          src={
-                            item.product.images.length >= 1
-                              ? item.product.images[0].url
-                              : "https://placehold.co/80x80"
-                          }
-                        />
-                        <Box sx={styles.title}>{item.product.name}</Box>
-                      </Box>{" "}
-                    </Link>
-                    <Box
-                      sx={styles.deleteWrapper}
-                      onClick={() => {
-                        handleDeleteItem(item);
-                      }}
-                    >
-                      <DeleteOutlineIcon />
-                    </Box>
-                  </Box>
-                  <Box sx={styles.cartItemInfoWrapper}>
-                    <Box sx={styles.cartItemInfoText}>Price</Box>
-                    <Box sx={styles.cartItemInfo}>${cartItemTotal(item)}</Box>
-                  </Box>
-                  <Box sx={styles.cartItemInfoWrapper}>
-                    <Box sx={styles.cartItemInfoText}>Quantity</Box>
-                    <Box sx={styles.quantity}>
-                      <Box
-                        sx={styles.quantityIcon}
-                        onClick={() => handleIncreaseQuantity(item)}
-                      >
-                        <AiOutlinePlus />
-                      </Box>
-                      <Box sx={styles.cartItemInfo}>{item.quantity}</Box>
-                      <Box
-                        sx={styles.quantityIcon}
-                        onClick={() => handleDecreaseQuantity(item)}
-                      >
-                        <AiOutlineMinus />
+                          sx={styles.quantityIcon}
+                          onClick={() => handleIncreaseQuantity(item)}
+                        >
+                          <AiOutlinePlus />
+                        </Box>
+                        <Box sx={styles.cartItemInfo}>{item.quantity}</Box>
+                        <Box
+                          sx={styles.quantityIcon}
+                          onClick={() => handleDecreaseQuantity(item)}
+                        >
+                          <AiOutlineMinus />
+                        </Box>
                       </Box>
                     </Box>
                   </Box>
-                </Box>
-              ))}
+                );
+              })}
           </Box>
         </>
       )}

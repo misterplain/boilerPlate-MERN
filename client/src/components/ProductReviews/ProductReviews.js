@@ -22,7 +22,6 @@ const ProductReviews = ({ productId }) => {
 
   const reviewsState = useSelector((state) => state.reviews);
   const { reviews, userReview } = reviewsState || {};
-  console.log(userReview);
 
   //modal state
 
@@ -42,9 +41,9 @@ const ProductReviews = ({ productId }) => {
   //determine if user has posted a review and what type of review this is
 
   // Helper function to check if user has already posted a review
-  const userHasReview = (reviews, userId) => {
-    return reviews && reviews.some((review) => review.userId === userId);
-  };
+  // const userHasReview = (reviews, userId) => {
+  //   return reviews && reviews.some((review) => review.userId === userId);
+  // };
 
   // Helper function to get the user's review
   // const getUserReview = (reviews, userId) => {
@@ -73,7 +72,10 @@ const ProductReviews = ({ productId }) => {
   return (
     <Box sx={styles.wrapper}>
       {/* {authenticated && <Button onClick={() => handleOpenModal(null)}> New Review</Button>} */}
-      {!userHasReview(reviews, userId) && authenticated && (
+      {/* {!userHasReview(reviews, userId) && authenticated && (
+        <Button onClick={() => handleOpenModal(null)}>New Review</Button>
+      )} */}
+      {userReview && userReview?.length <= 0 && authenticated && (
         <Button onClick={() => handleOpenModal(null)}>New Review</Button>
       )}
       {userReview &&
@@ -82,13 +84,18 @@ const ProductReviews = ({ productId }) => {
             sx={{ ...styles.reviewWrapper, ...getReviewStyle(userReview) }}
             key={review._id}
           >
+            {review.isDeleted && (
+              <Typography>
+                THIS REVIEW IS DELETED, EDIT YOUR REVIEW TO REPOST
+              </Typography>
+            )}
             <Typography sx={styles.reviewTitle} variant="h5" component="div">
               {review.reviewTitle}
             </Typography>
             <Typography sx={styles.reviewText} variant="h5" component="div">
               {review.comment}
             </Typography>
-            <Typography>{userReview.rating}</Typography>
+            <Typography>{review.rating}</Typography>
             {userId && userId === review.userId ? (
               <>
                 {" "}
@@ -102,19 +109,59 @@ const ProductReviews = ({ productId }) => {
                 >
                   Edit
                 </Button>
-                <Button
-                  color="secondary"
-                  sx={styles.button}
-                  onClick={() => {
-                    dispatch(deleteReview(token, review._id));
-                  }}
-                >
-                  Delete
-                </Button>
+                {!review.isDeleted && (
+                  <Button
+                    color="secondary"
+                    sx={styles.button}
+                    onClick={() => {
+                      dispatch(deleteReview(token, review._id));
+                    }}
+                  >
+                    Delete
+                  </Button>
+                )}
               </>
             ) : null}
           </Box>
         ))}
+      {/* {userReview && (
+        <Box
+          sx={{ ...styles.reviewWrapper, ...getReviewStyle(userReview) }}
+          key={userReview._id}
+        >
+          <Typography sx={styles.reviewTitle} variant="h5" component="div">
+            {userReview.reviewTitle}
+          </Typography>
+          <Typography sx={styles.reviewText} variant="h5" component="div">
+            {userReview.comment}
+          </Typography>
+          <Typography>{userReview.rating}</Typography>
+          {userId && userId === userReview.userId ? (
+            <>
+              {" "}
+              <Button
+                color="success"
+                sx={styles.button}
+                onClick={() => {
+                  console.log("Edit review");
+                  handleOpenModal(userReview);
+                }}
+              >
+                Edit
+              </Button>
+              <Button
+                color="secondary"
+                sx={styles.button}
+                onClick={() => {
+                  dispatch(deleteReview(token, userReview._id));
+                }}
+              >
+                Delete
+              </Button>
+            </>
+          ) : null}
+        </Box>
+      )} */}
       {otherReviews &&
         otherReviews.map((review) => (
           <Box sx={styles.reviewWrapper} key={review._id}>

@@ -210,11 +210,15 @@ const updateProduct = async (req, res) => {
     };
 
     if (images) {
-      // If images are present, perform cloudinary operations and add to the updateObject
       const imageUploadResult = await cloudinary.uploader.upload(images, {
         folder: "products",
-        width: 300,
-        crop: "scale",
+        width: 400,
+        height: 300,
+        crop: "fill",
+        gravity: "center",
+        eager: [
+          { width: 1000, height: 600, crop: "fill", gravity: "face:auto" },
+        ],
       });
 
       const newImageData = {

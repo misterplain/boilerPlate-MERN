@@ -28,7 +28,7 @@ const CartSummary = () => {
   });
 
   const cartItemTotal = (item) => {
-    return item.product.price * item.quantity;
+    return item?.product?.price * item?.quantity;
   };
 
   const cartTotal = detailedCartItems?.reduce((acc, item) => {

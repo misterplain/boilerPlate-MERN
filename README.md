@@ -35,16 +35,24 @@
 
 ## Item 
 
-1. [] collection, photos, title, description, longDescription, alt, stock, reviews(ratings), isFeatured, tags
+1. [x] collection, photos, title, description, longDescription, alt, stock, reviews(ratings), isFeatured
 
 ## MISC
 
 1. [] making a purchase changes the stock information
-2. [] Photo carousel on each item
+2. [x] Photo carousel on each item
 3. [] sort functionality on products page / collections (price high to low, most reviewed, highest rated)
 4. [] consider adding password reset functionality
 5. [] Sort items on main page for featured items
 6. [] cards on main page linking to collection, add and edit collection photo
 7. [] rate limiting for the backend 
+8. [x] when user goes back to homepage it triggers fetchProducts()
+9. [] customer cannot add to an order the available stock
+10. [] when a user cancels an order, the stock is added to backend
+11. [] user can report a review which removes it and puts it back in moderation
+12. [x] cloudinary formating to maintain aspect ratio, central cropping
+13. [] replace 1-5 ratings with stars
+14. [] within ratings, get average rating based on X reviews
+15. [] when you confirm an order, if anything is out of stock it will reply with error 
 
 

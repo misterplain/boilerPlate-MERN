@@ -1,44 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Layout from "./components/Layout/Layout";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import HomeScreen from "./screens/HomeScreen";
-import ContactScreen from "./screens/ContactScreen";
-import ProductScreen from "./screens/ProductScreen";
-import OrderHistoryScreen from "./screens/OrderHistoryScreen";
-import AdminScreen from "./screens/AdminScreen";
-import UserAccountScreen from "./screens/UserAccountScreen";
-import Favorites from "./screens/FavoritesScreen";
-import CartScreen from "./screens/CartScreen";
-import LoginScreen from "./screens/LoginScreen";
-import RegisterScreen from "./screens/RegisterScreen";
-import CheckoutScreen from "./screens/CheckoutScreen";
+import { BrowserRouter } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { fetchAllProducts } from "./actions/productActions";
-import { fetchAllCollections } from "./actions/collectionsActions";
+import AppRoutes from "./routes/AppRoutes";
 
 const App = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [viewport, setViewport] = useState("");
-
-  const userAuthState = useSelector((state) => state.userAuth);
-  const { authenticated } = userAuthState;
-  const userDetailsState = useSelector((state) => state.userDetails);
-  const { email, username, isAdmin } = userDetailsState?.userDetails || {};
-  const productList = useSelector((state) => state.productList);
-  const collectionsList = useSelector((state) => state.collections);
-
-  useEffect(() => {
-    if (productList && productList?.products?.length === 0) {
-      dispatch(fetchAllProducts());
-    }
-    if (collectionsList && collectionsList?.collections?.length === 0) {
-      dispatch(fetchAllCollections());
-    }
-  }, [dispatch]);
 
   useEffect(() => {
     function handleResize() {
@@ -65,44 +37,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Layout>
-        <Routes>
-          <Route index element={<HomeScreen />} />
-          <Route path={"/"} element={<HomeScreen />} />
-          <Route path={"/contact"} element={<ContactScreen />} />
-          <Route path={"/cart"} element={<CartScreen />} />
-          <Route
-            path={"/auth"}
-            element={authenticated ? <Navigate to="/" /> : <LoginScreen />}
-          />
-          <Route
-            path={"/register"}
-            element={authenticated ? <Navigate to="/" /> : <RegisterScreen />}
-          />
-          <Route path={"/product/:productId"} element={<ProductScreen />} />
-          <Route
-            path={"/favorites"}
-            element={authenticated ? <Favorites /> : <Navigate to="/" />}
-          />
-          <Route
-            path={"/useraccount/*"}
-            element={
-              authenticated ? <UserAccountScreen /> : <Navigate to="/" />
-            }
-          />
-          <Route
-            path={"/admin/*"}
-            element={
-              authenticated && isAdmin ? <AdminScreen /> : <Navigate to="/" />
-            }
-          />
-          <Route
-            path={"/orders"}
-            element={
-              authenticated ? <OrderHistoryScreen /> : <Navigate to="/" />
-            }
-          />
-          <Route path={"/checkout"} element={<CheckoutScreen />} />
-        </Routes>
+        <AppRoutes />
       </Layout>
       <Box
         position="fixed"

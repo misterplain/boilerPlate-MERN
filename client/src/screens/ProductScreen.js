@@ -45,12 +45,12 @@ const ProductScreen = () => {
 
   // const [fetched, setFetched] = useState(false);
 
-  const displayedProduct = productList.products.find(
+  const displayedProduct = productList?.products?.find(
     (product) => product._id === productId
   );
 
   const productInBasket = cartItems?.find(
-    (item) => item.product === displayedProduct._id
+    (item) => item?.product === displayedProduct?._id
   );
 
   const validationSchema = Yup.object({
@@ -68,7 +68,7 @@ const ProductScreen = () => {
       dispatch(clearReviews());
     }
     // setFetched(true);
-    console.log("fetching reviews");
+
     dispatch(fetchReviews(token, displayedProduct._id));
   }, [dispatch, token, displayedProduct]);
 

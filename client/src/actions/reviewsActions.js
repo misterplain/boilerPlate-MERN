@@ -3,6 +3,8 @@ import {
   CREATE_REVIEW_FAIL,
   FETCH_REVIEWS_SUCCESS,
   FETCH_REVIEWS_FAIL,
+  FETCH_UNMODERATED_REVIEWS_SUCCESS,
+  FETCH_UNMODERATED_REVIEWS_FAIL,
   CLEAR_REVIEWS,
   DELETE_REVIEW_SUCCESS,
   DELETE_REVIEW_FAIL,
@@ -18,7 +20,6 @@ import axios from "../api/axios";
 // };
 
 const fetchReviews = (token, productId) => async (dispatch) => {
-  console.log("fetchreviewsaction");
 
   try {
     const options = {
@@ -52,12 +53,12 @@ const getUnmoderatedReviews = (token) => async (dispatch) => {
     const data = await axios.get("/reviews/unmoderated", options);
 
     dispatch({
-      type: FETCH_REVIEWS_SUCCESS,
+      type: FETCH_UNMODERATED_REVIEWS_SUCCESS,
       payload: data.data.unmoderatedReviews,
     });
   } catch (error) {
     dispatch({
-      type: FETCH_REVIEWS_FAIL,
+      type: FETCH_UNMODERATED_REVIEWS_FAIL,
       payload: error.message,
     });
   }
