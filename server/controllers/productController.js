@@ -66,9 +66,8 @@ const newProduct = async (req, res) => {
 //protected route - admin only
 const deleteImage = async (req, res) => {
   const { productId } = req.params;
-const image = req.body;
+  const image = req.body;
   const { isAdmin } = req;
-
 
   if (!isAdmin) {
     return res.status(403).json({ message: "Not an admin" });
@@ -184,60 +183,74 @@ const updateProduct = async (req, res) => {
   if (!productId)
     return res.status(400).json({ message: "No product id provided" });
 
-  const productToUpdate = await Product.findById(productId);
+  try {
+    const productToUpdate = await Product.findById(productId);
+    console.log("trycatch block accessed");
+    if (!productToUpdate)
+      return res.status(400).json({ message: "No product found with that id" });
 
-  if (!productToUpdate)
-    return res.status(400).json({ message: "No product found with that id" });
+    const oldCollectionId = productToUpdate.collectionId;
 
-  const oldCollectionId = productToUpdate.collectionId;
+    if (oldCollectionId !== collectionId) {
+      await Collection.updateOne(
+        { _id: oldCollectionId },
+        { $pull: { products: productId } }
+      );
+    }
 
-  if (oldCollectionId !== collectionId) {
-    await Collection.updateOne(
-      { _id: oldCollectionId },
-      { $pull: { products: productId } }
-    );
-  }
-
-    // cloudinary
-    const imageUploadResult = await cloudinary.uploader.upload(images, {
-      folder: "products",
-      width: 300,
-      crop: "scale",
-    });
-
-    const newImageData = {
-      public_id: imageUploadResult.public_id,
-      url: imageUploadResult.secure_url,
+    // define updateObject outside
+    let updateObject = {
+      name,
+      price,
+      description,
+      stock,
+      isFeatured,
+      isDisplayed,
+      collectionId,
     };
+
+    if (images) {
+      // If images are present, perform cloudinary operations and add to the updateObject
+      const imageUploadResult = await cloudinary.uploader.upload(images, {
+        folder: "products",
+        width: 300,
+        crop: "scale",
+      });
+
+      const newImageData = {
+        public_id: imageUploadResult.public_id,
+        url: imageUploadResult.secure_url,
+      };
+
+      updateObject = {
+        ...updateObject,
+        $push: { images: newImageData },
+      };
+    }
 
     const updatedProduct = await Product.findByIdAndUpdate(
       productId,
-      {
-        name,
-        price,
-        $push: { images: newImageData },
-        description,
-        stock,
-        isFeatured,
-        isDisplayed,
-        collectionId,
-      },
+      updateObject,
       { new: true }
     );
 
-  if (oldCollectionId !== collectionId) {
-    await Collection.updateOne(
-      { _id: collectionId },
-      { $push: { products: productId } }
-    );
-  }
+    if (oldCollectionId !== collectionId) {
+      await Collection.updateOne(
+        { _id: collectionId },
+        { $push: { products: productId } }
+      );
+    }
 
-  const reply = {
-    message: "Product updated",
-    updatedProduct,
-    oldCollectionId,
-  };
-  res.json(reply);
+    const reply = {
+      message: "Product updated",
+      updatedProduct,
+      oldCollectionId,
+    };
+    res.json(reply);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
 };
 
 module.exports = {

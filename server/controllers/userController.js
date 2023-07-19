@@ -78,4 +78,46 @@ const deleteAddress = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { addAddress, deleteAddress };
+const updateFavorites = asyncHandler(async (req, res) => {
+  const { userId } = req;
+  const { productId, method } = req.body;
+  console.log(userId, productId, method);
+  try {
+    if (!userId) {
+      return res.status(400).json({ message: "No user id provided" });
+    }
+
+    const updatedUser = await User.findById(userId);
+
+    if (method === "ADD") {
+      if (updatedUser.favorites.includes(productId)) {
+        return res
+          .status(400)
+          .json({ message: "Product already in favorites" });
+      } else {
+        updatedUser.favorites.push(productId);
+      }
+    } else if (method === "REMOVE") {
+      if (!updatedUser.favorites.includes(productId)) {
+        return res.status(400).json({ message: "Product not in favorites" });
+      } else {
+        updatedUser.favorites.pull(productId);
+      }
+    }
+
+    await updatedUser.save();
+
+    const reply = {
+      message: "Favorites updated",
+      updatedUser,
+    }
+
+    res.status(201).json(reply);
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+
+    console.log(error);
+  }
+});
+
+module.exports = { addAddress, deleteAddress, updateFavorites };

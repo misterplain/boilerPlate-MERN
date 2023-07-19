@@ -10,7 +10,7 @@ const connectDB = require("./config/connectDB");
 //boilerPlate
 const session = require("express-session");
 const passport = require("./middleware/passport");
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 //boilerPlate routes
 const authRoutes = require("./routes/authRoutes");
 const collectionRoutes = require("./routes/collectionRoutes");
@@ -44,8 +44,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //body parser for upload limits
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 //custom middleware logger
 // app.use(logger);
@@ -89,10 +89,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 app.use("/collection", collectionRoutes);
-app.use("/product", productRoutes)
-app.use("/review", reviewRoutes)
-app.use("/cart", cartRoutes)
-app.use("/orders", orderRoutes)
+app.use("/product", productRoutes);
+app.use("/reviews", reviewRoutes);
+app.use("/cart", cartRoutes);
+app.use("/orders", orderRoutes);
 
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 5000;
 app.listen(port, console.log(`server listing to port 5000 only`));

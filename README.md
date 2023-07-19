@@ -9,24 +9,24 @@
 5. [x] take userdata from github/facebook/github to create a userObject, allow user to modify their account details under user Settings 
 6. [x] JWT authentication
 7. [] refresh token functinality, refresh stored in localstorage, new access token/refresh provided by server
-8. [] logout functionality
+8. [x] logout functionality
 
 ## Admin
 
 1. [x] Create/Edit/Delete collections
 2. [x] Create/Edit/Delete items / stock
-3. [] Create/Edit/Delete comments
+3. [] Create/Edit/Delete reviews
 4. [] Create/Edit/Delete users
-5. [] Create/Edit/Delete orders
+5. [x] Create/Edit/Delete orders
 
 ## User
 
 1. [x] Add / Remove items to cart
-2. [] Add / Remove Favorites
+2. [x] Add / Remove Favorites
 3. [] Rate and review various items
-4. [] Place order, see and edit order in account settings
+4. [x] Place order, see and edit order in account settings
 5. [] Edit profile information
-6. [] View order history
+6. [x] View order history
 
 ## Guest
 
