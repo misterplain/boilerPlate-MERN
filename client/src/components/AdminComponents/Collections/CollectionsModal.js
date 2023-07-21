@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
@@ -19,6 +19,11 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { fetchPexel } from "../../../actions/collectionsActions";
 import axios from "../../../api/axios";
+import {
+  createNewCollection,
+  updateCollection,
+  deleteCollection,
+} from "../../../actions/collectionsActions";
 
 const style = {
   position: "absolute",
@@ -59,12 +64,13 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
   });
 
   //photo upload
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(
+    collection && collection?.image?.url ? collection.image.url : null
+  );
   const inputFileRef = useRef();
   const handleImage = (e) => {
     const file = e.target.files[0];
     setFileToBase(file);
-
   };
 
   const setFileToBase = (file) => {
@@ -74,6 +80,12 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
       setSelectedFile(reader.result);
     };
   };
+
+  useEffect(() => {
+    if (collection && collection.image && collection.image.url) {
+      setSelectedFile(collection.image.url);
+    }
+  }, [collection]);
 
   //fetch pexel
   const fetchPexelImage = async (token, name) => {
@@ -112,10 +124,21 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
               }}
               validationSchema={validationSchema}
               onSubmit={async (values, { resetForm }) => {
+                console.log("onsubmit triggered");
                 const collectionData = {
                   name: values.name,
+                  image: selectedFile,
                 };
-                setSelectedFile(null);
+                if (collection) {
+                  console.log("update collection triggered");
+                  await dispatch(
+                    updateCollection(collection._id, collectionData, token)
+                  );
+                } else {
+                  console.log("add collection triggered");
+                  await dispatch(createNewCollection(collectionData, token));
+                }
+                // setSelectedFile(null);
                 if (inputFileRef.current) {
                   inputFileRef.current.value = "";
                 }
@@ -160,7 +183,6 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
                         placeholder="test"
                         className="form-control"
                       />
-
                     </Box>
                     <Button onClick={() => fetchPexelImage(token, values.name)}>
                       FETCH FROM PEXEL BASED ON COLLECTION NAME

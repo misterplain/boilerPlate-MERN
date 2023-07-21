@@ -50,19 +50,17 @@ const collectionsReducer = (state = { collections: [] }, action) => {
       };
 
     case NAME_UPDATE_SUCCESS:
-      const editedCollectionId = action.payload.data.collectionToUpdate._id;
-      let newEditedCollections = [...state.collections];
       const editedCollection = action.payload.data.collectionToUpdate;
-      let collectionToEdit = newEditedCollections.find(
-        (collection) => collection._id === editedCollectionId
-      );
-
-      collectionToEdit.name = editedCollection.name;
 
       return {
         loading: false,
-        collections: newEditedCollections,
+        collections: state.collections.map((collection) =>
+          collection._id === editedCollection._id
+            ? editedCollection
+            : collection
+        ),
       };
+
     case NAME_UPDATE_FAIL:
       return {
         loading: false,
@@ -173,23 +171,23 @@ const collectionsReducer = (state = { collections: [] }, action) => {
         collections: [...state.collections],
       };
 
-      //pexel
+    //pexel
     case FETCH_PEXEL_SUCCESS:
-      console.log(action.payload)
+      console.log(action.payload);
       return {
         ...state,
         loading: false,
         photoUrl: action.payload.data.photoUrl,
         photoId: action.payload.data.photoId,
-      }
+      };
 
     case FETCH_PEXEL_FAIL:
-      console.log(action.payload)
+      console.log(action.payload);
       return {
         ...state,
         loading: false,
         error: action.payload,
-      }
+      };
 
     default:
       return state;

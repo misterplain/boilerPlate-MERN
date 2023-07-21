@@ -34,7 +34,9 @@ const fetchAllCollections = () => async (dispatch) => {
 };
 
 //create new collection
-const createNewCollection = (name, token) => async (dispatch) => {
+const createNewCollection = (collectionData, token) => async (dispatch) => {
+  console.log(collectionData);
+  console.log(token)
   try {
     const options = {
       headers: {
@@ -43,7 +45,7 @@ const createNewCollection = (name, token) => async (dispatch) => {
       },
     };
 
-    const data = await axios.post("/collection/new", { name }, options);
+    const data = await axios.post("/collection/new", { collectionData }, options);
 
     dispatch({
       type: NEW_COLLECTION_SUCCESS,
@@ -57,28 +59,30 @@ const createNewCollection = (name, token) => async (dispatch) => {
   }
 };
 
-const updateCollectionName = (name, id, token) => async (dispatch) => {
-  try {
-    const options = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
+const updateCollection =
+  (id, collectionData, token) =>
+  async (dispatch) => {
+    try {
+      const options = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
 
-    const data = await axios.put(`/collection/edit/${id}`, { name }, options);
+      const data = await axios.put(`/collection/edit/${id}`, { collectionData }, options);
 
-    dispatch({
-      type: NAME_UPDATE_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: NAME_UPDATE_FAIL,
-      payload: error.response,
-    });
-  }
-};
+      dispatch({
+        type: NAME_UPDATE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: NAME_UPDATE_FAIL,
+        payload: error.response,
+      });
+    }
+  };
 
 const deleteCollection = (id, token) => async (dispatch) => {
   try {
@@ -135,7 +139,7 @@ const fetchPexel = (token, name) => async (dispatch) => {
 export {
   fetchAllCollections,
   createNewCollection,
-  updateCollectionName,
+  updateCollection,
   deleteCollection,
   fetchPexel,
 };
