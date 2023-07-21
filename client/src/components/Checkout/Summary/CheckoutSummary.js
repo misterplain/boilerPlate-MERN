@@ -17,7 +17,6 @@ const styles = {
 
 const CheckoutSummary = ({ proceedToNextStep }) => {
   const dispatch = useDispatch();
-  //get token from state
   const userAuthState = useSelector((state) => state.userAuth);
   const productState = useSelector((state) => state.productList);
   const { products } = productState;

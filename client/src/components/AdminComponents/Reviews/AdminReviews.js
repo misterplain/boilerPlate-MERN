@@ -11,8 +11,8 @@ import { Link } from "@mui/material";
 
 import {
   getUnmoderatedReviews,
-  moderateReview,
   deleteReview,
+  moderateReview,
 } from "../../../actions/reviewsActions";
 
 import styles from "./styles";
@@ -61,8 +61,26 @@ const AdminReviews = () => {
             >
               Approve
             </Button>
-            <Button>Deny</Button>
-            <Button>Delete</Button>
+            <Button
+              onClick={() =>
+                dispatch(
+                  moderateReview(token, review._id, {
+                    approvedByAdmin: false,
+                    awaitingModeration: false,
+                    isDeleted: false,
+                  })
+                )
+              }
+            >
+              Deny
+            </Button>
+            <Button
+              onClick={() => {
+                dispatch(deleteReview(token, review._id));
+              }}
+            >
+              Delete
+            </Button>
           </>
         ))}
     </Box>

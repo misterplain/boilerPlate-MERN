@@ -55,15 +55,14 @@ export const reviewsReducer = (state = {}, action) => {
         error: action.payload,
       };
     case DELETE_REVIEW_SUCCESS:
-      // const updatedReviewsDelete = state.reviews.filter(
-      //   (review) => review._id !== action.payload._id
-      // );
 
       return {
         ...state,
         error: null,
-        reviews: [...state.reviews],
-        userReview: [action.payload],
+        reviews: state.reviews.filter(
+          (review) => review._id !== action.payload._id
+        ),
+        userReview: [],
       };
     case DELETE_REVIEW_FAIL:
       return {
@@ -74,7 +73,7 @@ export const reviewsReducer = (state = {}, action) => {
     case CLEAR_REVIEWS:
       return {
         ...state,
-        reviews: null,
+        reviews: [],
       };
 
     case MODERATE_REVIEW_SUCCESS:

@@ -34,7 +34,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: {
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      maxAge: 24 * 60 * 60 * 1000,
       secure: true,
     },
   })
@@ -64,15 +64,12 @@ const whitelist = [
   "http://localhost:3000",
   "http://localhost:5000",
   "https://accounts.google.com",
-  "https://hpnotepad.onrender.com",
-  "https://fantasticfy.onrender.com",
-  "https://patrickobrien.onrender.com",
-  "https://bcnminimalista.onrender.com",
+
 ];
 app.use(
   cors({
     origin: function (origin, callback) {
-      console.log("Origin: ", origin); // Log the origin
+      console.log("Origin: ", origin); 
       if (whitelist.indexOf(origin) !== -1 || !origin) {
         callback(null, true);
       } else {

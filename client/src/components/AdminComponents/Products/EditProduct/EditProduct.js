@@ -52,12 +52,12 @@ const EditProduct = () => {
   const productList = useSelector((state) => state.productList);
   const { products } = productList;
   const collectionsState = useSelector((state) => state.collections);
-  const { collections } = collectionsState;
+  const { collections } = collectionsState || [];
   const product = products.find((product) => product._id === productId);
-  const initialCollection = collections.find(
-    (collection) => collection._id === product.collectionId
+  const initialCollection = collections?.find(
+    (collection) => collection?._id === product?.collectionId
   );
-  const allCollections = collections.map((collection) => collection);
+  const allCollections = collections?.map((collection) => collection);
 
   const userAuthState = useSelector((state) => state.userAuth);
   const token = userAuthState?.accessToken;
@@ -84,13 +84,13 @@ const inputFileRef = useRef();
     <Box sx={styles.wrapper}>
       <Formik
         initialValues={{
-          collectionId: initialCollection._id,
-          isDisplayed: product.isDisplayed,
-          isFeatured: product.isFeatured,
-          name: product.name,
-          price: product.price,
-          stock: product.stock,
-          description: product.description,
+          collectionId: initialCollection?._id,
+          isDisplayed: product?.isDisplayed,
+          isFeatured: product?.isFeatured,
+          name: product?.name,
+          price: product?.price,
+          stock: product?.stock,
+          description: product?.description,
         
         }}
         validationSchema={validationSchema}
@@ -132,7 +132,7 @@ const inputFileRef = useRef();
                 value={values.collectionId}
                 onChange={handleChange}
               >
-                {allCollections.map((collection) => (
+                {allCollections && allCollections?.map((collection) => (
                   <FormControlLabel
                     value={collection._id}
                     control={<Radio />}
@@ -194,7 +194,7 @@ const inputFileRef = useRef();
                   name="name"
                   variant="filled"
                   color="success"
-                  placeholder={product.name}
+                  placeholder={product?.name}
                   value={values.name}
                   onChange={handleChange}
                   helperText={errors.name}
@@ -272,7 +272,7 @@ const inputFileRef = useRef();
             </FormControl>
             <Box>
               <Typography>Existing Images</Typography>
-              {product.images.map((image) => (
+              {product && product?.images?.map((image) => (
                 <Box sx={styles.existingImagesWrapper}>
                   <Box
                     sx={styles.existingImages}

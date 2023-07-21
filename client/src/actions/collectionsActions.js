@@ -8,6 +8,8 @@ import {
   NAME_UPDATE_FAIL,
   DELETE_COLLECTION_SUCCESS,
   DELETE_COLLECTION_FAIL,
+  FETCH_PEXEL_FAIL,
+  FETCH_PEXEL_SUCCESS,
 } from "../constants/collectionsConstants";
 import axios from "../api/axios";
 
@@ -34,7 +36,6 @@ const fetchAllCollections = () => async (dispatch) => {
 //create new collection
 const createNewCollection = (name, token) => async (dispatch) => {
   try {
-
     const options = {
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +58,6 @@ const createNewCollection = (name, token) => async (dispatch) => {
 };
 
 const updateCollectionName = (name, id, token) => async (dispatch) => {
-
   try {
     const options = {
       headers: {
@@ -67,7 +67,6 @@ const updateCollectionName = (name, id, token) => async (dispatch) => {
     };
 
     const data = await axios.put(`/collection/edit/${id}`, { name }, options);
-
 
     dispatch({
       type: NAME_UPDATE_SUCCESS,
@@ -82,7 +81,7 @@ const updateCollectionName = (name, id, token) => async (dispatch) => {
 };
 
 const deleteCollection = (id, token) => async (dispatch) => {
-  try{
+  try {
     const options = {
       headers: {
         "Content-Type": "application/json",
@@ -95,15 +94,48 @@ const deleteCollection = (id, token) => async (dispatch) => {
     dispatch({
       type: DELETE_COLLECTION_SUCCESS,
       payload: data,
-    })
-  } catch(error){
-
+    });
+  } catch (error) {
     dispatch({
       type: DELETE_COLLECTION_FAIL,
       payload: error.response,
-    })
-
+    });
   }
-}
+};
 
-export { fetchAllCollections, createNewCollection, updateCollectionName, deleteCollection };
+const fetchPexel = (token, name) => async (dispatch) => {
+  try {
+    const options = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    console.log(name);
+
+    const data = await axios.get(
+      "/collection/pexel",
+      { params: { name: name } },
+      options
+    );
+    console.log(data);
+
+    dispatch({
+      type: FETCH_PEXEL_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: FETCH_PEXEL_FAIL,
+      payload: error.response.data.message,
+    });
+    console.log(error);
+  }
+};
+
+export {
+  fetchAllCollections,
+  createNewCollection,
+  updateCollectionName,
+  deleteCollection,
+  fetchPexel,
+};

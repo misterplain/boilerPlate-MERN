@@ -32,8 +32,6 @@ const validationSchema = Yup.object({
 const AccountAddress = () => {
   const dispatch = useDispatch();
   const { productId } = useParams();
-
-  //get token from state
   const userAuthState = useSelector((state) => state.userAuth);
   const userDetailsState = useSelector((state) => state.userDetails);
   const userDetails = userDetailsState?.userDetails;

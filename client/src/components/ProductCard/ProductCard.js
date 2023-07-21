@@ -8,20 +8,6 @@ import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
-// const styles = {
-//   cardWrapper: {
-//     border: "1px solid purple",
-//     display: "flex",
-//     width: "90%",
-//     height: "390px",
-//     flexDirection: "column",
-//   },
-//   cardImage: {
-//     width: "100%",
-//     height: "70%",
-//   },
-// };
-
 import styles from "./styles";
 
 const ProductCard = ({ product }) => {
@@ -80,9 +66,6 @@ const ProductCard = ({ product }) => {
               )
             }
           >
-            {/* {favorites && favorites?.includes(product._id)
-              ? "Remove from Favorites"
-              : "Add to Favorites"} */}
             {favorites && favorites?.includes(product._id) ? (
               <FaHeart />
             ) : (
@@ -90,12 +73,6 @@ const ProductCard = ({ product }) => {
             )}
           </Button>
         )}
-        {/* <Link component={NavLink} to={`/product/${product._id}`}>
-          {" "}
-          <Button sx={styles.button} size="small">
-            Add to Cart
-          </Button>
-        </Link> */}
       </Box>
     </Box>
   );

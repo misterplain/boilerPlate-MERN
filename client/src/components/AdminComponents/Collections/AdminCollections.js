@@ -16,6 +16,7 @@ import {
   deleteCollection,
 } from "../../../actions/collectionsActions";
 import { deleteProduct } from "../../../actions/productActions";
+import CollectionsModal from "./CollectionsModal";
 
 import styles from "./styles";
 
@@ -36,95 +37,25 @@ const AdminCollections = () => {
   const token = userAuthState?.accessToken;
   const [collectionProductsId, setCollectionProductsId] = useState(null);
 
+  //modal state
+
+  const [open, setOpen] = useState(false);
+  const [collectionToEdit, setCollectionToEdit] = useState(null);
+
+  const handleOpenModal = (collection) => {
+    setCollectionToEdit(collection);
+    setOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setCollectionToEdit(null);
+    setOpen(false);
+  };
+
   return (
     <Box sx={styles.wrapper}>
       <Box sx={styles.newCollectionWrapper}>
-        {!isEditTitle ? (
-          <>
-            <Typography marginBottom>New Collection</Typography>
-            <Formik
-              initialValues={{ name: "" }}
-              validationSchema={validationSchema}
-              onSubmit={async (values, { resetForm }) => {
-                dispatch(createNewCollection(values.name, token));
-              }}
-            >
-              {({
-                handleSubmit,
-                handleChange,
-                handleBlue,
-                values,
-                isValid,
-                errors,
-                touched,
-              }) => (
-                <form onSubmit={handleSubmit}>
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <TextField
-                          name="name"
-                          label="Name (optional)"
-                          variant="outlined"
-                          color="secondary"
-                          value={values.name}
-                          onChange={handleChange}
-                          helperText={errors.name}
-                        />
-                      }
-                    />
-                  </FormGroup>
-                  <Button type="submit">Create</Button>{" "}
-                </form>
-              )}
-            </Formik>
-          </>
-        ) : (
-          <>
-            <Typography marginBottom>Edit {collectionName} Title</Typography>
-            <Formik
-              initialValues={collectionName}
-              validationSchema={validationSchema}
-              onSubmit={async (values, { resetForm }) => {
-                setIsEditTitle(false);
-                setCollectionName("");
-                dispatch(
-                  updateCollectionName(values.name, collectionProductsId, token)
-                );
-              }}
-            >
-              {({
-                handleSubmit,
-                handleChange,
-                handleBlue,
-                values,
-                isValid,
-                errors,
-                touched,
-              }) => (
-                <form onSubmit={handleSubmit}>
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <TextField
-                          name="name"
-                          label={collectionName}
-                          variant="filled"
-                          color="success"
-                          placeholder="none"
-                          value={values.name}
-                          onChange={handleChange}
-                          helperText={errors.name}
-                        />
-                      }
-                    />
-                  </FormGroup>
-                  <Button type="submit">Send Edit</Button>{" "}
-                </form>
-              )}
-            </Formik>
-          </>
-        )}
+        <Button onClick={()=>handleOpenModal()}>new collection</Button>
       </Box>
       <hr />
       <Box sx={styles.collectionsWrapper}>
@@ -143,20 +74,18 @@ const AdminCollections = () => {
               <Box sx={styles.optionsWrapper}>
                 <Button
                   onClick={() => {
-                    setIsEditTitle(true);
-                    setCollectionName(collection.name);
-                    setCollectionProductsId(collection._id);
+                    handleOpenModal(collection);
                   }}
                 >
-                  Edit Name
+                  Edit
                 </Button>
-                <Button
+                {/* <Button
                   onClick={() => {
                     dispatch(deleteCollection(collection._id, token));
                   }}
                 >
                   Delete
-                </Button>
+                </Button> */}
               </Box>
             </Box>
           ))}
@@ -213,6 +142,12 @@ const AdminCollections = () => {
           </Box>
         </Box>
       )}
+      <CollectionsModal
+        open={open}
+        handleClose={handleCloseModal}
+        collection={collectionToEdit}
+        // productId={productId}
+      />
     </Box>
   );
 };

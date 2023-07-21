@@ -35,11 +35,6 @@ const CartSummary = () => {
     return acc + cartItemTotal(item);
   }, 0);
 
-  // useEffect(() => {
-  //   if (!detailedCartItems || detailedCartItems.length === 0) {
-  //     navigate('/');
-  //   }
-  // }, [detailedCartItems, navigate]);
 
   return (
     <Box sx={styles.wrapper}>
@@ -63,7 +58,6 @@ const CartSummary = () => {
           >
             Continue shopping
           </Button>
-          {/* <Button >Continue shopping</Button> */}
         </Box>
         {detailedCartItems && detailedCartItems.length !== 0 && (
           <Box sx={styles.button}>

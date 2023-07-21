@@ -17,6 +17,16 @@ const collectionSchema = new Schema(
       ],
       default: [],
     },
+    image: {
+      public_id: {
+        type: String,
+        // required: true,
+      },
+      url: {
+        type: String,
+        // required: true,
+      },
+    }
   },
   {
     collection: "boilerPlateCollections",

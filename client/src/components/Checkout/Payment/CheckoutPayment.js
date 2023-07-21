@@ -16,7 +16,6 @@ const styles = {
 
 const CheckoutPayment = ({ proceedToNextStep }) => {
   const dispatch = useDispatch();
-  //get token from state
   const userAuthState = useSelector((state) => state.userAuth);
   const userDetailsState = useSelector((state) => state.userDetails);
   const userDetails = userDetailsState?.userDetails;
@@ -32,10 +31,8 @@ const CheckoutPayment = ({ proceedToNextStep }) => {
     if (!orderPlaced) {
       setOrderPlaced(true);
 
-      // wait for setIsPaid action to complete
       await dispatch(setIsPaid(true));
 
-      // Proceed only when setIsPaid action is complete
       if (authenticated) {
         dispatch(placeNewUserOrder(token, orderDetails, proceedToNextStep));
       } else {
@@ -43,25 +40,7 @@ const CheckoutPayment = ({ proceedToNextStep }) => {
         dispatch(placeNewOrderGuest(orderDetails, proceedToNextStep));
       }
     }
-
-    // proceedToNextStep()
   };
-
-  // useEffect(() => {
-  //   if (isPaid && !orderPlaced) {
-  //     setOrderPlaced(true);
-  //     if (authenticated) {
-  //       dispatch(placeNewUserOrder(token, orderDetails, proceedToNextStep));
-  //     } else {
-  //       console.log(orderDetails);
-  //       dispatch(placeNewOrderGuest(orderDetails, proceedToNextStep));
-  //     }
-  //   }
-  // }, [isPaid, orderPlaced]);
-
-  // const payAndProceed = () => {
-  //   dispatch(setIsPaid(true));
-  // };
 
   return (
     <Box sx={styles.wrapper}>

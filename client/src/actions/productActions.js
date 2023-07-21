@@ -28,6 +28,7 @@ const fetchAllProducts = () => async (dispatch) => {
 
     const data = await axios.get("/product/get");
 
+    console.log(data)
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: data,

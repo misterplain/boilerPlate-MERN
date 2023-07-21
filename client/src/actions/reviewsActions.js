@@ -15,9 +15,6 @@ import {
 } from "../constants/reviewsConstants";
 import axios from "../api/axios";
 
-// const createReview = (token, productId, review) => async (dispatch) => {
-//   console.log("createreviewaction");
-// };
 
 const fetchReviews = (token, productId) => async (dispatch) => {
 
@@ -121,7 +118,6 @@ const deleteReview = (token, reviewId) => async (dispatch) => {
 };
 
 const createReview = (token, productId, reviewData) => async (dispatch) => {
-  // console.log(token, productId, reviewData);
   console.log("createreviewaction");
   try {
     const options = {

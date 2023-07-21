@@ -14,6 +14,8 @@ import {
   PRODUCT_DELTE_COLLECTION_SUCCESS,
   PRODUCT_ADD_COLLECTION_FAIL,
   PRODUCT_ADD_COLLECTION_SUCCESS,
+  FETCH_PEXEL_FAIL,
+  FETCH_PEXEL_SUCCESS,
 } from "../constants/collectionsConstants";
 
 const collectionsReducer = (state = { collections: [] }, action) => {
@@ -170,6 +172,24 @@ const collectionsReducer = (state = { collections: [] }, action) => {
         error: action.payload.data.message,
         collections: [...state.collections],
       };
+
+      //pexel
+    case FETCH_PEXEL_SUCCESS:
+      console.log(action.payload)
+      return {
+        ...state,
+        loading: false,
+        photoUrl: action.payload.data.photoUrl,
+        photoId: action.payload.data.photoId,
+      }
+
+    case FETCH_PEXEL_FAIL:
+      console.log(action.payload)
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      }
 
     default:
       return state;

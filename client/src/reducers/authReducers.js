@@ -48,7 +48,6 @@ export const authReducer = (state = { accessToken: null }, action) => {
     case OAUTH_LOGIN_FAIL:
       return { loading: false, error: action.payload, authenticated: false };
 
-    //register
     case FORM_REGISTER_REQUEST:
       return { loading: true };
 
@@ -82,7 +81,6 @@ export const authReducer = (state = { accessToken: null }, action) => {
     case OAUTH_REGISTER_FAIL:
       return { loading: false, error: action.payload, authenticated: false };
 
-    //LOGOUT AND REFRESH TOKEN
     case USER_LOGOUT:
       localStorage.removeItem("profile");
       return {

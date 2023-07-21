@@ -126,6 +126,8 @@ const getAllProducts = async (req, res) => {
   }
 };
 
+
+
 //delete product
 //protected route - admin only
 const deleteProduct = async (req, res) => {

@@ -74,39 +74,6 @@ const productListReducer = (state = { products: [] }, action) => {
         error: action.payload.data.message,
       };
 
-    // case DELETE_REVIEW_SUCCESS:
-    //   console.log(action.payload.data);
-    //   return {
-    //     ...state,
-    //     products: state.products.map((product) =>
-    //       product._id === action.payload.data.productId
-    //         ? {
-    //             ...product,
-    //             reviews: product.reviews.filter(
-    //               (review) => review !== action.payload.data.reviewId
-    //             ),
-    //           }
-    //         : product
-    //     ),
-    //   };
-    // case CREATE_REVIEW_FAIL:
-    //   return {
-    //     ...state,
-    //     error: action.payload,
-    //   };
-    // case CREATE_REVIEW_SUCCESS:
-    //   console.log(action.payload.data);
-    //   return {
-    //     ...state,
-    //     products: state.products.map((product) =>
-    //       product._id === action.payload.data.newReview.productId
-    //         ? {
-    //             ...product,
-    //             reviews: [...product.reviews, action.payload.data.newReview],
-    //           }
-    //         : product
-    //     ),
-    //   };
     default:
       return state;
   }

@@ -38,6 +38,9 @@ const productSchema = new Schema(
       ],
       default: [],
     },
+    averageRating: {
+      type: Number,
+    },
     description: {
       type: String,
       required: true,

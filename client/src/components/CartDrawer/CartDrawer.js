@@ -21,7 +21,6 @@ const CartDrawer = () => {
     <Box
       sx={{ width: 400 }}
       role="presentation"
-      // onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >
       <CartItems />

@@ -2,8 +2,6 @@ import jwt from "jsonwebtoken";
 
 const secret = "test";
 
-///action.payload.reviewId
-///action.payload.data.reviewId
 
 const auth = async (req, res, next) => {
   try {

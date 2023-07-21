@@ -33,11 +33,6 @@ const CartItems = () => {
     return { ...item, product: productDetails, name: productDetails?.name };
   });
 
-  // const productInBasket = cartItems?.find(
-  //   (item) => item.product === displayedProduct._id
-  // );
-
-  // console.log(detailedCartItems)
 
   const cartItemTotal = (item) => {
     return item.product.price * item.quantity;
@@ -105,7 +100,6 @@ const CartItems = () => {
     }
   };
 
-  const redirectToProductPage = (item) => {};
 
   return (
     <Box sx={styles.wrapper}>
@@ -126,7 +120,6 @@ const CartItems = () => {
                 }
                 return (
                   <Box sx={styles.cartItem} key={item.product._id}>
-                    {/* {item.product.name} - {item.quantity} */}
                     <Box sx={styles.imageTitleDeleteWrapper}>
                       {" "}
                       <Link

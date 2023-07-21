@@ -7,6 +7,7 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import HomeScreen from "../screens/HomeScreen";
 import ContactScreen from "../screens/ContactScreen";
 import ProductScreen from "../screens/ProductScreen";
+import CollectionScreen from "../screens/CollectionScreen";
 import OrderHistoryScreen from "../screens/OrderHistoryScreen";
 import AdminScreen from "../screens/AdminScreen";
 import UserAccountScreen from "../screens/UserAccountScreen";
@@ -53,6 +54,7 @@ const AppRoutes = () => {
         element={authenticated ? <Navigate to="/" /> : <RegisterScreen />}
       />
       <Route path={"/product/:productId"} element={<ProductScreen />} />
+      <Route path={"/product/:collectionId"} element={<CollectionScreen />} />
       <Route
         path={"/favorites"}
         element={authenticated ? <Favorites /> : <Navigate to="/" />}

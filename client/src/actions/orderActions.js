@@ -61,10 +61,6 @@ const setEmailAddress = (emailAddress) => (dispatch) => {
 
 const placeNewUserOrder =
   (token, order, proceedToNextStep) => async (dispatch) => {
-    // dispatch({ type: SET_ISCANCELLED, payload: false });
-    // dispatch({ type: SET_ISPAID, payload: false });
-    // dispatch({ type: SET_ISSHIPPEDTOCOURIER, payload: false });
-    // dispatch({ type: SET_ISDELIVERED, payload: false });
 
     console.log(order);
     try {
@@ -83,7 +79,6 @@ const placeNewUserOrder =
         payload: data.data.orderPlaced,
       });
       proceedToNextStep();
-      // dispatch({ type: CLEAR_ORDER });
       dispatch({ type: EMPTY_CART });
     } catch (error) {
       console.log(error);
@@ -101,7 +96,6 @@ const placeNewOrderGuest = (order, proceedToNextStep) => async (dispatch) => {
       payload: data.data.guestOrderPlaced,
     });
     proceedToNextStep();
-    // dispatch({ type: CLEAR_ORDER });
     dispatch({ type: EMPTY_CART });
   } catch (error) {
     console.log(error);
@@ -150,7 +144,6 @@ const cancelOrder = (token, orderId) => async (dispatch) => {
       payload: data.data.orderCancelled,
     });
 
-    // dispatch(fetchUserOrders(token));
   } catch (error) {
     dispatch({ type: CANCEL_ORDER_FAIL, payload: error });
     console.log(error);
@@ -196,12 +189,8 @@ const editOrder =
         options
       );
 
-      // console.log(data.data)
-
-      // Dispatch success action with response data
       dispatch({ type: EDIT_ORDER_SUCCESS, payload: data.data.editedOrder });
     } catch (error) {
-      // Dispatch failure action with error
       dispatch({ type: EDIT_ORDER_FAIL, payload: error });
     }
   };

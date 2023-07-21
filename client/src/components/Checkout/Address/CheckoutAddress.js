@@ -59,7 +59,6 @@ const CheckoutAddress = ({ proceedToNextStep }) => {
                       postalCode: address.postalCode,
                       country: address.country,
                     }
-                    // dispatch(deleteAddress(token, address._id));
                     dispatch(setShippingAddress(shippingAddress));
                     proceedToNextStep();
                   }}

@@ -52,7 +52,6 @@ const LoginForm = () => {
         initialValues={{ email: "", password: "" }}
         validationSchema={loginSchema}
         onSubmit={(values) => handleSubmit(values)}
-        // style={{ width: "100%" }}
       >
         {({
           handleSubmit,

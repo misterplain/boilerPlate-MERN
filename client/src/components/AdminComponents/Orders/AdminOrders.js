@@ -27,9 +27,6 @@ const AdminOrders = () => {
   const userAuthState = useSelector((state) => state.userAuth);
   const token = userAuthState?.accessToken;
 
-  //in production
-  //shipped to the courier
-  //delivered
 
   const [allOrders, setAllOrders] = useState([]);
 
@@ -72,12 +69,6 @@ const AdminOrders = () => {
                   <Typography variant="body1">
                     {item.name} - {item.quantity} units at ${item.price} each
                   </Typography>
-                  {/* <Typography variant="body1">
-                    Quantity: {item.quantity}
-                  </Typography>
-                  <Typography variant="body1">
-                    Total Price: {item.price}
-                  </Typography> */}
                 </Box>
               ))}
             </Box>{" "}
