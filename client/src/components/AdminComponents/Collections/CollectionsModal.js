@@ -24,6 +24,7 @@ import {
   updateCollection,
   deleteCollection,
 } from "../../../actions/collectionsActions";
+import AlertMessage from "../../AlertMessage/AlertMessage";
 
 const style = {
   position: "absolute",
@@ -54,7 +55,7 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
   const userDetails = userDetailsState?.userDetails || {};
   const { userId } = userDetails;
   const collectionsState = useSelector((state) => state.collections);
-  const { photoUrl, photoId } = collectionsState;
+  const { photoUrl, photoId, collectionModalError } = collectionsState;
 
   const reviewsState = useSelector((state) => state.reviews);
   const { reviews } = reviewsState || {};
@@ -63,9 +64,17 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
     name: Yup.string().required("Required"),
   });
 
+  useEffect(() => {
+    if (collection && collection.image && collection.image.url) {
+      setSelectedFile(collection.image.url);
+    } else {
+      setSelectedFile(null);
+    }
+  }, [collection]);
+
   //photo upload
   const [selectedFile, setSelectedFile] = useState(
-    collection && collection?.image?.url ? collection.image.url : null
+    collection ? collection?.image?.url : null
   );
   const inputFileRef = useRef();
   const handleImage = (e) => {
@@ -80,12 +89,6 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
       setSelectedFile(reader.result);
     };
   };
-
-  useEffect(() => {
-    if (collection && collection.image && collection.image.url) {
-      setSelectedFile(collection.image.url);
-    }
-  }, [collection]);
 
   //fetch pexel
   const fetchPexelImage = async (token, name) => {
@@ -117,6 +120,9 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+        {collectionModalError && (
+        <AlertMessage type="error">{collectionModalError}</AlertMessage>
+      )}
           <Box>
             <Formik
               initialValues={{
@@ -134,9 +140,11 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
                   await dispatch(
                     updateCollection(collection._id, collectionData, token)
                   );
+                  handleClose();
                 } else {
                   console.log("add collection triggered");
                   await dispatch(createNewCollection(collectionData, token));
+                  handleClose();
                 }
                 // setSelectedFile(null);
                 if (inputFileRef.current) {
@@ -200,7 +208,12 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
                     )}
                   </FormControl>
 
-                  <Button type="submit">Submit</Button>
+                  <Button
+                    type="submit"
+                    disabled={!selectedFile || !values.name}
+                  >
+                    Submit
+                  </Button>
                 </form>
               )}
             </Formik>

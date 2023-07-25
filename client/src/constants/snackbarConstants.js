@@ -1,0 +1,3 @@
+export const ADD_SNACKBAR = "ADD_SNACKBAR";
+export const REMOVE_SNACKBAR = "REMOVE_SNACKBAR";
+export const SET_SNACKBAR_KEY = "SET_SNACKBAR_KEY";

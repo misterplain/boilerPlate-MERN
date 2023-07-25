@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { registerForm } from "../../actions/authActions";
+import AlertMessage from "../AlertMessage/AlertMessage";
 
 const styles = {
   formContainer: {
@@ -45,6 +46,8 @@ const RegisterForm = () => {
 
   const shoppingCartState = useSelector((state) => state.shoppingCart);
   const { cartItems } = shoppingCartState;
+  const authState = useSelector((state) => state.userAuth);
+  const { authenticated, registerError } = authState;
 
   const handleSubmit = (values) => {
 
@@ -61,6 +64,8 @@ const RegisterForm = () => {
 
   return (
     <Box sx={styles.formContainer}>
+        {registerError && <AlertMessage type="error">{registerError}</AlertMessage>}
+
       {" "}
       <Formik
         initialValues={{ email: "", password: "" }}

@@ -1,7 +1,7 @@
-import { createTheme } from '@mui/material/styles'
-import createBreakpoints from '@mui/system/createTheme/createBreakpoints'
+import { createTheme } from "@mui/material/styles";
+import createBreakpoints from "@mui/system/createTheme/createBreakpoints";
 
-const breakpoints = createBreakpoints({})
+const breakpoints = createBreakpoints({});
 
 // const fontVariable = "Nunito, sans-serif"
 // const fontVariable = "Poppins, sans-serif"
@@ -9,7 +9,7 @@ const breakpoints = createBreakpoints({})
 // const fontVariable = "Raleway, sans-serif"
 // const fontVariable = "Roboto, sans-serif"
 // const fontVariable = "Work Sans, sans-serif"
-const fontVariable = "Montserrat"
+const fontVariable = "Montserrat";
 // const fontVariable = "Space Grotesk, sans-serif"
 //  const fontVariable = "Source Code Pro, monospace"
 // const fontVariable = "Rubik, sans-serif"
@@ -19,88 +19,80 @@ const fontVariable = "Montserrat"
 // const fontVariable = "Lato, sans-serif"
 //  const fontVariable = "Inconsolata, monospace"
 
-
-
-
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#686868',
+      main: "#686868",
     },
     beige: {
-      main: '#C2A887',
+      main: "#C2A887",
     },
     dijon: {
-      main: '#DFAF5E',
+      main: "#DFAF5E",
     },
-    darkGreen:{
-      main: '#61714D',
+    darkGreen: {
+      main: "#61714D",
     },
-    lightGreen:{
-      main: '#8FAE93'
+    lightGreen: {
+      main: "#8FAE93",
     },
     burgundy: {
-      main: '#6D152B',
+      main: "#6D152B",
     },
     pink: {
-      main: '#F3b1c8'
-    }
+      main: "#F3b1c8",
+    },
   },
-   typography: {
-    h1 : {
+  typography: {
+    h1: {
       fontFamily: fontVariable,
     },
-     h2: {
-       fontFamily: fontVariable,
+    h2: {
+      fontFamily: fontVariable,
 
-       [breakpoints.up('md')]: {
+      [breakpoints.up("md")]: {},
+    },
+    h3: {
+      fontFamily: fontVariable,
+    },
+    h4: {
+      fontFamily: fontVariable,
+    },
+    h5: {
+      fontFamily: fontVariable,
+    },
+    h6: {
+      fontFamily: fontVariable,
+    },
+    body1: {
+      fontFamily: fontVariable,
 
-       },
-     },
-     h3: {
-       fontFamily: fontVariable,
+      [breakpoints.up("md")]: {},
+    },
+    body2: {
+      fontFamily: fontVariable,
+    },
+    subtitle1: {
+      fontFamily: fontVariable,
+    },
+    subtitle2: {
+      fontFamily: fontVariable,
+    },
+    button: {
+      fontFamily: fontVariable,
+    },
+    caption: {
+      fontFamily: fontVariable,
+    },
+    overline: {
+      fontFamily: fontVariable,
+    },
 
-     },
-     h4 : {
+    someStyle: {
       fontFamily: fontVariable,
+      textTransform: "capitalize",
     },
-    h5 : {
-      fontFamily: fontVariable,
-    },
-    h6 : {
-      fontFamily: fontVariable,
-    },
-     body1: {
-       fontFamily: fontVariable,
-
-       [breakpoints.up('md')]: {
-
-       },
-     },
-     body2 : {
-      fontFamily: fontVariable,
-    },
-    subtitle1 : {
-      fontFamily: fontVariable,
-    },
-    subtitle2 : {
-      fontFamily: fontVariable,
-    },
-    button : {
-      fontFamily: fontVariable,
-    },
-    caption : {
-      fontFamily: fontVariable,
-    },
-    overline : {
-      fontFamily: fontVariable,
-    },
-     
-     someStyle: {
-       fontFamily: fontVariable,
-       textTransform: 'capitalize',
-     },
-   },
+  },
   // components: {
   //   // Name of the component
   //   MuiOutlinedInput: {
@@ -124,6 +116,6 @@ const theme = createTheme({
   //     },
   //   },
   // },
-})
+});
 
-export default theme
+export default theme;

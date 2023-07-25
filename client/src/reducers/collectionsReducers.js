@@ -45,7 +45,7 @@ const collectionsReducer = (state = { collections: [] }, action) => {
     case NEW_COLLECTION_FAIL:
       return {
         loading: false,
-        error: action.payload.data.message,
+        collectionModalError: action.payload.data.message,
         collections: [...state.collections],
       };
 
@@ -64,7 +64,7 @@ const collectionsReducer = (state = { collections: [] }, action) => {
     case NAME_UPDATE_FAIL:
       return {
         loading: false,
-        error: action.payload.data,
+        collectionModalError: action.payload.data,
         collections: [...state.collections],
       };
     case DELETE_COLLECTION_SUCCESS:
@@ -76,11 +76,12 @@ const collectionsReducer = (state = { collections: [] }, action) => {
       return {
         loading: false,
         collections: newCollections,
+        error: null,
       };
     case DELETE_COLLECTION_FAIL:
       return {
         loading: false,
-        error: action.payload.data,
+        error: action.payload.data.message,
         collections: [...state.collections],
       };
 
@@ -186,7 +187,7 @@ const collectionsReducer = (state = { collections: [] }, action) => {
       return {
         ...state,
         loading: false,
-        error: action.payload,
+        collectionModalError: action.payload.data.message,
       };
 
     default:

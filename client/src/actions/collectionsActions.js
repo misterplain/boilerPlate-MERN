@@ -35,8 +35,6 @@ const fetchAllCollections = () => async (dispatch) => {
 
 //create new collection
 const createNewCollection = (collectionData, token) => async (dispatch) => {
-  console.log(collectionData);
-  console.log(token)
   try {
     const options = {
       headers: {
@@ -51,11 +49,13 @@ const createNewCollection = (collectionData, token) => async (dispatch) => {
       type: NEW_COLLECTION_SUCCESS,
       payload: data,
     });
+    return Promise.resolve();
   } catch (error) {
     dispatch({
       type: NEW_COLLECTION_FAIL,
       payload: error.response,
     });
+    return Promise.reject();
   }
 };
 
@@ -76,11 +76,13 @@ const updateCollection =
         type: NAME_UPDATE_SUCCESS,
         payload: data,
       });
+      return Promise.resolve();
     } catch (error) {
       dispatch({
         type: NAME_UPDATE_FAIL,
         payload: error.response,
       });
+      return Promise.reject();
     }
   };
 

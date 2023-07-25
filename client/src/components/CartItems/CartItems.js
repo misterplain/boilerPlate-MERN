@@ -13,12 +13,14 @@ import {
   removeCartItemGuest,
 } from "../../actions/cartActions";
 import { useCartDrawer } from "../../context/CartDrawerContext";
+import { useSnackbar } from "notistack";
 
 import styles from "./styles";
 
 const CartItems = () => {
   const dispatch = useDispatch();
   const cartDrawerContext = useCartDrawer();
+  const { enqueueSnackbar } = useSnackbar();
 
   const userAuthState = useSelector((state) => state.userAuth);
   const { authenticated } = userAuthState;
@@ -33,31 +35,43 @@ const CartItems = () => {
     return { ...item, product: productDetails, name: productDetails?.name };
   });
 
-
   const cartItemTotal = (item) => {
     return item.product.price * item.quantity;
   };
 
   const handleIncreaseQuantity = (item) => {
-    if (authenticated) {
-      dispatch(
-        addCartItemUser({
-          productId: item.product._id,
-          quantity: 1,
-          token,
-          pricePerUnit: item.product.price,
-          name: item.product.name,
-        })
+    if (Number(item.quantity) + 1 > Number(item.product.stock)) {
+      enqueueSnackbar(
+        `There are only ${item.product.stock} of this item in stock`,
+        { variant: "error" }
       );
     } else {
-      dispatch(
-        addCartItemGuest({
-          productId: item.product._id,
-          quantity: 1,
-          pricePerUnit: item.product.price,
-          name: item.product.name,
-        })
-      );
+      if (authenticated) {
+        dispatch(
+          addCartItemUser({
+            productId: item.product._id,
+            quantity: 1,
+            token,
+            pricePerUnit: item.product.price,
+            name: item.product.name,
+          })
+        );
+        enqueueSnackbar(`1 x ${item.product.name} added to cart`, {
+          variant: "success",
+        });
+      } else {
+        dispatch(
+          addCartItemGuest({
+            productId: item.product._id,
+            quantity: 1,
+            pricePerUnit: item.product.price,
+            name: item.product.name,
+          })
+        );
+        enqueueSnackbar(`1 x ${item.product.name} added to cart`, {
+          variant: "success",
+        });
+      }
     }
   };
 
@@ -72,6 +86,9 @@ const CartItems = () => {
           name: item.product.name,
         })
       );
+      enqueueSnackbar(`1 x ${item.product.name} removed from cart`, {
+        variant: "info",
+      });
     } else {
       dispatch(
         removeCartItemGuest({
@@ -81,6 +98,9 @@ const CartItems = () => {
           name: item.product.name,
         })
       );
+      enqueueSnackbar(`1 x ${item.product.name} removed from cart`, {
+        variant: "info",
+      });
     }
   };
 
@@ -89,17 +109,22 @@ const CartItems = () => {
       dispatch(
         removeCartItemUser({
           productId: item.product._id,
-          quantity: 1,
+          quantity: item.quantity,
           token,
           price: item.product.price,
           name: item.product.name,
         })
       );
+      enqueueSnackbar(`Item removed from cart`, {
+        variant: "info",
+      });
     } else {
       dispatch(removeCartItemGuest(item.product._id, item.quantity));
+      enqueueSnackbar(`Item removed from cart`, {
+        variant: "info",
+      });
     }
   };
-
 
   return (
     <Box sx={styles.wrapper}>

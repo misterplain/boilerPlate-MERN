@@ -17,6 +17,8 @@ import {
 } from "../../../actions/collectionsActions";
 import { deleteProduct } from "../../../actions/productActions";
 import CollectionsModal from "./CollectionsModal";
+import AlertMessage from "../../AlertMessage/AlertMessage";
+import { SnackbarProvider, useSnackbar } from 'notistack';
 
 import styles from "./styles";
 
@@ -28,14 +30,16 @@ const AdminCollections = () => {
   const dispatch = useDispatch();
   const [isEditTitle, setIsEditTitle] = useState(false);
   const [collectionName, setCollectionName] = useState("");
-  const collectionsList = useSelector((state) => state.collections);
-  const { collections } = collectionsList;
+  const collectionsState = useSelector((state) => state.collections);
+  const { collections, error } = collectionsState;
   const productsList = useSelector((state) => state.productList);
   const { products } = productsList;
   //get token from state
   const userAuthState = useSelector((state) => state.userAuth);
   const token = userAuthState?.accessToken;
   const [collectionProductsId, setCollectionProductsId] = useState(null);
+
+  const { enqueueSnackbar } = useSnackbar();
 
   //modal state
 
@@ -52,16 +56,26 @@ const AdminCollections = () => {
     setOpen(false);
   };
 
+  const handleClickVariant = (variant) => () => {
+    // variant could be success, error, warning, info, or default
+    enqueueSnackbar('This is a success message!', { variant });
+  };
+
   return (
     <Box sx={styles.wrapper}>
+      {error && <AlertMessage type="error">{error}</AlertMessage>}
+
+      <Button onClick={handleClickVariant("success")}>
+        Show success snackbar
+      </Button>
       <Box sx={styles.newCollectionWrapper}>
-        <Button onClick={()=>handleOpenModal()}>new collection</Button>
+        <Button onClick={() => handleOpenModal()}>new collection</Button>
       </Box>
       <hr />
       <Box sx={styles.collectionsWrapper}>
         <Typography>Collections</Typography>
         <Box sx={styles.collectionsList}>
-          {collectionsList?.collections?.map((collection) => (
+          {collectionsState?.collections?.map((collection) => (
             <Box key={collection._id} sx={styles.collectionName}>
               <Button
                 onClick={() => {
@@ -79,13 +93,13 @@ const AdminCollections = () => {
                 >
                   Edit
                 </Button>
-                {/* <Button
+                <Button
                   onClick={() => {
                     dispatch(deleteCollection(collection._id, token));
                   }}
                 >
                   Delete
-                </Button> */}
+                </Button>
               </Box>
             </Box>
           ))}

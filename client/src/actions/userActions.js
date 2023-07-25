@@ -8,6 +8,7 @@ import {
 } from "../constants/userConstants";
 import axios from "../api/axios";
 
+
 const addAddress = (token, address) => async (dispatch) => {
   try {
     const options = {
@@ -57,34 +58,38 @@ const deleteAddress = (token, addressId) => async (dispatch) => {
   }
 };
 
-const updateFavorites = ({token, method, productId}) => async (dispatch) => {
+const updateFavorites =
+  ({ token, method, productId }) =>
+  async (dispatch) => {
+    try {
+      const options = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
 
-  try {
-    const options = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+      const data = await axios.post(
+        `/user/updatefavorites`,
+        { method, productId },
+        options
+      );
 
-    const data = await axios.post(
-      `/user/updatefavorites`,
-      { method, productId },
-      options
-    );
+      console.log(data);
 
-    console.log(data)
+      dispatch({
+        type: UPDATE_FAVORITE_SUCCESS,
+        payload: data.data.updatedUser.favorites,
+      });
+      return Promise.resolve()
 
-    dispatch({
-      type: UPDATE_FAVORITE_SUCCESS,
-      payload: data.data.updatedUser.favorites,
-    });
-  } catch (error) {
-    console.log(error);
-    dispatch({
-      type: UPDATE_FAVORITE_FAIL,
-      payload: error.message,
-    });
-  }
-};
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: UPDATE_FAVORITE_FAIL,
+        payload: error.message,
+      });
+      return Promise.reject()
+    }
+  };
 
 export { addAddress, deleteAddress, updateFavorites };

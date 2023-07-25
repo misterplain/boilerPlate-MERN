@@ -27,11 +27,16 @@ export const authReducer = (state = { accessToken: null }, action) => {
         authenticated: true,
         accessToken: action.payload.data.accessToken,
         refreshToken: action.payload.data.refreshToken,
-        errors: null,
+        loginError: null,
       };
 
     case FORM_LOGIN_FAIL:
-      return { loading: false, error: action.payload, authenticated: false };
+      return {
+        loading: false,
+        loginError: action.payload,
+        registerError: null,
+        authenticated: false,
+      };
     case OAUTH_LOGIN_REQUEST:
       return { loading: true };
 
@@ -58,10 +63,15 @@ export const authReducer = (state = { accessToken: null }, action) => {
         refreshToken: action.payload.data.refreshToken,
         authenticated: true,
         loading: false,
-        errors: null,
+        registerError: null,
       };
     case FORM_REGISTER_FAIL:
-      return { loading: false, error: action.payload, authenticated: false };
+      return {
+        loading: false,
+        registerError: action.payload,
+        loginError: null,
+        authenticated: false,
+      };
 
     case OAUTH_REGISTER_FAIL:
       return { loading: false, error: action.payload, authenticated: false };

@@ -24,11 +24,13 @@ import {
 import { fetchReviews, clearReviews } from "../actions/reviewsActions";
 import ProductCarousel from "../components/ProductCarousel/ProductCarousel";
 import ProductReviews from "../components/ProductReviews/ProductReviews";
+import { useSnackbar } from "notistack";
 
 const ProductScreen = () => {
   const location = useLocation();
   const { productId } = useParams();
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   const productList = useSelector((state) => state.productList);
   const userAuthState = useSelector((state) => state.userAuth);
@@ -103,51 +105,71 @@ const ProductScreen = () => {
               }}
               validationSchema={validationSchema}
               onSubmit={async (values, { resetForm }) => {
-                if (authenticated) {
-                  if (!productInBasket) {
-                    dispatch(
-                      addCartItemUser({
-                        token,
-                        productId,
-                        quantity: values.quantity,
-                        price: displayedProduct.price,
-                        name: displayedProduct.name,
-                      })
-                    );
+                try {
+                  if (authenticated) {
+                    if (!productInBasket) {
+                      await dispatch(
+                        addCartItemUser({
+                          token,
+                          productId,
+                          quantity: values.quantity,
+                          price: displayedProduct.price,
+                          name: displayedProduct.name,
+                        })
+                      );
+                      enqueueSnackbar(
+                        `${values.quantity} x ${displayedProduct.name} added to cart`,
+                        { variant: "success" }
+                      );
+                    } else {
+                      await dispatch(
+                        removeCartItemUser({
+                          token,
+                          productId,
+                          quantity: productInBasket.quantity,
+                          price: displayedProduct.price,
+                          name: displayedProduct.name,
+                        })
+                      );
+                      enqueueSnackbar("Item removed from cart!", {
+                        variant: "info",
+                      });
+                    }
                   } else {
-                    dispatch(
-                      removeCartItemUser({
-                        token,
-                        productId,
-                        quantity: productInBasket.quantity,
-                        price: displayedProduct.price,
-                        name: displayedProduct.name,
-                      })
-                    );
+                    if (!productInBasket) {
+                      await dispatch(
+                        addCartItemGuest({
+                          productId,
+                          quantity: values.quantity,
+                          pricePerUnit: displayedProduct.price,
+                          name: displayedProduct.name,
+                        })
+                      );
+                      enqueueSnackbar(
+                        `${values.quantity} x ${displayedProduct.name} added to cart`,
+                        { variant: "success" }
+                      );
+                    } else {
+                      await dispatch(
+                        removeCartItemGuest({
+                          productId,
+                          quantity: productInBasket.quantity,
+                          pricePerUnit: displayedProduct.price,
+                          name: displayedProduct.name,
+                        })
+                      );
+                      enqueueSnackbar("Item removed from cart!", {
+                        variant: "info",
+                      });
+                    }
                   }
-                } else {
-                  if (!productInBasket) {
-                    dispatch(
-                      addCartItemGuest({
-                        productId,
-                        quantity: values.quantity,
-                        pricePerUnit: displayedProduct.price,
-                        name: displayedProduct.name,
-                      })
-                    );
-                  } else {
-                    dispatch(
-                      removeCartItemGuest({
-                        productId,
-                        quantity: productInBasket.quantity,
-                        pricePerUnit: displayedProduct.price,
-                        name: displayedProduct.name,
-                      })
-                    );
-                  }
+                } catch (error) {
+                  enqueueSnackbar(`An error occurred: ${error.message}`, {
+                    variant: "error",
+                  });
+                } finally {
+                  resetForm();
                 }
-
-                resetForm();
               }}
             >
               {({
@@ -179,7 +201,7 @@ const ProductScreen = () => {
                   )}
 
                   {!productInBasket ? (
-                    <Button type="submit">Add to Basket</Button>
+                    <Button type="submit" disabled={values.quantity > displayedProduct.stock}>Add to Basket</Button>
                   ) : (
                     <Button type="submit">Remove from Basket</Button>
                   )}

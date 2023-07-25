@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { loginForm } from "../../actions/authActions";
+import AlertMessage from "../AlertMessage/AlertMessage";
 
 const styles = {
   formContainer: {
@@ -41,13 +42,29 @@ const LoginForm = () => {
   const shoppingCartState = useSelector((state) => state.shoppingCart);
   const { cartItems } = shoppingCartState;
 
+  const authState = useSelector((state) => state.userAuth);
+  const { authenticated, loginError } = authState;
+  const [errorMessage, setErrorMessage] = useState("");
+  // console.log(error);
+
   const handleSubmit = (values) => {
     dispatch(loginForm(values.email, values.password, cartItems));
   };
 
+  // useEffect(() => {
+  //   setErrorMessage(error);
+
+  //   return () => {
+  //     setErrorMessage(null);
+  //   };
+  // }, [error]);
+
   return (
     <Box sx={styles.formContainer}>
-      {" "}
+      {/* {error && <p>{error}</p>} */}
+
+      {loginError && <AlertMessage type="error">{loginError}</AlertMessage>}
+
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={loginSchema}

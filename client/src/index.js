@@ -4,16 +4,87 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ThemeProvider } from "@mui/material/styles";
 import { Provider } from "react-redux";
+import { SnackbarProvider, useSnackbar } from "notistack";
 import theme from "./theme";
 import store from "./store";
+import { MaterialDesignContent } from "notistack";
+import { styled } from "@mui/material/styles";
+
+// const StyledMaterialDesignContent = styled(MaterialDesignContent)((theme) => ({
+//   "&.notistack-MuiContent-success": {
+//     // backgroundColor: "#2D7738",
+//     // backgroundColor: "white",
+//     // borderColor: "#2D7738",
+//     // color: "#2D7738",
+//     // fontSize: "1.5rem",
+//     // boxShadow: "0px 0px 10px 0px #2D7738",
+//     backgroundColor: "white",
+//     color: "#4caf50",
+//     borderRadius: "5px",
+//     textTransform: "uppercase",
+//     border: "1px solid #4caf50",
+//     fontFamily: theme.typography.h1.fontFamily,
+//   },
+//   "&.notistack-MuiContent-error": {
+//     backgroundColor: "#970C0C",
+//   },
+// }));
+
+const StyledMaterialDesignContent = styled(MaterialDesignContent)(
+  ({ theme }) => ({
+    "&.notistack-MuiContent-success": {
+      backgroundColor: "white",
+      color: "#4caf50",
+      borderRadius: "5px",
+      textTransform: "uppercase",
+      border: "1px solid #4caf50",
+      textAlign: "center",
+      fontFamily: theme.typography.h1.fontFamily,
+      boxShadow: "none",
+      fontWeight: "100px",
+    },
+    "&.notistack-MuiContent-error": {
+      backgroundColor: "white",
+      color: "#cc3300",
+      borderRadius: "5px",
+      textTransform: "uppercase",
+      border: "1px solid #cc3300",
+      textAlign: "center",
+      fontFamily: theme.typography.h1.fontFamily,
+      boxShadow: "none",
+      fontWeight: "100px",
+    },
+    "&.notistack-MuiContent-info": {
+      backgroundColor: "white",
+      color: "#1a75ff",
+      borderRadius: "5px",
+      textTransform: "uppercase",
+      border: "1px solid #1a75ff",
+      textAlign: "center",
+      fontFamily: theme.typography.h1.fontFamily,
+      boxShadow: "none",
+      fontWeight: "100px",
+    },
+  })
+);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      {" "}
       <ThemeProvider theme={theme}>
-        <App />
+        {" "}
+        <SnackbarProvider
+          maxSnack={5}
+          hideIconVariant
+          Components={{
+            success: StyledMaterialDesignContent,
+            error: StyledMaterialDesignContent,
+            info: StyledMaterialDesignContent,
+          }}
+        >
+          <App />
+        </SnackbarProvider>{" "}
       </ThemeProvider>
     </Provider>
   </React.StrictMode>
