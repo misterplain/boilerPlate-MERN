@@ -106,14 +106,14 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
       });
   
       const oauthWindow = window.open(
-        `http://localhost:5000/auth/${provider}`,
+        `${process.env.REACT_APP_SERVER_API_URL}/auth/${provider}`,
         "_blank"
       );
   
       window.addEventListener(
         "message",
         function (event) {
-          if (event.origin !== "http://localhost:5000") {
+          if (event.origin !== `${process.env.REACT_APP_SERVER_API_URL}`) {
             return;
           }
   
@@ -209,23 +209,25 @@ export const loginOAuthAndSyncCart =
     }
   };
 
-export const logoutUser = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: USER_LOGOUT,
-    });
-    window.open("http://localhost:5000/auth/logout", "_self");
-    dispatch({
-      type: CLEAR_USER_DETAILS,
-    });
-
-    dispatch({
-      type: EMPTY_CART,
-    });
-    dispatch({
-      type: CLEAR_ORDER,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
+  
+ 
+  export const logoutUser = () => async (dispatch) => {
+    try {
+      dispatch({
+        type: USER_LOGOUT,
+      });
+      window.open(process.env.REACT_APP_SERVER_API_URL + "/auth/logout", "_self");
+      dispatch({
+        type: CLEAR_USER_DETAILS,
+      });
+  
+      dispatch({
+        type: EMPTY_CART,
+      });
+      dispatch({
+        type: CLEAR_ORDER,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
