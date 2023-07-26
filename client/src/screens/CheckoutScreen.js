@@ -45,7 +45,7 @@ const CheckoutScreen = () => {
   const { products } = useSelector((state) => state.productList);
   const { email, username, isAdmin } = userDetailsState?.userDetails || {};
   const orderState = useSelector((state) => state.order);
-  const { cartItems, emailAddress, shippingAddress } = orderState;
+  const { cartItems, emailAddress, shippingAddress, isPaid } = orderState;
   const token = userAuthState?.accessToken;
 
   const [step, setStep] = useState(1);
@@ -74,7 +74,7 @@ const CheckoutScreen = () => {
           <Button
             variant="contained"
             onClick={() => setStep(1)}
-            disabled={step === 5}
+            disabled={!emailAddress}
           >
             User and Email
           </Button>
@@ -82,7 +82,7 @@ const CheckoutScreen = () => {
         <Button
           variant="contained"
           onClick={() => setStep(2)}
-          disabled={!emailAddress || !cartItems || step === 5}
+          disabled={!shippingAddress}
         >
           Address
         </Button>
@@ -90,7 +90,7 @@ const CheckoutScreen = () => {
           variant="contained"
           onClick={() => setStep(3)}
           disabled={
-            !emailAddress || !cartItems || !shippingAddress || step === 5
+            !emailAddress || !cartItems || !shippingAddress 
           }
         >
           Summary
@@ -99,10 +99,7 @@ const CheckoutScreen = () => {
           variant="contained"
           onClick={() => setStep(4)}
           disabled={
-            !emailAddress ||
-            cartItems.length === 0 ||
-            !shippingAddress ||
-            step === 5
+         !isPaid
           }
         >
           Payment

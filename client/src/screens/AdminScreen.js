@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Badge from "@mui/material/Badge";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
@@ -10,6 +12,11 @@ import AdminProducts from "../components/AdminComponents/Products/AdminProducts"
 import AdminUsers from "../components/AdminComponents/Users/AdminUsers";
 import AdminOrders from "../components/AdminComponents/Orders/AdminOrders";
 import AdminReviews from "../components/AdminComponents/Reviews/AdminReviews";
+import {
+  getUnmoderatedReviews,
+  deleteReview,
+  moderateReview,
+} from "../actions/reviewsActions";
 
 const styles = {
   buttonsWrapper: {
@@ -19,34 +26,52 @@ const styles = {
 
 const adminButtons = [
   {
-    name: "All Collections",
+    name: "Collections",
     link: "collections",
     component: "Collections",
   },
+  // {
+  //   name: "Products",
+  //   link: "products",
+  //   component: "Products",
+  // },
   {
-    name: "All Products",
-    link: "products",
-    component: "Products",
-  },
-  {
-    name: "All Users",
+    name: "Users",
     link: "users",
     component: "Users",
   },
   {
-    name: "All Orders",
+    name: "Orders",
     link: "orders",
     component: "Orders",
   },
   {
-    name: "All Reviews",
+    name: "Reviews",
     link: "reviews",
     component: "Reviews",
   },
 ];
 
-
 const AdminScreen = () => {
+  const dispatch = useDispatch();
+  const userAuthState = useSelector((state) => state.userAuth);
+  const token = userAuthState?.accessToken;
+  const reviewsState = useSelector((state) => state.reviews);
+  const { reviews } = reviewsState || {};
+  console.log(reviews);
+
+  useEffect(() => {
+    dispatch(getUnmoderatedReviews(token));
+  }, [dispatch, token]);
+
+  const badgeCounts = {
+    // object to hold badge counts
+    reviews: reviews?.length,
+    collections: 0,
+    products: 0,
+    users: 0,
+    orders: 0,
+  };
 
   return (
     <Grid container>
@@ -57,17 +82,45 @@ const AdminScreen = () => {
         sx={{ display: "flex", justifyContent: "space-around" }}
       >
         <Box sx={styles.buttonsWrapper}>
+          {/* {adminButtons.map((button) => (
+            <Box key={button.name}>
+              <Badge
+                badgeContent={badgeCounts[button.link] ? badgeCounts[button.link] : null}
+                color="primary"
+                // overlap="rectangular"
+                anchorOrigin={{
+                  vertical: "center",
+                  horizontal: "right",
+                }}
+              >
+                <Link component={NavLink} to={button.link}>
+                  <Button>{button.name}</Button>
+                </Link>
+              </Badge>
+            </Box>
+          ))} */}
           {adminButtons.map((button) => (
             <Box key={button.name}>
-              <Link component={NavLink} to={button.link}>
-                <Button>{button.name}</Button>
-              </Link>
+              {badgeCounts[button.link] > 0 && (
+                <Link component={NavLink} to={button.link}>
+                  <Button>{button.name}</Button>
+                  <Badge
+                    badgeContent={badgeCounts[button.link]}
+                    color="secondary"
+                    sx={{ marginLeft: "0.5rem" }}
+                  />
+                </Link>
+              )}
+              {badgeCounts[button.link] === 0 && (
+                <Link component={NavLink} to={button.link}>
+                  <Button>{button.name}</Button>
+                </Link>
+              )}
             </Box>
           ))}
         </Box>
       </Grid>
       <Grid item xs={12} md={7}>
-
         <Routes>
           {" "}
           <Route path="collections" element={<AdminCollections />} />

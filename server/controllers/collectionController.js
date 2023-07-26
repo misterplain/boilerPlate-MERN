@@ -1,5 +1,6 @@
 const Collection = require("../models/collectionModel");
 const { createClient } = require("pexels");
+const cloudinary = require("../utils/cloudinary");
 
 //get all collections
 //public
@@ -69,32 +70,37 @@ const getPexel = async (req, res) => {
 //new collection
 //auth account only
 const newCollection = async (req, res) => {
-  const { name, image } = req.body;
+  const { collectionData } = req.body;
   const { isAdmin } = req;
+  console.log(collectionData);
 
   if (!isAdmin) {
     return res.status(403).json({ message: "Not an admin" });
   }
 
   try {
+    const name = collectionData.name;
     const foundCollection = await Collection.findOne({ name });
 
     if (foundCollection)
       return res.status(400).json({ message: "Collection already exists" });
 
-    const client = createClient(process.env.PEXELS_API_KEY);
-    const query = name;
-
-    client.photos
-      .search({ query, per_page: 1, orientation: "landscape", size: "medium" })
-      .then((photos) => {
-        const photoUrl = photos.photos[0].url;
-        const photoId = photos.photos[0].id;
-        console.log(photoUrl, photoId);
-      });
+    //cloudinary
+    const imageUploadResult = await cloudinary.uploader.upload(
+      collectionData.image,
+      {
+        folder: "collections",
+        width: 300,
+        crop: "scale",
+      }
+    );
 
     const newCollection = await Collection.create({
-      name,
+      name: collectionData.name,
+      image: {
+        public_id: imageUploadResult.public_id,
+        url: imageUploadResult.secure_url,
+      },
     });
     const reply = {
       message: "Collection created",
@@ -147,7 +153,7 @@ const deleteCollection = async (req, res) => {
 
 const updateCollection = async (req, res) => {
   const { collectionId } = req.params;
-  const { name } = req.body;
+  const { collectionData } = req.body;
   const { isAdmin } = req;
 
   if (!isAdmin) {
@@ -164,7 +170,22 @@ const updateCollection = async (req, res) => {
         .status(400)
         .json({ message: "No collection found with that id" });
 
-    collectionToUpdate.name = name;
+    collectionToUpdate.name = collectionData.name;
+
+    //cloudinary
+    const imageUploadResult = await cloudinary.uploader.upload(
+      collectionData.image,
+      {
+        folder: "collections",
+        width: 300,
+        crop: "scale",
+      }
+    );
+    collectionToUpdate.image = {
+      public_id: imageUploadResult.public_id,
+      url: imageUploadResult.secure_url,
+    };
+
     await collectionToUpdate.save();
 
     const reply = {

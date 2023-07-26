@@ -6,6 +6,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Badge from "@mui/material/Badge";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
 
@@ -29,9 +30,9 @@ const AdminReviews = () => {
   const reviewsState = useSelector((state) => state.reviews);
   const { reviews } = reviewsState || {};
 
-  useEffect(() => {
-    dispatch(getUnmoderatedReviews(token));
-  }, [dispatch, token]);
+  // useEffect(() => {
+  //   dispatch(getUnmoderatedReviews(token));
+  // }, [dispatch, token]);
 
   return (
     <Box sx={styles.wrapper}>

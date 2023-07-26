@@ -18,7 +18,7 @@ import {
 import { deleteProduct } from "../../../actions/productActions";
 import CollectionsModal from "./CollectionsModal";
 import AlertMessage from "../../AlertMessage/AlertMessage";
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { SnackbarProvider, useSnackbar } from "notistack";
 
 import styles from "./styles";
 
@@ -58,23 +58,64 @@ const AdminCollections = () => {
 
   const handleClickVariant = (variant) => () => {
     // variant could be success, error, warning, info, or default
-    enqueueSnackbar('This is a success message!', { variant });
+    enqueueSnackbar("This is a success message!", { variant });
+  };
+
+  const styles = {
+    list: {
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "space-around",
+      alignItems: "space-around",
+      flexDirection: "row",
+    },
+    card: { border: "1px solid black", cursor: "pointer" },
+    cardImageWrapper: {
+      position: "relative",
+      margin: "10px",
+      /* your styles here */
+      border: "1px solid black",
+      width: "300px",
+    },
+    image: {
+      width: "100%",
+    },
+    overlayBox: {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      zIndex: 2,
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+      color: "white",
+      padding: "10px",
+      textAlign: "center",
+    },
+    name: {
+      /* your styles here */
+    },
+    length: {
+      /* your styles here */
+    },
+    optionsWrapper: {
+      display: "flex",
+      justifyContent: "center",
+    },
+    productName: {
+      display: "flex",
+    },
   };
 
   return (
     <Box sx={styles.wrapper}>
       {error && <AlertMessage type="error">{error}</AlertMessage>}
-
-      <Button onClick={handleClickVariant("success")}>
-        Show success snackbar
-      </Button>
       <Box sx={styles.newCollectionWrapper}>
         <Button onClick={() => handleOpenModal()}>new collection</Button>
       </Box>
       <hr />
       <Box sx={styles.collectionsWrapper}>
         <Typography>Collections</Typography>
-        <Box sx={styles.collectionsList}>
+        {/* <Box sx={styles.collectionsList}>
           {collectionsState?.collections?.map((collection) => (
             <Box key={collection._id} sx={styles.collectionName}>
               <Button
@@ -103,9 +144,53 @@ const AdminCollections = () => {
               </Box>
             </Box>
           ))}
+        </Box> */}
+        <Box sx={styles.list}>
+          {collectionsState?.collections?.map((collection) => (
+            <Box
+              key={collection._id}
+              sx={styles.card}
+              onClick={() => {
+                setCollectionProductsId(collection._id);
+                setCollectionName(collection.name);
+              }}
+            >
+              <Box sx={styles.cardImageWrapper}>
+                <Box
+                  component="img"
+                  sx={styles.image}
+                  src={collection.image.url}
+                  alt="alt"
+                />
+                <Box sx={styles.overlayBox}>
+                  <Typography sx={styles.name}>{collection.name}</Typography>
+                  <Typography sx={styles.length}>
+                    {collection.products.length} products
+                  </Typography>
+                </Box>
+              </Box>
+              <Box sx={styles.optionsWrapper}>
+                <Button
+                  onClick={() => {
+                    handleOpenModal(collection);
+                  }}
+                  color="secondary"
+                >
+                  Edit
+                </Button>
+                <Button
+                  onClick={() => {
+                    dispatch(deleteCollection(collection._id, token));
+                  }}
+                  color="error"
+                >
+                  Delete
+                </Button>
+              </Box>
+            </Box>
+          ))}
         </Box>
       </Box>
-      <hr />
 
       {collectionProductsId !== null && (
         <Box sx={styles.productsWrapper}>
@@ -125,31 +210,52 @@ const AdminCollections = () => {
                   (product) => product.collectionId === collectionProductsId
                 )
                 .map((product) => (
-                  <Box sx={styles.productName} key={product._id}>
-                    <Link component={NavLink} to={`/product/${product._id}`}>
-                      <Button sx={styles.productLink}>{product.name}</Button>
-                    </Link>
-
-                    <Box sx={styles.productOptions}>
-                      <Link
-                        component={NavLink}
-                        to={`/admin/products/edit/${product._id}`}
+                  <Box
+                    key={product._id}
+                    sx={styles.card}
+                    // onClick={() => {
+                    //   setCollectionProductsId(collection._id);
+                    //   setCollectionName(collection.name);
+                    // }}
+                  >
+                    <Box sx={styles.cardImageWrapper}>
+                      <Box
+                        component="img"
+                        sx={styles.image}
+                        src={product.images[0].url}
+                        alt="alt"
+                      />
+                      <Box sx={styles.overlayBox}>
+                        <Typography sx={styles.name}>
+                          {product.name}
+                        </Typography>
+                        {/* <Typography sx={styles.length}>
+                          {product.products.length} products
+                        </Typography> */}
+                      </Box>
+                    </Box>
+                    <Box sx={styles.optionsWrapper}>
+                      {/* <Button
+                        onClick={() => {
+                          handleOpenModal(product);
+                        }}
+                        color="secondary"
                       >
-                        <Button>Edit Product</Button>
-                      </Link>
+                        Edit
+                      </Button>
                       <Button
                         onClick={() => {
-                          dispatch(deleteProduct(product._id, token));
+                          dispatch(deleteCollection(collection._id, token));
                         }}
+                        color="error"
                       >
                         Delete
-                      </Button>
+                      </Button> */}
                     </Box>
                   </Box>
                 ))
             ) : (
               <Box sx={styles.noItems}>
-                {" "}
                 <Typography>No items within this category</Typography>
               </Box>
             )}
