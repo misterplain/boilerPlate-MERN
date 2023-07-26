@@ -64,12 +64,12 @@ const whitelist = [
   "http://localhost:3000",
   "http://localhost:5000",
   "https://accounts.google.com",
-
+  "https://e-commerce-mern-eryu.onrender.com",
 ];
 app.use(
   cors({
     origin: function (origin, callback) {
-      console.log("Origin: ", origin); 
+      console.log("Origin: ", origin);
       if (whitelist.indexOf(origin) !== -1 || !origin) {
         callback(null, true);
       } else {
