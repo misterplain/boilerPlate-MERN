@@ -95,44 +95,46 @@ export const registerForm =
     }
   };
 
-
 export const loginOAuth = (provider, code) => async (dispatch) => {
-  const CLIENT_URL = "http://localhost:3000";
-  
+  const CLIENT_URL =
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_SERVER_API_URL
+      : "http://localhost:5000";
+
   return new Promise((resolve, reject) => {
     try {
       dispatch({
         type: OAUTH_LOGIN_REQUEST,
       });
-  
+
       const oauthWindow = window.open(
-        `${process.env.REACT_APP_SERVER_API_URL}/auth/${provider}`,
+        `${CLIENT_URL}/auth/${provider}`,
         "_blank"
       );
-  
+
       window.addEventListener(
         "message",
         function (event) {
-          if (event.origin !== `${process.env.REACT_APP_SERVER_API_URL}`) {
+          if (event.origin !== `${CLIENT_URL}`) {
             return;
           }
-  
+
           const { accessToken, refreshToken } = event.data;
-  
+
           dispatch({
             type: OAUTH_LOGIN_SUCCESS,
             payload: { accessToken, refreshToken },
           });
-  
+
           dispatch({
             type: SET_USER_DETAILS,
             payload: event.data.user,
           });
-  
+
           dispatch({
             type: CLEAR_ORDER,
           });
-  
+
           oauthWindow.close();
 
           resolve({
@@ -154,80 +156,79 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
   });
 };
 
+export const loginOAuthAndSyncCart = (provider, cart) => async (dispatch) => {
+  try {
+    const { user, accessToken, refreshToken } = await dispatch(
+      loginOAuth(provider)
+    );
+    if (cart.length > 0) {
+      try {
+        const options = {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
 
-export const loginOAuthAndSyncCart =
-  (provider, cart) => async (dispatch) => {
-    try {
-      const { user, accessToken, refreshToken } = await dispatch(
-        loginOAuth(provider)
-      );
-      if (cart.length > 0) {
-        try {
-          const options = {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          };
-
-          const data = await axios.post("/cart/update", {cartItems: cart}, options);
-          dispatch({
-            type: OAUTH_UPDATE_CART_SUCCESS,
-            payload: data.data.cart,
-          });
-        } catch (error) {
-          console.log(error);
-          dispatch({
-            type: OAUTH_UPDATE_CART_FAIL,
-            payload: error.response.data.message,
-          });
-        }
-      } else {
-        try {
-          const options = {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          };
-
-          const data = await axios.get("/cart/get", options);
-
-          dispatch({
-            type: OAUTH_UPDATE_CART_SUCCESS,
-            payload: data.data.cart,
-          });
-        } catch (error) {
-          console.log(error);
-          dispatch({
-            type: OAUTH_UPDATE_CART_FAIL,
-            payload: error.response.data.message,
-          });
-        }
+        const data = await axios.post(
+          "/cart/update",
+          { cartItems: cart },
+          options
+        );
+        dispatch({
+          type: OAUTH_UPDATE_CART_SUCCESS,
+          payload: data.data.cart,
+        });
+      } catch (error) {
+        console.log(error);
+        dispatch({
+          type: OAUTH_UPDATE_CART_FAIL,
+          payload: error.response.data.message,
+        });
       }
-      
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    } else {
+      try {
+        const options = {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
 
-  
- 
-  export const logoutUser = () => async (dispatch) => {
-    try {
-      dispatch({
-        type: USER_LOGOUT,
-      });
-      window.open(process.env.REACT_APP_SERVER_API_URL + "/auth/logout", "_self");
-      dispatch({
-        type: CLEAR_USER_DETAILS,
-      });
-  
-      dispatch({
-        type: EMPTY_CART,
-      });
-      dispatch({
-        type: CLEAR_ORDER,
-      });
-    } catch (error) {
-      console.log(error);
+        const data = await axios.get("/cart/get", options);
+
+        dispatch({
+          type: OAUTH_UPDATE_CART_SUCCESS,
+          payload: data.data.cart,
+        });
+      } catch (error) {
+        console.log(error);
+        dispatch({
+          type: OAUTH_UPDATE_CART_FAIL,
+          payload: error.response.data.message,
+        });
+      }
     }
-  };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const logoutUser = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: USER_LOGOUT,
+    });
+    window.open(process.env.REACT_APP_SERVER_API_URL + "/auth/logout", "_self");
+    dispatch({
+      type: CLEAR_USER_DETAILS,
+    });
+
+    dispatch({
+      type: EMPTY_CART,
+    });
+    dispatch({
+      type: CLEAR_ORDER,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const passport = require("passport");
 const { signin, signup } = require("../controllers/authController.js");
+const SERVER_URL = process.env.NODE_ENV === "production" ? "https://e-commerce-mern-api.onrender.com" : "http://localhost:5000";
 const CLIENT_URL = process.env.NODE_ENV === "production" ? "https://e-commerce-mern-eryu.onrender.com" : "http://localhost:3000";
 const generateUserTokens = require("../middleware/generateToken.js");
 
