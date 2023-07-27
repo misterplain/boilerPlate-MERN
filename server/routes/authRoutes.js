@@ -52,6 +52,10 @@ router.get(
   "/github",
   passport.authenticate("github", { scope: ["profile", "user:email"] })
 );
+router.get(
+  "/facebook",
+  passport.authenticate("facebook", { scope: ["email", "public_profile"] })
+);
 
 router.get("/google/callback", function (req, res, next) {
   passport.authenticate("google", function (err, user, info) {
@@ -127,6 +131,38 @@ router.get("/github/callback", function (req, res, next) {
 
 //facbeook is only possible with an https connection so it will have to be on the deployed version
 // router.get("/facebook", passport.authenticate("facebook", { scope: ["profile", "email"] }));
+
+router.get("/facebook/callback", function (req, res, next) {
+  passport.authenticate("facebook", function (err, user, info) {
+    // console.log({
+    //   message: "from github callback",
+    //   err: err,
+    //   user: user,
+    // })
+    if (err) {
+      return res.status(500).json({ message: "Error while authenticating" });
+    }
+    if (!user) {
+      return res.status(400).json({ message: "No user found" });
+    }
+    const tokens = generateUserTokens(user);
+    const { accessToken, refreshToken } = tokens;
+
+    res.send(`
+    <script>
+      window.opener.postMessage(
+        {
+          accessToken: "${accessToken}",
+          refreshToken: "${refreshToken}",
+          user: ${JSON.stringify(user)} // stringify the user object
+        },
+        "${CLIENT_URL}"
+      );
+      window.close();
+    </script>
+  `);
+  })(req, res, next);
+});
 
 // router.get(
 //   "/facebook/callback",

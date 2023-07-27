@@ -13,6 +13,8 @@ const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
+const FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET;
+const FACEBOOK_CLIENT_ID = process.env.FACEBOOK_CLIENT_ID;
 //url
 const SERVER_URL =
   process.env.NODE_ENV === "production"
@@ -122,18 +124,45 @@ passport.use(
   )
 );
 
-// passport.use(
-//     new FacebookStrategy(
-//       {
-//         clientID: FACEBOOK_APP_ID,
-//         clientSecret: FACEBOOK_APP_SECRET,
-//         callbackURL: "/auth/facebook/callback",
-//       },
-//       function (accessToken, refreshToken, profile, done) {
-//         done(null, profile);
-//       }
-//     )
-//   );
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: FACEBOOK_CLIENT_ID,
+      clientSecret: FACEBOOK_CLIENT_SECRET,
+      callbackURL: `${SERVER_URL}/auth/facebook/callback`,
+      profileFields: ["id", "emails", "name"], 
+    },
+    async function (accessToken, refreshToken, profile, done) {
+      // const foundEmail = email.emails[0].value;
+      // const username = email._json.given_name;
+      console.log({
+        message: "email",
+        email: email,
+      })
+      console.log({
+        message: "profile",
+        profile: profile,
+      })
+
+      done()
+
+      // try {
+      //   let user = await UserModel.findOne({ email: foundEmail });
+      //   if (!user) {
+      //     user = new UserModel({
+      //       email: foundEmail,
+      //       username: username,
+      //       password: crypto.randomBytes(16).toString("hex"),
+      //     });
+      //     await user.save();
+      //   }
+      //   done(null, user);
+      // } catch (err) {
+      //   done(err);
+      // }
+    }
+  )
+);
 
 //to pass the user data to the session you need to serialize and deserialize the user
 passport.serializeUser((user, done) => {
