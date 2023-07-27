@@ -7,13 +7,21 @@ const UserModel = require("../models/userModel.js");
 const { default: axios } = require("axios");
 const crypto = require("crypto");
 const generateUserTokens = require("../middleware/generateToken.js");
+//github passport strategy tool
+const { Octokit } = require("@octokit/core");
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 //url
-const SERVER_URL = process.env.NODE_ENV === "production" ? "https://e-commerce-mern-api.onrender.com" : "http://localhost:5000";
-const CLIENT_URL = process.env.NODE_ENV === "production" ? "https://e-commerce-mern-eryu.onrender.com" : "http://localhost:3000";
+const SERVER_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://e-commerce-mern-api.onrender.com"
+    : "http://localhost:5000";
+const CLIENT_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://e-commerce-mern-eryu.onrender.com"
+    : "http://localhost:3000";
 
 passport.use(
   new GoogleStrategy(
@@ -51,11 +59,65 @@ passport.use(
     {
       clientID: GITHUB_CLIENT_ID,
       clientSecret: GITHUB_CLIENT_SECRET,
-      callbackURL: `${SERVER_URL}/auth/google/callback`,
-      profileFields: ["email"],
+      callbackURL: `${SERVER_URL}/auth/github/callback`,
+      profileFields: ["user:email"],
     },
-    function (accessToken, refreshToken, profile, done) {
-      done(null, profile);
+    async function (accessToken, refreshToken, profile, email, done) {
+      // console.log({message: "email", email: email})
+      // console.log({message: "profile", profile: profile})
+      // const foundEmail = email.emails[0].value;
+      // const username = email._json.given_name;
+
+      // console.log(accessToken)
+
+      try {
+        // console.log("Access Token:", accessToken);
+        const octokit = new Octokit({ auth: accessToken});
+
+        const response = await octokit.request("GET /user/emails", {
+          headers: {
+            "X-GitHub-Api-Version": "2022-11-28",
+          },
+        });
+        // console.log(response)
+
+        const emails = response.data;
+        const primaryEmail = emails.find(
+          (email) => email.primary === true && email.verified === true
+        ).email;
+
+        console.log(primaryEmail)
+        console.log(profile)
+
+        let user = await UserModel.findOne({ email: primaryEmail });
+        if (!user) {
+          user = new UserModel({
+            email: primaryEmail,
+            username: profile.username,
+            password: crypto.randomBytes(16).toString("hex"),
+          });
+          await user.save();
+        }
+        done(null, user);
+      } catch (error) {
+        console.error("Error occurred:", error);
+        done(error);
+      }
+
+      // try {
+      //   let user = await UserModel.findOne({ email: foundEmail });
+      //   if (!user) {
+      //     user = new UserModel({
+      //       email: foundEmail,
+      //       username: username,
+      //       password: crypto.randomBytes(16).toString("hex"),
+      //     });
+      //     await user.save();
+      //   }
+      //   done(null, user);
+      // } catch (err) {
+      //   done(err);
+      // }
     }
   )
 );
@@ -78,7 +140,7 @@ passport.serializeUser((user, done) => {
   done(null, user._id);
 });
 
-passport.deserializeUser(async function(id, done) {
+passport.deserializeUser(async function (id, done) {
   const user = await UserModel.findById(id);
   // const tokens = generateUserTokens(user);
 

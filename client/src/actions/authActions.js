@@ -27,6 +27,14 @@ import {
 } from "../constants/cartConstants";
 import { CLEAR_ORDER } from "../constants/orderConstants";
 import axios from "../api/axios";
+const SERVER_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://e-commerce-mern-api.onrender.com"
+    : "http://localhost:5000";
+const CLIENT_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://e-commerce-mern-eryu.onrender.com"
+    : "http://localhost:3000";
 
 export const loginForm = (email, password, cart) => async (dispatch) => {
   try {
@@ -100,6 +108,8 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
     process.env.NODE_ENV === "production"
       ? process.env.REACT_APP_SERVER_API_URL
       : "http://localhost:5000";
+
+  console.log(provider);
 
   return new Promise((resolve, reject) => {
     try {
@@ -217,7 +227,7 @@ export const logoutUser = () => async (dispatch) => {
     dispatch({
       type: USER_LOGOUT,
     });
-    window.open(process.env.REACT_APP_SERVER_API_URL + "/auth/logout", "_self");
+    window.open(SERVER_URL + "/auth/logout", "_self");
     dispatch({
       type: CLEAR_USER_DETAILS,
     });

@@ -29,9 +29,11 @@ router.get("/login/failed", (req, res) => {
 
 router.get("/logout", (req, res) => {
   req.logout(function (err) {
+    console.log(CLIENT_URL)
     if (err) {
       return next(err);
     }
+    console.log(CLIENT_URL)
     res.redirect(CLIENT_URL);
   });
 });
@@ -42,7 +44,7 @@ router.get(
 );
 router.get(
   "/github",
-  passport.authenticate("github", { scope: ["profile", "email"] })
+  passport.authenticate("github", { scope: ["user:email"] })
 );
 
 router.get("/google/callback", function (req, res, next) {
@@ -52,6 +54,38 @@ router.get("/google/callback", function (req, res, next) {
       err: err,
       user: user,
     })
+    if (err) {
+      return res.status(500).json({ message: "Error while authenticating" });
+    }
+    if (!user) {
+      return res.status(400).json({ message: "No user found" });
+    }
+    const tokens = generateUserTokens(user);
+    const { accessToken, refreshToken } = tokens;
+
+    res.send(`
+    <script>
+      window.opener.postMessage(
+        {
+          accessToken: "${accessToken}",
+          refreshToken: "${refreshToken}",
+          user: ${JSON.stringify(user)} // stringify the user object
+        },
+        "${CLIENT_URL}"
+      );
+      window.close();
+    </script>
+  `);
+  })(req, res, next);
+});
+
+router.get("/github/callback", function (req, res, next) {
+  passport.authenticate("github", function (err, user, info) {
+    // console.log({
+    //   message: "from github callback",
+    //   err: err,
+    //   user: user,
+    // })
     if (err) {
       return res.status(500).json({ message: "Error while authenticating" });
     }
