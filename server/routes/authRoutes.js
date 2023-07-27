@@ -1,8 +1,14 @@
 const router = require("express").Router();
 const passport = require("passport");
 const { signin, signup } = require("../controllers/authController.js");
-const SERVER_URL = process.env.NODE_ENV === "production" ? "https://e-commerce-mern-api.onrender.com" : "http://localhost:5000";
-const CLIENT_URL = process.env.NODE_ENV === "production" ? "https://e-commerce-mern-eryu.onrender.com" : "http://localhost:3000";
+const SERVER_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://e-commerce-mern-api.onrender.com"
+    : "http://localhost:5000";
+const CLIENT_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://e-commerce-mern-eryu.onrender.com"
+    : "http://localhost:3000";
 const generateUserTokens = require("../middleware/generateToken.js");
 
 //form signup
@@ -29,11 +35,11 @@ router.get("/login/failed", (req, res) => {
 
 router.get("/logout", (req, res) => {
   req.logout(function (err) {
-    console.log(CLIENT_URL)
+    console.log(CLIENT_URL);
     if (err) {
       return next(err);
     }
-    console.log(CLIENT_URL)
+    console.log(CLIENT_URL);
     res.redirect(CLIENT_URL);
   });
 });
@@ -44,7 +50,7 @@ router.get(
 );
 router.get(
   "/github",
-  passport.authenticate("github", { scope: ["user:email"] })
+  passport.authenticate("github", { scope: ["profile", "user:email"] })
 );
 
 router.get("/google/callback", function (req, res, next) {
@@ -53,7 +59,7 @@ router.get("/google/callback", function (req, res, next) {
       message: "from google callback",
       err: err,
       user: user,
-    })
+    });
     if (err) {
       return res.status(500).json({ message: "Error while authenticating" });
     }

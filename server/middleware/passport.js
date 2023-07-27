@@ -72,7 +72,7 @@ passport.use(
 
       try {
         // console.log("Access Token:", accessToken);
-        const octokit = new Octokit({ auth: accessToken});
+        const octokit = new Octokit({ auth: accessToken });
 
         const response = await octokit.request("GET /user/emails", {
           headers: {
@@ -86,14 +86,14 @@ passport.use(
           (email) => email.primary === true && email.verified === true
         ).email;
 
-        console.log(primaryEmail)
-        console.log(profile)
+        console.log(primaryEmail);
+        console.log(profile);
 
         let user = await UserModel.findOne({ email: primaryEmail });
         if (!user) {
           user = new UserModel({
             email: primaryEmail,
-            username: profile.username,
+            username: "test",
             password: crypto.randomBytes(16).toString("hex"),
           });
           await user.save();
