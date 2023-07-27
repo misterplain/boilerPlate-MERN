@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const passport = require("passport");
 const { signin, signup } = require("../controllers/authController.js");
+const generateUserTokens = require("../middleware/generateToken.js");
+//url
 const SERVER_URL =
   process.env.NODE_ENV === "production"
     ? "https://e-commerce-mern-api.onrender.com"
@@ -9,7 +11,6 @@ const CLIENT_URL =
   process.env.NODE_ENV === "production"
     ? "https://e-commerce-mern-eryu.onrender.com"
     : "http://localhost:3000";
-const generateUserTokens = require("../middleware/generateToken.js");
 
 //form signup
 router.post("/signin", signin);
@@ -39,7 +40,6 @@ router.get("/logout", (req, res) => {
     if (err) {
       return next(err);
     }
-    console.log(CLIENT_URL);
     res.redirect(CLIENT_URL);
   });
 });
@@ -52,10 +52,11 @@ router.get(
   "/github",
   passport.authenticate("github", { scope: ["profile", "user:email"] })
 );
-router.get(
-  "/facebook",
-  passport.authenticate("facebook", { scope: ["email", "public_profile"] })
-);
+//leaving Facebook login for later as it requires a business account/privacy policy URL in order to access the users email address
+// router.get(
+//   "/facebook",
+//   passport.authenticate("facebook", { scope: ["email", "public_profile"] })
+// );
 
 router.get("/google/callback", function (req, res, next) {
   passport.authenticate("google", function (err, user, info) {
@@ -91,11 +92,6 @@ router.get("/google/callback", function (req, res, next) {
 
 router.get("/github/callback", function (req, res, next) {
   passport.authenticate("github", function (err, user, info) {
-    // console.log({
-    //   message: "from github callback",
-    //   err: err,
-    //   user: user,
-    // })
     if (err) {
       return res.status(500).json({ message: "Error while authenticating" });
     }
@@ -121,55 +117,35 @@ router.get("/github/callback", function (req, res, next) {
   })(req, res, next);
 });
 
-// router.get(
-//   "/github/callback",
-//   passport.authenticate("github", {
-//     successRedirect: CLIENT_URL,
-//     failureRedirect: "/login/failed",
-//   })
-// );
 
-//facbeook is only possible with an https connection so it will have to be on the deployed version
-// router.get("/facebook", passport.authenticate("facebook", { scope: ["profile", "email"] }));
 
-router.get("/facebook/callback", function (req, res, next) {
-  passport.authenticate("facebook", function (err, user, info) {
-    // console.log({
-    //   message: "from github callback",
-    //   err: err,
-    //   user: user,
-    // })
-    if (err) {
-      return res.status(500).json({ message: "Error while authenticating" });
-    }
-    if (!user) {
-      return res.status(400).json({ message: "No user found" });
-    }
-    const tokens = generateUserTokens(user);
-    const { accessToken, refreshToken } = tokens;
+//leaving Facebook login for later as it requires a business account/privacy policy URL in order to access the users email address
+// router.get("/facebook/callback", function (req, res, next) {
+//   passport.authenticate("facebook", function (err, user, info) {
+//     if (err) {
+//       return res.status(500).json({ message: "Error while authenticating" });
+//     }
+//     if (!user) {
+//       return res.status(400).json({ message: "No user found" });
+//     }
+//     const tokens = generateUserTokens(user);
+//     const { accessToken, refreshToken } = tokens;
 
-    res.send(`
-    <script>
-      window.opener.postMessage(
-        {
-          accessToken: "${accessToken}",
-          refreshToken: "${refreshToken}",
-          user: ${JSON.stringify(user)} // stringify the user object
-        },
-        "${CLIENT_URL}"
-      );
-      window.close();
-    </script>
-  `);
-  })(req, res, next);
-});
+//     res.send(`
+//     <script>
+//       window.opener.postMessage(
+//         {
+//           accessToken: "${accessToken}",
+//           refreshToken: "${refreshToken}",
+//           user: ${JSON.stringify(user)} // stringify the user object
+//         },
+//         "${CLIENT_URL}"
+//       );
+//       window.close();
+//     </script>
+//   `);
+//   })(req, res, next);
+// });
 
-// router.get(
-//   "/facebook/callback",
-//   passport.authenticate("facebook", {
-//     successRedirect: CLIENT_URL,
-//     failureRedirect: "/login/failed",
-//   })
-// );
 
 module.exports = router;
