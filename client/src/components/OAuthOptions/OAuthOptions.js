@@ -41,24 +41,24 @@ const OAuthOptions = () => {
       >
         <Box component="img" src={Google} alt="" sx={styles.socialIcon} />
         <Typography variant="body1">Google</Typography>
-      </Box>
-      <Box
+      </Box>{" "}
+      {/* leaving Facebook login for later as it requires a business account/privacy policy URL in order to access the users email address */}
+      {/* <Box
         sx={styles.loginButton}
         style={{ backgroundColor: "#507cc0" }}
         onClick={() => handleSubmit("facebook")}
       >
         <Box component="img" src={Facebook} alt="" sx={styles.socialIcon} />
         <Typography variant="body1"> Facebook</Typography>
-      </Box>
-      {/* leaving Facebook login for later as it requires a business account/privacy policy URL in order to access the users email address */}
-      {/* <Box
+      </Box> */}
+      <Box
         sx={styles.loginButton}
         style={{ backgroundColor: "#000" }}
-        onClick={()=>handleSubmit("github")}
+        onClick={() => handleSubmit("github")}
       >
         <Box component="img" src={Github} alt="" sx={styles.socialIcon} />
         <Typography variant="body1">Github</Typography>
-      </Box> */}
+      </Box>
     </>
   );
 };
