@@ -60,9 +60,9 @@ passport.use(
       clientID: GITHUB_CLIENT_ID,
       clientSecret: GITHUB_CLIENT_SECRET,
       callbackURL: `${SERVER_URL}/auth/github/callback`,
-      profileFields: ["user:email"],
+      // profileFields: ["user:email"],
     },
-    async function (accessToken, refreshToken, profile, email, done) {
+    async function (accessToken, refreshToken, profile, done) {
       // console.log({message: "email", email: email})
       // console.log({message: "profile", profile: profile})
       // const foundEmail = email.emails[0].value;
@@ -93,7 +93,7 @@ passport.use(
         if (!user) {
           user = new UserModel({
             email: primaryEmail,
-            username: "test",
+            username: profile.username,
             password: crypto.randomBytes(16).toString("hex"),
           });
           await user.save();
