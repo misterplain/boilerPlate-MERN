@@ -1,7 +1,11 @@
 const styles = {
-    cardWrapper: {
-        border: "1px solid purple",
-        display: "flex",
+
+    carouselWrapper: {
+        // border: "1px solid purple",
+    },
+    image: {
+        width: "100%",
+        height: "auto",
     }
 }
 

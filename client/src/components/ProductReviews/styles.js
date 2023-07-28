@@ -1,9 +1,9 @@
 const styles = {
   wrapper: {
-    border: "1px solid black",
+    // border: "1px solid black",
   },
   reviewWrapper: {
-    border: "1px solid yellow",
+    // border: "1px solid yellow",
   },
 };
 

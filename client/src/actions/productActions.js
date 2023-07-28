@@ -36,9 +36,10 @@ const fetchAllProducts = () => async (dispatch) => {
       payload: data,
     });
   } catch (error) {
+    console.log(error)
     dispatch({
       type: PRODUCT_LIST_FAIL,
-      payload: error.response,
+      payload: error.response.data.message,
     });
   }
 };

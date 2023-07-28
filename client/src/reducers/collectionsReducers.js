@@ -40,7 +40,7 @@ const collectionsReducer = (state = { collections: [] }, action) => {
     case COLLECTIONS_LIST_FAIL:
       return {
         loading: false,
-        error: action.payload.data.message,
+        error: action.payload,
       };
 
     case NEW_COLLECTION_REQUEST:

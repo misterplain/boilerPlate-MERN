@@ -29,12 +29,14 @@ const productListReducer = (state = { products: [] }, action) => {
     case PRODUCT_LIST_SUCCESS:
       return {
         loading: false,
+        error: null,
         products: action.payload.data.allProducts,
       };
     case PRODUCT_LIST_FAIL:
+      console.log(action.payload)
       return {
         loading: false,
-        error: action.payload.data.message,
+        error: action.payload,
       };
     case PRODUCT_DELETE_REQUEST:
       return {

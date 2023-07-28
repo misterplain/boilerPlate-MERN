@@ -5,7 +5,7 @@ import styles from "./styles";
 
 const Footer = () => {
   return (
-    <Box sx={styles.footerWrapper}>Footer</Box>
+    <Box sx={styles.footerWrapper}></Box>
   )
 }
 

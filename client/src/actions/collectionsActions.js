@@ -35,7 +35,7 @@ const fetchAllCollections = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: COLLECTIONS_LIST_FAIL,
-      payload: error.response,
+      payload: error.response.data.message,
     });
   }
 };

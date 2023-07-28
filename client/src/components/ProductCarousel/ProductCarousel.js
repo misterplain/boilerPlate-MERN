@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import MobileStepper from "@mui/material/MobileStepper";
 import { Box, Grid, Button } from "@mui/material";
@@ -20,28 +20,25 @@ const ProductCarousel = ({ product }) => {
   };
 
   return (
-    <Grid container>
-      <Grid item xs={12} sm={6} sx={{ marginBottom: "50px" }}>
+    <Box sx={styles.carouselWrapper}>
+      <Box sx={{ marginBottom: "50px" }}>
         {" "}
-        {product && product?.images &&
+        {product &&
+          product?.images &&
           product?.images?.map((step, index) => (
-            <Grid container item xs={12} key={index}>
+            <Box key={index}>
               {selectedImageStep === index ? (
-                <>
-                  <Grid item xs={12}>
-                    <Box
-                      component="img"
-                      sx={styles.image}
-                      src={step.url}
-                      alt={step.alt}
-                    />
-                  </Grid>
-                </>
+                <Box
+                  component="img"
+                  sx={styles.image}
+                  src={step.url}
+                  alt={step.alt}
+                />
               ) : null}
-            </Grid>
+            </Box>
           ))}
         {product?.images?.length > 1 ? (
-          <Grid item xs={12}>
+          <Box>
             {" "}
             <MobileStepper
               steps={product.images.length}
@@ -77,10 +74,10 @@ const ProductCarousel = ({ product }) => {
                 </Button>
               }
             />
-          </Grid>
+          </Box>
         ) : null}
-      </Grid>
-      <Grid
+      </Box>
+      {/* <Grid
         item
         xs={12}
         sm={6}
@@ -90,8 +87,8 @@ const ProductCarousel = ({ product }) => {
           justifyContent: "center",
           alignItems: "center",
         }}
-      ></Grid>
-    </Grid>
+      ></Grid> */}
+    </Box>
   );
 };
 

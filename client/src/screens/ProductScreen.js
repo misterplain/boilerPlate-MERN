@@ -26,6 +26,13 @@ import ProductCarousel from "../components/ProductCarousel/ProductCarousel";
 import ProductReviews from "../components/ProductReviews/ProductReviews";
 import { useSnackbar } from "notistack";
 
+const styles = {
+  wrapper: {
+    border: "1px solid black",
+    width: "100%",
+  },
+};
+
 const ProductScreen = () => {
   const location = useLocation();
   const { productId } = useParams();
@@ -83,131 +90,141 @@ const ProductScreen = () => {
   };
 
   return (
-    <Grid container sx={{ display: "flex", justifyContent: "center" }}>
-      <Grid item xs={10} sm={4}>
+    <Grid
+      container
+      sx={{ display: "flex", justifyContent: "space-around", flexDirection: "row" }}
+    >
+      <Grid item xs={10} sm={6}>
         <ProductCarousel product={displayedProduct} />
       </Grid>
-      <Grid item xs={10} sm={6}>
+      <Grid item xs={10} sm={4}>
         {displayedProduct && (
           <>
-            {" "}
-            <Typography variant="h2">{displayedProduct?.name}</Typography>
-            <Typography variant="h4">
-              {displayedProduct?.description}
-            </Typography>
-            <Typography variant="h5">
-              {displayedProduct?.stock} in stock
-            </Typography>
-            <Typography variant="h5">${displayedProduct?.price}</Typography>
-            <Formik
-              initialValues={{
-                quantity: 1,
-              }}
-              validationSchema={validationSchema}
-              onSubmit={async (values, { resetForm }) => {
-                try {
-                  if (authenticated) {
-                    if (!productInBasket) {
-                      await dispatch(
-                        addCartItemUser({
-                          token,
-                          productId,
-                          quantity: values.quantity,
-                          price: displayedProduct.price,
-                          name: displayedProduct.name,
-                        })
-                      );
-                      enqueueSnackbar(
-                        `${values.quantity} x ${displayedProduct.name} added to cart`,
-                        { variant: "success" }
-                      );
+            <Box sx={styles.wrapper}>
+              {" "}
+              <Typography variant="h3">{displayedProduct?.name}</Typography>
+              <Typography variant="h5">
+                {displayedProduct?.description}
+              </Typography>
+              <Typography variant="h6">
+                {displayedProduct?.stock} in stock
+              </Typography>
+              <Typography variant="h6">${displayedProduct?.price}</Typography>
+              <Formik
+                initialValues={{
+                  quantity: 1,
+                }}
+                validationSchema={validationSchema}
+                onSubmit={async (values, { resetForm }) => {
+                  try {
+                    if (authenticated) {
+                      if (!productInBasket) {
+                        await dispatch(
+                          addCartItemUser({
+                            token,
+                            productId,
+                            quantity: values.quantity,
+                            price: displayedProduct.price,
+                            name: displayedProduct.name,
+                          })
+                        );
+                        enqueueSnackbar(
+                          `${values.quantity} x ${displayedProduct.name} added to cart`,
+                          { variant: "success" }
+                        );
+                      } else {
+                        await dispatch(
+                          removeCartItemUser({
+                            token,
+                            productId,
+                            quantity: productInBasket.quantity,
+                            price: displayedProduct.price,
+                            name: displayedProduct.name,
+                          })
+                        );
+                        enqueueSnackbar("Item removed from cart!", {
+                          variant: "info",
+                        });
+                      }
                     } else {
-                      await dispatch(
-                        removeCartItemUser({
-                          token,
-                          productId,
-                          quantity: productInBasket.quantity,
-                          price: displayedProduct.price,
-                          name: displayedProduct.name,
-                        })
-                      );
-                      enqueueSnackbar("Item removed from cart!", {
-                        variant: "info",
-                      });
+                      if (!productInBasket) {
+                        await dispatch(
+                          addCartItemGuest({
+                            productId,
+                            quantity: values.quantity,
+                            pricePerUnit: displayedProduct.price,
+                            name: displayedProduct.name,
+                          })
+                        );
+                        enqueueSnackbar(
+                          `${values.quantity} x ${displayedProduct.name} added to cart`,
+                          { variant: "success" }
+                        );
+                      } else {
+                        await dispatch(
+                          removeCartItemGuest({
+                            productId,
+                            quantity: productInBasket.quantity,
+                            pricePerUnit: displayedProduct.price,
+                            name: displayedProduct.name,
+                          })
+                        );
+                        enqueueSnackbar("Item removed from cart!", {
+                          variant: "info",
+                        });
+                      }
                     }
-                  } else {
-                    if (!productInBasket) {
-                      await dispatch(
-                        addCartItemGuest({
-                          productId,
-                          quantity: values.quantity,
-                          pricePerUnit: displayedProduct.price,
-                          name: displayedProduct.name,
-                        })
-                      );
-                      enqueueSnackbar(
-                        `${values.quantity} x ${displayedProduct.name} added to cart`,
-                        { variant: "success" }
-                      );
-                    } else {
-                      await dispatch(
-                        removeCartItemGuest({
-                          productId,
-                          quantity: productInBasket.quantity,
-                          pricePerUnit: displayedProduct.price,
-                          name: displayedProduct.name,
-                        })
-                      );
-                      enqueueSnackbar("Item removed from cart!", {
-                        variant: "info",
-                      });
-                    }
+                  } catch (error) {
+                    enqueueSnackbar(`An error occurred: ${error.message}`, {
+                      variant: "error",
+                    });
+                  } finally {
+                    resetForm();
                   }
-                } catch (error) {
-                  enqueueSnackbar(`An error occurred: ${error.message}`, {
-                    variant: "error",
-                  });
-                } finally {
-                  resetForm();
-                }
-              }}
-            >
-              {({
-                handleSubmit,
-                handleChange,
-                handleBlue,
-                values,
-                isValid,
-                errors,
-                touched,
-              }) => (
-                <form onSubmit={handleSubmit}>
-                  {!productInBasket && (
-                    <FormControl>
-                      <FormLabel id="quantity">Quantity</FormLabel>
-                      <FormGroup>
-                        <TextField
-                          name="quantity"
-                          variant="filled"
-                          color="success"
-                          type="number"
-                          value={values.quantity}
-                          onChange={handleChange}
-                          helperText={errors.quantity}
-                          InputProps={{ inputProps: { min: 1 } }}
-                        />
-                      </FormGroup>
-                    </FormControl>
-                  )}
+                }}
+              >
+                {({
+                  handleSubmit,
+                  handleChange,
+                  handleBlue,
+                  values,
+                  isValid,
+                  errors,
+                  touched,
+                }) => (
+                  <form onSubmit={handleSubmit}>
+                    {!productInBasket && (
+                      <FormControl>
+                        <FormLabel id="quantity">Quantity</FormLabel>
+                        <FormGroup>
+                          <TextField
+                            name="quantity"
+                            variant="filled"
+                            color="success"
+                            type="number"
+                            value={values.quantity}
+                            onChange={handleChange}
+                            helperText={errors.quantity}
+                            InputProps={{ inputProps: { min: 1 } }}
+                          />
+                        </FormGroup>
+                      </FormControl>
+                    )}
 
-                  {!productInBasket ? (
-                    <Button type="submit" disabled={values.quantity > displayedProduct.stock}>Add to Basket</Button>
-                  ) : (
-                    <Button type="submit">Remove from Basket</Button>
-                  )}
-                </form>
-              )}
-            </Formik>
+                    {!productInBasket ? (
+                      <Button
+                        type="submit"
+                        disabled={values.quantity > displayedProduct.stock}
+                      >
+                        Add to Basket
+                      </Button>
+                    ) : (
+                      <Button type="submit">Remove from Basket</Button>
+                    )}
+                  </form>
+                )}
+              </Formik>
+            </Box>
           </>
         )}
       </Grid>

@@ -63,6 +63,7 @@ const theme = createTheme({
     },
     h6: {
       fontFamily: fontVariable,
+      fontSize: "1rem",
     },
     body1: {
       fontFamily: fontVariable,

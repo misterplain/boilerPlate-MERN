@@ -8,10 +8,14 @@ import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useSnackbar } from "notistack";
+import { useTheme } from "@mui/material/styles";
+import RatingIcons from "../RatingIcons/RatingIcons";
 
 import styles from "./styles";
+import { productStyles } from "../AdminComponents/Collections/styles";
 
 const ProductCard = ({ product }) => {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const userAuthState = useSelector((state) => state.userAuth);
@@ -21,7 +25,7 @@ const ProductCard = ({ product }) => {
   const { favorites = [] } = userDetailsState?.userDetails || [];
 
   return (
-    <Box sx={styles.cardWrapper}>
+    <Box sx={styles.cardWrapper(theme)}>
       <Link
         component={NavLink}
         to={`/product/${product._id}`}
@@ -39,34 +43,30 @@ const ProductCard = ({ product }) => {
         />
         <Box sx={styles.namePriceWrapper}>
           <Typography sx={styles.name} variant="h6" component="div">
-            {product.name}
+            {product.name} - ${product.price}
           </Typography>
-          <Typography sx={styles.price} variant="h6" component="div">
-            ${product.price}
-          </Typography>
-          <Typography sx={styles.price} variant="h6" component="div">
-            {product.reviews.length} reviews
-          </Typography>
+          {/* <Typography sx={styles.price} variant="h6" component="div">
+            ${product.price} - {product.reviews.length} reviews
+          </Typography> */}
+          {/* <Typography sx={styles.price} variant="h6" component="div">
+            
+          </Typography> */}
         </Box>
       </Link>
 
       <Box sx={styles.iconsWrapper}>
+        <Box sx={styles.ratings}>
+
+          <RatingIcons
+            rating={product.averageRating ? product.averageRating : 0}
+          />
+          <Typography sx={styles.numberReviews}>{"( "}{product.reviews.length}{" )"}</Typography>
+        </Box>
+
         {authenticated && (
-          <Button
+          <Box
             sx={styles.favoritesButton}
             size="small"
-            // onClick={async () =>
-            //   await dispatch(
-            //     updateFavorites({
-            //       token: token,
-            //       method:
-            //         favorites && favorites?.includes(product._id)
-            //           ? "REMOVE"
-            //           : "ADD",
-            //       productId: product._id,
-            //     })
-            //   )
-            // }
             onClick={async () => {
               const method =
                 favorites && favorites?.includes(product._id)
@@ -95,7 +95,7 @@ const ProductCard = ({ product }) => {
             ) : (
               <FaRegHeart />
             )}
-          </Button>
+          </Box>
         )}
       </Box>
     </Box>
