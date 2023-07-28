@@ -8,9 +8,9 @@ import {
   OAUTH_LOGIN_FAIL,
   OAUTH_LOGIN_REQUEST,
   OAUTH_LOGIN_SUCCESS,
-  OAUTH_REGISTER_FAIL,
-  OAUTH_REGISTER_REQUEST,
-  OAUTH_REGISTER_SUCCESS,
+  // OAUTH_REGISTER_FAIL,
+  // OAUTH_REGISTER_REQUEST,
+  // OAUTH_REGISTER_SUCCESS,
   REFRESH_TOKEN,
   USER_LOGOUT,
 } from "../constants/authConstants";
@@ -22,6 +22,7 @@ import {
   GET_CARTITEMS_USER_FAIL,
   GET_CARTITEMS_USER_SUCCESS,
   EMPTY_CART,
+  OAUTH_UPDATE_CART_REQUEST,
   OAUTH_UPDATE_CART_FAIL,
   OAUTH_UPDATE_CART_SUCCESS,
 } from "../constants/cartConstants";
@@ -172,6 +173,9 @@ export const loginOAuthAndSyncCart = (provider, cart) => async (dispatch) => {
     );
     if (cart.length > 0) {
       try {
+        dispatch({
+          type: OAUTH_UPDATE_CART_REQUEST,
+        })
         const options = {
           headers: {
             Authorization: `Bearer ${accessToken}`,

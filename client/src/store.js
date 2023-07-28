@@ -9,7 +9,7 @@ import { productListReducer } from "./reducers/productReducers";
 import { collectionsReducer } from "./reducers/collectionsReducers";
 import { orderReducer } from "./reducers/orderReducers";
 import { reviewsReducer } from "./reducers/reviewsReducers";
-import { snackbarReducer } from "./reducers/snackbarReducers";
+// import { snackbarReducer } from "./reducers/snackbarReducers";
 
 const reducer = combineReducers({
   userAuth: authReducer,
@@ -19,7 +19,7 @@ const reducer = combineReducers({
   shoppingCart: cartReducer,
   order: orderReducer,
   reviews: reviewsReducer,
-  snackbar: snackbarReducer,
+  // snackbar: snackbarReducer,
 });
 
 const initialState = {};

@@ -56,9 +56,8 @@ const newProduct = async (req, res) => {
     };
     res.status(201).json(reply);
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
-
     console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
   }
 };
 
@@ -103,9 +102,8 @@ const deleteImage = async (req, res) => {
     };
     res.json(reply);
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
-
     console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
   }
 };
 
@@ -120,13 +118,10 @@ const getAllProducts = async (req, res) => {
     };
     res.status(200).json(reply);
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
-
     console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
   }
 };
-
-
 
 //delete product
 //protected route - admin only
@@ -187,7 +182,7 @@ const updateProduct = async (req, res) => {
 
   try {
     const productToUpdate = await Product.findById(productId);
-    console.log("trycatch block accessed");
+
     if (!productToUpdate)
       return res.status(400).json({ message: "No product found with that id" });
 

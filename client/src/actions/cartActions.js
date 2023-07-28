@@ -1,12 +1,15 @@
 import {
   ADD_ITEM_GUEST_FAIL,
   ADD_ITEM_GUEST_SUCCESS,
+  ADD_ITEM_USER_REQUEST,
   ADD_ITEM_USER_FAIL,
   ADD_ITEM_USER_SUCCESS,
   REMOVE_ITEM_GUEST_FAIL,
   REMOVE_ITEM_GUEST_SUCCESS,
+  REMOVE_ITEM_USER_REQUEST,
   REMOVE_ITEM_USER_FAIL,
   REMOVE_ITEM_USER_SUCCESS,
+  GET_CARTITEMS_USER_REQUEST,
   GET_CARTITEMS_USER_SUCCESS,
   GET_CARTITEMS_USER_FAIL,
   EMPTY_CART,
@@ -20,6 +23,9 @@ import { useSnackbar } from "notistack";
 //cart actions
 const getCartItems = (token) => async (dispatch) => {
   try {
+    dispatch({
+      type: GET_CARTITEMS_USER_REQUEST,
+    });
     const options = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -45,6 +51,9 @@ const addCartItemUser =
   ({ token, productId, quantity, price, name }) =>
   async (dispatch) => {
     try {
+      dispatch({
+        type: ADD_ITEM_USER_REQUEST,
+      });
       const options = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -125,6 +134,9 @@ const removeCartItemUser =
   ({ token, productId, quantity, price, name }) =>
   async (dispatch) => {
     try {
+      dispatch({
+        type: REMOVE_ITEM_USER_REQUEST,
+      });
       const options = {
         headers: {
           "Content-Type": "application/json",

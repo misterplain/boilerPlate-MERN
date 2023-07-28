@@ -1,15 +1,21 @@
 import {
+  CREATE_REVIEW_REQUEST,
   CREATE_REVIEW_SUCCESS,
   CREATE_REVIEW_FAIL,
+  FETCH_REVIEWS_REQUEST,
   FETCH_REVIEWS_SUCCESS,
   FETCH_REVIEWS_FAIL,
+  FETCH_UNMODERATED_REVIEWS_REQUEST,
   FETCH_UNMODERATED_REVIEWS_SUCCESS,
   FETCH_UNMODERATED_REVIEWS_FAIL,
   CLEAR_REVIEWS,
+  DELETE_REVIEW_REQUEST,
   DELETE_REVIEW_SUCCESS,
   DELETE_REVIEW_FAIL,
+  EDIT_REVIEW_REQUEST,
   EDIT_REVIEW_SUCCESS,
   EDIT_REVIEW_FAIL,
+  MODERATE_REVIEW_REQUEST,
   MODERATE_REVIEW_SUCCESS,
   MODERATE_REVIEW_FAIL,
 } from "../constants/reviewsConstants";
@@ -19,6 +25,9 @@ import axios from "../api/axios";
 const fetchReviews = (token, productId) => async (dispatch) => {
 
   try {
+    dispatch({
+      type: FETCH_REVIEWS_REQUEST,
+    })
     const options = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -39,8 +48,11 @@ const fetchReviews = (token, productId) => async (dispatch) => {
 };
 
 const getUnmoderatedReviews = (token) => async (dispatch) => {
-  console.log("getunmoderatedreviewsaction");
+
   try {
+    dispatch({
+      type: FETCH_UNMODERATED_REVIEWS_REQUEST,
+    })
     const options = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -62,8 +74,11 @@ const getUnmoderatedReviews = (token) => async (dispatch) => {
 };
 
 const moderateReview = (token, reviewId, reviewData) => async (dispatch) => {
-  console.log("moderatereviewaction");
+
   try {
+    dispatch({
+      type: MODERATE_REVIEW_REQUEST,
+    })
     const options = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -95,8 +110,11 @@ const clearReviews = () => async (dispatch) => {
 };
 
 const deleteReview = (token, reviewId) => async (dispatch) => {
-  console.log("deletereviewaction");
+
   try {
+    dispatch({
+      type: DELETE_REVIEW_REQUEST,
+    })
     const options = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -118,8 +136,10 @@ const deleteReview = (token, reviewId) => async (dispatch) => {
 };
 
 const createReview = (token, productId, reviewData) => async (dispatch) => {
-  console.log("createreviewaction");
   try {
+    dispatch({
+      type: CREATE_REVIEW_REQUEST,
+    })
     const options = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -152,9 +172,11 @@ const createReview = (token, productId, reviewData) => async (dispatch) => {
 };
 
 const editReview = (token, reviewId, reviewData) => async (dispatch) => {
-  console.log(reviewData);
-  console.log("deletereviewaction");
+
   try {
+    dispatch({
+      type: EDIT_REVIEW_REQUEST,
+    })
     const options = {
       headers: {
         Authorization: `Bearer ${token}`,

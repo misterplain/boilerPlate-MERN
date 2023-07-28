@@ -14,7 +14,7 @@ import {
   NEW_USER_ORDER_FAIL,
   NEW_GUEST_ORDER_SUCCESS,
   NEW_GUEST_ORDER_FAIL,
-
+  NEW_USER_ORDER_REQUEST,
 } from "../constants/orderConstants";
 
 const orderReducer = (state = {}, action) => {
@@ -39,13 +39,14 @@ const orderReducer = (state = {}, action) => {
     //   return { ...state, isShippedToCourier: action.payload };
     // case SET_ISDELIVERED:
     //   return { ...state, isDelivered: action.payload };
+    case NEW_USER_ORDER_REQUEST: {
+      return { ...state, loading: true, error: null };
+    }
     case NEW_USER_ORDER_SUCCESS:
-
       return { ...state, orderNumber: action.payload.shortId };
     case NEW_USER_ORDER_FAIL:
-      return { ...state, error: action.payload };
+      return { ...state, error: action.payload, loading: false };
     case NEW_GUEST_ORDER_SUCCESS:
-
       return { ...state, orderNumber: action.payload.shortId };
     case NEW_GUEST_ORDER_FAIL:
       return { ...state, error: action.payload };

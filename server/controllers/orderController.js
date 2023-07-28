@@ -13,9 +13,8 @@ const getAllOrders = async (req, res) => {
     };
     res.status(200).json(reply);
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
-
     console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
   }
 };
 
@@ -28,12 +27,10 @@ const getUserOrder = async (req, res) => {
       message: "User orders",
       userOrders: user.orders,
     };
-    console.log(user.orders);
     res.status(200).json(reply);
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
-
     console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
   }
 };
 
@@ -44,13 +41,11 @@ const placeOrder = async (req, res) => {
   const { cartItems, isGuest, totalPrice, emailAddress, isPaid } = req.body;
   const { street, city, postalCode, country } = req.body.shippingAddress;
 
-  console.log(isPaid);
   try {
     const userOrdered = await User.findById(userId);
     const orderPlaced = await Order.create({
       userId: userId,
       orderedItems: cartItems.map((item) => {
-        console.log(item);
         return {
           product: item.product,
           name: item.name,
@@ -77,7 +72,6 @@ const placeOrder = async (req, res) => {
 
     await orderPlaced.save();
 
-
     //add order to user
     userOrdered.orders.push(orderPlaced);
     userOrdered.cart = [];
@@ -90,9 +84,8 @@ const placeOrder = async (req, res) => {
     };
     res.status(201).json(reply);
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
-
     console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
   }
 };
 
@@ -104,10 +97,6 @@ const placeGuestOrder = async (req, res) => {
     return res.status(400).json({ message: "Missing required data" });
   }
   try {
-    console.log({
-      message: "ispaid",
-      isPaid,
-    });
     const guestOrderPlaced = await Order.create({
       orderedItems: cartItems.map((item) => {
         return {
@@ -145,15 +134,9 @@ const placeGuestOrder = async (req, res) => {
 const cancelOrder = async (req, res) => {
   const { orderId } = req.params;
   const { userId, isAdmin } = req;
-  console.log(orderId);
-  console.log(userId);
 
   try {
     const order = await Order.findById(orderId);
-    console.log({
-      message: "order",
-      order,
-    });
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
@@ -162,21 +145,20 @@ const cancelOrder = async (req, res) => {
       const orderCancelled = await Order.findByIdAndUpdate(
         orderId,
         { isCancelled: true },
-        { new: true } 
+        { new: true }
       );
       await orderCancelled.save();
       const reply = {
         message: "Order cancelled",
         orderCancelled,
       };
-      console.log(reply);
       res.status(200).json(reply);
     } else {
       res.status(401).json({ message: "Not authorized" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
     console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
   }
 };
 
@@ -184,7 +166,6 @@ const editOrder = async (req, res) => {
   const { orderId } = req.params;
   const { isAdmin } = req;
   const { editRequest } = req.body;
-  console.log(editRequest);
 
   try {
     const order = await Order.findById(orderId);

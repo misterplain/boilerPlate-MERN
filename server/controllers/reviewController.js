@@ -24,8 +24,6 @@ const createReview = asyncHandler(async (req, res) => {
       productId: productId,
     });
 
-    console.log(newReview);
-
     const reply = {
       message: "Review created",
       newReview,
@@ -33,9 +31,8 @@ const createReview = asyncHandler(async (req, res) => {
 
     res.status(201).json(reply);
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
-
     console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
   }
 });
 
@@ -57,11 +54,9 @@ const getUnmoderatedReviews = asyncHandler(async (req, res) => {
 });
 
 const moderateReview = asyncHandler(async (req, res) => {
-  console.log("moderateReview");
   const { reviewId } = req.params;
   const { awaitingModeration, approvedByAdmin } = req.body;
 
-  console.log(reviewId, awaitingModeration, approvedByAdmin);
   try {
     if (!reviewId) {
       return res.status(400).json({ message: "No review id provided" });
@@ -82,7 +77,6 @@ const moderateReview = asyncHandler(async (req, res) => {
     };
 
     console.log(reply);
-
 
     if (approvedByAdmin && !awaitingModeration) {
       const productToUpdate = await Product.findById(
@@ -108,11 +102,10 @@ const moderateReview = asyncHandler(async (req, res) => {
   }
 });
 
-
 const getProductReviews = asyncHandler(async (req, res) => {
   const { productId } = req.params;
   const userId = req.userId;
-  console.log(productId, userId);
+
   try {
     if (!productId) {
       return res.status(400).json({ message: "No product id provided" });
@@ -137,12 +130,10 @@ const getProductReviews = asyncHandler(async (req, res) => {
       productReviews: productToPopulate.reviews,
     };
 
-    console.log(reply);
-
     res.status(200).json(reply);
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
     console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
   }
 });
 
@@ -150,8 +141,7 @@ const editReview = asyncHandler(async (req, res) => {
   const { reviewId } = req.params;
   const userId = req.userId;
   const reviewData = req.body;
-  console.log(reviewData);
-  console.log();
+
   try {
     if (!reviewId) {
       return res.status(400).json({ message: "No review id provided" });
@@ -196,9 +186,8 @@ const editReview = asyncHandler(async (req, res) => {
 
     res.status(200).json(reply);
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
-
     console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
   }
 });
 
@@ -238,8 +227,6 @@ const deleteReview = asyncHandler(async (req, res) => {
     productToUpdate.averageRating = newAverage;
     await productToUpdate.save();
 
-    console.log(updatedReview);
-
     const reply = {
       message: "Review deleted",
       updatedReview,
@@ -247,9 +234,8 @@ const deleteReview = asyncHandler(async (req, res) => {
 
     res.status(200).json(reply);
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
-
     console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
   }
 });
 

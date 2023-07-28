@@ -146,6 +146,7 @@ const AdminCollections = () => {
                       alignItems: "center",
                       border: "1px solid black",
                     }}
+                    key={product._id}
                   >
                     <Grid item xs={2} md={2} marginLeft>
                       <Typography>{product.name}</Typography>

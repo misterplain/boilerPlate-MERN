@@ -18,8 +18,7 @@ const getCartItems = async (req, res) => {
 const addCartItem = async (req, res) => {
   const { userId } = req;
   const { productId } = req.params;
-  const { quantity, price,name } = req.body;
-
+  const { quantity, price, name } = req.body;
 
   try {
     const user = await User.findById(userId);
@@ -34,13 +33,12 @@ const addCartItem = async (req, res) => {
         pricePerUnit: price,
         name: name,
       };
-   
+
       await user.save();
       res.status(200).json({
         message: `Item already in cart, quantity increased by ${quantity}`,
         cart: user.cart,
       });
-
     } else {
       const item = {
         product: productId,
@@ -59,9 +57,8 @@ const addCartItem = async (req, res) => {
 
 const deleteCartItem = async (req, res) => {
   const { userId } = req;
-  const { quantity, price,name } = req.body;
+  const { quantity, price, name } = req.body;
   const { productId } = req.params;
-
 
   try {
     const user = await User.findById(userId);
@@ -111,8 +108,8 @@ const updateCart = async (req, res) => {
     const updatedUser = await user.save();
     res.status(200).json(updatedUser);
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
     console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
   }
 };
 

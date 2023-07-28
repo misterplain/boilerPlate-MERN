@@ -23,9 +23,9 @@ const AppRoutes = () => {
 
   useEffect(() => {
     const path = location.pathname;
-    const triggerPaths = ["/",];
+    const triggerPaths = ["/", "/admin"];
     const shouldFetch = triggerPaths.some((triggerPath) =>
-      path.startsWith(triggerPath)
+      path === triggerPath || path.startsWith(triggerPath + "/")
     );
 
     if (shouldFetch) {

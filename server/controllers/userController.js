@@ -7,13 +7,7 @@ const generateUserTokens = require("../middleware/generateToken.js");
 const addAddress = asyncHandler(async (req, res) => {
   const { userId } = req;
   const { street, city, postalCode, country, isDefault } = req.body;
-  console.log({
-    street,
-    city,
-    postalCode,
-    country,
-    isDefault,
-  });
+
   try {
     if (!userId) {
       return res.status(400).json({ message: "No user id provided" });
@@ -42,9 +36,8 @@ const addAddress = asyncHandler(async (req, res) => {
 
     res.status(201).json(reply);
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
-
     console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
   }
 });
 
@@ -72,16 +65,15 @@ const deleteAddress = asyncHandler(async (req, res) => {
 
     res.status(201).json(reply);
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
-
     console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
   }
 });
 
 const updateFavorites = asyncHandler(async (req, res) => {
   const { userId } = req;
   const { productId, method } = req.body;
-  console.log(userId, productId, method);
+
   try {
     if (!userId) {
       return res.status(400).json({ message: "No user id provided" });
@@ -110,13 +102,12 @@ const updateFavorites = asyncHandler(async (req, res) => {
     const reply = {
       message: "Favorites updated",
       updatedUser,
-    }
+    };
 
     res.status(201).json(reply);
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
-
     console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
   }
 });
 

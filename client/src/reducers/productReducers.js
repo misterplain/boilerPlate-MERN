@@ -2,10 +2,13 @@ import {
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
+  PRODUCT_DELETE_REQUEST,
   PRODUCT_DELETE_SUCCESS,
   PRODUCT_DELETE_FAIL,
-  PRODUCT_EDIT_FAIL,
+  PRODUCT_EDIT_REQUEST,
   PRODUCT_EDIT_SUCCESS,
+  PRODUCT_EDIT_FAIL,
+  PRODUCT_ADD_REQUEST,
   PRODUCT_ADD_FAIL,
   PRODUCT_ADD_SUCCESS,
 } from "../constants/productConstants";
@@ -33,6 +36,11 @@ const productListReducer = (state = { products: [] }, action) => {
         loading: false,
         error: action.payload.data.message,
       };
+    case PRODUCT_DELETE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
 
     case PRODUCT_DELETE_SUCCESS:
       return {
@@ -45,6 +53,11 @@ const productListReducer = (state = { products: [] }, action) => {
       return {
         loading: false,
         error: action.payload.data.message,
+      };
+    case PRODUCT_EDIT_REQUEST:
+      return {
+        ...state,
+        loading: true,
       };
 
     case PRODUCT_EDIT_SUCCESS:
@@ -62,7 +75,11 @@ const productListReducer = (state = { products: [] }, action) => {
         loading: false,
         error: action.payload.data.message,
       };
-
+    case PRODUCT_ADD_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
     case PRODUCT_ADD_SUCCESS:
       return {
         loading: false,

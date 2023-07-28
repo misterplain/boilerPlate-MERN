@@ -62,9 +62,9 @@ passport.use(
       callbackURL: `${SERVER_URL}/auth/github/callback`,
     },
     async function (accessToken, refreshToken, profile, done) {
-      console.log("GitHub client ID:", GITHUB_CLIENT_ID);
-      console.log("GitHub client secret:", GITHUB_CLIENT_SECRET);
-      console.log("Callback URL:", `${SERVER_URL}/auth/github/callback`);
+      // console.log("GitHub client ID:", GITHUB_CLIENT_ID);
+      // console.log("GitHub client secret:", GITHUB_CLIENT_SECRET);
+      // console.log("Callback URL:", `${SERVER_URL}/auth/github/callback`);
       try {
         const octokit = new Octokit({ auth: accessToken });
 

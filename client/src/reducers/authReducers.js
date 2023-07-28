@@ -18,7 +18,7 @@ import {
 export const authReducer = (state = { accessToken: null }, action) => {
   switch (action.type) {
     case FORM_LOGIN_REQUEST:
-      return { loading: true };
+      return { loading: true, loginError: null };
 
     case FORM_LOGIN_SUCCESS:
       localStorage.setItem("profile", action.payload.data.refreshToken);
@@ -37,8 +37,9 @@ export const authReducer = (state = { accessToken: null }, action) => {
         registerError: null,
         authenticated: false,
       };
+
     case OAUTH_LOGIN_REQUEST:
-      return { loading: true };
+      return { loading: true, error: null };
 
     case OAUTH_LOGIN_SUCCESS:
       localStorage.setItem("profile", action.payload.refreshToken);
@@ -47,14 +48,14 @@ export const authReducer = (state = { accessToken: null }, action) => {
         authenticated: true,
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
-        errors: null,
+        error: null,
       };
 
     case OAUTH_LOGIN_FAIL:
       return { loading: false, error: action.payload, authenticated: false };
 
     case FORM_REGISTER_REQUEST:
-      return { loading: true };
+      return { loading: true, registerError: null };
 
     case FORM_REGISTER_SUCCESS:
       localStorage.setItem("profile", action.payload.data.refreshToken);
@@ -65,6 +66,7 @@ export const authReducer = (state = { accessToken: null }, action) => {
         loading: false,
         registerError: null,
       };
+
     case FORM_REGISTER_FAIL:
       return {
         loading: false,
@@ -73,11 +75,9 @@ export const authReducer = (state = { accessToken: null }, action) => {
         authenticated: false,
       };
 
-    case OAUTH_REGISTER_FAIL:
-      return { loading: false, error: action.payload, authenticated: false };
-    case FORM_REGISTER_REQUEST:
-      return { loading: true };
-
+    case OAUTH_REGISTER_REQUEST:
+      return { loading: true, error: null };
+      
     case OAUTH_REGISTER_SUCCESS:
       localStorage.setItem("profile", action.payload.refreshToken);
       return {

@@ -2,12 +2,19 @@ import {
   COLLECTIONS_LIST_SUCCESS,
   COLLECTIONS_LIST_FAIL,
   COLLECTIONS_LIST_REQUEST,
+  NEW_COLLECTION_REQUEST,
   NEW_COLLECTION_SUCCESS,
   NEW_COLLECTION_FAIL,
+  COLLECTION_EDIT_REQUEST,
+  COLLECTION_EDIT_SUCCESS,
+  COLLECTION_EDIT_FAIL,
+  NAME_UPDATE_REQUEST,
   NAME_UPDATE_SUCCESS,
   NAME_UPDATE_FAIL,
+  DELETE_COLLECTION_REQUEST,
   DELETE_COLLECTION_SUCCESS,
   DELETE_COLLECTION_FAIL,
+  FETCH_PEXEL_REQUEST,
   FETCH_PEXEL_FAIL,
   FETCH_PEXEL_SUCCESS,
 } from "../constants/collectionsConstants";
@@ -36,6 +43,10 @@ const fetchAllCollections = () => async (dispatch) => {
 //create new collection
 const createNewCollection = (collectionData, token) => async (dispatch) => {
   try {
+    dispatch({
+      type: NEW_COLLECTION_REQUEST,
+
+    })
     const options = {
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +54,11 @@ const createNewCollection = (collectionData, token) => async (dispatch) => {
       },
     };
 
-    const data = await axios.post("/collection/new", { collectionData }, options);
+    const data = await axios.post(
+      "/collection/new",
+      { collectionData },
+      options
+    );
 
     dispatch({
       type: NEW_COLLECTION_SUCCESS,
@@ -59,35 +74,43 @@ const createNewCollection = (collectionData, token) => async (dispatch) => {
   }
 };
 
-const updateCollection =
-  (id, collectionData, token) =>
-  async (dispatch) => {
-    try {
-      const options = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
+const updateCollection = (id, collectionData, token) => async (dispatch) => {
+  try {
+    dispatch({
+      type:   COLLECTION_EDIT_REQUEST,
+    })
+    const options = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
 
-      const data = await axios.put(`/collection/edit/${id}`, { collectionData }, options);
+    const data = await axios.put(
+      `/collection/edit/${id}`,
+      { collectionData },
+      options
+    );
 
-      dispatch({
-        type: NAME_UPDATE_SUCCESS,
-        payload: data,
-      });
-      return Promise.resolve();
-    } catch (error) {
-      dispatch({
-        type: NAME_UPDATE_FAIL,
-        payload: error.response,
-      });
-      return Promise.reject();
-    }
-  };
+    dispatch({
+      type: COLLECTION_EDIT_SUCCESS,
+      payload: data,
+    });
+    return Promise.resolve();
+  } catch (error) {
+    dispatch({
+      type:  COLLECTION_EDIT_FAIL,
+      payload: error.response,
+    });
+    return Promise.reject();
+  }
+};
 
 const deleteCollection = (id, token) => async (dispatch) => {
   try {
+    dispatch({
+      type: DELETE_COLLECTION_REQUEST,
+    })
     const options = {
       headers: {
         "Content-Type": "application/json",
@@ -111,6 +134,9 @@ const deleteCollection = (id, token) => async (dispatch) => {
 
 const fetchPexel = (token, name) => async (dispatch) => {
   try {
+    dispatch({
+      type: FETCH_PEXEL_REQUEST,
+    })
     const options = {
       headers: {
         Authorization: `Bearer ${token}`,

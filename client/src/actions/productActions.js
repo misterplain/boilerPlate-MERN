@@ -2,23 +2,26 @@ import {
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
+  PRODUCT_DELETE_REQUEST,
   PRODUCT_DELETE_SUCCESS,
   PRODUCT_DELETE_FAIL,
+  PRODUCT_EDIT_REQUEST,
   PRODUCT_EDIT_SUCCESS,
   PRODUCT_EDIT_FAIL,
+  PRODUCT_ADD_REQUEST,
   PRODUCT_ADD_FAIL,
   PRODUCT_ADD_SUCCESS,
 } from "../constants/productConstants";
-import {
-  PRODUCT_EDIT_COLLECTION_FAIL,
-  PRODUCT_EDIT_COLLECTION_SUCCESS,
-  PRODUCT_DELTE_COLLECTION_FAIL,
-  PRODUCT_DELTE_COLLECTION_SUCCESS,
-  PRODUCT_ADD_COLLECTION_FAIL,
-  PRODUCT_ADD_COLLECTION_SUCCESS,
-} from "../constants/collectionsConstants";
+// import {
+//   PRODUCT_EDIT_COLLECTION_FAIL,
+//   PRODUCT_EDIT_COLLECTION_SUCCESS,
+//   PRODUCT_DELETE_COLLECTION_FAIL,
+//   PRODUCT_DELETE_COLLECTION_SUCCESS,
+//   PRODUCT_ADD_COLLECTION_FAIL,
+//   PRODUCT_ADD_COLLECTION_SUCCESS,
+// } from "../constants/collectionsConstants";
 import axios from "../api/axios";
-
+import { fetchAllCollections } from "./collectionsActions";
 
 const fetchAllProducts = () => async (dispatch) => {
   try {
@@ -42,6 +45,9 @@ const fetchAllProducts = () => async (dispatch) => {
 
 const deleteProduct = (productId, token) => async (dispatch) => {
   try {
+    dispatch({
+      type: PRODUCT_DELETE_REQUEST,
+    });
     const options = {
       headers: {
         "Content-Type": "application/json",
@@ -56,10 +62,11 @@ const deleteProduct = (productId, token) => async (dispatch) => {
       payload: data,
     });
 
-    dispatch({
-      type: PRODUCT_DELTE_COLLECTION_SUCCESS,
-      payload: data,
-    });
+    // dispatch({
+    //   type: PRODUCT_DELETE_COLLECTION_SUCCESS,
+    //   payload: data,
+    // });
+    dispatch(fetchAllCollections());
   } catch (error) {
     console.log(error);
     dispatch({
@@ -67,16 +74,18 @@ const deleteProduct = (productId, token) => async (dispatch) => {
       payload: error.response,
     });
 
-    dispatch({
-      type: PRODUCT_DELTE_COLLECTION_FAIL,
-      payload: error.response,
-    });
+    // dispatch({
+    //   type: PRODUCT_DELETE_COLLECTION_FAIL,
+    //   payload: error.response,
+    // });
   }
 };
 
 const editProduct = (productId, token, product) => async (dispatch) => {
-
   try {
+    dispatch({
+      type: PRODUCT_EDIT_REQUEST,
+    });
     const options = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -94,10 +103,11 @@ const editProduct = (productId, token, product) => async (dispatch) => {
       payload: data,
     });
 
-    dispatch({
-      type: PRODUCT_EDIT_COLLECTION_SUCCESS,
-      payload: data,
-    });
+    // dispatch({
+    //   type: PRODUCT_EDIT_COLLECTION_SUCCESS,
+    //   payload: data,
+    // });
+    dispatch(fetchAllCollections());
   } catch (error) {
     console.log(error);
     dispatch({
@@ -105,16 +115,19 @@ const editProduct = (productId, token, product) => async (dispatch) => {
       payload: error.message,
     });
 
-    dispatch({
-      type: PRODUCT_EDIT_COLLECTION_FAIL,
-      payload: error.message,
-    });
+    // dispatch({
+    //   type: PRODUCT_EDIT_COLLECTION_FAIL,
+    //   payload: error.message,
+    // });
   }
 };
 
 const deleteImage = (productId, token, image) => async (dispatch) => {
-  console.log(image)
+  console.log(image);
   try {
+    dispatch({
+      type: PRODUCT_EDIT_REQUEST,
+    });
     const options = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -131,19 +144,20 @@ const deleteImage = (productId, token, image) => async (dispatch) => {
       type: PRODUCT_EDIT_SUCCESS,
       payload: data,
     });
-
   } catch (error) {
     console.log(error);
     dispatch({
       type: PRODUCT_EDIT_FAIL,
       payload: error.message,
     });
-
   }
-}
+};
 
 const newProduct = (token, product) => async (dispatch) => {
   try {
+    dispatch({
+      type: PRODUCT_ADD_REQUEST,
+    })
     const options = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -157,12 +171,11 @@ const newProduct = (token, product) => async (dispatch) => {
       payload: data,
     });
 
-    dispatch({
-      type: PRODUCT_ADD_COLLECTION_SUCCESS,
-      payload: data,
-    });
-
-
+    // dispatch({
+    //   type: PRODUCT_ADD_COLLECTION_SUCCESS,
+    //   payload: data,
+    // });
+    dispatch(fetchAllCollections());
   } catch (error) {
     console.log(error);
 
@@ -171,11 +184,17 @@ const newProduct = (token, product) => async (dispatch) => {
       payload: error.message,
     });
 
-    dispatch({
-      type: PRODUCT_ADD_COLLECTION_FAIL,
-      payload: error.message,
-    });
+    // dispatch({
+    //   type: PRODUCT_ADD_COLLECTION_FAIL,
+    //   payload: error.message,
+    // });
   }
 };
 
-export { fetchAllProducts, deleteProduct, editProduct, newProduct, deleteImage };
+export {
+  fetchAllProducts,
+  deleteProduct,
+  editProduct,
+  newProduct,
+  deleteImage,
+};

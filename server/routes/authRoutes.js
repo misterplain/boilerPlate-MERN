@@ -36,7 +36,7 @@ router.get("/login/failed", (req, res) => {
 
 router.get("/logout", (req, res) => {
   req.logout(function (err) {
-    console.log(CLIENT_URL);
+
     if (err) {
       return next(err);
     }
@@ -60,11 +60,6 @@ router.get(
 
 router.get("/google/callback", function (req, res, next) {
   passport.authenticate("google", function (err, user, info) {
-    console.log({
-      message: "from google callback",
-      err: err,
-      user: user,
-    });
     if (err) {
       return res.status(500).json({ message: "Error while authenticating" });
     }

@@ -8,9 +8,9 @@ const verifyToken = (req, res, next) => {
   if (authHeader && authHeader.split(" ")[1] !== "null") {
     const token = authHeader.split(" ")[1];
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, userDecoded) => {
-      if (err) {
-        console.log(err);
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, userDecoded) => {
+      if (error) {
+        console.log(error);
         return res
           .status(500)
           .send({ message: "Failed to authenticate token." });
