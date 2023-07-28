@@ -12,7 +12,8 @@ import TextField from "@mui/material/TextField";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
+import FormLabel, { formLabelClasses } from "@mui/material/FormLabel";
+// import AlertMessage from "../../AlertMessage/AlertMessage";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import { Formik } from "formik";
@@ -25,6 +26,7 @@ import {
   deleteCollection,
 } from "../../../actions/collectionsActions";
 import AlertMessage from "../../AlertMessage/AlertMessage";
+import { AiFillDingtalkSquare } from "react-icons/ai";
 
 const style = {
   position: "absolute",
@@ -56,6 +58,7 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
   const { userId } = userDetails;
   const collectionsState = useSelector((state) => state.collections);
   const { photoUrl, photoId, collectionModalError } = collectionsState;
+  const [pexelError, setPexelError] = useState("");
 
   const reviewsState = useSelector((state) => state.reviews);
   const { reviews } = reviewsState || {};
@@ -98,16 +101,22 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
           Authorization: `Bearer ${token}`,
         },
       };
-      console.log(name);
 
       const data = await axios.get(
         "/collection/pexel",
         { params: { name: name } },
         options
       );
-      setSelectedFile(data.data.photoUrl);
+      if (data.data.photoUrl) {
+        setSelectedFile(data.data.photoUrl);
+        setPexelError("");
+      }
     } catch (error) {
-      console.log(error);
+      if (error.response && error.response.status === 400) {
+        setPexelError(error.response.data.message || "An error occurred");
+      } else {
+        setPexelError("An error occurred");
+      }
     }
   };
 
@@ -120,9 +129,9 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-        {collectionModalError && (
-        <AlertMessage type="error">{collectionModalError}</AlertMessage>
-      )}
+          {collectionModalError && (
+            <AlertMessage type="error">{collectionModalError}</AlertMessage>
+          )}
           <Box>
             <Formik
               initialValues={{
@@ -130,19 +139,19 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
               }}
               validationSchema={validationSchema}
               onSubmit={async (values, { resetForm }) => {
-                console.log("onsubmit triggered");
+
                 const collectionData = {
                   name: values.name,
                   image: selectedFile,
                 };
                 if (collection) {
-                  console.log("update collection triggered");
+
                   await dispatch(
                     updateCollection(collection._id, collectionData, token)
                   );
                   handleClose();
                 } else {
-                  console.log("add collection triggered");
+
                   await dispatch(createNewCollection(collectionData, token));
                   handleClose();
                 }
@@ -207,6 +216,9 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
                       />
                     )}
                   </FormControl>
+                  {pexelError && (
+                    <AlertMessage type="error">{pexelError}</AlertMessage>
+                  )}
 
                   <Button
                     type="submit"

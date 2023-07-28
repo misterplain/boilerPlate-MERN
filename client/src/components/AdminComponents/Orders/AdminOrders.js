@@ -38,8 +38,6 @@ const AdminOrders = () => {
     return new Intl.DateTimeFormat().format(new Date(date));
   }
 
-  console.log(orderHistory);
-
   function getOrderStatus(order) {
     if (order.isCancelled) {
       return "Cancelled";

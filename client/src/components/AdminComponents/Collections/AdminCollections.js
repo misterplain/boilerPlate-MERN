@@ -6,6 +6,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { NavLink } from "react-router-dom";
@@ -20,7 +21,7 @@ import CollectionsModal from "./CollectionsModal";
 import AlertMessage from "../../AlertMessage/AlertMessage";
 import { SnackbarProvider, useSnackbar } from "notistack";
 
-import styles from "./styles";
+import { collectionStyles, productStyles } from "./styles";
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Required"),
@@ -61,115 +62,42 @@ const AdminCollections = () => {
     enqueueSnackbar("This is a success message!", { variant });
   };
 
-  const styles = {
-    list: {
-      display: "flex",
-      flexWrap: "wrap",
-      justifyContent: "space-around",
-      alignItems: "space-around",
-      flexDirection: "row",
-    },
-    card: { border: "1px solid black", cursor: "pointer" },
-    cardImageWrapper: {
-      position: "relative",
-      margin: "10px",
-      /* your styles here */
-      border: "1px solid black",
-      width: "300px",
-    },
-    image: {
-      width: "100%",
-    },
-    overlayBox: {
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
-      zIndex: 2,
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
-      color: "white",
-      padding: "10px",
-      textAlign: "center",
-    },
-    name: {
-      /* your styles here */
-    },
-    length: {
-      /* your styles here */
-    },
-    optionsWrapper: {
-      display: "flex",
-      justifyContent: "center",
-    },
-    productName: {
-      display: "flex",
-    },
-  };
-
   return (
-    <Box sx={styles.wrapper}>
+    <Box sx={collectionStyles.wrapper}>
       {error && <AlertMessage type="error">{error}</AlertMessage>}
-      <Box sx={styles.newCollectionWrapper}>
+      <Box sx={collectionStyles.newCollectionWrapper}>
         <Button onClick={() => handleOpenModal()}>new collection</Button>
       </Box>
       <hr />
-      <Box sx={styles.collectionsWrapper}>
+      <Box sx={collectionStyles.collectionsWrapper}>
         <Typography>Collections</Typography>
-        {/* <Box sx={styles.collectionsList}>
-          {collectionsState?.collections?.map((collection) => (
-            <Box key={collection._id} sx={styles.collectionName}>
-              <Button
-                onClick={() => {
-                  setCollectionProductsId(collection._id);
-                  setCollectionName(collection.name);
-                }}
-              >
-                {collection.name} - {collection.products.length} products
-              </Button>
-              <Box sx={styles.optionsWrapper}>
-                <Button
-                  onClick={() => {
-                    handleOpenModal(collection);
-                  }}
-                >
-                  Edit
-                </Button>
-                <Button
-                  onClick={() => {
-                    dispatch(deleteCollection(collection._id, token));
-                  }}
-                >
-                  Delete
-                </Button>
-              </Box>
-            </Box>
-          ))}
-        </Box> */}
-        <Box sx={styles.list}>
+        <Box sx={collectionStyles.list}>
           {collectionsState?.collections?.map((collection) => (
             <Box
               key={collection._id}
-              sx={styles.card}
+              sx={collectionStyles.card}
               onClick={() => {
                 setCollectionProductsId(collection._id);
                 setCollectionName(collection.name);
               }}
             >
-              <Box sx={styles.cardImageWrapper}>
+              <Box sx={collectionStyles.cardImageWrapper}>
                 <Box
                   component="img"
-                  sx={styles.image}
+                  sx={collectionStyles.image}
                   src={collection.image.url}
                   alt="alt"
                 />
-                <Box sx={styles.overlayBox}>
-                  <Typography sx={styles.name}>{collection.name}</Typography>
-                  <Typography sx={styles.length}>
+                <Box sx={collectionStyles.overlayBox}>
+                  <Typography sx={collectionStyles.name}>
+                    {collection.name}
+                  </Typography>
+                  <Typography sx={collectionStyles.length}>
                     {collection.products.length} products
                   </Typography>
                 </Box>
               </Box>
-              <Box sx={styles.optionsWrapper}>
+              <Box sx={collectionStyles.optionsWrapper}>
                 <Button
                   onClick={() => {
                     handleOpenModal(collection);
@@ -193,14 +121,14 @@ const AdminCollections = () => {
       </Box>
 
       {collectionProductsId !== null && (
-        <Box sx={styles.productsWrapper}>
+        <Box sx={productStyles.productsWrapper}>
           <Typography>Products within {collectionName} Collection</Typography>
-          <Box sx={styles.addProductButton}>
+          {/* <Box sx={productStyles.addProductButton}>
             <Link component={NavLink} to={"/admin/products/new"}>
               <Button>New Product</Button>
             </Link>
-          </Box>
-          <Box sx={styles.productsList}>
+          </Box> */}
+          <Box sx={productStyles.list}>
             {products &&
             products.filter(
               (product) => product.collectionId === collectionProductsId
@@ -210,52 +138,93 @@ const AdminCollections = () => {
                   (product) => product.collectionId === collectionProductsId
                 )
                 .map((product) => (
-                  <Box
-                    key={product._id}
-                    sx={styles.card}
-                    // onClick={() => {
-                    //   setCollectionProductsId(collection._id);
-                    //   setCollectionName(collection.name);
-                    // }}
+                  <Grid
+                    container
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      border: "1px solid black",
+                    }}
                   >
-                    <Box sx={styles.cardImageWrapper}>
-                      <Box
-                        component="img"
-                        sx={styles.image}
-                        src={product.images[0].url}
-                        alt="alt"
-                      />
-                      <Box sx={styles.overlayBox}>
-                        <Typography sx={styles.name}>
-                          {product.name}
-                        </Typography>
-                        {/* <Typography sx={styles.length}>
-                          {product.products.length} products
-                        </Typography> */}
+                    <Grid item xs={2} md={2} marginLeft>
+                      <Typography>{product.name}</Typography>
+                    </Grid>
+                    <Grid item xs={3} md={2}>
+                      <Box sx={productStyles.stock}>
+                        <Typography>{product.stock} in stock</Typography>
                       </Box>
-                    </Box>
-                    <Box sx={styles.optionsWrapper}>
-                      {/* <Button
-                        onClick={() => {
-                          handleOpenModal(product);
-                        }}
-                        color="secondary"
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          dispatch(deleteCollection(collection._id, token));
-                        }}
-                        color="error"
-                      >
-                        Delete
-                      </Button> */}
-                    </Box>
-                  </Box>
+                    </Grid>
+                    <Grid item xs={3} md={2}>
+                      <Box sx={productStyles.isDisplayed}>
+                        <Typography>
+                          {product.isDisplayed ? "Displayed" : "Not Displayed"}
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={3} md={2}>
+                      <Box sx={productStyles.isFeatured}>
+                        <Typography>
+                          {product.isFeatured ? "Featured" : "Not Featured"}
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={3} md={2}>
+                      <Box sx={productStyles.productOptions}>
+                        <Link
+                          component={NavLink}
+                          to={`/admin/products/edit/${product._id}`}
+                        >
+                          <Button>View/Edit</Button>
+                        </Link>
+                        {/* <Button
+                         onClick={() => {
+                           dispatch(deleteProduct(product._id, token));
+                         }}
+                       >
+                         Delete
+                       </Button> */}
+                      </Box>
+                    </Grid>
+                  </Grid>
+                  // <Box sx={productStyles.productName} key={product._id}>
+                  //   <Link component={NavLink} to={`/product/${product._id}`}>
+                  //     <Button sx={productStyles.productLink}>
+                  //       {product.name}
+                  //     </Button>
+                  //   </Link>
+                  //   <Box sx={productStyles.stock}>
+                  //     <Typography>{product.stock} in stock</Typography>
+                  //   </Box>
+                  //   <Box sx={productStyles.isDisplayed}>
+                  //     <Typography>
+                  //       {product.isDisplayed ? "Displayed" : "Not Displayed"}
+                  //     </Typography>
+                  //   </Box>
+                  //   <Box sx={productStyles.isFeatured}>
+                  //     <Typography>
+                  //       {product.isFeatured ? "Featured" : "Not Featured"}
+                  //     </Typography>
+                  //   </Box>
+                  //   <Box sx={productStyles.productOptions}>
+                  //     <Link
+                  //       component={NavLink}
+                  //       to={`/admin/products/edit/${product._id}`}
+                  //     >
+                  //       <Button>View/Edit</Button>
+                  //     </Link>
+                  //     {/* <Button
+                  //       onClick={() => {
+                  //         dispatch(deleteProduct(product._id, token));
+                  //       }}
+                  //     >
+                  //       Delete
+                  //     </Button> */}
+                  //   </Box>
+                  // </Box>
                 ))
             ) : (
-              <Box sx={styles.noItems}>
+              <Box sx={productStyles.noItems}>
                 <Typography>No items within this category</Typography>
               </Box>
             )}

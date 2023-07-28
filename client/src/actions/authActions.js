@@ -109,7 +109,6 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
       ? process.env.REACT_APP_SERVER_API_URL
       : "http://localhost:5000";
 
-  console.log(provider);
 
   return new Promise((resolve, reject) => {
     try {

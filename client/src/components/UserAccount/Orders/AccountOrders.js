@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
-import { fetchAllOrders, cancelOrder } from "../../../actions/orderActions";
+import { fetchAllOrders, cancelOrder, fetchUserOrders } from "../../../actions/orderActions";
 import { format } from "date-fns";
 
 const styles = {
@@ -24,14 +24,13 @@ const AccountOrders = () => {
   const token = userAuthState?.accessToken;
 
   useEffect(() => {
-    dispatch(fetchAllOrders(token));
+    dispatch(fetchUserOrders(token));
   }, []);
 
   function formatDate(date) {
     return new Intl.DateTimeFormat().format(new Date(date));
   }
 
-  console.log(orderHistory);
 
   function getOrderStatus(order) {
     if (order.isCancelled) {

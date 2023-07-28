@@ -62,7 +62,6 @@ const setEmailAddress = (emailAddress) => (dispatch) => {
 const placeNewUserOrder =
   (token, order, proceedToNextStep) => async (dispatch) => {
 
-    console.log(order);
     try {
       const options = {
         headers: {
@@ -72,7 +71,6 @@ const placeNewUserOrder =
       };
 
       const data = await axios.post("/orders/new", order, options);
-      console.log(order);
 
       dispatch({
         type: NEW_USER_ORDER_SUCCESS,
@@ -89,7 +87,6 @@ const placeNewUserOrder =
 const placeNewOrderGuest = (order, proceedToNextStep) => async (dispatch) => {
   try {
     const data = await axios.post("/orders/newguest", order);
-    console.log(order);
 
     dispatch({
       type: NEW_GUEST_ORDER_SUCCESS,
@@ -118,7 +115,7 @@ const fetchUserOrders = (token) => async (dispatch) => {
 
     dispatch({
       type: FETCH_USER_ORDERS_SUCCESS,
-      payload: data.data.allOrders,
+      payload: data.data.userOrders,
     });
   } catch (error) {
     dispatch({ type: FETCH_USER_ORDERS_FAIL, payload: error });
@@ -137,7 +134,6 @@ const cancelOrder = (token, orderId) => async (dispatch) => {
 
   try {
     const data = await axios.put(`/orders/cancel/${orderId}`, {}, options);
-    console.log(data);
 
     dispatch({
       type: CANCEL_ORDER_SUCCESS,
@@ -151,7 +147,6 @@ const cancelOrder = (token, orderId) => async (dispatch) => {
 };
 
 const fetchAllOrders = (token) => async (dispatch) => {
-  console.log("fetchAllOrders");
 
   try {
     const options = {

@@ -58,7 +58,7 @@ const AdminScreen = () => {
   const token = userAuthState?.accessToken;
   const reviewsState = useSelector((state) => state.reviews);
   const { reviews } = reviewsState || {};
-  console.log(reviews);
+
 
   useEffect(() => {
     dispatch(getUnmoderatedReviews(token));
@@ -74,31 +74,18 @@ const AdminScreen = () => {
   };
 
   return (
-    <Grid container>
+    <Grid container sx={{ border: "1px solid blue" }}>
       <Grid
         item
         xs={12}
-        md={4}
-        sx={{ display: "flex", justifyContent: "space-around" }}
+        md={3}
+        sx={{
+          display: "flex",
+          justifyContent: "space-around",
+          flexDirection: "row",
+        }}
       >
         <Box sx={styles.buttonsWrapper}>
-          {/* {adminButtons.map((button) => (
-            <Box key={button.name}>
-              <Badge
-                badgeContent={badgeCounts[button.link] ? badgeCounts[button.link] : null}
-                color="primary"
-                // overlap="rectangular"
-                anchorOrigin={{
-                  vertical: "center",
-                  horizontal: "right",
-                }}
-              >
-                <Link component={NavLink} to={button.link}>
-                  <Button>{button.name}</Button>
-                </Link>
-              </Badge>
-            </Box>
-          ))} */}
           {adminButtons.map((button) => (
             <Box key={button.name}>
               {badgeCounts[button.link] > 0 && (
@@ -120,7 +107,7 @@ const AdminScreen = () => {
           ))}
         </Box>
       </Grid>
-      <Grid item xs={12} md={7}>
+      <Grid item xs={12} md={9}>
         <Routes>
           {" "}
           <Route path="collections" element={<AdminCollections />} />

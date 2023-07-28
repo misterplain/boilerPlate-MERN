@@ -74,7 +74,7 @@ const CheckoutScreen = () => {
           <Button
             variant="contained"
             onClick={() => setStep(1)}
-            disabled={!emailAddress}
+            disabled={!emailAddress || isPaid}
           >
             User and Email
           </Button>
@@ -82,25 +82,21 @@ const CheckoutScreen = () => {
         <Button
           variant="contained"
           onClick={() => setStep(2)}
-          disabled={!shippingAddress}
+          disabled={!shippingAddress || isPaid}
         >
           Address
         </Button>
         <Button
           variant="contained"
           onClick={() => setStep(3)}
-          disabled={
-            !emailAddress || !cartItems || !shippingAddress 
-          }
+          disabled={!emailAddress || !cartItems || !shippingAddress || isPaid}
         >
           Summary
         </Button>
         <Button
           variant="contained"
           onClick={() => setStep(4)}
-          disabled={
-         !isPaid
-          }
+          disabled={isPaid || step < 4}
         >
           Payment
         </Button>

@@ -8,8 +8,8 @@ import { cartReducer } from "./reducers/cartReducers";
 import { productListReducer } from "./reducers/productReducers";
 import { collectionsReducer } from "./reducers/collectionsReducers";
 import { orderReducer } from "./reducers/orderReducers";
-import {reviewsReducer} from "./reducers/reviewsReducers";
-import {snackbarReducer} from './reducers/snackbarReducers';
+import { reviewsReducer } from "./reducers/reviewsReducers";
+import { snackbarReducer } from "./reducers/snackbarReducers";
 
 const reducer = combineReducers({
   userAuth: authReducer,
@@ -22,14 +22,15 @@ const reducer = combineReducers({
   snackbar: snackbarReducer,
 });
 
-
 const initialState = {};
 
 const middleware = [thunk];
 
-if (process.env.NODE_ENV === "development") {
-  middleware.push(logger);
-}
+// if (process.env.NODE_ENV === "development") {
+//   middleware.push(logger);
+// }
+
+middleware.push(logger);
 
 const store = createStore(
   reducer,

@@ -74,7 +74,6 @@ const updateFavorites =
         options
       );
 
-      console.log(data);
 
       dispatch({
         type: UPDATE_FAVORITE_SUCCESS,

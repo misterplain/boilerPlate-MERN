@@ -36,7 +36,6 @@ const CheckoutPayment = ({ proceedToNextStep }) => {
       if (authenticated) {
         dispatch(placeNewUserOrder(token, orderDetails, proceedToNextStep));
       } else {
-        console.log(orderDetails);
         dispatch(placeNewOrderGuest(orderDetails, proceedToNextStep));
       }
     }
