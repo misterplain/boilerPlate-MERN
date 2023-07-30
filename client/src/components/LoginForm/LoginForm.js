@@ -45,23 +45,13 @@ const LoginForm = () => {
   const authState = useSelector((state) => state.userAuth);
   const { authenticated, loginError } = authState;
   const [errorMessage, setErrorMessage] = useState("");
-  // console.log(error);
 
   const handleSubmit = (values) => {
     dispatch(loginForm(values.email, values.password, cartItems));
   };
 
-  // useEffect(() => {
-  //   setErrorMessage(error);
-
-  //   return () => {
-  //     setErrorMessage(null);
-  //   };
-  // }, [error]);
-
   return (
     <Box sx={styles.formContainer}>
-      {/* {error && <p>{error}</p>} */}
 
       {loginError && <AlertMessage type="error">{loginError}</AlertMessage>}
 

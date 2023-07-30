@@ -6,7 +6,6 @@ import Button from "@mui/material/Button";
 
 const styles = {
   wrapper: {
-    border: "1px solid black",
     width: "90%",
     display: "flex",
     flexDirection: "column",

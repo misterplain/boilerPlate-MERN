@@ -5,20 +5,12 @@ import {
   NEW_COLLECTION_REQUEST,
   NEW_COLLECTION_SUCCESS,
   NEW_COLLECTION_FAIL,
-  // NAME_UPDATE_FAIL,
-  // NAME_UPDATE_SUCCESS,
   COLLECTION_EDIT_REQUEST,
   COLLECTION_EDIT_SUCCESS,
   COLLECTION_EDIT_FAIL,
   DELETE_COLLECTION_REQUEST,
   DELETE_COLLECTION_SUCCESS,
   DELETE_COLLECTION_FAIL,
-  // PRODUCT_EDIT_COLLECTION_FAIL,
-  // PRODUCT_EDIT_COLLECTION_SUCCESS,
-  // PRODUCT_DELETE_COLLECTION_FAIL,
-  // PRODUCT_DELETE_COLLECTION_SUCCESS,
-  // PRODUCT_ADD_COLLECTION_FAIL,
-  // PRODUCT_ADD_COLLECTION_SUCCESS,
   FETCH_PEXEL_REQUEST,
   FETCH_PEXEL_FAIL,
   FETCH_PEXEL_SUCCESS,
@@ -139,94 +131,6 @@ const collectionsReducer = (state = { collections: [] }, action) => {
         loading: false,
         collectionModalError: action.payload.data.message,
       };
-
-    //Update the collectionsState triggered by Product Actions
-    // case PRODUCT_EDIT_COLLECTION_SUCCESS:
-    //   const { updatedProduct, oldCollectionId } = action.payload.data;
-    //   const newCollectionId = updatedProduct.collectionId;
-
-    //   const oldCollection = state.collections.find(
-    //     (collection) => collection._id === oldCollectionId
-    //   );
-    //   const oldCollectionUpdatedProducts = oldCollection.products.filter(
-    //     (productId) => productId !== updatedProduct._id
-    //   );
-
-    //   const newCollection = state.collections.find(
-    //     (collection) => collection._id === newCollectionId
-    //   );
-    //   const newCollectionUpdatedProducts = [
-    //     ...newCollection.products,
-    //     updatedProduct._id,
-    //   ];
-
-    //   const updatedCollections = state.collections.map((collection) => {
-    //     if (collection._id === oldCollectionId) {
-    //       if (oldCollectionId === newCollectionId) {
-    //         return collection;
-    //       }
-    //       return { ...collection, products: oldCollectionUpdatedProducts };
-    //     } else if (collection._id === newCollectionId) {
-    //       return { ...collection, products: newCollectionUpdatedProducts };
-    //     } else {
-    //       return collection;
-    //     }
-    //   });
-
-    //   return {
-    //     loading: false,
-    //     collections: updatedCollections,
-    //   };
-
-    // case PRODUCT_EDIT_COLLECTION_FAIL:
-    //   return {
-    //     loading: false,
-    //     error: action.payload.data.message,
-    //     collections: [...state.collections],
-    //   };
-
-    // case PRODUCT_DELETE_COLLECTION_SUCCESS:
-    //   const collectionToUpdate = action.payload.data.collectionToUpdate;
-
-    //   const newCollectionsAfterDelete = state.collections.map((collection) =>
-    //     collection._id !== collectionToUpdate._id
-    //       ? collection
-    //       : collectionToUpdate
-    //   );
-
-    //   return {
-    //     loading: false,
-    //     collections: newCollectionsAfterDelete,
-    //   };
-
-    // case PRODUCT_DELETE_COLLECTION_FAIL:
-    //   return {
-    //     loading: false,
-    //     error: action.payload.data.message,
-    //     collections: [...state.collections],
-    //   };
-
-    // case PRODUCT_ADD_COLLECTION_SUCCESS:
-    //   const collectionToAdd = action.payload.data.newProduct.collectionId;
-    //   const productToAdd = action.payload.data.newProduct._id;
-    //   return {
-    //     loading: false,
-    //     collections: state.collections.map((collection) =>
-    //       collection._id === collectionToAdd
-    //         ? {
-    //             ...collection,
-    //             products: [...collection.products, productToAdd],
-    //           }
-    //         : collection
-    //     ),
-    //   };
-
-    // case PRODUCT_ADD_COLLECTION_FAIL:
-    //   return {
-    //     loading: false,
-    //     error: action.payload.data.message,
-    //     collections: [...state.collections],
-    //   };
 
     default:
       return state;

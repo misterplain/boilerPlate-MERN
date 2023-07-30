@@ -18,16 +18,17 @@ import {
   MODERATE_REVIEW_REQUEST,
   MODERATE_REVIEW_SUCCESS,
   MODERATE_REVIEW_FAIL,
+  FILTER_REVIEWS_SUCCESS,
+  FILTER_REVIEWS_FAIL,
+  CLEAR_FILTER,
 } from "../constants/reviewsConstants";
 import axios from "../api/axios";
 
-
 const fetchReviews = (token, productId) => async (dispatch) => {
-
   try {
     dispatch({
       type: FETCH_REVIEWS_REQUEST,
-    })
+    });
     const options = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -48,11 +49,10 @@ const fetchReviews = (token, productId) => async (dispatch) => {
 };
 
 const getUnmoderatedReviews = (token) => async (dispatch) => {
-
   try {
     dispatch({
       type: FETCH_UNMODERATED_REVIEWS_REQUEST,
-    })
+    });
     const options = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -74,11 +74,10 @@ const getUnmoderatedReviews = (token) => async (dispatch) => {
 };
 
 const moderateReview = (token, reviewId, reviewData) => async (dispatch) => {
-
   try {
     dispatch({
       type: MODERATE_REVIEW_REQUEST,
-    })
+    });
     const options = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -110,11 +109,10 @@ const clearReviews = () => async (dispatch) => {
 };
 
 const deleteReview = (token, reviewId) => async (dispatch) => {
-
   try {
     dispatch({
       type: DELETE_REVIEW_REQUEST,
-    })
+    });
     const options = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -139,7 +137,7 @@ const createReview = (token, productId, reviewData) => async (dispatch) => {
   try {
     dispatch({
       type: CREATE_REVIEW_REQUEST,
-    })
+    });
     const options = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -172,11 +170,10 @@ const createReview = (token, productId, reviewData) => async (dispatch) => {
 };
 
 const editReview = (token, reviewId, reviewData) => async (dispatch) => {
-
   try {
     dispatch({
       type: EDIT_REVIEW_REQUEST,
-    })
+    });
     const options = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -203,6 +200,26 @@ const editReview = (token, reviewId, reviewData) => async (dispatch) => {
   }
 };
 
+const filterReviews = (rating) => async (dispatch) => {
+  try {
+    dispatch({
+      type: FILTER_REVIEWS_SUCCESS,
+      rating: rating,
+    });
+  } catch (error) {
+    dispatch({
+      type: FILTER_REVIEWS_FAIL,
+      payload: error.message,
+    });
+  }
+};
+
+const clearFilter = () => async (dispatch) => {
+  dispatch({
+    type: CLEAR_FILTER,
+  });
+};
+
 export {
   fetchReviews,
   clearReviews,
@@ -211,4 +228,6 @@ export {
   createReview,
   editReview,
   getUnmoderatedReviews,
+  filterReviews,
+  clearFilter,
 };

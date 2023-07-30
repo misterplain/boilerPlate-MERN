@@ -1,7 +1,7 @@
 const styles = {
 
     carouselWrapper: {
-        // border: "1px solid purple",
+
     },
     image: {
         width: "100%",

@@ -12,14 +12,6 @@ import {
   PRODUCT_ADD_FAIL,
   PRODUCT_ADD_SUCCESS,
 } from "../constants/productConstants";
-// import {
-//   PRODUCT_EDIT_COLLECTION_FAIL,
-//   PRODUCT_EDIT_COLLECTION_SUCCESS,
-//   PRODUCT_DELETE_COLLECTION_FAIL,
-//   PRODUCT_DELETE_COLLECTION_SUCCESS,
-//   PRODUCT_ADD_COLLECTION_FAIL,
-//   PRODUCT_ADD_COLLECTION_SUCCESS,
-// } from "../constants/collectionsConstants";
 import axios from "../api/axios";
 import { fetchAllCollections } from "./collectionsActions";
 
@@ -36,7 +28,7 @@ const fetchAllProducts = () => async (dispatch) => {
       payload: data,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     dispatch({
       type: PRODUCT_LIST_FAIL,
       payload: error.response.data.message,
@@ -45,82 +37,75 @@ const fetchAllProducts = () => async (dispatch) => {
 };
 
 const deleteProduct = (productId, token) => async (dispatch) => {
-  try {
-    dispatch({
-      type: PRODUCT_DELETE_REQUEST,
-    });
-    const options = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
+  return new Promise(async (resolve, reject) => {
+    try {
+      dispatch({
+        type: PRODUCT_DELETE_REQUEST,
+      });
+      const options = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
 
-    const data = await axios.delete(`/product/delete/${productId}`, options);
+      const data = await axios.delete(`/product/delete/${productId}`, options);
 
-    dispatch({
-      type: PRODUCT_DELETE_SUCCESS,
-      payload: data,
-    });
+      dispatch({
+        type: PRODUCT_DELETE_SUCCESS,
+        payload: data,
+      });
+      dispatch(fetchAllCollections());
+      resolve()
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: PRODUCT_DELETE_FAIL,
+        payload: error.response.data.message,
+      });
 
-    // dispatch({
-    //   type: PRODUCT_DELETE_COLLECTION_SUCCESS,
-    //   payload: data,
-    // });
-    dispatch(fetchAllCollections());
-  } catch (error) {
-    console.log(error);
-    dispatch({
-      type: PRODUCT_DELETE_FAIL,
-      payload: error.response,
-    });
-
-    // dispatch({
-    //   type: PRODUCT_DELETE_COLLECTION_FAIL,
-    //   payload: error.response,
-    // });
-  }
+      reject()
+    }
+  });
 };
 
-const editProduct = (productId, token, product) => async (dispatch) => {
-  try {
-    dispatch({
-      type: PRODUCT_EDIT_REQUEST,
-    });
-    const options = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
 
-    const data = await axios.put(
-      `/product/edit/${productId}`,
-      product,
-      options
-    );
+const editProduct = (productId, token, product) => (dispatch) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      dispatch({
+        type: PRODUCT_EDIT_REQUEST,
+      });
 
-    dispatch({
-      type: PRODUCT_EDIT_SUCCESS,
-      payload: data,
-    });
+      const options = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
 
-    // dispatch({
-    //   type: PRODUCT_EDIT_COLLECTION_SUCCESS,
-    //   payload: data,
-    // });
-    dispatch(fetchAllCollections());
-  } catch (error) {
-    console.log(error);
-    dispatch({
-      type: PRODUCT_EDIT_FAIL,
-      payload: error.message,
-    });
+      const data = await axios.put(
+        `/product/edit/${productId}`,
+        product,
+        options
+      );
 
-    // dispatch({
-    //   type: PRODUCT_EDIT_COLLECTION_FAIL,
-    //   payload: error.message,
-    // });
-  }
+      dispatch({
+        type: PRODUCT_EDIT_SUCCESS,
+        payload: data,
+      });
+
+      dispatch(fetchAllCollections());
+
+      resolve();
+    } catch (error) {
+      dispatch({
+        type: PRODUCT_EDIT_FAIL,
+        payload: error.response.data.message,
+      });
+
+      reject(error);
+    }
+  });
 };
 
 const deleteImage = (productId, token, image) => async (dispatch) => {
@@ -158,7 +143,7 @@ const newProduct = (token, product) => async (dispatch) => {
   try {
     dispatch({
       type: PRODUCT_ADD_REQUEST,
-    })
+    });
     const options = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -171,11 +156,6 @@ const newProduct = (token, product) => async (dispatch) => {
       type: PRODUCT_ADD_SUCCESS,
       payload: data,
     });
-
-    // dispatch({
-    //   type: PRODUCT_ADD_COLLECTION_SUCCESS,
-    //   payload: data,
-    // });
     dispatch(fetchAllCollections());
   } catch (error) {
     console.log(error);
@@ -184,11 +164,6 @@ const newProduct = (token, product) => async (dispatch) => {
       type: PRODUCT_ADD_FAIL,
       payload: error.message,
     });
-
-    // dispatch({
-    //   type: PRODUCT_ADD_COLLECTION_FAIL,
-    //   payload: error.message,
-    // });
   }
 };
 

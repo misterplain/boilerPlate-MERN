@@ -1,8 +1,8 @@
 const styles = {
     footerWrapper: (theme) => ({
-        position: "fixed", // Add this line
-        bottom: "2%", // And this line
-        width: "100%", // Ensure it spans the entire width of the screen
+        position: "fixed",
+        bottom: "2%", 
+        width: "100%", 
         display: "flex",
         flexDirection: "row",
         justifyContent: "center",

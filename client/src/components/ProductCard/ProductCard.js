@@ -1,7 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { updateFavorites } from "../../actions/userActions";
 import { NavLink } from "react-router-dom";
@@ -15,6 +14,7 @@ import styles from "./styles";
 import { productStyles } from "../AdminComponents/Collections/styles";
 
 const ProductCard = ({ product }) => {
+  console.log(product);
   const theme = useTheme();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
@@ -45,22 +45,19 @@ const ProductCard = ({ product }) => {
           <Typography sx={styles.name} variant="h6" component="div">
             {product.name} - ${product.price}
           </Typography>
-          {/* <Typography sx={styles.price} variant="h6" component="div">
-            ${product.price} - {product.reviews.length} reviews
-          </Typography> */}
-          {/* <Typography sx={styles.price} variant="h6" component="div">
-            
-          </Typography> */}
         </Box>
       </Link>
 
       <Box sx={styles.iconsWrapper}>
         <Box sx={styles.ratings}>
-
           <RatingIcons
             rating={product.averageRating ? product.averageRating : 0}
           />
-          <Typography sx={styles.numberReviews}>{"( "}{product.reviews.length}{" )"}</Typography>
+          <Typography sx={styles.numberReviews}>
+            {"( "}
+            {product.reviews.length}
+            {" )"}
+          </Typography>
         </Box>
 
         {authenticated && (

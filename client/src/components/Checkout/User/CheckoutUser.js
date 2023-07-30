@@ -22,8 +22,14 @@ const CheckoutUser = ({ proceedToNextStep }) => {
   const productState = useSelector((state) => state.productList);
   const { products } = productState;
   const orderState = useSelector((state) => state.order);
-  const { cartItems, isGuest, isPaid, shippingAddress, totalPrice, emailAddress } =
-    orderState;
+  const {
+    cartItems,
+    isGuest,
+    isPaid,
+    shippingAddress,
+    totalPrice,
+    emailAddress,
+  } = orderState;
 
   const token = userAuthState?.accessToken;
   const { authenticated } = userAuthState;
@@ -50,7 +56,6 @@ const CheckoutUser = ({ proceedToNextStep }) => {
 
   const styles = {
     wrapper: {
-      border: "1px solid black",
     },
   };
 
@@ -102,8 +107,8 @@ const CheckoutUser = ({ proceedToNextStep }) => {
             {" "}
             <Formik
               initialValues={{
-                email: "",
-                confirmEmail: "",
+                email: emailAddress ? emailAddress : "",
+                confirmEmail: emailAddress ? emailAddress : "",
               }}
               validationSchema={validationSchema}
               onSubmit={async (values, { resetForm }) => {

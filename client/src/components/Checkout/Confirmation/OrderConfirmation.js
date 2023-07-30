@@ -1,13 +1,12 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
 const OrderConfirmation = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  //get token from state
   const userAuthState = useSelector((state) => state.userAuth);
   const userDetailsState = useSelector((state) => state.userDetails);
   const userDetails = userDetailsState?.userDetails;

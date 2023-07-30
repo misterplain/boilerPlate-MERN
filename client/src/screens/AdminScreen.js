@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Badge from "@mui/material/Badge";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import {  Route, Routes, Navigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import AdminCollections from "../components/AdminComponents/Collections/AdminCollections";
@@ -14,13 +14,10 @@ import AdminOrders from "../components/AdminComponents/Orders/AdminOrders";
 import AdminReviews from "../components/AdminComponents/Reviews/AdminReviews";
 import {
   getUnmoderatedReviews,
-  deleteReview,
-  moderateReview,
 } from "../actions/reviewsActions";
 
 const styles = {
   buttonsWrapper: {
-    border: "1px solid black",
   },
 };
 
@@ -65,7 +62,6 @@ const AdminScreen = () => {
   }, [dispatch, token]);
 
   const badgeCounts = {
-    // object to hold badge counts
     reviews: reviews?.length,
     collections: 0,
     products: 0,
@@ -74,7 +70,7 @@ const AdminScreen = () => {
   };
 
   return (
-    <Grid container sx={{ border: "1px solid blue" }}>
+    <Grid container>
       <Grid
         item
         xs={12}

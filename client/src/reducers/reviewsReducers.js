@@ -18,9 +18,19 @@ import {
   MODERATE_REVIEW_REQUEST,
   MODERATE_REVIEW_SUCCESS,
   MODERATE_REVIEW_FAIL,
+  FILTER_REVIEWS_SUCCESS,
+  FILTER_REVIEWS_FAIL,
+  CLEAR_FILTER,
 } from "../constants/reviewsConstants";
 
-export const reviewsReducer = (state = {}, action) => {
+const initialState = {
+  reviews: [],
+  filteredReviews: [],
+  loading: false,
+  error: null,
+};
+
+export const reviewsReducer = (state = initialState, action) => {
   switch (action.type) {
     case CREATE_REVIEW_REQUEST:
       return {
@@ -51,6 +61,7 @@ export const reviewsReducer = (state = {}, action) => {
         error: null,
         userReview: action.payload.userReviews,
         reviews: action.payload.productReviews,
+        filteredReviews: action.payload.productReviews,
       };
 
     case FETCH_REVIEWS_FAIL:
@@ -145,6 +156,25 @@ export const reviewsReducer = (state = {}, action) => {
         ...state,
         error: action.payload,
         loading: false,
+      };
+    case FILTER_REVIEWS_SUCCESS:
+      return {
+        ...state,
+        filteredReviews: state.reviews.filter(
+          (review) => review.rating === action.rating
+        ),
+      };
+
+    case FILTER_REVIEWS_FAIL:
+      return {
+        ...state,
+        error: "Error Filtering Review",
+      };
+
+    case CLEAR_FILTER:
+      return {
+        ...state,
+        filteredReviews: state.reviews, 
       };
 
     default:

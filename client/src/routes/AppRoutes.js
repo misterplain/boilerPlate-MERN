@@ -8,7 +8,6 @@ import HomeScreen from "../screens/HomeScreen";
 import ContactScreen from "../screens/ContactScreen";
 import ProductScreen from "../screens/ProductScreen";
 import CollectionScreen from "../screens/CollectionScreen";
-import OrderHistoryScreen from "../screens/OrderHistoryScreen";
 import AdminScreen from "../screens/AdminScreen";
 import UserAccountScreen from "../screens/UserAccountScreen";
 import Favorites from "../screens/FavoritesScreen";
@@ -68,10 +67,6 @@ const AppRoutes = () => {
         element={
           authenticated && isAdmin ? <AdminScreen /> : <Navigate to="/" />
         }
-      />
-      <Route
-        path={"/orders"}
-        element={authenticated ? <OrderHistoryScreen /> : <Navigate to="/" />}
       />
       <Route path={"/checkout"} element={<CheckoutScreen />} />
     </Routes>

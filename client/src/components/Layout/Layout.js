@@ -9,7 +9,6 @@ const Layout = ({ children }) => {
   return (
     <Box sx={styles.wrapper}>
       <CartDrawerProvider>
-        {" "}
         <Header />
         <main>{children}</main>
         <Footer />

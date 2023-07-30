@@ -11,7 +11,6 @@ import { Link } from "@mui/material";
 import { logoutUser } from "../../actions/authActions";
 import { useCartDrawer } from "../../context/CartDrawerContext";
 
-//icons
 import { CgProfile } from "react-icons/cg";
 import Badge from "@mui/material/Badge";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";

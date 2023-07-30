@@ -10,12 +10,10 @@ import { useCartDrawer } from "../context/CartDrawerContext";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import FormGroup from "@mui/material/FormGroup";
-import Radio from "@mui/material/Radio";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import {
-  getCartItems,
   addCartItemUser,
   addCartItemGuest,
   removeCartItemUser,
@@ -28,7 +26,6 @@ import { useSnackbar } from "notistack";
 
 const styles = {
   wrapper: {
-    border: "1px solid black",
     width: "100%",
   },
 };
@@ -52,8 +49,6 @@ const ProductScreen = () => {
 
   const { isOpen, setIsOpen } = useCartDrawer();
 
-  // const [fetched, setFetched] = useState(false);
-
   const displayedProduct = productList?.products?.find(
     (product) => product._id === productId
   );
@@ -76,14 +71,12 @@ const ProductScreen = () => {
     ) {
       dispatch(clearReviews());
     }
-    // setFetched(true);
 
     dispatch(fetchReviews(token, displayedProduct._id));
   }, [dispatch, token, displayedProduct]);
 
   const styles = {
     wrapper: {
-      border: "1px solid black",
       display: "flex",
       flexDirection: "column",
     },
@@ -94,7 +87,7 @@ const ProductScreen = () => {
       container
       sx={{ display: "flex", justifyContent: "space-around", flexDirection: "row" }}
     >
-      <Grid item xs={10} sm={6}>
+      <Grid item xs={11} sm={6}>
         <ProductCarousel product={displayedProduct} />
       </Grid>
       <Grid item xs={10} sm={4}>
@@ -228,12 +221,10 @@ const ProductScreen = () => {
           </>
         )}
       </Grid>
-      <Grid item xs={10} sm={10}>
+      <Grid item xs={11} sm={10}>
         {displayedProduct && (
           <ProductReviews productId={displayedProduct._id} />
         )}
-
-        {/* <ReviewModal open={open} handleClose={handleCloseModal} /> */}
       </Grid>
     </Grid>
   );

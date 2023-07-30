@@ -12,12 +12,7 @@ import {
   PRODUCT_ADD_FAIL,
   PRODUCT_ADD_SUCCESS,
 } from "../constants/productConstants";
-import {
-  DELETE_REVIEW_FAIL,
-  DELETE_REVIEW_SUCCESS,
-  CREATE_REVIEW_FAIL,
-  CREATE_REVIEW_SUCCESS,
-} from "../constants/reviewsConstants";
+
 
 const productListReducer = (state = { products: [] }, action) => {
   switch (action.type) {
@@ -52,9 +47,11 @@ const productListReducer = (state = { products: [] }, action) => {
         ),
       };
     case PRODUCT_DELETE_FAIL:
+      console.log(action.payload)
       return {
+        ...state,
         loading: false,
-        error: action.payload.data.message,
+        error: action.payload,
       };
     case PRODUCT_EDIT_REQUEST:
       return {
@@ -74,8 +71,9 @@ const productListReducer = (state = { products: [] }, action) => {
     case PRODUCT_EDIT_FAIL:
       console.log(action.payload);
       return {
+        ...state,
         loading: false,
-        error: action.payload.data.message,
+        error: action.payload,
       };
     case PRODUCT_ADD_REQUEST:
       return {

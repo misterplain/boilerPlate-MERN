@@ -77,17 +77,6 @@ const ProductCarousel = ({ product }) => {
           </Box>
         ) : null}
       </Box>
-      {/* <Grid
-        item
-        xs={12}
-        sm={6}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      ></Grid> */}
     </Box>
   );
 };

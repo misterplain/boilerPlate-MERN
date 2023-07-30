@@ -1,6 +1,9 @@
 const commonStyles = {
-  wrapper: {
+  pageWrapper: {
     marginBottom: "30px",
+  },
+  sectionWrapper: {
+    margin: "20px 10px",
   },
   list: {
     display: "flex",
@@ -8,6 +11,12 @@ const commonStyles = {
     justifyContent: "space-around",
     alignItems: "space-around",
     flexDirection: "row",
+  },
+  nameAndNewWrapper: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "20px",
   },
   card: { border: "1px solid black", cursor: "pointer" },
   cardImageWrapper: {
@@ -42,12 +51,8 @@ const collectionStyles = {
     display: "flex",
     justifyContent: "space-between",
   },
-  name: {
-    /* specific collection name styles */
-  },
-  length: {
-    /* specific collection length styles */
-  },
+  name: {},
+  length: {},
 };
 
 const productStyles = {
@@ -55,16 +60,26 @@ const productStyles = {
   list: {
     width: "100%",
   },
-  productName: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
   name: {
-    /* specific product name styles */
   },
   length: {
-    /* specific product length styles */
   },
+  price: {
+
+  },
+  stock: (stock) => ({
+    color: stock > 0 ? "green" : "red",
+  }),
+  isDisplayed: (isDisplayed) => ({
+    color: isDisplayed ? "green" : "red",
+  }),
+  isFeatured: (isFeatured) => ({
+    color: isFeatured ? "green" : "red",
+  }),
+  gridItem: {
+border: "1px solid grey",
+padding: "5px"
+  }
 };
 
 export { collectionStyles, productStyles };

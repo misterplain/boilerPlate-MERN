@@ -29,6 +29,8 @@ const CheckoutAddress = ({ proceedToNextStep }) => {
   const userAuthState = useSelector((state) => state.userAuth);
   const userDetailsState = useSelector((state) => state.userDetails);
   const userDetails = userDetailsState?.userDetails;
+  const orderState = useSelector((state) => state.order);
+  const { shippingAddress } = orderState;
 
   const token = userAuthState?.accessToken;
   const { authenticated } = userAuthState;
@@ -58,7 +60,7 @@ const CheckoutAddress = ({ proceedToNextStep }) => {
                       city: address.city,
                       postalCode: address.postalCode,
                       country: address.country,
-                    }
+                    };
                     dispatch(setShippingAddress(shippingAddress));
                     proceedToNextStep();
                   }}
@@ -75,10 +77,12 @@ const CheckoutAddress = ({ proceedToNextStep }) => {
         {" "}
         <Formik
           initialValues={{
-            street: "",
-            city: "",
-            postalCode: "",
-            country: "",
+            street: shippingAddress?.street ? shippingAddress?.street : "",
+            city: shippingAddress?.city ? shippingAddress?.city : "",
+            postalCode: shippingAddress?.postalCode
+              ? shippingAddress?.postalCode
+              : "",
+            country: shippingAddress?.country ? shippingAddress?.country : "",
           }}
           validationSchema={validationSchema}
           onSubmit={async (values, { resetForm }) => {

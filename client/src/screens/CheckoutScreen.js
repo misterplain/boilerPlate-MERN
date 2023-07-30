@@ -1,20 +1,7 @@
-import React, { useState, useEffect } from "react";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
+import React, { useState} from "react";
 import Box from "@mui/material/Box";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Button from "@mui/material/Button";
 import { useSelector, useDispatch } from "react-redux";
-import { NavLink } from "react-router-dom";
-import { Link } from "@mui/material";
-import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
-import {
-  getCartItems,
-  addCartItemUser,
-  addCartItemGuest,
-  removeCartItemUser,
-  removeCartItemGuest,
-} from "../actions/cartActions";
 import CheckoutUser from "../components/Checkout/User/CheckoutUser";
 import CheckoutAddress from "../components/Checkout/Address/CheckoutAddress";
 import CheckoutPayment from "../components/Checkout/Payment/CheckoutPayment";
@@ -23,7 +10,6 @@ import OrderConfirmation from "../components/Checkout/Confirmation/OrderConfirma
 
 const styles = {
   wrapper: {
-    border: "1px solid black",
     display: "flex",
     flexDirection: "column",
   },

@@ -5,7 +5,6 @@ const styles = {
     flexDirection: "column",
     alignItems: "flex-start",
     width: "100%",
-    // height: "300px",
     borderRadius: "10px",
     padding: "3px",
     margin: "0px",
@@ -13,9 +12,6 @@ const styles = {
     "&:hover": {
       transform: "scale(1.05)", 
     },
-    // [theme.breakpoints.up("sm")]: {
-    //   height: "300px",
-  // },
   }),
   imageTitleWrapper: {
     width: "100%",
@@ -51,10 +47,6 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     cursor: "pointer",
-    // padding: "0",
-    // margin: "0",
-    // display: "flex",
-    // justifyContent: "flex-end",
   },
   ratings: {
     display: "flex",

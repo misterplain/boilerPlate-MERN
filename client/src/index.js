@@ -10,26 +10,8 @@ import store from "./store";
 import { MaterialDesignContent } from "notistack";
 import { styled } from "@mui/material/styles";
 
-// const StyledMaterialDesignContent = styled(MaterialDesignContent)((theme) => ({
-//   "&.notistack-MuiContent-success": {
-//     // backgroundColor: "#2D7738",
-//     // backgroundColor: "white",
-//     // borderColor: "#2D7738",
-//     // color: "#2D7738",
-//     // fontSize: "1.5rem",
-//     // boxShadow: "0px 0px 10px 0px #2D7738",
-//     backgroundColor: "white",
-//     color: "#4caf50",
-//     borderRadius: "5px",
-//     textTransform: "uppercase",
-//     border: "1px solid #4caf50",
-//     fontFamily: theme.typography.h1.fontFamily,
-//   },
-//   "&.notistack-MuiContent-error": {
-//     backgroundColor: "#970C0C",
-//   },
-// }));
 
+//snackbar styles
 const StyledMaterialDesignContent = styled(MaterialDesignContent)(
   ({ theme }) => ({
     "&.notistack-MuiContent-success": {

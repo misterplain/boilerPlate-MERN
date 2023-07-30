@@ -2,8 +2,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Typography } from "@mui/material";
 import { Grid } from "@mui/material";
-import { NavLink } from "react-router-dom";
-import { Link } from "@mui/material";
 import ProductCard from "../components/ProductCard/ProductCard";
 import Box from "@mui/material/Box";
 import CollectionCard from "../components/CollectionCard/CollectionCard";
@@ -17,6 +15,7 @@ const HomeScreen = () => {
   const error = collectionsList.error || productList.error;
   const products = productList?.products;
   const collections = collectionsList?.collections;
+  console.log(products)
 
   return (
     <Grid
@@ -43,7 +42,7 @@ const HomeScreen = () => {
                 <ProductCard product={product} />
               </Grid>
             ))}
-          {/* {collections && (
+          {collections && (
             <Grid item xs={12} sx={{ textAlign: "center" }}>
               <Typography variant="h3">Shop by Collection</Typography>
             </Grid>
@@ -52,7 +51,7 @@ const HomeScreen = () => {
             <Grid item xs={12} sm={6} md={4} lg={3} key={collection._id}>
               <CollectionCard collection={collection} />
             </Grid>
-          ))} */}
+          ))}
         </>
       )}
     </Grid>

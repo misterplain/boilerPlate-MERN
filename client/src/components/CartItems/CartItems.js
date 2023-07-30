@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -119,7 +119,14 @@ const CartItems = () => {
         variant: "info",
       });
     } else {
-      dispatch(removeCartItemGuest(item.product._id, item.quantity));
+      dispatch(
+        removeCartItemGuest({
+          productId: item.product._id,
+          quantity: item.quantity,
+          pricePerUnit: item.product.price,
+          name: item.product.name,
+        })
+      );
       enqueueSnackbar(`Item removed from cart`, {
         variant: "info",
       });

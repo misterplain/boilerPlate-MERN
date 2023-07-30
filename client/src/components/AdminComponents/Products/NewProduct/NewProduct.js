@@ -14,10 +14,11 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { newProduct } from "../../../../actions/productActions";
+import { snackbarDispatch } from "../../../../utils/snackbarDispatch";
 
 const styles = {
   wrapper: {
-    border: "1px solid black",
+
   },
   imageToUpload: {
     width: "300px",

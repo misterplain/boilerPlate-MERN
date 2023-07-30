@@ -1,16 +1,13 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { updateFavorites } from "../../actions/userActions";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 import styles from "./styles";
 
 const CollectionCard = ({ collection }) => {
+  console.log(collection)
   const dispatch = useDispatch();
   const userAuthState = useSelector((state) => state.userAuth);
   const { authenticated } = userAuthState;

@@ -1,32 +1,22 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import TextField from "@mui/material/TextField";
-
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
-import FormLabel, { formLabelClasses } from "@mui/material/FormLabel";
-// import AlertMessage from "../../AlertMessage/AlertMessage";
-import { NavLink } from "react-router-dom";
-import { Link } from "@mui/material";
+import FormLabel from "@mui/material/FormLabel";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { fetchPexel } from "../../../actions/collectionsActions";
 import axios from "../../../api/axios";
 import {
   createNewCollection,
   updateCollection,
-  deleteCollection,
 } from "../../../actions/collectionsActions";
 import AlertMessage from "../../AlertMessage/AlertMessage";
-import { AiFillDingtalkSquare } from "react-icons/ai";
+import { useSnackbar } from "notistack";
+import { snackbarDispatch } from "../../../utils/snackbarDispatch";
 
 const style = {
   position: "absolute",
@@ -50,6 +40,7 @@ const styles = {
 
 const CollectionsModal = ({ open, handleClose, collection, productId }) => {
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const userAuthState = useSelector((state) => state.userAuth);
   const { authenticated } = userAuthState;
   const token = userAuthState?.accessToken;
@@ -139,23 +130,29 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
               }}
               validationSchema={validationSchema}
               onSubmit={async (values, { resetForm }) => {
-
                 const collectionData = {
                   name: values.name,
                   image: selectedFile,
                 };
                 if (collection) {
-
-                  await dispatch(
-                    updateCollection(collection._id, collectionData, token)
+                  snackbarDispatch(
+                    dispatch(
+                      updateCollection(collection._id, collectionData, token)
+                    ),
+                    "Edited successfully",
+                    "Error creating collection",
+                    enqueueSnackbar,
+                    [handleClose]
                   );
-                  handleClose();
                 } else {
-
-                  await dispatch(createNewCollection(collectionData, token));
-                  handleClose();
+                  snackbarDispatch(
+                    dispatch(createNewCollection(collectionData, token)),
+                    "Created successfully",
+                    "Error creating collection",
+                    enqueueSnackbar,
+                    [handleClose]
+                  );
                 }
-                // setSelectedFile(null);
                 if (inputFileRef.current) {
                   inputFileRef.current.value = "";
                 }

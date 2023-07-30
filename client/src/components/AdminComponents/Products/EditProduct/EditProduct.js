@@ -13,15 +13,20 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-import TextareaAutosize from "@mui/base/TextareaAutosize";
-import { editProduct, deleteImage } from "../../../../actions/productActions";
+import AlertMessage from "../../../AlertMessage/AlertMessage";
+import {
+  editProduct,
+  deleteImage,
+  deleteProduct,
+} from "../../../../actions/productActions";
 import { AiOutlineDelete } from "react-icons/ai";
-import axios from "axios";
-import { imageListItemClasses } from "@mui/material";
+import { useHistory, useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
+import { snackbarDispatch } from "../../../../utils/snackbarDispatch";
 
 const styles = {
   wrapper: {
-    border: "1px solid black",
+    margin: "30px",
   },
   imageToUpload: {
     width: "300px",
@@ -35,8 +40,12 @@ const styles = {
     width: "100px",
     height: "auto",
   },
+  deleteButton: {
+    display: "flex",
+    justifyContent: "flex-end",
+    width: "100%",
+  },
 };
-
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Required"),
@@ -47,13 +56,15 @@ const validationSchema = Yup.object({
 
 const EditProduct = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
   const { productId } = useParams();
 
   const productList = useSelector((state) => state.productList);
-  const { products } = productList;
+  const { products, error } = productList;
   const collectionsState = useSelector((state) => state.collections);
   const { collections } = collectionsState || [];
-  const product = products.find((product) => product._id === productId);
+  const product = products?.find((product) => product?._id === productId);
   const initialCollection = collections?.find(
     (collection) => collection?._id === product?.collectionId
   );
@@ -64,7 +75,7 @@ const EditProduct = () => {
 
   const [selectedFile, setSelectedFile] = useState(null);
 
-const inputFileRef = useRef();
+  const inputFileRef = useRef();
 
   const handleImage = (e) => {
     const file = e.target.files[0];
@@ -82,6 +93,26 @@ const inputFileRef = useRef();
 
   return (
     <Box sx={styles.wrapper}>
+      {error && <AlertMessage type="error">{error}</AlertMessage>}
+      <Box sx={styles.deleteButton}>
+        {" "}
+        <Button
+          onClick={async () => {
+            snackbarDispatch(
+              dispatch(deleteProduct(product._id, token)),
+              "Product deleted successfully",
+              "Error deleting item",
+              enqueueSnackbar,
+              [() => navigate("/admin/products")]
+            );
+          }}
+          variant="contained"
+          color="error"
+        >
+          Delete
+        </Button>
+      </Box>
+
       <Formik
         initialValues={{
           collectionId: initialCollection?._id,
@@ -91,7 +122,6 @@ const inputFileRef = useRef();
           price: product?.price,
           stock: product?.stock,
           description: product?.description,
-        
         }}
         validationSchema={validationSchema}
         onSubmit={async (values, { resetForm }) => {
@@ -103,14 +133,16 @@ const inputFileRef = useRef();
             price: values.price,
             stock: values.stock,
             description: values.description,
-            images: selectedFile
+            images: selectedFile,
           };
 
-          dispatch(editProduct(productId, token, productData));
-          setSelectedFile(null);
-          if (inputFileRef.current) {
-            inputFileRef.current.value = '';
-          }
+          snackbarDispatch(
+            dispatch(editProduct(productId, token, productData)),
+            "Product edited successfully",
+            "Error editing product",
+            enqueueSnackbar,
+            [() => navigate("/admin/collections")]
+          );
         }}
       >
         {({
@@ -132,14 +164,15 @@ const inputFileRef = useRef();
                 value={values.collectionId}
                 onChange={handleChange}
               >
-                {allCollections && allCollections?.map((collection) => (
-                  <FormControlLabel
-                    value={collection._id}
-                    control={<Radio />}
-                    label={collection.name}
-                    key={collection._id}
-                  />
-                ))}
+                {allCollections &&
+                  allCollections?.map((collection) => (
+                    <FormControlLabel
+                      value={collection._id}
+                      control={<Radio />}
+                      label={collection.name}
+                      key={collection._id}
+                    />
+                  ))}
               </RadioGroup>
             </FormControl>
             <hr></hr>
@@ -251,7 +284,7 @@ const inputFileRef = useRef();
               <Box>
                 {" "}
                 <input
-                ref={inputFileRef}
+                  ref={inputFileRef}
                   onChange={handleImage}
                   type="file"
                   id="formupload"
@@ -272,28 +305,31 @@ const inputFileRef = useRef();
             </FormControl>
             <Box>
               <Typography>Existing Images</Typography>
-              {product && product?.images?.map((image) => (
-                <Box sx={styles.existingImagesWrapper}>
-                  <Box
-                    sx={styles.existingImages}
-                    component="img"
-                    src={image.url}
-                    alt=""
-                  />
-                  <Button
-                    style={{ width: "100px", display: "block" }}
-                    onClick={() => {
-                      console.log(image)
-                      dispatch(deleteImage(productId, token, image));
-                    }}
-                  >
-                    <AiOutlineDelete />
-                  </Button>
-                </Box>
-              ))}
+              {product &&
+                product?.images?.map((image) => (
+                  <Box sx={styles.existingImagesWrapper}>
+                    <Box
+                      sx={styles.existingImages}
+                      component="img"
+                      src={image.url}
+                      alt=""
+                    />
+                    <Button
+                      style={{ width: "100px", display: "block" }}
+                      onClick={() => {
+                        console.log(image);
+                        dispatch(deleteImage(productId, token, image));
+                      }}
+                    >
+                      <AiOutlineDelete />
+                    </Button>
+                  </Box>
+                ))}
             </Box>
             <hr></hr>
-            <Button type="submit">Send Edit</Button>{" "}
+            <Button type="submit" variant="outlined" color="secondary">
+              Send Edit
+            </Button>{" "}
           </form>
         )}
       </Formik>

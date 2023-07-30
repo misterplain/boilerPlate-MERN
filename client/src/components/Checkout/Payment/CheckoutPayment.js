@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -10,7 +10,6 @@ import {
 
 const styles = {
   wrapper: {
-    border: "1px solid black",
   },
 };
 

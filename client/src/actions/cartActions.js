@@ -14,7 +14,6 @@ import {
   GET_CARTITEMS_USER_FAIL,
   EMPTY_CART,
 } from "../constants/cartConstants";
-import { ADD_SNACKBAR, REMOVE_SNACKBAR } from "../constants/snackbarConstants";
 import { useSelector } from "react-redux";
 import { getState } from "react-redux";
 import axios from "../api/axios";
@@ -112,13 +111,6 @@ const addCartItemGuest =
         type: ADD_ITEM_GUEST_SUCCESS,
         payload: newCartItem,
       });
-      // dispatch({
-      //   type: ADD_SNACKBAR,
-      //   payload: {
-      //     message: "Item added to cart",
-      //     severity: "success",
-      //   },
-      // })
       return Promise.resolve();
     } catch (error) {
       dispatch({
@@ -199,13 +191,6 @@ const removeCartItemGuest =
               name: name,
             },
           });
-          // dispatch({
-          //   type: ADD_SNACKBAR,
-          //   payload: {
-          //     message: "Item removed from cart",
-          //     severity: "info",
-          //   },
-          // });
           return Promise.resolve();
         }
       } else {

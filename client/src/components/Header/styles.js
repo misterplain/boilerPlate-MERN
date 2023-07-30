@@ -26,7 +26,6 @@ const styles = {
     logoWrapper: (theme)=>({
         display: "flex",
         flexDirection: "row",
-        // border: "1px solid red",
         alignItems: "center",
     }),
     logo: (theme)=>({

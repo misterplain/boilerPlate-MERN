@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useDispatch, useSelector } from "react-redux";
 import Google from "../../img/google.png";
-import Facebook from "../../img/facebook.png";
+// import Facebook from "../../img/facebook.png";
 import Github from "../../img/github.png";
 import { loginOAuthAndSyncCart } from "../../actions/authActions";
 

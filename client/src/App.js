@@ -6,7 +6,6 @@ import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import AppRoutes from "./routes/AppRoutes";
-// import SnackBar from "./components/SnackBar/SnackBar";
 
 const App = () => {
   const theme = useTheme();
@@ -39,7 +38,6 @@ const App = () => {
       <Layout>
         <AppRoutes />
       </Layout>
-      {/* <SnackBar /> */}
       <Box
         position="fixed"
         bottom={0}
