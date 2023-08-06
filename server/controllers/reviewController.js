@@ -1,8 +1,5 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const asyncHandler = require("express-async-handler");
-const User = require("../models/userModel.js");
 const Review = require("../models/reviewModel.js");
 const Product = require("../models/productModel.js");
 const generateUserTokens = require("../middleware/generateToken.js");
@@ -10,6 +7,10 @@ const generateUserTokens = require("../middleware/generateToken.js");
 const createReview = asyncHandler(async (req, res) => {
   const { productId } = req.params;
   const userId = req.userId;
+  const username = req.username;
+  const userAvatar = req.userAvatar;
+  console.log(username);
+  console.log(userAvatar);
   const { reviewTitle, rating, comment } = req.body;
   try {
     if (!productId) {
@@ -21,6 +22,7 @@ const createReview = asyncHandler(async (req, res) => {
       rating,
       comment,
       userId: userId,
+      username: username,
       productId: productId,
     });
 
@@ -221,7 +223,7 @@ const deleteReview = asyncHandler(async (req, res) => {
     const numberOfReviews = productToUpdate.reviews.length;
     const newAverage =
       numberOfReviews > 1
-        ? (oldAverage * numberOfReviews - reviewToEdit.rating) /
+        ? (oldAverage * numberOfReviews - reviewToDelete.rating) /
           (numberOfReviews - 1)
         : 0;
     productToUpdate.averageRating = newAverage;

@@ -1,12 +1,12 @@
 import React from "react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
-import { setInitialOrderInfo } from "../../actions/orderActions";
+import { setInitialOrderInfo } from "../../actions/userOrderActions";
 import { useCartDrawer } from "../../context/CartDrawerContext";
 
 import styles from "./styles";
@@ -34,7 +34,6 @@ const CartSummary = () => {
   const cartTotal = detailedCartItems?.reduce((acc, item) => {
     return acc + cartItemTotal(item);
   }, 0);
-
 
   return (
     <Box sx={styles.wrapper}>
@@ -65,7 +64,6 @@ const CartSummary = () => {
               {" "}
               <Button
                 onClick={() => {
-
                   dispatch(
                     setInitialOrderInfo({
                       isGuest,

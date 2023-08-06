@@ -9,10 +9,10 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import {
-  editReview,
-  createReview,
-} from "../../actions/reviewsActions";
+import { editReview, createReview } from "../../actions/reviewsActions";
+import AlertMessage from "../AlertMessage/AlertMessage";
+import { snackbarDispatch } from "../../utils/snackbarDispatch";
+import { enqueueSnackbar } from "notistack";
 
 const style = {
   position: "absolute",
@@ -36,7 +36,7 @@ const ReviewModal = ({ open, handleClose, review, productId }) => {
   const { userId } = userDetails;
 
   const reviewsState = useSelector((state) => state.reviews);
-  const { reviews } = reviewsState || {};
+  const { reviews, error } = reviewsState || {};
 
   const validationSchema = Yup.object({
     reviewTitle: Yup.string().required("Required"),
@@ -53,6 +53,7 @@ const ReviewModal = ({ open, handleClose, review, productId }) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          {error && <AlertMessage type="error">{error}</AlertMessage>}
           <Box>
             <Formik
               initialValues={{
@@ -70,16 +71,42 @@ const ReviewModal = ({ open, handleClose, review, productId }) => {
                   awaitingModeration: true,
                 };
                 try {
-                  review
-                    ? await dispatch(
-                        editReview(token, review._id, reviewData)
-                      )
-                    : await dispatch(
-                        createReview(token, productId, reviewData)
-                      );
+                  if (review) {
+                    // await dispatch(editReview(token, review._id, reviewData));
+                    snackbarDispatch(
+                      dispatch(editReview(token, review._id, reviewData)),
+                      "Review updated successfully",
+                      "Error updating review",
+                      enqueueSnackbar,
+                      [
+                        () => {
+                          handleClose();
+                        },
+                        () => {
+                          resetForm();
+                        },
+                      ]
+                    );
+                  } else {
+                    // await dispatch(createReview(token, productId, reviewData));
+                    snackbarDispatch(
+                      dispatch(createReview(token, productId, reviewData)),
+                      "Review created successfully",
+                      "Error creating review",
+                      enqueueSnackbar,
+                      [
+                        () => {
+                          handleClose();
+                        },
+                        () => {
+                          resetForm();
+                        },
+                      ]
+                    );
+                  }
 
-                  handleClose();
-                  resetForm();
+                  // handleClose();
+                  // resetForm();
                 } catch (error) {
                   console.log("Review operation failed", error);
                 }

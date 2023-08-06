@@ -30,7 +30,7 @@ const CheckoutScreen = () => {
   const userDetailsState = useSelector((state) => state.userDetails);
   const { products } = useSelector((state) => state.productList);
   const { email, username, isAdmin } = userDetailsState?.userDetails || {};
-  const orderState = useSelector((state) => state.order);
+  const orderState = useSelector((state) => state.userOrder);
   const { cartItems, emailAddress, shippingAddress, isPaid } = orderState;
   const token = userAuthState?.accessToken;
 

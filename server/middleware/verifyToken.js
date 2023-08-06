@@ -1,7 +1,5 @@
 const jwt = require("jsonwebtoken");
 
-const secret = "test";
-
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
@@ -15,9 +13,11 @@ const verifyToken = (req, res, next) => {
           .status(500)
           .send({ message: "Failed to authenticate token." });
       }
-
+      console.log(userDecoded);
       req.userId = userDecoded.id;
       req.isAdmin = userDecoded.isAdmin;
+      req.username = userDecoded.username;
+      req.avatar = userDecoded.avatar;
     });
   } else {
     req.userId = null;

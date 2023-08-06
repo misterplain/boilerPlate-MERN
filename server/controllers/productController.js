@@ -129,32 +129,37 @@ const deleteProduct = async (req, res) => {
   const { productId } = req.params;
   const { isAdmin } = req;
 
-  if (!isAdmin) {
-    return res.status(403).json({ message: "Not an admin" });
+  try {
+    if (!isAdmin) {
+      return res.status(403).json({ message: "Not an admin" });
+    }
+
+    if (!productId)
+      return res.status(400).json({ message: "No product id provided" });
+
+    const productToDelete = await Product.findById(productId);
+
+    if (!productToDelete)
+      return res.status(400).json({ message: "No product found with that id" });
+
+    const deletedProduct = await Product.findByIdAndDelete(productId);
+
+    const collectionToUpdate = await Collection.findById(
+      deletedProduct.collectionId
+    );
+    collectionToUpdate.products.pull(deletedProduct);
+    await collectionToUpdate.save();
+
+    const reply = {
+      message: "Product deleted",
+      deletedProduct,
+      collectionToUpdate,
+    };
+    res.json(reply);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
   }
-
-  if (!productId)
-    return res.status(400).json({ message: "No product id provided" });
-
-  const productToDelete = await Product.findById(productId);
-
-  if (!productToDelete)
-    return res.status(400).json({ message: "No product found with that id" });
-
-  const deletedProduct = await Product.findByIdAndDelete(productId);
-
-  const collectionToUpdate = await Collection.findById(
-    deletedProduct.collectionId
-  );
-  collectionToUpdate.products.pull(deletedProduct);
-  await collectionToUpdate.save();
-
-  const reply = {
-    message: "Product deleted",
-    deletedProduct,
-    collectionToUpdate,
-  };
-  res.json(reply);
 };
 
 //update product

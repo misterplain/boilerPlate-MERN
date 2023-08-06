@@ -12,6 +12,8 @@ import AdminProducts from "../components/AdminComponents/Products/AdminProducts"
 import AdminUsers from "../components/AdminComponents/Users/AdminUsers";
 import AdminOrders from "../components/AdminComponents/Orders/AdminOrders";
 import AdminReviews from "../components/AdminComponents/Reviews/AdminReviews";
+import QuickView from "../components/AdminComponents/Orders/QuickView";
+import OrderSummary from "../components/OrderSummary/OrderSummary";
 import {
   getUnmoderatedReviews,
 } from "../actions/reviewsActions";
@@ -109,7 +111,7 @@ const AdminScreen = () => {
           <Route path="collections" element={<AdminCollections />} />
           <Route path="products/*" element={<AdminProducts />} />
           <Route path="users" element={<AdminUsers />} />
-          <Route path="orders" element={<AdminOrders />} />
+          <Route path="orders/*" element={<AdminOrders />} />
           <Route path="reviews" element={<AdminReviews />} />
         </Routes>
       </Grid>

@@ -7,6 +7,8 @@ import Box from "@mui/material/Box";
 import CollectionCard from "../components/CollectionCard/CollectionCard";
 import Loading from "../components/Loading/Loading";
 import AlertMessage from "../components/AlertMessage/AlertMessage";
+import { NavLink } from "react-router-dom";
+import { Link } from "@mui/material";
 
 const HomeScreen = () => {
   const productList = useSelector((state) => state.productList);
@@ -15,7 +17,6 @@ const HomeScreen = () => {
   const error = collectionsList.error || productList.error;
   const products = productList?.products;
   const collections = collectionsList?.collections;
-  console.log(products)
 
   return (
     <Grid
@@ -38,7 +39,15 @@ const HomeScreen = () => {
           {products
             ?.filter((product) => product.isFeatured)
             .map((product) => (
-              <Grid item xs={5} sm={3} md={3} lg={3} key={product._id} sx={{display: "flex", alignItems: "stretch"}}>
+              <Grid
+                item
+                xs={5}
+                sm={3}
+                md={3}
+                lg={3}
+                key={product._id}
+                sx={{ display: "flex", alignItems: "stretch" }}
+              >
                 <ProductCard product={product} />
               </Grid>
             ))}
@@ -47,11 +56,19 @@ const HomeScreen = () => {
               <Typography variant="h3">Shop by Collection</Typography>
             </Grid>
           )}
-          {collections?.map((collection) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={collection._id}>
-              <CollectionCard collection={collection} />
-            </Grid>
-          ))}
+          {collections?.map(
+            (collection) =>
+              collection.products.length >= 1 && (
+                <Grid item xs={5} sm={3} key={collection._id}>
+                  <Link
+                    component={NavLink}
+                    to={`/collection/${collection._id}`}
+                  >
+                    <CollectionCard collection={collection} />
+                  </Link>
+                </Grid>
+              )
+          )}
         </>
       )}
     </Grid>

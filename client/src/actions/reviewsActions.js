@@ -125,11 +125,13 @@ const deleteReview = (token, reviewId) => async (dispatch) => {
       type: DELETE_REVIEW_SUCCESS,
       payload: data.data.updatedReview,
     });
+    return Promise.resolve()
   } catch (error) {
     dispatch({
       type: DELETE_REVIEW_FAIL,
-      payload: error.message,
+      payload: error.response.data.message,
     });
+    return Promise.reject()
   }
 };
 

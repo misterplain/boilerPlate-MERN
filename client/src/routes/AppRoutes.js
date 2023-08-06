@@ -53,7 +53,7 @@ const AppRoutes = () => {
         element={authenticated ? <Navigate to="/" /> : <RegisterScreen />}
       />
       <Route path={"/product/:productId"} element={<ProductScreen />} />
-      <Route path={"/product/:collectionId"} element={<CollectionScreen />} />
+      <Route path={"/collection/:collectionId"} element={<CollectionScreen />} />
       <Route
         path={"/favorites"}
         element={authenticated ? <Favorites /> : <Navigate to="/" />}

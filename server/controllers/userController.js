@@ -1,8 +1,7 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel.js");
-const generateUserTokens = require("../middleware/generateToken.js");
+
 
 const addAddress = asyncHandler(async (req, res) => {
   const { userId } = req;

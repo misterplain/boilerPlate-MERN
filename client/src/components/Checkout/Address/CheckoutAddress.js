@@ -9,7 +9,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-import { setShippingAddress } from "../../../actions/orderActions";
+import { setShippingAddress } from "../../../actions/userOrderActions";
 
 const styles = {
   wrapper: {
@@ -29,7 +29,7 @@ const CheckoutAddress = ({ proceedToNextStep }) => {
   const userAuthState = useSelector((state) => state.userAuth);
   const userDetailsState = useSelector((state) => state.userDetails);
   const userDetails = userDetailsState?.userDetails;
-  const orderState = useSelector((state) => state.order);
+  const orderState = useSelector((state) => state.userOrder);
   const { shippingAddress } = orderState;
 
   const token = userAuthState?.accessToken;

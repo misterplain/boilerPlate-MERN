@@ -15,7 +15,7 @@ import {
   NEW_GUEST_ORDER_SUCCESS,
   NEW_GUEST_ORDER_FAIL,
   NEW_USER_ORDER_REQUEST,
-} from "../constants/orderConstants";
+} from "../constants/userOrderConstants";
 
 const orderReducer = (state = {}, action) => {
   switch (action.type) {

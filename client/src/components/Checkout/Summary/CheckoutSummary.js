@@ -19,7 +19,7 @@ const CheckoutSummary = ({ proceedToNextStep }) => {
   const userAuthState = useSelector((state) => state.userAuth);
   const productState = useSelector((state) => state.productList);
   const { products } = productState;
-  const orderState = useSelector((state) => state.order);
+  const orderState = useSelector((state) => state.userOrder);
   const { cartItems, isGuest, isPaid, shippingAddress, totalPrice } =
     orderState;
 

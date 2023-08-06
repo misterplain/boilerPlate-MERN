@@ -4,10 +4,13 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import { deleteReview} from "../../actions/reviewsActions";
+import { deleteReview } from "../../actions/reviewsActions";
 import ReviewModal from "../ReviewModal/ReviewModal";
 import ReviewsSummary from "../ReviewsSummary/ReviewsSummary";
 import Avatar from "../Avatar/Avatar";
+import { snackbarDispatch } from "../../utils/snackbarDispatch";
+import { enqueueSnackbar } from "notistack";
+import AlertMessage from "../AlertMessage/AlertMessage";
 import styles from "./styles";
 
 const ProductReviews = ({ productId }) => {
@@ -20,7 +23,7 @@ const ProductReviews = ({ productId }) => {
   const { userId, isAdmin } = userDetails;
 
   const reviewsState = useSelector((state) => state.reviews);
-  const { reviews, userReview, filteredReviews } = reviewsState || {};
+  const { reviews, userReview, filteredReviews, error } = reviewsState || {};
 
   //modal state
 
@@ -70,7 +73,7 @@ const ProductReviews = ({ productId }) => {
           {userReview && userReview?.length <= 0 && authenticated && (
             <Button onClick={() => handleOpenModal(null)}>New Review</Button>
           )}
-
+          {error && <AlertMessage type="error">{error}</AlertMessage>}
           {userReview &&
             userReview.map((review) => (
               <Box
@@ -123,7 +126,13 @@ const ProductReviews = ({ productId }) => {
                           color="secondary"
                           sx={styles.button}
                           onClick={() => {
-                            dispatch(deleteReview(token, review._id));
+                            // dispatch(deleteReview(token, review._id));
+                            snackbarDispatch(
+                              dispatch(deleteReview(token, review._id)),
+                              "Review deleted successfully",
+                              "Error deleting review",
+                              enqueueSnackbar
+                            );
                           }}
                         >
                           Delete

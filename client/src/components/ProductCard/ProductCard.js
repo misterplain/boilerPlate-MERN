@@ -14,7 +14,7 @@ import styles from "./styles";
 import { productStyles } from "../AdminComponents/Collections/styles";
 
 const ProductCard = ({ product }) => {
-  console.log(product);
+
   const theme = useTheme();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();

@@ -134,7 +134,7 @@ const deleteImage = (productId, token, image) => async (dispatch) => {
     console.log(error);
     dispatch({
       type: PRODUCT_EDIT_FAIL,
-      payload: error.message,
+      payload: error.response.data.message,
     });
   }
 };
@@ -157,13 +157,15 @@ const newProduct = (token, product) => async (dispatch) => {
       payload: data,
     });
     dispatch(fetchAllCollections());
+    return Promise.resolve()
   } catch (error) {
     console.log(error);
 
     dispatch({
       type: PRODUCT_ADD_FAIL,
-      payload: error.message,
+      payload: error.response.data.message,
     });
+    return Promise.reject()
   }
 };
 

@@ -34,6 +34,38 @@ const getUserOrder = async (req, res) => {
   }
 };
 
+//admin - get orders based on time period
+const getOrdersTimePeriod = async (req, res) => {
+  const { isAdmin } = req;
+  const { days } = req.query;
+
+  if (!isAdmin) {
+    return res.status(403).json({ message: "Not an admin" });
+  }
+
+  try {
+    const currentDate = new Date();
+    const startPeriod = new Date(currentDate - days * 24 * 60 * 60 * 1000); // Days in milliseconds
+
+    let baseQuery = { datePlaced: { $gte: startPeriod } };
+
+    if (days > 730) {
+      baseQuery.datePlaced.$lt = new Date(
+        currentDate - 730 * 24 * 60 * 60 * 1000
+      );
+    }
+
+    const orders = await Order.find(baseQuery);
+    const reply = {
+      message: "Orders between dates",
+      timePeriodOrders: orders,
+    };
+    res.status(200).json(reply);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
 //place order
 //protected
 const placeOrder = async (req, res) => {
@@ -63,16 +95,11 @@ const placeOrder = async (req, res) => {
         postalCode,
         country,
       },
-      // paymentMethod,
-      // itemsPrice,
-      // taxPrice,
-      // shippingPrice,
       totalPrice,
     });
 
     await orderPlaced.save();
 
-    //add order to user
     userOrdered.orders.push(orderPlaced);
     userOrdered.cart = [];
     await userOrdered.save();
@@ -213,6 +240,7 @@ const editOrder = async (req, res) => {
 module.exports = {
   getAllOrders,
   getUserOrder,
+  getOrdersTimePeriod,
   placeOrder,
   placeGuestOrder,
   cancelOrder,

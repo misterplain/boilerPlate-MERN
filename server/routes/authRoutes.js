@@ -16,8 +16,8 @@ const CLIENT_URL =
 router.post("/signin", signin);
 router.post("/signup", signup);
 
-//////////////////////  SOCIAL LOGIN ROUTES //////////////////////
 
+//social login routes
 router.get("/login/success", (req, res) => {
   if (req.user) {
     res.status(200).json({

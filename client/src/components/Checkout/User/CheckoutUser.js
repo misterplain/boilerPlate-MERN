@@ -11,7 +11,7 @@ import { NavLink } from "react-router-dom";
 import { Link, Typography } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { setEmailAddress } from "../../../actions/orderActions";
+import { setEmailAddress } from "../../../actions/userOrderActions";
 
 const CheckoutUser = ({ proceedToNextStep }) => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const CheckoutUser = ({ proceedToNextStep }) => {
   const userEmail = userDetails?.email;
   const productState = useSelector((state) => state.productList);
   const { products } = productState;
-  const orderState = useSelector((state) => state.order);
+  const orderState = useSelector((state) => state.userOrder);
   const {
     cartItems,
     isGuest,
@@ -55,8 +55,7 @@ const CheckoutUser = ({ proceedToNextStep }) => {
   });
 
   const styles = {
-    wrapper: {
-    },
+    wrapper: {},
   };
 
   return (

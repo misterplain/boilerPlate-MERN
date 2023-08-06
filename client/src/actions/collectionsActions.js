@@ -124,11 +124,13 @@ const deleteCollection = (id, token) => async (dispatch) => {
       type: DELETE_COLLECTION_SUCCESS,
       payload: data,
     });
+    return Promise.resolve()
   } catch (error) {
     dispatch({
       type: DELETE_COLLECTION_FAIL,
       payload: error.response,
     });
+    return Promise.reject()
   }
 };
 

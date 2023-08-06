@@ -13,20 +13,18 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import AlertMessage from "../../../AlertMessage/AlertMessage";
 import { newProduct } from "../../../../actions/productActions";
 import { snackbarDispatch } from "../../../../utils/snackbarDispatch";
+import { enqueueSnackbar } from "notistack";
 
 const styles = {
-  wrapper: {
-
-  },
+  wrapper: {},
   imageToUpload: {
     width: "300px",
     height: "auto",
   },
 };
-
-
 
 const validationSchema = Yup.object({
   collectionId: Yup.string().required("Required"),
@@ -40,8 +38,8 @@ const NewProduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
-  const productList = useSelector((state) => state.productList);
+  const productListState = useSelector((state) => state.productList);
+  const { error } = productListState;
   const collectionsState = useSelector((state) => state.collections);
   const { collections } = collectionsState;
   const allCollections = collections.map((collection) => collection);
@@ -51,7 +49,7 @@ const NewProduct = () => {
 
   const [selectedFile, setSelectedFile] = useState(null);
 
-const inputFileRef = useRef();
+  const inputFileRef = useRef();
 
   const handleImage = (e) => {
     const file = e.target.files[0];
@@ -69,6 +67,7 @@ const inputFileRef = useRef();
 
   return (
     <Box sx={styles.wrapper}>
+      {error && <AlertMessage type="error">{error}</AlertMessage>}
       <Formik
         initialValues={{
           collectionId: "",
@@ -92,12 +91,17 @@ const inputFileRef = useRef();
             images: selectedFile,
           };
 
-          dispatch(newProduct(token, productData));
+          snackbarDispatch(
+            dispatch(newProduct(token, productData)),
+            "Product created successfully",
+            "Error creating product",
+            enqueueSnackbar,
+            [() => navigate("/admin/collections")]
+          );
           setSelectedFile(null);
           if (inputFileRef.current) {
-            inputFileRef.current.value = '';
+            inputFileRef.current.value = "";
           }
-          navigate("/admin/collections");
         }}
       >
         {({
@@ -237,7 +241,7 @@ const inputFileRef = useRef();
               <Box>
                 {" "}
                 <input
-                ref={inputFileRef}
+                  ref={inputFileRef}
                   onChange={handleImage}
                   type="file"
                   id="formupload"

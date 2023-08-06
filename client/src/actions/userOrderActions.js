@@ -15,21 +15,12 @@ import {
   NEW_USER_ORDER_FAIL,
   NEW_GUEST_ORDER_SUCCESS,
   NEW_GUEST_ORDER_FAIL,
-} from "../constants/orderConstants";
-import {
-  FETCH_USER_ORDERS_REQUEST,
-  FETCH_USER_ORDERS_SUCCESS,
-  FETCH_USER_ORDERS_FAIL,
-  CANCEL_ORDER_REQUEST,
-  CANCEL_ORDER_SUCCESS,
-  CANCEL_ORDER_FAIL,
-  EDIT_ORDER_REQUEST,
-  EDIT_ORDER_SUCCESS,
-  EDIT_ORDER_FAIL,
-} from "../constants/userConstants";
+} from "../constants/userOrderConstants";
 import { EMPTY_CART } from "../constants/cartConstants";
 import axios from "../api/axios";
 
+
+//placing an order
 const setInitialOrderInfo =
   ({
     isGuest,
@@ -104,100 +95,7 @@ const placeNewOrderGuest = (order, proceedToNextStep) => async (dispatch) => {
   }
 };
 
-const fetchUserOrders = (token) => async (dispatch) => {
-  console.log("fetchUserOrders");
 
-  try {
-    dispatch({
-      type: FETCH_USER_ORDERS_REQUEST,
-    });
-    const options = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const data = await axios.get("/orders/getuser", options);
-
-    dispatch({
-      type: FETCH_USER_ORDERS_SUCCESS,
-      payload: data.data.userOrders,
-    });
-  } catch (error) {
-    dispatch({ type: FETCH_USER_ORDERS_FAIL, payload: error });
-  }
-};
-
-const cancelOrder = (token, orderId) => async (dispatch) => {
-  try {
-    dispatch({ type: CANCEL_ORDER_REQUEST });
-    const options = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const data = await axios.put(`/orders/cancel/${orderId}`, {}, options);
-
-    dispatch({
-      type: CANCEL_ORDER_SUCCESS,
-      payload: data.data.orderCancelled,
-    });
-  } catch (error) {
-    dispatch({ type: CANCEL_ORDER_FAIL, payload: error });
-    console.log(error);
-  }
-};
-
-const fetchAllOrders = (token) => async (dispatch) => {
-  try {
-    dispatch({
-      type: FETCH_USER_ORDERS_REQUEST,
-    });
-    const options = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const data = await axios.get("/orders/get", options);
-
-    dispatch({
-      type: FETCH_USER_ORDERS_SUCCESS,
-      payload: data.data.allOrders,
-    });
-  } catch (error) {
-    dispatch({ type: FETCH_USER_ORDERS_FAIL, payload: error.message });
-  }
-};
-
-const editOrder =
-  ({ token, orderId, requestData }) =>
-  async (dispatch) => {
-    try {
-      dispatch({
-        type: EDIT_ORDER_REQUEST,
-      });
-      const options = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const data = await axios.put(
-        `/orders/edit/${orderId}`,
-        { editRequest: requestData },
-        options
-      );
-
-      dispatch({ type: EDIT_ORDER_SUCCESS, payload: data.data.editedOrder });
-    } catch (error) {
-      dispatch({ type: EDIT_ORDER_FAIL, payload: error.message });
-    }
-  };
 
 export {
   setInitialOrderInfo,
@@ -206,8 +104,5 @@ export {
   placeNewUserOrder,
   placeNewOrderGuest,
   setEmailAddress,
-  fetchUserOrders,
-  cancelOrder,
-  fetchAllOrders,
-  editOrder,
+
 };

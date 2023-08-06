@@ -1,6 +1,3 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const asyncHandler = require("express-async-handler");
 const UserModel = require("../models/userModel.js");
 const generateUserTokens = require("../middleware/generateToken.js");
 

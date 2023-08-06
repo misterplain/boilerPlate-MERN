@@ -23,7 +23,7 @@ import {
   OAUTH_UPDATE_CART_FAIL,
   OAUTH_UPDATE_CART_SUCCESS,
 } from "../constants/cartConstants";
-import { CLEAR_ORDER } from "../constants/orderConstants";
+import { CLEAR_ORDER } from "../constants/userOrderConstants";
 import axios from "../api/axios";
 const SERVER_URL =
   process.env.NODE_ENV === "production"
@@ -107,7 +107,6 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
       ? process.env.REACT_APP_SERVER_API_URL
       : "http://localhost:5000";
 
-
   return new Promise((resolve, reject) => {
     try {
       dispatch({
@@ -172,7 +171,7 @@ export const loginOAuthAndSyncCart = (provider, cart) => async (dispatch) => {
       try {
         dispatch({
           type: OAUTH_UPDATE_CART_REQUEST,
-        })
+        });
         const options = {
           headers: {
             Authorization: `Bearer ${accessToken}`,

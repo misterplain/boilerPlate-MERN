@@ -82,13 +82,15 @@ const productListReducer = (state = { products: [] }, action) => {
       };
     case PRODUCT_ADD_SUCCESS:
       return {
+        ...state,
         loading: false,
         products: [...state.products, action.payload.data.newProduct],
       };
     case PRODUCT_ADD_FAIL:
       return {
+        ...state,
         loading: false,
-        error: action.payload.data.message,
+        error: action.payload,
       };
 
     default:

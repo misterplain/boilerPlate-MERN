@@ -7,8 +7,10 @@ import { userReducer } from "./reducers/userReducers";
 import { cartReducer } from "./reducers/cartReducers";
 import { productListReducer } from "./reducers/productReducers";
 import { collectionsReducer } from "./reducers/collectionsReducers";
-import { orderReducer } from "./reducers/orderReducers";
+import { orderReducer } from "./reducers/userOrderReducers";
 import { reviewsReducer } from "./reducers/reviewsReducers";
+// import { ordersReducer } from "./reducers/adminOrdersReducers";
+import { orderHistoryReducer } from "./reducers/orderHistoryReducers";
 
 const reducer = combineReducers({
   userAuth: authReducer,
@@ -16,8 +18,10 @@ const reducer = combineReducers({
   collections: collectionsReducer,
   productList: productListReducer,
   shoppingCart: cartReducer,
-  order: orderReducer,
+  userOrder: orderReducer,
   reviews: reviewsReducer,
+  orderHistory: orderHistoryReducer,
+  // adminOrders: ordersReducer,
 });
 
 const initialState = {};

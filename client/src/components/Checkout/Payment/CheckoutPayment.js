@@ -6,11 +6,10 @@ import {
   setIsPaid,
   placeNewUserOrder,
   placeNewOrderGuest,
-} from "../../../actions/orderActions";
+} from "../../../actions/userOrderActions";
 
 const styles = {
-  wrapper: {
-  },
+  wrapper: {},
 };
 
 const CheckoutPayment = ({ proceedToNextStep }) => {
@@ -21,7 +20,7 @@ const CheckoutPayment = ({ proceedToNextStep }) => {
 
   const token = userAuthState?.accessToken;
   const { authenticated } = userAuthState;
-  const orderDetails = useSelector((state) => state.order);
+  const orderDetails = useSelector((state) => state.userOrder);
   const { isPaid } = orderDetails;
 
   const [orderPlaced, setOrderPlaced] = useState(false);

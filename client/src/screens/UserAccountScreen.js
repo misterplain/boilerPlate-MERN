@@ -9,6 +9,7 @@ import { Link } from "@mui/material";
 import AccountDetails from "../components/UserAccount/Account/AccountDetails";
 import AccountOrders from "../components/UserAccount/Orders/AccountOrders";
 import AccountAddress from "../components/UserAccount/Address/AccountAddress";
+import OrderSummary from "../components/OrderSummary/OrderSummary";
 
 const styles = {
   buttonsWrapper: {
@@ -34,9 +35,16 @@ const accountButtons = [
   },
 ];
 
+const AccountOrdersWrapper = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<AccountOrders />} />
+      <Route path="order-summary/:orderId" element={<OrderSummary />} />
+    </Routes>
+  );
+};
 
 const UserAccountScreen = () => {
-
   return (
     <Grid container>
       <Grid
@@ -57,9 +65,8 @@ const UserAccountScreen = () => {
       </Grid>
       <Grid item xs={12} md={7}>
         <Routes>
-          {" "}
           <Route path="details" element={<AccountDetails />} />
-          <Route path="orders" element={<AccountOrders />} />
+          <Route path="orders/*" element={<AccountOrdersWrapper />} />
           <Route path="address" element={<AccountAddress />} />
         </Routes>
       </Grid>

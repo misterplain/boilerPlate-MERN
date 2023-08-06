@@ -10,7 +10,7 @@ const OrderConfirmation = () => {
   const userAuthState = useSelector((state) => state.userAuth);
   const userDetailsState = useSelector((state) => state.userDetails);
   const userDetails = userDetailsState?.userDetails;
-  const orderDetails = useSelector((state) => state.order);
+  const orderDetails = useSelector((state) => state.userOrder);
 
   const token = userAuthState?.accessToken;
   const { authenticated } = userAuthState;
