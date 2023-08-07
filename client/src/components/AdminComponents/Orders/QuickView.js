@@ -16,6 +16,7 @@ import { filterPeriod } from "../../../actions/orderHistoryActions";
 import { format } from "date-fns";
 import AdvancedSearch from "./AdvancedSearch";
 import OrderSummary from "../../OrderSummary/OrderSummary";
+import OrderSnapshot from "../../OrderSnapshot/OrderSnapshot";
 
 const styles = {
   wrapper: {
@@ -98,74 +99,15 @@ const QuickView = () => {
           </Select>
         </FormControl>
       </Box>{" "}
-      {orders
-        ?.sort((a, b) => new Date(b.datePlaced) - new Date(a.datePlaced))
-        .map((order) => (
-          <Box key={order._id} sx={styles.orderWrapper}>
-            <Box sx={styles.orderSummary}>
-              {" "}
-              <Link
-                component={NavLink}
-                to={`/admin/orders/order-summary/${order._id}`}
-              >
-                {" "}
-                <Typography variant="h6">Order #: {order.shortId}</Typography>
-              </Link>
-              <Box></Box>{" "}
-              <Typography variant="body1">Total: {order.totalPrice}</Typography>
-              <Typography sx={{ display: "inline-flex" }}>
-                Status: {getOrderStatus(order)}
-              </Typography>{" "}
-            </Box>
-            <Box sx={styles.orderOptions}>
-              {!order.isShippedToCourier && !order.isCancelled && (
-                <Button onClick={() => dispatch(cancelOrder(token, order._id))}>
-                  Cancel
-                </Button>
-              )}
-              {!order.isShippedToCourier && !order.isCancelled && (
-                <Button
-                  onClick={() =>
-                    dispatch(
-                      editOrder({
-                        token,
-                        orderId: order._id,
-                        requestData: {
-                          type: "shippedToCourier",
-                          isShippedToCourier: true,
-                          dateShipped: new Date(),
-                          courierTrackingNumber: "1234567890",
-                        },
-                      })
-                    )
-                  }
-                >
-                  Mark as Shipped
-                </Button>
-              )}
-              {order.isShippedToCourier && !order.isDelivered && (
-                <Button
-                  onClick={() =>
-                    dispatch(
-                      editOrder({
-                        token,
-                        orderId: order._id,
-                        requestData: {
-                          type: "isDelivered",
-                          isDelivered: true,
-                          // dateShipped: new Date(),
-                          // courierTrackingNumber: "1234567890",
-                        },
-                      })
-                    )
-                  }
-                >
-                  Mark as Delivered
-                </Button>
-              )}
-            </Box>
-          </Box>
-        ))}
+      <Box>
+        {" "}
+        {orders
+          ?.sort((a, b) => new Date(b.datePlaced) - new Date(a.datePlaced))
+          .map((order) => (
+            //  <div key={order._id}>{order._id} </div>
+            <OrderSnapshot order={order} isAdmin={false}/>
+          ))}
+      </Box>
     </Box>
   );
 };
