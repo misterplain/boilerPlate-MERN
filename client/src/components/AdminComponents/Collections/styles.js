@@ -3,7 +3,7 @@ const styles = {
     marginBottom: "30px",
   },
   sectionWrapper: {
-    margin: "20px 0px",
+    margin: "40px 0px",
   },
   nameAndNewWrapper: {
     display: "flex",

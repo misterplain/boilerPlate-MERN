@@ -10,6 +10,7 @@ import styles from "./styles";
 const ReviewsSummary = ({ reviews }) => {
   const dispatch = useDispatch();
   let reviewCounts = {};
+  console.log(reviews);
 
   const populateReviewCounts = (reviews) => {
     for (let i = 1; i <= 5; i++) {
@@ -21,7 +22,12 @@ const ReviewsSummary = ({ reviews }) => {
 
   return (
     <Box sx={styles.wrapper}>
-      <Button onClick={() => dispatch(clearFilter())}>CLEAR FILTER</Button>
+      {reviews.length >= 1 && (
+        <Button onClick={() => dispatch(clearFilter())}>CLEAR FILTERs</Button>
+      )}
+
+     
+
       {[5, 4, 3, 2, 1].map((rating) => (
         <Box sx={styles.ratingWrapper} key={rating}>
           <RatingIcons rating={rating} />

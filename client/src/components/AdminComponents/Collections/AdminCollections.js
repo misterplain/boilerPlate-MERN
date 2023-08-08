@@ -32,6 +32,7 @@ const AdminCollections = () => {
   const [collectionToEdit, setCollectionToEdit] = useState(null);
 
   const handleOpenModal = (collection) => {
+    console.log(open);
     setCollectionToEdit(collection);
     setOpen(true);
   };
@@ -65,12 +66,14 @@ const AdminCollections = () => {
                 item
                 xs={12}
                 sm={4}
+                sx={{display: "flex", flexDirection: "column"}}
                 onClick={() => {
                   setCollectionProductsId(collection._id);
                   setCollectionName(collection.name);
                 }}
               >
                 <CollectionCard collection={collection} productQuantity />
+                <Button onClick={()=>handleOpenModal(collection)}>Edit Name/Photo</Button>
               </Grid>
             ))}
           </Grid>
@@ -185,6 +188,11 @@ const AdminCollections = () => {
           </Box>
         )}
       </Box>
+      <CollectionsModal
+        open={open}
+        handleClose={handleCloseModal}
+        collection={collectionToEdit}
+      />
     </>
   );
 };

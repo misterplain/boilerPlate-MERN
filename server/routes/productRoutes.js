@@ -5,11 +5,13 @@ const {
   deleteProduct,
   updateProduct,
   deleteImage,
+  getFilteredProducts
 } = require("../controllers/productController.js");
 const { verifyToken } = require("../middleware/verifyToken.js");
 
 
 router.get("/get", getAllProducts);
+router.post("/get/filter", getFilteredProducts)
 
 router.post("/new", verifyToken, newProduct);
 router.delete("/delete/:productId", verifyToken, deleteProduct);

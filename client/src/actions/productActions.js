@@ -56,7 +56,7 @@ const deleteProduct = (productId, token) => async (dispatch) => {
         payload: data,
       });
       dispatch(fetchAllCollections());
-      resolve()
+      resolve();
     } catch (error) {
       console.log(error);
       dispatch({
@@ -64,11 +64,10 @@ const deleteProduct = (productId, token) => async (dispatch) => {
         payload: error.response.data.message,
       });
 
-      reject()
+      reject();
     }
   });
 };
-
 
 const editProduct = (productId, token, product) => (dispatch) => {
   return new Promise(async (resolve, reject) => {
@@ -157,7 +156,7 @@ const newProduct = (token, product) => async (dispatch) => {
       payload: data,
     });
     dispatch(fetchAllCollections());
-    return Promise.resolve()
+    return Promise.resolve();
   } catch (error) {
     console.log(error);
 
@@ -165,9 +164,10 @@ const newProduct = (token, product) => async (dispatch) => {
       type: PRODUCT_ADD_FAIL,
       payload: error.response.data.message,
     });
-    return Promise.reject()
+    return Promise.reject();
   }
 };
+
 
 export {
   fetchAllProducts,

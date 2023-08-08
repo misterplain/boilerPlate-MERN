@@ -7,7 +7,7 @@ const styles = {
     width: "100%",
     borderRadius: "10px",
     padding: "3px",
-    margin: "0px",
+    margin: "10px",
     transition: "transform .2s", 
     "&:hover": {
       transform: "scale(1.05)", 

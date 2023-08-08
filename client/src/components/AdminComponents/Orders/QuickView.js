@@ -104,8 +104,7 @@ const QuickView = () => {
         {orders
           ?.sort((a, b) => new Date(b.datePlaced) - new Date(a.datePlaced))
           .map((order) => (
-            //  <div key={order._id}>{order._id} </div>
-            <OrderSnapshot order={order} isAdmin={false}/>
+            <OrderSnapshot order={order} isAdmin={true}/>
           ))}
       </Box>
     </Box>

@@ -26,7 +26,6 @@ const OrderSnapshot = ({ order, isAdmin }) => {
   const { orders, error, quickView } = orderHistoryState;
   const userAuthState = useSelector((state) => state.userAuth);
   const token = userAuthState?.accessToken;
-  console.log(isAdmin);
 
   const [open, setOpen] = React.useState(false);
 
@@ -54,15 +53,21 @@ const OrderSnapshot = ({ order, isAdmin }) => {
     return "Unknown";
   }
 
+  const orderStatus = getOrderStatus(order);
+
   return (
-    <>
+    <Box key={order._id}>
       {" "}
-      <Box key={order._id} sx={styles.orderWrapper}>
+      <Box  sx={styles.orderWrapper}>
         <Box sx={styles.orderSummary}>
           {" "}
           <Link
             component={NavLink}
-            to={`/admin/orders/order-summary/${order._id}`}
+            to={
+              isAdmin
+                ? `/admin/orders/order-summary/${order._id}`
+                : `order-summary/${order._id}`
+            }
           >
             {" "}
             <Typography variant="h6" marginRight>
@@ -72,21 +77,15 @@ const OrderSnapshot = ({ order, isAdmin }) => {
           <Box></Box>{" "}
           <Typography variant="body1">Total: {order.totalPrice}</Typography>
           <Typography sx={{ display: "inline-flex" }}>
-            Status: {getOrderStatus(order)}
+            Status:{" "}
+            <Typography sx={styles.status(orderStatus)}>
+              {" "}
+              {orderStatus}
+            </Typography>
           </Typography>{" "}
         </Box>
         <Box sx={styles.orderOptions}>
           {" "}
-          {/* {!order.isShippedToCourier && !order.isCancelled && (
-          <Button
-            marginLeft
-            color="error"
-            variant="filledTonal"
-            onClick={() => dispatch(cancelOrder(token, order._id))}
-          >
-            Cancel
-          </Button>
-        )} */}
           {!order.isShippedToCourier && !order.isCancelled && (
             <Button
               marginLeft
@@ -97,7 +96,7 @@ const OrderSnapshot = ({ order, isAdmin }) => {
               Cancel
             </Button>
           )}
-          {!order.isShippedToCourier && !order.isCancelled && (
+          {isAdmin && !order.isShippedToCourier && !order.isCancelled && (
             <Button
               onClick={() =>
                 dispatch(
@@ -117,7 +116,7 @@ const OrderSnapshot = ({ order, isAdmin }) => {
               Mark as Shipped
             </Button>
           )}
-          {order.isShippedToCourier && !order.isDelivered && (
+          {isAdmin && order.isShippedToCourier && !order.isDelivered && (
             <Button
               onClick={() =>
                 dispatch(
@@ -177,7 +176,7 @@ const OrderSnapshot = ({ order, isAdmin }) => {
           </DialogActions>
         </Dialog>
       </Box>
-    </>
+    </Box>
   );
 };
 

@@ -1,17 +1,20 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchAllProducts } from "../actions/productActions";
+import {
+  fetchAllProducts,
+  fetchFilteredProducts,
+} from "../actions/productActions";
 import { fetchAllCollections } from "../actions/collectionsActions";
 import { Route, Routes, Navigate } from "react-router-dom";
 import HomeScreen from "../screens/HomeScreen";
 import ContactScreen from "../screens/ContactScreen";
 import ProductScreen from "../screens/ProductScreen";
 import CollectionScreen from "../screens/CollectionScreen";
+import ShopScreen from "../screens/ShopScreen";
 import AdminScreen from "../screens/AdminScreen";
 import UserAccountScreen from "../screens/UserAccountScreen";
 import Favorites from "../screens/FavoritesScreen";
-import CartScreen from "../screens/CartScreen";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import CheckoutScreen from "../screens/CheckoutScreen";
@@ -20,14 +23,14 @@ const AppRoutes = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
+
   useEffect(() => {
     const path = location.pathname;
-    const triggerPaths = ["/", "/admin"];
-    const shouldFetch = triggerPaths.some((triggerPath) =>
-      path === triggerPath || path.startsWith(triggerPath + "/")
-    );
 
-    if (shouldFetch) {
+    if (path === "/") {
+      dispatch(fetchAllCollections());
+      dispatch(fetchAllProducts());
+    } else if (path === "/admin/collections") {
       dispatch(fetchAllProducts());
       dispatch(fetchAllCollections());
     }
@@ -43,7 +46,6 @@ const AppRoutes = () => {
       <Route index element={<HomeScreen />} />
       <Route path={"/"} element={<HomeScreen />} />
       <Route path={"/contact"} element={<ContactScreen />} />
-      <Route path={"/cart"} element={<CartScreen />} />
       <Route
         path={"/auth"}
         element={authenticated ? <Navigate to="/" /> : <LoginScreen />}
@@ -53,7 +55,11 @@ const AppRoutes = () => {
         element={authenticated ? <Navigate to="/" /> : <RegisterScreen />}
       />
       <Route path={"/product/:productId"} element={<ProductScreen />} />
-      <Route path={"/collection/:collectionId"} element={<CollectionScreen />} />
+      <Route
+        path={"/collection/:collectionId"}
+        element={<CollectionScreen />}
+      />
+      <Route path={"/shop"} element={<ShopScreen />} />
       <Route
         path={"/favorites"}
         element={authenticated ? <Favorites /> : <Navigate to="/" />}

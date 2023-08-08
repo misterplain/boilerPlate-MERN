@@ -11,7 +11,7 @@ import { orderReducer } from "./reducers/userOrderReducers";
 import { reviewsReducer } from "./reducers/reviewsReducers";
 // import { ordersReducer } from "./reducers/adminOrdersReducers";
 import { orderHistoryReducer } from "./reducers/orderHistoryReducers";
-
+import {shopReducer} from './reducers/shopReducers'
 const reducer = combineReducers({
   userAuth: authReducer,
   userDetails: userReducer,
@@ -21,6 +21,7 @@ const reducer = combineReducers({
   userOrder: orderReducer,
   reviews: reviewsReducer,
   orderHistory: orderHistoryReducer,
+  shop: shopReducer,
   // adminOrders: ordersReducer,
 });
 

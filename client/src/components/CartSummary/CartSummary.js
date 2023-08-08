@@ -23,7 +23,7 @@ const CartSummary = () => {
   const userEmail = userDetails?.email;
 
   const detailedCartItems = cartItems?.map((item) => {
-    const productDetails = products.find((p) => p._id === item.product);
+    const productDetails = products?.find((p) => p._id === item.product);
     return { ...item, product: productDetails };
   });
 

@@ -167,6 +167,11 @@ const ProductReviews = ({ productId }) => {
               <Typography>What others have said</Typography>
             </Box>
           )}
+          {otherReviews && otherReviews?.length <= 0 && userReview?.length <=0  && (
+            <Box sx={styles.reviewType}>
+              <Typography>No reviews for this product</Typography>
+            </Box>
+          )}
           {otherReviews &&
             otherReviews.map((review) => (
               <Box sx={styles.singleReview} key={review._id}>

@@ -4,6 +4,7 @@ import { Typography } from "@mui/material";
 import { Grid } from "@mui/material";
 import ProductCard from "../components/ProductCard/ProductCard";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import CollectionCard from "../components/CollectionCard/CollectionCard";
 import Loading from "../components/Loading/Loading";
 import AlertMessage from "../components/AlertMessage/AlertMessage";
@@ -27,6 +28,9 @@ const HomeScreen = () => {
         alignItems: "stretch",
       }}
     >
+      <Link component={NavLink} to="/shop">
+        <Button>Shop Screen</Button>
+      </Link>
       {isLoading && <Loading />}
       {error && <AlertMessage type="error">{error}</AlertMessage>}
       {!isLoading && !error && (
@@ -37,7 +41,7 @@ const HomeScreen = () => {
             </Grid>
           )}
           {products
-            ?.filter((product) => product.isFeatured)
+            ?.filter((product) => product.isFeatured && product.isDisplayed)
             .map((product) => (
               <Grid
                 item

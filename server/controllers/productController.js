@@ -259,10 +259,95 @@ const updateProduct = async (req, res) => {
   }
 };
 
+const getFilteredProducts = async (req, res) => {
+  const { filterObject } = req.body;
+  console.log(filterObject);
+  // console.log(req)
+
+  if (!filterObject) {
+    return res.status(400).json({ message: "No filter object provided" });
+  }
+
+  let query = {};
+
+  // Handle isFeatured
+  if (typeof filterObject.isFeatured !== "undefined") {
+    query.isFeatured = filterObject.isFeatured;
+  }
+
+  // Handle isDisplayed
+  if (typeof filterObject.isDisplayed !== "undefined") {
+    query.isDisplayed = filterObject.isDisplayed;
+  }
+
+  // Handle searchQuery
+  if (filterObject.searchQuery) {
+    query.$or = [
+      { name: { $regex: filterObject.searchQuery, $options: "i" } },
+      { description: { $regex: filterObject.searchQuery, $options: "i" } },
+    ];
+  }
+
+  // Handle collections, first turn it into a array, check the length, then use $in function
+  const selectedCollectionIds = Object.keys(filterObject.collections).filter(
+    (key) => filterObject.collections[key]
+  );
+  console.log(selectedCollectionIds);
+  if (selectedCollectionIds.length > 0) {
+    query.collectionId = { $in: selectedCollectionIds };
+  }
+
+  // Handle priceRange
+  if (filterObject.priceRange && filterObject.priceRange.length === 2) {
+    query.price = {
+      $gte: filterObject.priceRange[0],
+      $lte: filterObject.priceRange[1],
+    };
+  }
+
+  // Handle inStock
+  if (typeof filterObject.inStock !== "undefined") {
+    if (filterObject.inStock) {
+      query.stock = { $gt: 0 };
+    } else {
+      query.stock = 0;
+    }
+  }
+
+  // Handle hasReviews
+  if (filterObject.hasReviews) {
+    query.reviews = { $exists: true, $not: { $size: 0 } };
+  }
+
+  // Sorting
+  let sortObj = {};
+  if (filterObject.sortBy) {
+    if (filterObject.sortBy === "PriceHighLow") {
+      sortObj.price = -1;
+    } else if (filterObject.sortBy === "PriceLowHigh") {
+      sortObj.price = 1;
+    }
+  }
+
+  try {
+    const filteredProducts = await Product.find(query).sort(sortObj);
+
+    const reply = {
+      message: "Filtered products",
+      filteredProducts,
+    };
+    res.status(200).json(reply);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
 module.exports = {
   newProduct,
   getAllProducts,
   deleteProduct,
   updateProduct,
   deleteImage,
+  getFilteredProducts,
 };

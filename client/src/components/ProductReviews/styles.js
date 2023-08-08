@@ -3,8 +3,7 @@ const styles = {
 
   },
   summaryWrapper: {
-    border: "1px solid black",
-    height: "100px",
+
   },
   user: {
     display: "flex",
