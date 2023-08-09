@@ -1,6 +1,8 @@
 import * as React from "react";
 import { styled, useTheme } from "@mui/material/styles";
+import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiAppBar from "@mui/material/AppBar";
@@ -13,6 +15,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import SearchFilter from "../components/SearchFilter/SearchFilter";
 import SearchResults from "../components/SearchResults/SearchResults";
+import { setShopToCollection } from "../actions/shopActions";
 
 const drawerWidth = 240;
 
@@ -67,6 +70,7 @@ const styles = {
 };
 
 const ShopScreen = () => {
+  const dispatch = useDispatch();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -154,6 +158,8 @@ const ShopScreen = () => {
       </Drawer>
       <Main open={open}>
         <Box sx={{ ...styles.searchPage, ...(open && { marginTop: "30px" }) }}>
+          <Button onClick={()=>
+          dispatch(setShopToCollection("64d36f003d3fd5ccc9f943a3"))}>test</Button>
           <SearchResults />
         </Box>
         {/* <DrawerHeader /> */}

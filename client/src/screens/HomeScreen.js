@@ -1,5 +1,6 @@
 import React from "react";
-import { useSelector } from "react-redux";
+
+import { useDispatch, useSelector } from "react-redux";
 import { Typography } from "@mui/material";
 import { Grid } from "@mui/material";
 import ProductCard from "../components/ProductCard/ProductCard";
@@ -10,6 +11,7 @@ import Loading from "../components/Loading/Loading";
 import AlertMessage from "../components/AlertMessage/AlertMessage";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
+import { setShopToCollection } from "../actions/shopActions";
 
 const styles = {
   productCardsWrapper: {
@@ -29,6 +31,7 @@ const styles = {
 };
 
 const HomeScreen = () => {
+  const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
   const collectionsList = useSelector((state) => state.collections);
   const isLoading = collectionsList.loading || productList.loading;
@@ -48,6 +51,7 @@ const HomeScreen = () => {
       <Link component={NavLink} to="/shop">
         <Button>Shop Screen</Button>
       </Link>
+
       {isLoading && <Loading />}
       {error && <AlertMessage type="error">{error}</AlertMessage>}
       {!isLoading && !error && (
@@ -92,6 +96,7 @@ const HomeScreen = () => {
                   <Link
                     component={NavLink}
                     to={`/collection/${collection._id}`}
+                    key={collection._id}
                   >
                     <CollectionCard collection={collection} />
                   </Link>

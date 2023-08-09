@@ -5,7 +5,7 @@ const cloudinary = require("../utils/cloudinary");
 //new product
 //protected route - admin only
 const newProduct = async (req, res) => {
-  const { collectionId, name, price, images, description, stock } = req.body;
+  const { collectionId, name, price, images, description, stock, isDisplayed, isFeatured} = req.body;
   const { isAdmin } = req;
 
   if (!isAdmin) {
@@ -22,8 +22,13 @@ const newProduct = async (req, res) => {
     //cloudinary
     const imageUploadResult = await cloudinary.uploader.upload(images, {
       folder: "products",
-      width: 300,
-      crop: "scale",
+      width: 400,
+      height: 300,
+      crop: "fill",
+      gravity: "center",
+      eager: [
+        { width: 1000, height: 600, crop: "fill", gravity: "face:auto" },
+      ],
     });
 
     const newProduct = await Product.create({
@@ -36,6 +41,8 @@ const newProduct = async (req, res) => {
       },
       description,
       stock,
+      isDisplayed,
+      isFeatured,
     });
 
     const collectionToPopulate = await Collection.findById(
@@ -261,8 +268,11 @@ const updateProduct = async (req, res) => {
 
 const getFilteredProducts = async (req, res) => {
   const { filterObject } = req.body;
-  console.log(filterObject);
+  console.log(filterObject, "filterObject");
   // console.log(req)
+  // console.log(req.body + "req.body");
+  // console.log(req.body.filterObject)
+  // console.log(filterObject.priceRange)
 
   if (!filterObject) {
     return res.status(400).json({ message: "No filter object provided" });
@@ -292,7 +302,7 @@ const getFilteredProducts = async (req, res) => {
   const selectedCollectionIds = Object.keys(filterObject.collections).filter(
     (key) => filterObject.collections[key]
   );
-  console.log(selectedCollectionIds);
+  // console.log(selectedCollectionIds);
   if (selectedCollectionIds.length > 0) {
     query.collectionId = { $in: selectedCollectionIds };
   }
@@ -326,15 +336,20 @@ const getFilteredProducts = async (req, res) => {
       sortObj.price = -1;
     } else if (filterObject.sortBy === "PriceLowHigh") {
       sortObj.price = 1;
+    } else if (filterObject.sortBy === "RatingHighLow") {
+      sortObj.averageRating = -1;
     }
   }
 
   try {
     const filteredProducts = await Product.find(query).sort(sortObj);
 
+    const maxPriceItem = await Product.findOne().sort({ price: -1 });
+
     const reply = {
       message: "Filtered products",
       filteredProducts,
+      maxPrice: maxPriceItem.price,
     };
     res.status(200).json(reply);
   } catch (error) {
