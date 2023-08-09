@@ -48,7 +48,7 @@ const AdminCollections = () => {
         <Box sx={styles.sectionWrapper}>
           <Box sx={styles.nameAndNewWrapper}>
             {" "}
-            <Typography sx={{ marginLeft: "20px" }}>
+            <Typography variant="h5">
               Collections
             </Typography>{" "}
             <Button
@@ -66,14 +66,30 @@ const AdminCollections = () => {
                 item
                 xs={12}
                 sm={4}
-                sx={{display: "flex", flexDirection: "column"}}
+                sx={{ display: "flex", flexDirection: "column" }}
                 onClick={() => {
                   setCollectionProductsId(collection._id);
                   setCollectionName(collection.name);
                 }}
               >
                 <CollectionCard collection={collection} productQuantity />
-                <Button onClick={()=>handleOpenModal(collection)}>Edit Name/Photo</Button>
+                <Box sx={styles.optionsWrapper}>
+                  {" "}
+                  <Button onClick={() => handleOpenModal(collection)}>
+                    Edit
+                  </Button>
+                  {collection.products.length <= 0 && (
+                    <Button
+                      onClick={() => {
+                        dispatch(deleteCollection(collection._id, token));
+                      }}
+                      color="error"
+                      variant="outlined"
+                    >
+                      Delete
+                    </Button>
+                  )}
+                </Box>
               </Grid>
             ))}
           </Grid>
@@ -81,7 +97,7 @@ const AdminCollections = () => {
         {collectionProductsId !== null && (
           <Box sx={styles.sectionWrapper}>
             <Box sx={styles.nameAndNewWrapper}>
-              <Typography sx={{ marginLeft: "20px" }}>
+              <Typography variant="h5">
                 Products within {collectionName} collection
               </Typography>{" "}
               <Box sx={styles.addProductButton}>
@@ -109,22 +125,22 @@ const AdminCollections = () => {
               }}
             >
               {" "}
-              <Grid item xs={3}>
+              <Grid item xs={3} sx={styles.gridItem}>
                 <Typography>Name</Typography>
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={1} sx={styles.gridItem}>
                 <Typography>Price</Typography>
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={1} sx={styles.gridItem}>
                 <Typography>Stock</Typography>
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={2} sx={styles.gridItem}>
                 <Typography>isDisplayed</Typography>
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={2} sx={styles.gridItem}>
                 <Typography>isFeatured</Typography>
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={3} sx={styles.gridItem}>
                 <Typography>Actions</Typography>
               </Grid>
             </Grid>

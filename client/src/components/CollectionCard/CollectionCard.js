@@ -17,7 +17,6 @@ const CollectionCard = ({ collection, productQuantity }) => {
 
   return (
     <Box sx={styles.cardWrapper}>
-      <Box key={collection._id} sx={styles.card}>
         <Box sx={styles.cardImageWrapper}>
           <Box
             component="img"
@@ -33,7 +32,7 @@ const CollectionCard = ({ collection, productQuantity }) => {
               </Typography>
             )}
           </Box>
-        </Box>
+
       </Box>
     </Box>
   );

@@ -29,19 +29,21 @@ const SearchFilter = () => {
   const dispatch = useDispatch();
   const collectionsList = useSelector((state) => state.collections);
   const shopState = useSelector((state) => state.shop);
-  const { products, error } = shopState;
+  const { products, error, filters, maxPrice } = shopState;
   const { collections } = collectionsList;
 
-
-
-  //filter
-  const [sort, setSort] = React.useState("");
+  //filter/
+  const [sort, setSort] = React.useState(
+    filters?.sortBy ? filters?.sortBy : ""
+  );
   const handleFilterChange = (event) => {
     setSort(event.target.value);
   };
 
   //search
-  const [search, setSearch] = React.useState("");
+  const [search, setSearch] = React.useState(
+    filters?.searchQuery ? filters?.searchQuery : ""
+  );
   const handleSearchChange = (event) => {
     setSearch(event.target.value);
   };
@@ -51,8 +53,9 @@ const SearchFilter = () => {
     return acc;
   }, {});
 
-  const [collectionsSelected, setCollectionsSelected] =
-    React.useState(initialCheckboxState);
+  const [collectionsSelected, setCollectionsSelected] = React.useState(
+    filters.collections ? filters.collections : initialCheckboxState
+  );
 
   const handleCollectionChange = (event) => {
     setCollectionsSelected({
@@ -62,19 +65,23 @@ const SearchFilter = () => {
   };
 
   //price
-  const [price, setPrice] = React.useState([0, 1000]);
+  const [price, setPrice] = React.useState([0, maxPrice ? maxPrice : 1000]);
   const handlePriceChange = (event, newValue) => {
     setPrice(newValue);
   };
 
   //stock
-  const [stock, setStock] = React.useState(true);
+  const [stock, setStock] = React.useState(
+    filters?.inStock ? filters?.inStock : false
+  );
   const handleStockChange = (event) => {
     setStock(event.target.checked);
   };
 
   //reviews
-  const [reviews, setReviews] = React.useState(false);
+  const [reviews, setReviews] = React.useState(
+    filters?.hasReviews ? filters?.hasReviews : false
+  );
   const handleReviewsChange = (event) => {
     setReviews(event.target.checked);
   };
@@ -87,6 +94,7 @@ const SearchFilter = () => {
       priceRange: price,
       inStock: stock,
       hasReviews: reviews,
+      isDisplayed: true,
     };
     console.log(filterQuery);
     dispatch(fetchFilteredProducts({ filterObject: filterQuery }));
@@ -110,7 +118,7 @@ const SearchFilter = () => {
               </MenuItem>
               <MenuItem value={"PriceHighLow"}>Price - High to Low</MenuItem>
               <MenuItem value={"PriceLowHigh"}>Price - Low to High</MenuItem>
-              <MenuItem value={"MostReviewed"}>Most Reviewed</MenuItem>
+              <MenuItem value={"RatingHighLow"}>Highest Rated</MenuItem>
             </Select>
           </FormControl>
         </Box>
@@ -157,9 +165,8 @@ const SearchFilter = () => {
             onChange={handlePriceChange}
             valueLabelDisplay="auto"
             getAriaValueText={valuetext}
-            min={0} 
-            max={600}  
-          
+            min={0}
+            max={600}
           />
         </Box>
         <Box sx={styles.formItem}>
@@ -173,7 +180,9 @@ const SearchFilter = () => {
         <Box sx={styles.formItem}>
           <FormGroup>
             <FormControlLabel
-              control={<Switch  checked={reviews} onChange={handleReviewsChange} />}
+              control={
+                <Switch checked={reviews} onChange={handleReviewsChange} />
+              }
               label="Has Reviews"
             />
           </FormGroup>

@@ -11,6 +11,23 @@ import AlertMessage from "../components/AlertMessage/AlertMessage";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
 
+const styles = {
+  productCardsWrapper: {
+    width: "80%",
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "stretch",
+    flexWrap: "wrap",
+  },
+  collectionsCardsWrapper: {
+    width: "80%",
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "center",
+    flexWrap: "wrap",
+  },
+};
+
 const HomeScreen = () => {
   const productList = useSelector((state) => state.productList);
   const collectionsList = useSelector((state) => state.collections);
@@ -40,27 +57,21 @@ const HomeScreen = () => {
               <Typography variant="h3">Featured Products</Typography>
             </Grid>
           )}
-          {products
-            ?.filter((product) => product.isFeatured && product.isDisplayed)
-            .map((product) => (
-              <Grid
-                item
-                xs={5}
-                sm={3}
-                md={3}
-                lg={3}
-                key={product._id}
-                sx={{ display: "flex", alignItems: "stretch" }}
-              >
-                <ProductCard product={product} />
-              </Grid>
-            ))}
+          <Box sx={styles.productCardsWrapper}>
+            {" "}
+            {products
+              ?.filter((product) => product.isFeatured && product.isDisplayed)
+              .map((product) => (
+                <ProductCard product={product} key={product._id} />
+              ))}
+          </Box>
+
           {collections && (
             <Grid item xs={12} sx={{ textAlign: "center" }}>
               <Typography variant="h3">Shop by Collection</Typography>
             </Grid>
           )}
-          {collections?.map(
+          {/* {collections?.map(
             (collection) =>
               collection.products.length >= 1 && (
                 <Grid item xs={5} sm={3} key={collection._id}>
@@ -72,7 +83,21 @@ const HomeScreen = () => {
                   </Link>
                 </Grid>
               )
-          )}
+          )} */}
+          <Box sx={styles.collectionsCardsWrapper}>
+            {" "}
+            {collections?.map(
+              (collection) =>
+                collection.products.length >= 1 && (
+                  <Link
+                    component={NavLink}
+                    to={`/collection/${collection._id}`}
+                  >
+                    <CollectionCard collection={collection} />
+                  </Link>
+                )
+            )}
+          </Box>
         </>
       )}
     </Grid>

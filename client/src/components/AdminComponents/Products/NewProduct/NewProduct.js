@@ -91,6 +91,8 @@ const NewProduct = () => {
             images: selectedFile,
           };
 
+          console.log(productData)
+
           snackbarDispatch(
             dispatch(newProduct(token, productData)),
             "Product created successfully",
@@ -261,7 +263,7 @@ const NewProduct = () => {
               />
             </FormControl>
             <hr></hr>
-            <Button type="submit">Create Product</Button>
+            <Button type="submit" disabled={!selectedFile}>Create Product</Button>
           </form>
         )}
       </Formik>

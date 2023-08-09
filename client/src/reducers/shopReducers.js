@@ -33,6 +33,7 @@ export const shopReducer = (state = initialState, action) => {
         loading: false,
         products: action.payload.data.filteredProducts,
         filters: { ...action.filterQuery.filterObject },
+        maxPrice: action.payload.data.maxPrice,
       };
     case FILTERED_PRODUCTS_FAIL:
       return {

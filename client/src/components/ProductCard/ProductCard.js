@@ -29,11 +29,11 @@ const ProductCard = ({ product }) => {
       <Link
         component={NavLink}
         to={`/product/${product._id}`}
-        style={styles.imageTitleWrapper}
+        style={styles.imageTitleWrapper(theme)}
       >
         {" "}
         <Box
-          sx={styles.cardImage}
+          sx={styles.cardImage(theme)}
           component="img"
           src={
             product.images.length >= 1
@@ -41,19 +41,19 @@ const ProductCard = ({ product }) => {
               : "https://placehold.co/200"
           }
         />
-        <Box sx={styles.namePriceWrapper}>
+        <Box sx={styles.namePriceWrapper(theme)}>
           <Typography sx={styles.name} variant="h6" component="div">
             {product.name} - ${product.price}
           </Typography>
         </Box>
       </Link>
 
-      <Box sx={styles.iconsWrapper}>
+      <Box sx={styles.iconsWrapper(theme)}>
         <Box sx={styles.ratings}>
           <RatingIcons
             rating={product.averageRating ? product.averageRating : 0}
           />
-          <Typography sx={styles.numberReviews}>
+          <Typography sx={styles.numberReviews(theme)}>
             {"( "}
             {product.reviews.length}
             {" )"}
@@ -62,7 +62,7 @@ const ProductCard = ({ product }) => {
 
         {authenticated && (
           <Box
-            sx={styles.favoritesButton}
+            sx={styles.favoritesButton(theme)}
             size="small"
             onClick={async () => {
               const method =

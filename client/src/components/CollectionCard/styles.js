@@ -1,21 +1,29 @@
 const styles = {
   cardWrapper: {
-    width: "90%",
+    // width: "80%",
+    width: "200px",
+    height: "auto",
+    // height: "auto",
+    display: "flex",
+    flexDirectinon: "column",
     // height: "200px",
-    // border: "3px solid purple",
-  },
-  card: {
-    // border: "1px solid black",
     cursor: "pointer",
+    justifyContent: "center",
+    alignItems: "center",
+    // background: "#e0e0e0",
+    boxShadow: 3,
+    borderRadius: "10px",
+    margin: "5px",
   },
   cardImageWrapper: {
     position: "relative",
-    padding: "3px",
-    margin: "0px",
+    padding: "0px",
+    // margin: "10px",
     borderRadius: "10px",
     // border: "1px solid black",
-    border: "3px solid purple",
+    // border: "3px solid purple",
     width: "100%",
+    height: "100%",
     transition: "transform .2s",
     "&:hover": {
       transform: "scale(1.05)",
@@ -23,6 +31,8 @@ const styles = {
   },
   image: {
     width: "100%",
+    height: "100%",
+    borderRadius: "10px",
   },
   overlayBox: {
     position: "absolute",

@@ -8,6 +8,10 @@ const styles = {
   nameAndNewWrapper: {
     display: "flex",
     justifyContent: "space-between",
+    margin: "20px",
+    // background: "white",
+    color: "green",
+    fontSize: "20px",
   },
   optionsWrapper: {
     display: "flex",
@@ -25,6 +29,7 @@ const styles = {
   gridItem: {
     border: "1px solid grey",
     padding: "5px",
+    background: "white"
   },
 }
 

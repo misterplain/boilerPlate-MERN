@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Badge from "@mui/material/Badge";
-import {  Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import AdminCollections from "../components/AdminComponents/Collections/AdminCollections";
@@ -14,13 +14,28 @@ import AdminOrders from "../components/AdminComponents/Orders/AdminOrders";
 import AdminReviews from "../components/AdminComponents/Reviews/AdminReviews";
 import QuickView from "../components/AdminComponents/Orders/QuickView";
 import OrderSummary from "../components/OrderSummary/OrderSummary";
-import {
-  getUnmoderatedReviews,
-} from "../actions/reviewsActions";
+import { getUnmoderatedReviews } from "../actions/reviewsActions";
+import { useTheme } from "@mui/material/styles";
 
 const styles = {
-  buttonsWrapper: {
-  },
+  buttonsWrapper: (theme) => ({
+    background: "white",
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    // flexDirection: "column",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: "10px",
+    [theme.breakpoints.up("md")]: {
+      height: "100%",
+      flexDirection: "column",
+      justifyContent: "flex-start",
+      height: "100vh",
+    },
+
+    // alignItems: "center",
+  }),
 };
 
 const adminButtons = [
@@ -52,12 +67,12 @@ const adminButtons = [
 ];
 
 const AdminScreen = () => {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const userAuthState = useSelector((state) => state.userAuth);
   const token = userAuthState?.accessToken;
   const reviewsState = useSelector((state) => state.reviews);
   const { reviews } = reviewsState || {};
-
 
   useEffect(() => {
     dispatch(getUnmoderatedReviews(token));
@@ -72,18 +87,17 @@ const AdminScreen = () => {
   };
 
   return (
-    <Grid container>
-      <Grid
-        item
-        xs={12}
-        md={3}
-        sx={{
-          display: "flex",
-          justifyContent: "space-around",
-          flexDirection: "row",
-        }}
-      >
-        <Box sx={styles.buttonsWrapper}>
+    <Grid
+      container
+      sx={{
+        display: "flex",
+        justifyContent: "space-around",
+        alignItems: "flex-start",
+        flexDirection: "row",
+      }}
+    >
+      <Grid item spacing={1} xs={12} md={2}>
+        <Box sx={styles.buttonsWrapper(theme)}>
           {adminButtons.map((button) => (
             <Box key={button.name}>
               {badgeCounts[button.link] > 0 && (
@@ -105,7 +119,7 @@ const AdminScreen = () => {
           ))}
         </Box>
       </Grid>
-      <Grid item xs={12} md={9}>
+      <Grid item xs={12} md={9} sx={{ }}>
         <Routes>
           {" "}
           <Route path="collections" element={<AdminCollections />} />

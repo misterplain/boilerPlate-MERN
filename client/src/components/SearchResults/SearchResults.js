@@ -15,7 +15,7 @@ const SearchResults = () => {
   const shopState = useSelector((state) => state.shop);
   const { products, error } = shopState;
   const { collections } = collectionsList;
-  console.log(products);
+
 
   return (
     <Box sx={styles.wrapper}>
@@ -29,7 +29,7 @@ const SearchResults = () => {
         }}
       >
 
-        {products &&
+        {/* {products &&
           products.map((product) => (
             <Grid
             item
@@ -42,7 +42,15 @@ const SearchResults = () => {
           >
             <ProductCard product={product} />
           </Grid>
+          ))} */}
+          <Box sx={styles.productCardsWrapper}>
+          {products &&
+          products.map((product) => (
+
+            <ProductCard product={product} key={product._id}/>
+
           ))}
+          </Box>
       </Grid>
     </Box>
   );

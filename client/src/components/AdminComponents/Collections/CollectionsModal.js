@@ -13,6 +13,7 @@ import axios from "../../../api/axios";
 import {
   createNewCollection,
   updateCollection,
+  deleteCollection,
 } from "../../../actions/collectionsActions";
 import AlertMessage from "../../AlertMessage/AlertMessage";
 import { useSnackbar } from "notistack";
