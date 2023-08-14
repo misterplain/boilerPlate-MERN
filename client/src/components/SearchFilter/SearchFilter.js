@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -49,12 +49,14 @@ const SearchFilter = () => {
   };
 
   const initialCheckboxState = collections?.reduce((acc, collection) => {
-    acc[collection._id] = false;
+    acc[collection._id] = filters.collections
+      ? filters.collections[collection._id]
+      : false;
     return acc;
   }, {});
 
   const [collectionsSelected, setCollectionsSelected] = React.useState(
-    filters.collections ? filters.collections : initialCheckboxState
+    filters?.collections ? filters?.collections : initialCheckboxState
   );
 
   const handleCollectionChange = (event) => {
@@ -63,6 +65,17 @@ const SearchFilter = () => {
       [event.target.name]: event.target.checked,
     });
   };
+
+  console.log(collectionsSelected)
+
+  //useEffect to handle navigate from home page
+  useEffect(() => {
+    console.log(collectionsSelected)
+    setCollectionsSelected((prevState) => ({
+      ...prevState,
+      ...filters?.collections,
+    }));
+  }, [filters?.collections]);
 
   //price
   const [price, setPrice] = React.useState([0, maxPrice ? maxPrice : 1000]);

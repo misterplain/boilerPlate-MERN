@@ -10,10 +10,10 @@ import {
 const initialState = {
   products: [],
   filters: {
-    collection: {},
+    collections: {},
     priceRange: [0, 1000],
     hasReviews: false,
-    inStock: false,
+    inStock: true,
     sortBy: "",
     searchQuery: "",
   },
@@ -50,14 +50,14 @@ export const shopReducer = (state = initialState, action) => {
         loading: true,
       };
     case SHOP_COLLECTION_SUCCESS:
+      console.log(action.filterQuery);
       return {
         ...initialState,
         loading: false,
+        // filters: { ...action.filterQuery.filterObject },
         filters: {
           ...state.filters,
-          collection: {
-            [action.collection]: true,
-          },
+          collections: action.filterQuery.collections,
         },
         products: action.payload.data.filteredProducts,
         maxPrice: action.payload.data.maxPrice,

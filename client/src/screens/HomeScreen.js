@@ -75,28 +75,22 @@ const HomeScreen = () => {
               <Typography variant="h3">Shop by Collection</Typography>
             </Grid>
           )}
-          {/* {collections?.map(
-            (collection) =>
-              collection.products.length >= 1 && (
-                <Grid item xs={5} sm={3} key={collection._id}>
-                  <Link
-                    component={NavLink}
-                    to={`/collection/${collection._id}`}
-                  >
-                    <CollectionCard collection={collection} />
-                  </Link>
-                </Grid>
-              )
-          )} */}
+
           <Box sx={styles.collectionsCardsWrapper}>
             {" "}
             {collections?.map(
               (collection) =>
                 collection.products.length >= 1 && (
+
                   <Link
                     component={NavLink}
-                    to={`/collection/${collection._id}`}
+                    to={"/shop"}
                     key={collection._id}
+                    onClick={() => {
+                      dispatch(
+                        setShopToCollection(collection._id, collections)
+                      );
+                    }}
                   >
                     <CollectionCard collection={collection} />
                   </Link>

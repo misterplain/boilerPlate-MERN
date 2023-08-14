@@ -18,6 +18,9 @@ const styles = {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    background : "white",
+    padding: "10px",
+    borderRadius: "5px",
   },
   formGroup: {
     width: "100%",
