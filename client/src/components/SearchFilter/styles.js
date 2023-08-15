@@ -5,11 +5,11 @@ const styles = {
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: "10px",
+    margin: "0px 0px 50px 0px",
   },
   formItem: {
     width: "87%",
-    padding: "15px 0px",
+    padding: "10px 0px",
     borderBottom: "1px solid grey",
   },
 };

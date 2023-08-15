@@ -27,7 +27,7 @@ const Header = ({ isActive }) => {
   const userDetailsState = useSelector((state) => state.userDetails);
   const { username, isAdmin } = userDetailsState?.userDetails || {};
   const cartState = useSelector((state) => state.shoppingCart);
-  const { cartItems} = cartState || {};
+  const { cartItems } = cartState || {};
 
   const { isOpen, setIsOpen } = useCartDrawer();
 
@@ -47,7 +47,6 @@ const Header = ({ isActive }) => {
 
   const handleOpenCart = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
-
   };
   return (
     <>
@@ -62,11 +61,16 @@ const Header = ({ isActive }) => {
           </Link>
         </Box>
         <Box sx={styles.linksWrapper}>
+          <Link component={NavLink} to="/shop">
+            <Button variant="outlined" color="secondary">
+              Shop
+            </Button>
+          </Link>
           {authenticated ? (
             <>
-              <Typography sx={styles.headerButton} marginRight>
+              {/* <Typography sx={styles.headerButton} marginRight>
                 {username ? username : null}
-              </Typography>
+              </Typography> */}
               {isAdmin && (
                 <Link component={NavLink} to="/admin">
                   <Button variant="contained">Admin Panel</Button>

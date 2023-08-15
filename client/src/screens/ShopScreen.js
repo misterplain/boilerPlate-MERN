@@ -72,7 +72,7 @@ const styles = {
 const ShopScreen = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const collectionsList = useSelector((state) => state.collections);
   // const isLoading = collectionsList.loading || productList.loading;
@@ -140,8 +140,8 @@ const ShopScreen = () => {
       </Drawer>
       <Main open={open}>
         <Box sx={{ ...styles.searchPage, ...(open && { marginTop: "30px" }) }}>
-          <Button onClick={()=>
-          dispatch(setShopToCollection("64d38832d96ae39265f544a6", collections))}>test</Button>
+          {/* <Button onClick={()=>
+          dispatch(setShopToCollection("64d38832d96ae39265f544a6", collections))}>test</Button> */}
           <SearchResults />
         </Box>
 

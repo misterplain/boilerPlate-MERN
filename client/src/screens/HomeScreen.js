@@ -48,10 +48,6 @@ const HomeScreen = () => {
         alignItems: "stretch",
       }}
     >
-      <Link component={NavLink} to="/shop">
-        <Button>Shop Screen</Button>
-      </Link>
-
       {isLoading && <Loading />}
       {error && <AlertMessage type="error">{error}</AlertMessage>}
       {!isLoading && !error && (

@@ -66,11 +66,11 @@ const SearchFilter = () => {
     });
   };
 
-  console.log(collectionsSelected)
+  console.log(collectionsSelected);
 
   //useEffect to handle navigate from home page
   useEffect(() => {
-    console.log(collectionsSelected)
+    console.log(collectionsSelected);
     setCollectionsSelected((prevState) => ({
       ...prevState,
       ...filters?.collections,
@@ -199,9 +199,12 @@ const SearchFilter = () => {
               label="Has Reviews"
             />
           </FormGroup>
+        </Box>{" "}
+        <Box sx={styles.formItem}>
+          {" "}
+          <Button onClick={() => handleSubmit()}>Filter</Button>
         </Box>
       </Box>
-      <Button onClick={() => handleSubmit()}>Filter</Button>
     </Box>
   );
 };
