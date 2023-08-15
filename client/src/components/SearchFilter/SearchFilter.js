@@ -66,8 +66,6 @@ const SearchFilter = () => {
     });
   };
 
-  console.log(collectionsSelected);
-
   //useEffect to handle navigate from home page
   useEffect(() => {
     console.log(collectionsSelected);

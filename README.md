@@ -58,6 +58,12 @@
 16. [] Favorites screen
 17. [] New/edit review, set rating to star icon hover
 18. [] Full order details screen
+19. [] Admin moderate reviews show product info 
+20. [] Admin toggle whether reviews need to be moderated 
+21. [] Back button from new/edit product back to collections
+22. [] Collections as dropdown menu 
+23. [] Refresh on product/collections page, re-load if nothing in redux state
+24. [] consider: Admin level styling 
 
 
 
