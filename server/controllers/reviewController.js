@@ -17,6 +17,13 @@ const createReview = asyncHandler(async (req, res) => {
       return res.status(400).json({ message: "No product id provided" });
     }
 
+     const product = await Product.findById(productId);
+     if (!product) {
+       return res.status(404).json({ message: "Product not found" });
+     }
+
+     const productName = product.name;
+
     const newReview = await Review.create({
       reviewTitle,
       rating,
@@ -24,6 +31,7 @@ const createReview = asyncHandler(async (req, res) => {
       userId: userId,
       username: username,
       productId: productId,
+      productName: productName, 
     });
 
     const reply = {

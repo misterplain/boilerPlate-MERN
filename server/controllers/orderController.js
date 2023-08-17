@@ -67,7 +67,6 @@ const getOrdersTimePeriod = async (req, res) => {
   }
 };
 
-
 const searchOrders = async (req, res) => {
   const { isAdmin } = req;
   const filterObject = req.body;
@@ -142,6 +141,28 @@ const placeOrder = async (req, res) => {
 
   try {
     const userOrdered = await User.findById(userId);
+
+    //deduct stock from each item
+    for (let item of cartItems) {
+      const product = await Product.findById(item.product);
+
+      if (!product) {
+        return res
+          .status(404)
+          .json({ message: `Product with ID ${item.product} not found` });
+      }
+
+      product.stock -= item.quantity;
+
+      if (product.stock < 0) {
+        return res
+          .status(400)
+          .json({ message: `Product ${item.name} has insufficient stock` });
+      }
+
+      await product.save();
+    }
+
     const orderPlaced = await Order.create({
       userId: userId,
       orderedItems: cartItems.map((item) => {
@@ -191,6 +212,27 @@ const placeGuestOrder = async (req, res) => {
     return res.status(400).json({ message: "Missing required data" });
   }
   try {
+    //deduct stock from each item
+    for (let item of cartItems) {
+      const product = await Product.findById(item.product);
+
+      if (!product) {
+        return res
+          .status(404)
+          .json({ message: `Product with ID ${item.product} not found` });
+      }
+
+      product.stock -= item.quantity;
+
+      if (product.stock < 0) {
+        return res
+          .status(400)
+          .json({ message: `Product ${item.name} has insufficient stock` });
+      }
+
+      await product.save();
+    }
+
     const guestOrderPlaced = await Order.create({
       orderedItems: cartItems.map((item) => {
         return {
@@ -236,6 +278,20 @@ const cancelOrder = async (req, res) => {
     }
 
     if (isAdmin || order.userId.toString() === userId.toString()) {
+
+      // Add stock back for each ordered item
+      for (let item of order.orderedItems) {
+        const product = await Product.findById(item.product); 
+        
+        if (!product) {
+          return res.status(404).json({ message: `Product with ID ${item.product} not found` });
+        }
+        
+        product.stock += item.quantity;
+        
+        await product.save();
+      }
+
       const orderCancelled = await Order.findByIdAndUpdate(
         orderId,
         { isCancelled: true },

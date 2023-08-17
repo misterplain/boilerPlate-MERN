@@ -17,7 +17,7 @@
 3. [x] Create/Edit/Delete reviews
 4. [ ] Create/Edit/Delete users
 5. [x] Create/Edit/Delete orders
-6. [x] Advances search for orders (order number/email/post code/courierTrackingNumber,orderStatus)
+6. [x] Advanced search for orders (order number/email/post code/courierTrackingNumber,orderStatus)
 
 ## User
 
@@ -39,15 +39,15 @@
 
 ## MISC
 
-1. [ ] placing or cancelling and order changes the backend stock information
+1. [x] placing or cancelling and order changes the backend stock information
 2. [x] Photo carousel on each item
 3. [x] sort functionality on products page / collections (price high to low, most reviewed, highest rated)
 4. [ ] consider adding password reset functionality
-5. [ ] Sort items on main page for featured items
+5. [x] Sort items on main page for featured items
 6. [x] cards on main page linking to shop with collectionId as search filter
 7. [ ] rate limiting for the backend
 8. [x] when user goes back to homepage it triggers fetchProducts()
-9. [ ] customer cannot add to an order the available stock
+9. [x] customer cannot add to an order the available stock
 10. [x] when you confirm an order, if anything is out of stock it will reply with error
 11. [ ] user can report a review which removes it and puts it back in moderation
 12. [x] cloudinary formating to maintain aspect ratio, central cropping
@@ -55,7 +55,7 @@
 14. [x] within ratings, get average rating based on X reviews
 15. [ ] When you load the Shop screen, isFeatured products will display before any filterQueries are sent
 16. [ ] Favorites screen
-17. [ ] New/edit review, set rating to star icon hover
+17. [x] New/edit review, set rating to star icon hover
 18. [ ] Full order details screen
 19. [ ] Admin moderate reviews show product info
 20. [ ] Admin toggle whether reviews need to be moderated

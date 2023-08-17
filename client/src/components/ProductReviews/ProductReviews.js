@@ -11,6 +11,8 @@ import Avatar from "../Avatar/Avatar";
 import { snackbarDispatch } from "../../utils/snackbarDispatch";
 import { enqueueSnackbar } from "notistack";
 import AlertMessage from "../AlertMessage/AlertMessage";
+import Rating from '@mui/material/Rating';
+import Stack from '@mui/material/Stack';
 import styles from "./styles";
 
 const ProductReviews = ({ productId }) => {
@@ -106,7 +108,7 @@ const ProductReviews = ({ productId }) => {
                   >
                     {review.comment}
                   </Typography>
-                  <Typography>{review.rating}</Typography>
+                  <Rating name="size-small" defaultValue={review.rating} size="small" readOnly/>
                   <Box sx={styles.optionsWrapper}>
                     {userId && userId === review.userId && (
                       <Button

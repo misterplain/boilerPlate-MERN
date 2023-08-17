@@ -13,6 +13,8 @@ import { editReview, createReview } from "../../actions/reviewsActions";
 import AlertMessage from "../AlertMessage/AlertMessage";
 import { snackbarDispatch } from "../../utils/snackbarDispatch";
 import { enqueueSnackbar } from "notistack";
+import Rating from "@mui/material/Rating";
+import Stack from "@mui/material/Stack";
 
 const style = {
   position: "absolute",
@@ -122,21 +124,23 @@ const ReviewModal = ({ open, handleClose, review, productId }) => {
                 touched,
               }) => (
                 <form onSubmit={handleSubmit}>
-                  <FormControl>
-                    <FormLabel id="reviewTitle">Review Title</FormLabel>
-                    <FormGroup>
-                      <TextField
-                        name="reviewTitle"
-                        variant="filled"
-                        color="success"
-                        value={values.reviewTitle}
-                        onChange={handleChange}
-                        helperText={errors.reviewTitle}
-                      />
-                    </FormGroup>
-                  </FormControl>
-                  <hr></hr>
-                  <FormControl>
+                  <Stack spacing={1} sx={{fontSize: "30px"}} >
+                    <Rating
+                      name="reviewRating"
+                      defaultValue={review ? review.rating : 5}
+                      precision={1}
+                      value={values.reviewRating}
+                      onChange={handleChange}
+                      size="large"
+                    />
+                    {/* <Rating
+                      name="half-rating-read"
+                      defaultValue={2.5}
+                      precision={0.5}
+                      readOnly
+                    /> */}
+                  </Stack>
+                  {/* <FormControl>
                     <FormLabel id="reviewRating">Rating 1-5</FormLabel>
                     <FormGroup>
                       <TextField
@@ -147,6 +151,20 @@ const ReviewModal = ({ open, handleClose, review, productId }) => {
                         value={values.reviewRating}
                         onChange={handleChange}
                         helperText={errors.reviewRating}
+                      />
+                    </FormGroup>
+                  </FormControl>
+                  <hr></hr>{" "} */}
+                  <FormControl>
+                    <FormLabel id="reviewTitle">Review Title</FormLabel>
+                    <FormGroup>
+                      <TextField
+                        name="reviewTitle"
+                        variant="filled"
+                        color="success"
+                        value={values.reviewTitle}
+                        onChange={handleChange}
+                        helperText={errors.reviewTitle}
                       />
                     </FormGroup>
                   </FormControl>
@@ -165,7 +183,6 @@ const ReviewModal = ({ open, handleClose, review, productId }) => {
                     </FormGroup>
                   </FormControl>
                   <hr></hr>
-
                   <Button type="submit">Post Review</Button>
                 </form>
               )}

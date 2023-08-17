@@ -46,6 +46,9 @@ const reviewSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    productName: {
+      type: String
+    }
   },
   {
     collection: "boilerPlateReviews",
