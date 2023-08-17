@@ -49,11 +49,11 @@ const adminButtons = [
   //   link: "products",
   //   component: "Products",
   // },
-  {
-    name: "Users",
-    link: "users",
-    component: "Users",
-  },
+  // {
+  //   name: "Users",
+  //   link: "users",
+  //   component: "Users",
+  // },
   {
     name: "Orders",
     link: "orders",

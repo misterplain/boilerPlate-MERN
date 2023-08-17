@@ -45,7 +45,7 @@ const getOrdersTimePeriod = async (req, res) => {
 
   try {
     const currentDate = new Date();
-    const startPeriod = new Date(currentDate - days * 24 * 60 * 60 * 1000); // Days in milliseconds
+    const startPeriod = new Date(currentDate - days * 24 * 60 * 60 * 1000);
 
     let baseQuery = { datePlaced: { $gte: startPeriod } };
 
@@ -66,6 +66,73 @@ const getOrdersTimePeriod = async (req, res) => {
     res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+
+const searchOrders = async (req, res) => {
+  const { isAdmin } = req;
+  const filterObject = req.body;
+  console.log(filterObject);
+  if (!filterObject) {
+    return res.status(400).json({ message: "No filter object provided" });
+  }
+
+  let query = {};
+
+  if (filterObject.emailAddress && filterObject.emailAddress.trim() !== "") {
+    query.emailAddress = { $regex: filterObject.emailAddress, $options: "i" };
+  }
+
+  if (filterObject.orderStatus) {
+    switch (filterObject.orderStatus) {
+      case "All":
+        break;
+      case "Cancelled":
+        query.isCancelled = true;
+        break;
+      case "In Production":
+        query.$and = [{ isShippedToCourier: false }, { isCancelled: false }];
+        break;
+      case "Delivered":
+        query.$and = [{ isShippedToCourier: true }, { isDelivered: true }];
+        break;
+      case "Shipped To Courier":
+        query.$and = [{ isShippedToCourier: true }, { isDelivered: false }];
+        break;
+    }
+  }
+
+  if (filterObject.shortId && filterObject.shortId.trim() !== "") {
+    query.shortId = filterObject.shortId;
+  }
+
+  if (filterObject.postCode && filterObject.postCode.trim() !== "") {
+    query["shippingAddress.postalCode"] = {
+      $regex: filterObject.postalCode,
+      $options: "i",
+    };
+  }
+
+  if (
+    filterObject.courierTrackingNumber &&
+    filterObject.courierTrackingNumber.trim() !== ""
+  ) {
+    query.courierTrackingNumber = filterObject.courierTrackingNumber;
+  }
+
+  try {
+    const filteredOrders = await Order.find(query);
+
+    const reply = {
+      message: "Filtered orders",
+      filteredOrders,
+    };
+    res.status(200).json(reply);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
 //place order
 //protected
 const placeOrder = async (req, res) => {
@@ -245,4 +312,5 @@ module.exports = {
   placeGuestOrder,
   cancelOrder,
   editOrder,
+  searchOrders,
 };

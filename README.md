@@ -17,7 +17,7 @@
 3. [x] Create/Edit/Delete reviews
 4. [ ] Create/Edit/Delete users
 5. [x] Create/Edit/Delete orders
-6. [ ] Advances search for orders (order number and email address)
+6. [x] Advances search for orders (order number/email/post code/courierTrackingNumber,orderStatus)
 
 ## User
 

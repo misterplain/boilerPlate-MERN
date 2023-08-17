@@ -71,7 +71,7 @@ const QuickView = () => {
 
   const handleChange = (event) => {
     setTime(event.target.value);
-    dispatch(filterPeriod(event.target.value, token));
+    // dispatch(filterPeriod(event.target.value, token));
   };
 
   return (
@@ -98,6 +98,7 @@ const QuickView = () => {
             <MenuItem value={731}>Archive (+2 years)</MenuItem>
           </Select>
         </FormControl>
+        <Button variant="outlined" color="secondary" onClick={()=>    dispatch(filterPeriod(time, token))}>Search</Button>
       </Box>{" "}
       <Box>
         {" "}

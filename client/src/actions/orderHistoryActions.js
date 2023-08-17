@@ -11,6 +11,9 @@ import {
   FETCH_USER_ORDERS_FAIL,
   FETCH_USER_ORDERS_REQUEST,
   FETCH_USER_ORDERS_SUCCESS,
+  SEARCH_ORDER_FAIL,
+  SEARCH_ORDER_REQUEST,
+  SEARCH_ORDER_SUCCESS,
 } from "../constants/orderHistoryConstants";
 import axios from "../api/axios";
 
@@ -138,10 +141,30 @@ const filterPeriod = (days, token) => async (dispatch) => {
   }
 };
 
+const searchOrder = (filterQuery, token) => async (dispatch) => {
+  console.log(filterQuery, "filterquery");
+  try {
+    dispatch({ type: SEARCH_ORDER_REQUEST, filterQuery: filterQuery });
+    const options = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const data = await axios.post(`/orders/search`, filterQuery, options);
+    console.log(data);
+    dispatch({ type: SEARCH_ORDER_SUCCESS, payload: data.data.filteredOrders });
+    return Promise.resolve();
+  } catch (error) {
+    dispatch({ type: SEARCH_ORDER_FAIL, payload: error.response.data.message });
+  }
+  return Promise.reject();
+};
+
 export {
   fetchUserOrders,
   cancelOrder,
   fetchAllOrders,
   editOrder,
   filterPeriod,
+  searchOrder,
 };
