@@ -2,13 +2,13 @@
 
 ## User authentication
 
-1. [x] once site is deployed, update whitelist in cors options on backend
-2. [x] logout functionality
-3. [x] implement material ui login form with yup and formik
-4. [x] user model on backend will be (username, email, password,  cartItems, favorites, orderHistory, isAdmin, isUser, isDeleted)
-5. [x] take userdata from github/facebook/github to create a userObject, allow user to modify their account details under user Settings 
-6. [x] JWT authentication
-7. [] refresh token functinality, refresh stored in localstorage, new access token/refresh provided by server
+[x] once site is deployed, update whitelist in cors options on backend
+[x] logout functionality
+[x] implement material ui login form with yup and formik
+[x] user model on backend will be (username, email, password,  cartItems, favorites, orderHistory, isAdmin, isUser, isDeleted)
+[x] take userdata from github/facebook/github to create a userObject, allow user to modify their account details under user Settings 
+[x] JWT authentication
+[] refresh token functinality, refresh stored in localstorage, new access token/refresh provided by server
 
 
 ## Admin

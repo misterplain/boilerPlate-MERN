@@ -35,14 +35,6 @@ const fetchFilteredProducts = (filterQuery) => async (dispatch) => {
 
 const setShopToCollection =
   (collectionId, allCollections) => async (dispatch) => {
-    console.log("setshop");
-    console.log(collectionId);
-    console.log(allCollections);
-    // const filterQuery = {
-    //   collections: {
-    //     [collectionId]: true,
-    //   },
-    // };
 
     const filterQuery = {
       collections: allCollections.reduce((acc, collection) => {
@@ -51,9 +43,6 @@ const setShopToCollection =
       }, {}),
     };
 
-    console.log("filterQuery", filterQuery);
-
-    // console.log(filterQuery,  "filterQuery");
     dispatch({
       type: SHOP_COLLECTION_REQUEST,
     });
@@ -61,17 +50,14 @@ const setShopToCollection =
       const data = await axios.post(`/product/get/filter`, {
         filterObject: filterQuery,
       });
-      console.log(data);
 
       dispatch({
         type: SHOP_COLLECTION_SUCCESS,
         payload: data,
-        // collection: collectionId,
         filterQuery: filterQuery,
       });
     } catch (error) {
       console.log(error);
-
       dispatch({
         type: SHOP_COLLECTION_FAIL,
         payload: error.response.data.message,
