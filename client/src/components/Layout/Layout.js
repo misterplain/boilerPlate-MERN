@@ -3,7 +3,13 @@ import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import { CartDrawerProvider } from "../../context/CartDrawerContext";
 
-import styles from "./styles";
+const styles = {
+  wrapper: (theme) => ({
+    // border: "1px solid #000",
+    // height: "100vh",
+    // width: "100vw",
+  }),
+};
 
 const Layout = ({ children }) => {
   return (

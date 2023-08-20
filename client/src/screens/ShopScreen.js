@@ -16,6 +16,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import SearchFilter from "../components/SearchFilter/SearchFilter";
 import SearchResults from "../components/SearchResults/SearchResults";
 import { setShopToCollection } from "../actions/shopActions";
+import Wrapper from "../components/Wrapper/Wrapper";
 
 const drawerWidth = 240;
 
@@ -140,8 +141,6 @@ const ShopScreen = () => {
       </Drawer>
       <Main open={open}>
         <Box sx={{ ...styles.searchPage, ...(open && { marginTop: "30px" }) }}>
-          {/* <Button onClick={()=>
-          dispatch(setShopToCollection("64d38832d96ae39265f544a6", collections))}>test</Button> */}
           <SearchResults />
         </Box>
 

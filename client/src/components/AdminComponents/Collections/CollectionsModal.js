@@ -6,6 +6,7 @@ import Modal from "@mui/material/Modal";
 import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 import FormLabel from "@mui/material/FormLabel";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -170,14 +171,18 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
               }) => (
                 <form
                   onSubmit={handleSubmit}
-                  style={{ display: "flex", flexDirection: "column" }}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    textAlign: "center",
+                  }}
                 >
-                  <FormControl>
+                  <FormControl sx={{ marginBottom: "30px" }}>
                     <FormLabel id="name">Collection Name</FormLabel>
                     <FormGroup>
                       <TextField
                         name="name"
-                        variant="filled"
+                        variant="outlined"
                         color="success"
                         value={values.name}
                         onChange={handleChange}
@@ -185,19 +190,31 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
                       />
                     </FormGroup>
                   </FormControl>
-                  <FormControl sx={{ width: "80%" }}>
-                    <FormLabel id="images">New Image</FormLabel>
-                    <Box>
-                      {" "}
-                      <input
-                        ref={inputFileRef}
-                        onChange={handleImage}
-                        type="file"
-                        id="formupload"
-                        name="image"
-                        placeholder="test"
-                        className="form-control"
-                      />
+                  <FormControl
+                    sx={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <input
+                      ref={inputFileRef}
+                      onChange={handleImage}
+                      type="file"
+                      id="formupload"
+                      name="image"
+                      style={{ display: "none" }}
+                    />
+
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Button onClick={()=>{
+                        inputFileRef.current.click();
+                      }}>Upload Photo</Button>
                     </Box>
                     <Button onClick={() => fetchPexelImage(token, values.name)}>
                       FETCH FROM PEXEL BASED ON COLLECTION NAME

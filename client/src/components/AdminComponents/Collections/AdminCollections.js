@@ -4,7 +4,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import * as Yup from "yup";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import { deleteCollection } from "../../../actions/collectionsActions";
@@ -13,7 +12,7 @@ import AlertMessage from "../../AlertMessage/AlertMessage";
 import CollectionCard from "../../CollectionCard/CollectionCard";
 import { snackbarDispatch } from "../../../utils/snackbarDispatch";
 import { enqueueSnackbar } from "notistack";
-// import { collectionStyles, productStyles } from "./styles";
+import Wrapper from "../../Wrapper/Wrapper";
 
 import styles from "./styles";
 
@@ -44,13 +43,15 @@ const AdminCollections = () => {
 
   return (
     <>
-      <Box sx={styles.pageWrapper}>
-        <Box sx={styles.sectionWrapper}>
-          <Box sx={styles.nameAndNewWrapper}>
+      <Wrapper id="pageWrapper" flexDirection="column">
+        <Wrapper id="sectionWrapper" customStyles={styles.sectionWrapper}>
+          <Wrapper
+            id="nameAndNewWrapper"
+            justifyContent="space-between"
+            customStyles={styles.nameAndNewWrapper}
+          >
             {" "}
-            <Typography variant="h5">
-              Collections
-            </Typography>{" "}
+            <Typography variant="h5">Collections</Typography>{" "}
             <Button
               variant="outlined"
               color="success"
@@ -59,21 +60,26 @@ const AdminCollections = () => {
             >
               new collection
             </Button>
-          </Box>
-          <Grid container>
+          </Wrapper>{" "}
+          <Wrapper id="collectionCardWrapper" gridContainer>
             {collectionsState?.collections?.map((collection) => (
               <Grid
                 item
-                xs={12}
+                xs={6}
                 sm={4}
-                sx={{ display: "flex", flexDirection: "column" }}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "100%",
+                  alignItems: "center",
+                }}
                 onClick={() => {
                   setCollectionProductsId(collection._id);
                   setCollectionName(collection.name);
                 }}
               >
                 <CollectionCard collection={collection} productQuantity />
-                <Box sx={styles.optionsWrapper}>
+                <Wrapper id="optionsWrapper" justifyContent="center">
                   {" "}
                   <Button onClick={() => handleOpenModal(collection)}>
                     Edit
@@ -89,14 +95,18 @@ const AdminCollections = () => {
                       Delete
                     </Button>
                   )}
-                </Box>
+                </Wrapper>{" "}
               </Grid>
             ))}
-          </Grid>
-        </Box>{" "}
+          </Wrapper>
+        </Wrapper>
         {collectionProductsId !== null && (
-          <Box sx={styles.sectionWrapper}>
-            <Box sx={styles.nameAndNewWrapper}>
+          <Wrapper id="sectionWrapper" customStyles={styles.sectionWrapper}>
+            <Wrapper
+              id="nameAndNewWrapper"
+              justifyContent="space-between"
+              customStyles={styles.nameAndNewWrapper}
+            >
               <Typography variant="h5">
                 Products within {collectionName} collection
               </Typography>{" "}
@@ -111,19 +121,8 @@ const AdminCollections = () => {
                   </Button>
                 </Link>
               </Box>
-            </Box>
-
-            <Grid
-              container
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                textAlign: "center",
-                borderBottom: "1px solid black",
-                marginBottom: "10px",
-              }}
-            >
+            </Wrapper>
+            <Wrapper id="titlesGrid" gridContainer>
               {" "}
               <Grid item xs={3} sx={styles.gridItem}>
                 <Typography>Name</Typography>
@@ -143,8 +142,8 @@ const AdminCollections = () => {
               <Grid item xs={3} sx={styles.gridItem}>
                 <Typography>Actions</Typography>
               </Grid>
-            </Grid>
-
+            </Wrapper>
+            {/* </Grid> */}
             {products &&
             products.filter(
               (product) => product.collectionId === collectionProductsId
@@ -154,16 +153,8 @@ const AdminCollections = () => {
                   (product) => product.collectionId === collectionProductsId
                 )
                 .map((product) => (
-                  <Grid
-                    container
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      flexDirection: "row",
-                      textAlign: "center",
-                    }}
-                    key={product._id}
-                  >
+                  <Wrapper id="productsGrid" gridContainer key={product._id}>
+                    {" "}
                     <Grid item xs={3} sx={styles.gridItem}>
                       <Typography>{product.name}</Typography>
                     </Grid>
@@ -194,16 +185,17 @@ const AdminCollections = () => {
                         <Typography>Edit/Delete</Typography>
                       </Link>
                     </Grid>
-                  </Grid>
+                  </Wrapper>
                 ))
             ) : (
               <Box sx={styles.noItems}>
                 <Typography>No items within this category</Typography>
               </Box>
             )}
-          </Box>
+          </Wrapper>
         )}
-      </Box>
+      </Wrapper>
+
       <CollectionsModal
         open={open}
         handleClose={handleCloseModal}
@@ -214,3 +206,4 @@ const AdminCollections = () => {
 };
 
 export default AdminCollections;
+

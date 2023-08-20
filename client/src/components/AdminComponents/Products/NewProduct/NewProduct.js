@@ -7,6 +7,7 @@ import { useHistory, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Radio from "@mui/material/Radio";
@@ -249,10 +250,17 @@ const NewProduct = () => {
                   id="formupload"
                   name="image"
                   className="form-control"
+                  style={{ display: "none" }}
                 />
-                <label className="form-label" htmlFor="form4Example2">
-                  Image
-                </label>
+                                <Box>
+                  <Button
+                    onClick={() => {
+                      inputFileRef.current.click();
+                    }}
+                  >
+                    Upload Photo
+                  </Button>
+                </Box>
               </Box>
 
               <Box

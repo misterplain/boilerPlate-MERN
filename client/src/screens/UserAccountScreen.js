@@ -1,21 +1,15 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import AccountDetails from "../components/UserAccount/Account/AccountDetails";
 import AccountOrders from "../components/UserAccount/Orders/AccountOrders";
 import AccountAddress from "../components/UserAccount/Address/AccountAddress";
 import OrderSummary from "../components/OrderSummary/OrderSummary";
-
-const styles = {
-  buttonsWrapper: {
-    border: "1px solid black",
-  },
-};
+import Wrapper from "../components/Wrapper/Wrapper";
+import { useTheme } from "@mui/material/styles";
 
 const accountButtons = [
   {
@@ -45,32 +39,44 @@ const AccountOrdersWrapper = () => {
 };
 
 const UserAccountScreen = () => {
+  const theme = useTheme();
   return (
-    <Grid container>
+    // <Grid container>
+    <Wrapper gridContainer width="100%" direction="row" justifyContent="space-around">
+      {" "}
       <Grid
         item
         xs={12}
-        md={4}
-        sx={{ display: "flex", justifyContent: "space-around" }}
+        md={3}
+        sx={{
+          display: "flex",
+          width: "100%",
+          flexDirection: "column",
+          alignItems: "flex-end",
+          borderRight: "1px solid grey",
+          [theme.breakpoints.down("md")]: {
+            alignItems: "center",
+            borderRight: "none",
+            borderBottom: "1px solid grey",
+          },
+        }}
       >
-        <Box sx={styles.buttonsWrapper}>
-          {accountButtons.map((button) => (
-            <Box key={button.name}>
-              <Link component={NavLink} to={button.link}>
-                <Button>{button.name}</Button>
-              </Link>
-            </Box>
-          ))}
-        </Box>
+        {accountButtons.map((button) => (
+          <Link component={NavLink} to={button.link}>
+            <Button>{button.name}</Button>
+          </Link>
+        ))}
       </Grid>
-      <Grid item xs={12} md={7}>
+      <Grid item xs={12} md={8}>
         <Routes>
           <Route path="details" element={<AccountDetails />} />
           <Route path="orders/*" element={<AccountOrdersWrapper />} />
           <Route path="address" element={<AccountAddress />} />
         </Routes>
       </Grid>
-    </Grid>
+    </Wrapper>
+
+    // </Grid>
   );
 };
 

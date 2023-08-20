@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Badge from "@mui/material/Badge";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import AdminCollections from "../components/AdminComponents/Collections/AdminCollections";
@@ -12,20 +12,12 @@ import AdminProducts from "../components/AdminComponents/Products/AdminProducts"
 import AdminUsers from "../components/AdminComponents/Users/AdminUsers";
 import AdminOrders from "../components/AdminComponents/Orders/AdminOrders";
 import AdminReviews from "../components/AdminComponents/Reviews/AdminReviews";
-import QuickView from "../components/AdminComponents/Orders/QuickView";
-import OrderSummary from "../components/OrderSummary/OrderSummary";
 import { getUnmoderatedReviews } from "../actions/reviewsActions";
 import { useTheme } from "@mui/material/styles";
+import Wrapper from "../components/Wrapper/Wrapper";
 
 const styles = {
   buttonsWrapper: (theme) => ({
-    background: "white",
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    // flexDirection: "column",
-    flexDirection: "row",
-    justifyContent: "space-around",
     padding: "10px",
     [theme.breakpoints.up("md")]: {
       height: "100%",
@@ -33,8 +25,6 @@ const styles = {
       justifyContent: "flex-start",
       height: "100vh",
     },
-
-    // alignItems: "center",
   }),
 };
 
@@ -87,39 +77,51 @@ const AdminScreen = () => {
   };
 
   return (
-    <Grid
-      container
-      sx={{
-        display: "flex",
-        justifyContent: "space-around",
-        alignItems: "flex-start",
-        flexDirection: "row",
-      }}
+    <Wrapper
+      gridContainer
+      width="100%"
+      direction="row"
+      justifyContent="space-around"
     >
-      <Grid item spacing={1} xs={12} md={2}>
-        <Box sx={styles.buttonsWrapper(theme)}>
-          {adminButtons.map((button) => (
-            <Box key={button.name}>
-              {badgeCounts[button.link] > 0 && (
-                <Link component={NavLink} to={button.link}>
-                  <Button>{button.name}</Button>
-                  <Badge
-                    badgeContent={badgeCounts[button.link]}
-                    color="secondary"
-                    sx={{ marginLeft: "0.5rem" }}
-                  />
-                </Link>
-              )}
-              {badgeCounts[button.link] === 0 && (
-                <Link component={NavLink} to={button.link}>
-                  <Button>{button.name}</Button>
-                </Link>
-              )}
-            </Box>
-          ))}
-        </Box>
+      {" "}
+      <Grid
+        item
+        xs={12}
+        md={3}
+        sx={{
+          display: "flex",
+          width: "100%",
+          flexDirection: "column",
+          alignItems: "flex-end",
+          borderRight: "1px solid grey",
+          [theme.breakpoints.down("md")]: {
+            alignItems: "center",
+            borderRight: "none",
+            borderBottom: "1px solid grey",
+          },
+        }}
+      >
+        {adminButtons.map((button) => (
+          <Box key={button.name}>
+            {badgeCounts[button.link] > 0 && (
+              <Link component={NavLink} to={button.link}>
+                <Button>{button.name}</Button>
+                <Badge
+                  badgeContent={badgeCounts[button.link]}
+                  color="secondary"
+                  sx={{ marginLeft: "0.5rem" }}
+                />
+              </Link>
+            )}
+            {badgeCounts[button.link] === 0 && (
+              <Link component={NavLink} to={button.link}>
+                <Button>{button.name}</Button>
+              </Link>
+            )}
+          </Box>
+        ))}
       </Grid>
-      <Grid item xs={12} md={9} sx={{ }}>
+      <Grid item xs={12} md={8}>
         <Routes>
           {" "}
           <Route path="collections" element={<AdminCollections />} />
@@ -129,7 +131,7 @@ const AdminScreen = () => {
           <Route path="reviews" element={<AdminReviews />} />
         </Routes>
       </Grid>
-    </Grid>
+    </Wrapper>
   );
 };
 

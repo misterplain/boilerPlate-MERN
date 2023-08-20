@@ -1,21 +1,11 @@
 const styles = {
-  pageWrapper: {
-    marginBottom: "30px",
-  },
   sectionWrapper: {
     margin: "40px 0px",
   },
   nameAndNewWrapper: {
-    display: "flex",
-    justifyContent: "space-between",
-    margin: "20px",
-    // background: "white",
+    margin: "0px 0px 10px 10px",
     color: "green",
     fontSize: "20px",
-  },
-  optionsWrapper: {
-    display: "flex",
-    justifyContent: "center",
   },
   stock: (stock) => ({
     color: stock > 0 ? "green" : "red",

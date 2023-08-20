@@ -1,7 +1,7 @@
 const styles = {
   cardWrapper: {
     // width: "80%",
-    width: "200px",
+    width: "190px",
     height: "auto",
     // height: "auto",
     display: "flex",

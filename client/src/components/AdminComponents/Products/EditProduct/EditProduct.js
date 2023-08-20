@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Radio from "@mui/material/Radio";
@@ -290,10 +291,17 @@ const EditProduct = () => {
                   id="formupload"
                   name="image"
                   className="form-control"
+                  style={{ display: "none" }}
                 />
-                <label className="form-label" htmlFor="form4Example2">
-                  New Image
-                </label>
+                <Box>
+                  <Button
+                    onClick={() => {
+                      inputFileRef.current.click();
+                    }}
+                  >
+                    Upload Photo
+                  </Button>
+                </Box>
               </Box>
 
               <Box

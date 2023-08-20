@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useSelector, useDispatch } from "react-redux";
@@ -7,32 +7,16 @@ import CheckoutAddress from "../components/Checkout/Address/CheckoutAddress";
 import CheckoutPayment from "../components/Checkout/Payment/CheckoutPayment";
 import CheckoutSummary from "../components/Checkout/Summary/CheckoutSummary";
 import OrderConfirmation from "../components/Checkout/Confirmation/OrderConfirmation";
+import Wrapper from "../components/Wrapper/Wrapper";
 
-const styles = {
-  wrapper: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  stepsWrapper: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    padding: "1rem",
-  },
-};
 
 const CheckoutScreen = () => {
   const dispatch = useDispatch();
 
   const userAuthState = useSelector((state) => state.userAuth);
   const { authenticated } = userAuthState;
-  const userDetailsState = useSelector((state) => state.userDetails);
-  const { products } = useSelector((state) => state.productList);
-  const { email, username, isAdmin } = userDetailsState?.userDetails || {};
   const orderState = useSelector((state) => state.userOrder);
   const { cartItems, emailAddress, shippingAddress, isPaid } = orderState;
-  const token = userAuthState?.accessToken;
 
   const [step, setStep] = useState(1);
 
@@ -54,8 +38,14 @@ const CheckoutScreen = () => {
   };
 
   return (
-    <Box sx={styles.wrapper}>
-      <Box sx={styles.stepsWrapper}>
+    <Wrapper flexDirection="column">
+      <Wrapper
+        justifyContent="space-around"
+        alignItems="center"
+        customStyles={{
+          padding: "1rem",
+        }}
+      >
         {!authenticated && (
           <Button
             variant="contained"
@@ -86,9 +76,9 @@ const CheckoutScreen = () => {
         >
           Payment
         </Button>
-      </Box>
-      <Box sx={styles.renderedComponent}>{renderStep()}</Box>
-    </Box>
+      </Wrapper>
+      <Box>{renderStep()}</Box>
+    </Wrapper>
   );
 };
 
