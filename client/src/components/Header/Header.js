@@ -6,34 +6,27 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Input from "@mui/material/Input";
-import FilledInput from "@mui/material/FilledInput";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-import FormHelperText from "@mui/material/FormHelperText";
 import TextField from "@mui/material/TextField";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import { logoutUser } from "../../actions/authActions";
 import { useCartDrawer } from "../../context/CartDrawerContext";
-
 import { CgProfile } from "react-icons/cg";
 import Badge from "@mui/material/Badge";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import TuneIcon from "@mui/icons-material/Tune";
-
-import styles from "./styles";
 import CartDrawer from "../CartDrawer/CartDrawer";
 import { fetchFilteredProducts } from "../../actions/shopActions";
 import { useSnackbar } from "notistack";
 import { snackbarDispatch } from "../../utils/snackbarDispatch";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
+import { setShopToCollection } from "../../actions/shopActions"
+
+import styles from "./styles";
 
 const Header = ({ isActive }) => {
   const dispatch = useDispatch();
@@ -96,8 +89,37 @@ const Header = ({ isActive }) => {
 
   //collection
   const [collection, setCollection] = useState("");
-  const handleCollectionChange = (event) => {
-    setCollection(event.target.value);
+  const handleCollectionChange = (e) => {
+    const value = e.target.value;
+    if (
+      value === "All"
+    ) {
+      setCollection(value);
+      snackbarDispatch(
+        dispatch(
+          setShopToCollection(value, collections, {
+            singleCollection: false,
+          })
+        ),
+        "Collection Filtered",
+        "Error Filtering",
+        enqueueSnackbar,
+        [() => navigate("/shop")]
+      )
+    } else {
+      setCollection(value);
+      snackbarDispatch(
+        dispatch(
+          setShopToCollection(value, collections, {
+            singleCollection: true,
+          })
+        ),
+        "Collection Filtered",
+        "Error Filtering",
+        enqueueSnackbar,
+        [() => navigate("/shop")]
+      )
+    }
   };
   return (
     <>
@@ -127,19 +149,15 @@ const Header = ({ isActive }) => {
                   <IconButton
                     aria-label="toggleFilter"
                     onClick={handleSearchBar}
-                    // onMouseDown={handleMouseDownPassword}
                     edge="end"
                   >
-                    {/* {showPassword ? <VisibilityOff /> : <Visibility />} */}
                     <SearchIcon />
                   </IconButton>
                   <IconButton
                     aria-label="toggleFilter"
-                    // onClick={handleClickShowPassword}
-                    // onMouseDown={handleMouseDownPassword}
+                    onClick={() => navigate("/shop")}
                     edge="end"
                   >
-                    {/* {showPassword ? <VisibilityOff /> : <Visibility />} */}
                     <TuneIcon />
                   </IconButton>
                 </>
@@ -155,18 +173,15 @@ const Header = ({ isActive }) => {
             }}
             size="small"
           >
-            {/* {!collection && (
-              <InputLabel id="demo-select-small-label">Collections</InputLabel>
-            )} */}
             <InputLabel id="demo-select-small-label">Collections</InputLabel>
             <Select
               labelId="collectionLabel"
               id="collectionLabel"
               value={collection}
               label="Collections"
-              onChange={handleCollectionChange}
+              onChange={(e) => {handleCollectionChange(e)}}
             >
-              <MenuItem value={43345345}>All</MenuItem>
+              <MenuItem value={"All"}>All</MenuItem>
               {collections?.map((collection) => (
                 <MenuItem value={collection._id} key={collection._id}>
                   {collection.name}
@@ -176,21 +191,8 @@ const Header = ({ isActive }) => {
           </FormControl>
         </Box>
         <Box sx={styles.linksWrapper}>
-          <Link component={NavLink} to="/shop">
-            <Button variant="outlined" color="secondary">
-              Shop
-            </Button>
-          </Link>
           {authenticated ? (
             <>
-              {/* <Typography sx={styles.headerButton} marginRight>
-                {username ? username : null}
-              </Typography> */}
-              {/* {isAdmin && (
-                <Link component={NavLink} to="/admin">
-                  <Button variant="contained">Admin Panel</Button>
-                </Link>
-              )} */}
 
               <Button onClick={handleOpenCart}>
                 {" "}

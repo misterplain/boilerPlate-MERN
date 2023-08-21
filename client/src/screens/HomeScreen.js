@@ -58,7 +58,7 @@ const HomeScreen = () => {
                 to={"/shop"}
                 key={collection._id}
                 onClick={() => {
-                  dispatch(setShopToCollection(collection._id, collections));
+                  dispatch(setShopToCollection(collection._id, collections, {singleCollection: true}));
                 }}
               >
                 <CollectionCard collection={collection} />

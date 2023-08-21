@@ -360,7 +360,7 @@ const getFilteredProducts = async (req, res) => {
       filteredProducts,
       maxPrice: maxPriceItem.price,
     };
-    console.log(reply)
+    // console.log(reply.filteredProducts.length())
     res.status(200).json(reply);
   } catch (error) {
     console.log(error);

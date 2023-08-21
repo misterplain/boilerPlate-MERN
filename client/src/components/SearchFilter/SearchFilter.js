@@ -33,21 +33,20 @@ const SearchFilter = () => {
   const { collections } = collectionsList;
 
   //filter/
-  const [sort, setSort] = React.useState(
-    filters?.sortBy ? filters?.sortBy : ""
-  );
+  const [sort, setSort] = useState(filters?.sortBy ? filters?.sortBy : "");
   const handleFilterChange = (event) => {
     setSort(event.target.value);
   };
 
   //search
-  const [search, setSearch] = React.useState(
+  const [search, setSearch] = useState(
     filters?.searchQuery ? filters?.searchQuery : ""
   );
   const handleSearchChange = (event) => {
     setSearch(event.target.value);
   };
 
+  //collections
   const initialCheckboxState = collections?.reduce((acc, collection) => {
     acc[collection._id] = filters.collections
       ? filters.collections[collection._id]
@@ -68,11 +67,12 @@ const SearchFilter = () => {
 
   //useEffect to handle navigate from home page
   useEffect(() => {
-    console.log(collectionsSelected);
-    setCollectionsSelected((prevState) => ({
-      ...prevState,
-      ...filters?.collections,
-    }));
+    if (filters?.collections) {
+      setCollectionsSelected(filters?.collections);
+    }
+    if (!filters.collections) {
+      setCollectionsSelected(initialCheckboxState);
+    }
     setSearch((prevState) =>
       filters?.searchQuery ? filters?.searchQuery : ""
     );
@@ -157,7 +157,9 @@ const SearchFilter = () => {
                   key={collection._id}
                   control={
                     <Checkbox
-                      checked={collectionsSelected[collection._id]}
+                      checked={
+                        collectionsSelected[collection._id] ? true : false
+                      }
                       onChange={handleCollectionChange}
                       name={collection._id}
                       value={collection._id}

@@ -29,23 +29,9 @@ const SearchResults = () => {
         }}
       >
 
-        {/* {products &&
-          products.map((product) => (
-            <Grid
-            item
-            xs={5}
-            sm={3}
-            md={4}
-            lg={3}
-            key={product._id}
-            sx={{ display: "flex", alignItems: "stretch" }}
-          >
-            <ProductCard product={product} />
-          </Grid>
-          ))} */}
           <Box sx={styles.productCardsWrapper}>
           {products &&
-          products.map((product) => (
+          products?.map((product) => (
 
             <ProductCard product={product} key={product._id}/>
 

@@ -23,7 +23,7 @@ const fetchFilteredProducts = (filterQuery) => async (dispatch) => {
       payload: data,
       filterQuery: filterQuery,
     });
-    return Promise.resolve()
+    return Promise.resolve();
   } catch (error) {
     console.log(error);
 
@@ -31,16 +31,24 @@ const fetchFilteredProducts = (filterQuery) => async (dispatch) => {
       type: FILTERED_PRODUCTS_FAIL,
       payload: error.response.data.message,
     });
-    return Promise.reject()
+    return Promise.reject();
   }
 };
 
 const setShopToCollection =
-  (collectionId, allCollections) => async (dispatch) => {
+  (collectionId, allCollections, options={}) => async (dispatch) => {
+ const {singleCollection } = options;
 
-    const filterQuery = {
+    const filterQuerySingle = {
       collections: allCollections.reduce((acc, collection) => {
         acc[collection._id] = collection._id === collectionId;
+        return acc;
+      }, {}),
+    };
+
+    const filterQueryAll = {
+      collections: allCollections.reduce((acc, collection) => {
+        acc[collection._id] = true;
         return acc;
       }, {}),
     };
@@ -50,20 +58,23 @@ const setShopToCollection =
     });
     try {
       const data = await axios.post(`/product/get/filter`, {
-        filterObject: filterQuery,
+        filterObject:
+          singleCollection === true ? filterQuerySingle : filterQueryAll,
       });
 
       dispatch({
         type: SHOP_COLLECTION_SUCCESS,
         payload: data,
-        filterQuery: filterQuery,
+        filterQuery: singleCollection === true ? filterQuerySingle : filterQueryAll,
       });
+      return Promise.resolve()
     } catch (error) {
       console.log(error);
       dispatch({
         type: SHOP_COLLECTION_FAIL,
         payload: error.response.data.message,
       });
+      return Promise.reject()
     }
   };
 
