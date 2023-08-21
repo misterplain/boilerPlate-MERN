@@ -63,3 +63,5 @@
 22. [ ] Collections as dropdown menu
 23. [ ] Refresh on product/collections page, re-load if nothing in redux state
 24. [ ] consider: Admin level styling
+25. [x] Add search bar in header and snackbar dispatch, redirect to shop
+26. [ ] Custom wrapper component used for flexboxes and grid containers 

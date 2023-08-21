@@ -5,7 +5,16 @@ const cloudinary = require("../utils/cloudinary");
 //new product
 //protected route - admin only
 const newProduct = async (req, res) => {
-  const { collectionId, name, price, images, description, stock, isDisplayed, isFeatured} = req.body;
+  const {
+    collectionId,
+    name,
+    price,
+    images,
+    description,
+    stock,
+    isDisplayed,
+    isFeatured,
+  } = req.body;
   const { isAdmin } = req;
 
   if (!isAdmin) {
@@ -26,9 +35,7 @@ const newProduct = async (req, res) => {
       height: 300,
       crop: "fill",
       gravity: "center",
-      eager: [
-        { width: 1000, height: 600, crop: "fill", gravity: "face:auto" },
-      ],
+      eager: [{ width: 1000, height: 600, crop: "fill", gravity: "face:auto" }],
     });
 
     const newProduct = await Product.create({
@@ -298,13 +305,15 @@ const getFilteredProducts = async (req, res) => {
     ];
   }
 
-  // Handle collections, first turn it into a array, check the length, then use $in function
-  const selectedCollectionIds = Object.keys(filterObject.collections).filter(
-    (key) => filterObject.collections[key]
-  );
-  // console.log(selectedCollectionIds);
-  if (selectedCollectionIds.length > 0) {
-    query.collectionId = { $in: selectedCollectionIds };
+  if (filterObject.collections) {
+    // Handle collections, first turn it into a array, check the length, then use $in function
+    const selectedCollectionIds = Object.keys(filterObject?.collections).filter(
+      (key) => filterObject.collections[key]
+    );
+    // console.log(selectedCollectionIds);
+    if (selectedCollectionIds.length > 0) {
+      query.collectionId = { $in: selectedCollectionIds };
+    }
   }
 
   // Handle priceRange
@@ -351,6 +360,7 @@ const getFilteredProducts = async (req, res) => {
       filteredProducts,
       maxPrice: maxPriceItem.price,
     };
+    console.log(reply)
     res.status(200).json(reply);
   } catch (error) {
     console.log(error);

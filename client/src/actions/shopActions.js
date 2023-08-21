@@ -23,6 +23,7 @@ const fetchFilteredProducts = (filterQuery) => async (dispatch) => {
       payload: data,
       filterQuery: filterQuery,
     });
+    return Promise.resolve()
   } catch (error) {
     console.log(error);
 
@@ -30,6 +31,7 @@ const fetchFilteredProducts = (filterQuery) => async (dispatch) => {
       type: FILTERED_PRODUCTS_FAIL,
       payload: error.response.data.message,
     });
+    return Promise.reject()
   }
 };
 

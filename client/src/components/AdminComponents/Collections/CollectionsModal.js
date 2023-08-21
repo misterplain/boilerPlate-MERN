@@ -14,7 +14,6 @@ import axios from "../../../api/axios";
 import {
   createNewCollection,
   updateCollection,
-  deleteCollection,
 } from "../../../actions/collectionsActions";
 import AlertMessage from "../../AlertMessage/AlertMessage";
 import { useSnackbar } from "notistack";
@@ -42,19 +41,12 @@ const styles = {
 
 const CollectionsModal = ({ open, handleClose, collection, productId }) => {
   const dispatch = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
   const userAuthState = useSelector((state) => state.userAuth);
-  const { authenticated } = userAuthState;
+  const { enqueueSnackbar } = useSnackbar();
   const token = userAuthState?.accessToken;
-  const userDetailsState = useSelector((state) => state.userDetails);
-  const userDetails = userDetailsState?.userDetails || {};
-  const { userId } = userDetails;
   const collectionsState = useSelector((state) => state.collections);
-  const { photoUrl, photoId, collectionModalError } = collectionsState;
+  const { collectionModalError } = collectionsState;
   const [pexelError, setPexelError] = useState("");
-
-  const reviewsState = useSelector((state) => state.reviews);
-  const { reviews } = reviewsState || {};
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Required"),
@@ -163,11 +155,8 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
               {({
                 handleSubmit,
                 handleChange,
-                handleBlue,
                 values,
-                isValid,
                 errors,
-                touched,
               }) => (
                 <form
                   onSubmit={handleSubmit}
@@ -212,9 +201,13 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
                         justifyContent: "center",
                       }}
                     >
-                      <Button onClick={()=>{
-                        inputFileRef.current.click();
-                      }}>Upload Photo</Button>
+                      <Button
+                        onClick={() => {
+                          inputFileRef.current.click();
+                        }}
+                      >
+                        Upload Photo
+                      </Button>
                     </Box>
                     <Button onClick={() => fetchPexelImage(token, values.name)}>
                       FETCH FROM PEXEL BASED ON COLLECTION NAME

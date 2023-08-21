@@ -11,7 +11,7 @@ import { useTheme } from "@mui/material/styles";
 import RatingIcons from "../RatingIcons/RatingIcons";
 
 import styles from "./styles";
-import { productStyles } from "../AdminComponents/Collections/styles";
+// import { productStyles } from "../AdminComponents/Collections/styles";
 
 const ProductCard = ({ product }) => {
 

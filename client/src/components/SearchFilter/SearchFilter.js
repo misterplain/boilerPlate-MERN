@@ -73,7 +73,10 @@ const SearchFilter = () => {
       ...prevState,
       ...filters?.collections,
     }));
-  }, [filters?.collections]);
+    setSearch((prevState) =>
+      filters?.searchQuery ? filters?.searchQuery : ""
+    );
+  }, [filters?.collections, filters?.searchQuery]);
 
   //price
   const [price, setPrice] = React.useState([0, maxPrice ? maxPrice : 1000]);

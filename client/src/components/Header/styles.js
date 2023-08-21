@@ -1,10 +1,13 @@
+
+
 const styles = {
     wrapper: (theme)=>({
         width: "100%",
-        height: "50px",
+        height: "60px",
         boxSizing: "border-box",
         display: "flex",
         justifyContent: "space-between",
+        alignItems: "center",
         backgroundColor: "#b3b3cc",
         padding: "0 15px",
         margin: "0 0px",
@@ -62,3 +65,4 @@ const styles = {
 }
 
 export default styles
+

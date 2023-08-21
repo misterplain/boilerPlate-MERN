@@ -1,43 +1,14 @@
-import React, { useState, useEffect } from "react";
-import Typography from "@mui/material/Typography";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import AlertMessage from "../../AlertMessage/AlertMessage";
 import { useSelector, useDispatch } from "react-redux";
-import { Route, Routes, Navigate } from "react-router-dom";
-import { NavLink } from "react-router-dom";
-import { Link } from "@mui/material";
-import { cancelOrder, editOrder } from "../../../actions/orderHistoryActions";
 import { filterPeriod } from "../../../actions/orderHistoryActions";
-import { format } from "date-fns";
-import AdvancedSearch from "./AdvancedSearch";
-import OrderSummary from "../../OrderSummary/OrderSummary";
 import OrderSnapshot from "../../OrderSnapshot/OrderSnapshot";
-
-const styles = {
-  wrapper: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  timeSelect: {
-    display: "flex",
-    justifyContent: "center",
-    margin: "1rem 0",
-  },
-  orderWrapper: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    borderBottom: "1px solid grey",
-    margin: "0.5rem",
-    padding: "0.5rem",
-  },
-};
+import Wrapper from "../../Wrapper/Wrapper";
 
 const QuickView = () => {
   const dispatch = useDispatch();
@@ -47,38 +18,19 @@ const QuickView = () => {
   const userAuthState = useSelector((state) => state.userAuth);
   const token = userAuthState?.accessToken;
 
-  function formatDate(date) {
-    return new Intl.DateTimeFormat().format(new Date(date));
-  }
-
-  function getOrderStatus(order) {
-    if (order.isCancelled) {
-      return "Cancelled";
-    }
-    if (!order.isShippedToCourier && !order.isCancelled) {
-      return "In Production";
-    }
-    if (order.isShippedToCourier && order.isDelivered) {
-      return "Delivered";
-    }
-    if (order.isShippedToCourier && !order.isDelivered) {
-      return "Shipped To Courier";
-    }
-    return "Unknown";
-  }
 
   const [time, setTime] = useState(quickView ? quickView : 30);
 
   const handleChange = (event) => {
     setTime(event.target.value);
-    // dispatch(filterPeriod(event.target.value, token));
   };
 
   return (
-    <Box sx={styles.wrapper}>
+    <Wrapper id="pageWrapper" flexDirection="column">
       {" "}
       {error && <AlertMessage type="error">{error}</AlertMessage>}
-      <Box sx={styles.timeSelect}>
+      <Wrapper id="timeSelect" justifyContent="center">
+        {" "}
         <FormControl>
           <InputLabel id="timePeriod">Period</InputLabel>
           <Select
@@ -98,17 +50,23 @@ const QuickView = () => {
             <MenuItem value={731}>Archive (+2 years)</MenuItem>
           </Select>
         </FormControl>
-        <Button variant="outlined" color="secondary" onClick={()=>    dispatch(filterPeriod(time, token))}>Search</Button>
-      </Box>{" "}
-      <Box>
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={() => dispatch(filterPeriod(time, token))}
+        >
+          Search
+        </Button>
+      </Wrapper>
+      <Wrapper id="ordersWrapper" flexDirection="column">
         {" "}
         {orders
           ?.sort((a, b) => new Date(b.datePlaced) - new Date(a.datePlaced))
           .map((order) => (
-            <OrderSnapshot order={order} isAdmin={true}/>
+            <OrderSnapshot order={order} isAdmin={true} />
           ))}
-      </Box>
-    </Box>
+      </Wrapper>
+    </Wrapper>
   );
 };
 

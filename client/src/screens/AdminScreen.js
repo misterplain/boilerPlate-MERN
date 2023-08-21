@@ -8,13 +8,13 @@ import { Route, Routes } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import AdminCollections from "../components/AdminComponents/Collections/AdminCollections";
-import AdminProducts from "../components/AdminComponents/Products/AdminProducts";
 import AdminUsers from "../components/AdminComponents/Users/AdminUsers";
 import AdminOrders from "../components/AdminComponents/Orders/AdminOrders";
 import AdminReviews from "../components/AdminComponents/Reviews/AdminReviews";
 import { getUnmoderatedReviews } from "../actions/reviewsActions";
 import { useTheme } from "@mui/material/styles";
 import Wrapper from "../components/Wrapper/Wrapper";
+import AddEditProduct from "../components/AdminComponents/Collections/AddEditProduct"
 
 const styles = {
   buttonsWrapper: (theme) => ({
@@ -34,11 +34,6 @@ const adminButtons = [
     link: "collections",
     component: "Collections",
   },
-  // {
-  //   name: "Products",
-  //   link: "products",
-  //   component: "Products",
-  // },
   // {
   //   name: "Users",
   //   link: "users",
@@ -125,7 +120,8 @@ const AdminScreen = () => {
         <Routes>
           {" "}
           <Route path="collections" element={<AdminCollections />} />
-          <Route path="products/*" element={<AdminProducts />} />
+          <Route path="addeditproduct/" element={<AddEditProduct />} />
+          <Route path="addeditproduct/:productId" element={<AddEditProduct />} />
           <Route path="users" element={<AdminUsers />} />
           <Route path="orders/*" element={<AdminOrders />} />
           <Route path="reviews" element={<AdminReviews />} />
