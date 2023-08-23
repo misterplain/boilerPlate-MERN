@@ -14,6 +14,7 @@ import {
 } from "../../actions/cartActions";
 import { useCartDrawer } from "../../context/CartDrawerContext";
 import { useSnackbar } from "notistack";
+import Wrapper from "../Wrapper/Wrapper";
 
 import styles from "./styles";
 
@@ -24,7 +25,6 @@ const CartItems = () => {
 
   const userAuthState = useSelector((state) => state.userAuth);
   const { authenticated } = userAuthState;
-  const userDetailsState = useSelector((state) => state.userDetails);
   const { products } = useSelector((state) => state.productList);
   const cartState = useSelector((state) => state.shoppingCart);
   const { cartItems } = cartState;
@@ -134,84 +134,102 @@ const CartItems = () => {
   };
 
   return (
-    <Box sx={styles.wrapper}>
-      {cartItems?.length === 0 ? (
-        <Box sx={styles.emptyCart}>
-          <Typography variant="h5">Your cart is empty</Typography>
-        </Box>
-      ) : (
-        <>
-          <Box sx={styles.cartTitle}>
-            <Typography variant="h5">Your cart</Typography>
-          </Box>
-          <Box sx={styles.cartItemsWrapper}>
-            {detailedCartItems &&
-              detailedCartItems?.map((item) => {
-                if (!item.product) {
-                  return null;
-                }
-                return (
-                  <Box sx={styles.cartItem} key={item.product._id}>
-                    <Box sx={styles.imageTitleDeleteWrapper}>
-                      {" "}
-                      <Link
-                        component={NavLink}
-                        to={`/product/${item.product._id}`}
-                        onClick={() => {
-                          cartDrawerContext.setIsOpen(false);
-                        }}
-                      >
-                        <Box sx={styles.imageTitle}>
-                          <Box
-                            sx={styles.image}
-                            component="img"
-                            src={
-                              item.product.images.length >= 1
-                                ? item.product.images[0].url
-                                : "https://placehold.co/80x80"
-                            }
-                          />
-                          <Box sx={styles.title}>{item.product.name}</Box>
-                        </Box>{" "}
-                      </Link>
-                      <Box
-                        sx={styles.deleteWrapper}
-                        onClick={() => {
-                          handleDeleteItem(item);
-                        }}
-                      >
-                        <DeleteOutlineIcon />
-                      </Box>
+    <Wrapper
+      id="componentWrapper"
+      flexDirection="row"
+      justifyContent="center"
+    >
+      <Wrapper id="cartTitle" justifyContent="center">
+        <Typography variant="h5" sx={{ textAlign: "center" }}>
+          {cartItems?.length === 0 ? "Your cart is empty" : "Your cart"}
+        </Typography>
+      </Wrapper>
+
+      {cartItems?.length > 0 && (
+        <Wrapper
+          id="cartItems"
+          justifyContent="column"
+        >
+          {detailedCartItems &&
+            detailedCartItems?.map((item) => {
+              if (!item.product) {
+                return null;
+              }
+              return (
+                <Wrapper id="cartItem" key={item.product._id}>
+                  <Wrapper
+                    id="imageTitleDeleteWrapper"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <Link
+                      component={NavLink}
+                      to={`/product/${item.product._id}`}
+                      onClick={() => {
+                        cartDrawerContext.setIsOpen(false);
+                      }}
+                    >
+                      {/* <Box sx={styles.imageTitle}> */}
+                      <Wrapper alignItems="center">
+                        {" "}
+                        <Box
+                          sx={styles.image}
+                          component="img"
+                          src={
+                            item.product.images.length >= 1
+                              ? item.product.images[0].url
+                              : "https://placehold.co/80x80"
+                          }
+                        />
+                        <Typography marginLeft>{item.product.name}</Typography>
+                      </Wrapper>
+
+                      {/* </Box>{" "} */}
+                    </Link>
+                    <Box
+                      onClick={() => {
+                        handleDeleteItem(item);
+                      }}
+                    >
+                      <DeleteOutlineIcon />
+                    </Box>
+                  </Wrapper>
+                  <Wrapper
+                    id="optionsWrapper"
+                    justifyContent="space-between"
+                    customStyles={{
+                      margin: "10px",
+                      borderBottom: "1px solid grey",
+                      padding: "10px",
+                    }}
+                  >
+                    {" "}
+                    <Box sx={styles.cartItemInfoWrapper}>
+                      <Typography>Price-{" "}</Typography>
+                      <Typography>${cartItemTotal(item)}</Typography>
                     </Box>
                     <Box sx={styles.cartItemInfoWrapper}>
-                      <Box sx={styles.cartItemInfoText}>Price</Box>
-                      <Box sx={styles.cartItemInfo}>${cartItemTotal(item)}</Box>
-                    </Box>
-                    <Box sx={styles.cartItemInfoWrapper}>
-                      <Box sx={styles.cartItemInfoText}>Quantity</Box>
-                      <Box sx={styles.quantity}>
                         <Box
                           sx={styles.quantityIcon}
                           onClick={() => handleIncreaseQuantity(item)}
                         >
                           <AiOutlinePlus />
                         </Box>
-                        <Box sx={styles.cartItemInfo}>{item.quantity}</Box>
+                        <Typography variant="body1">{item.quantity}</Typography>
                         <Box
                           sx={styles.quantityIcon}
                           onClick={() => handleDecreaseQuantity(item)}
                         >
                           <AiOutlineMinus />
                         </Box>
-                      </Box>
                     </Box>
-                  </Box>
-                );
-              })}
-          </Box>
-        </>
+                  </Wrapper>
+                </Wrapper>
+              );
+            })}
+        </Wrapper>
       )}
-    </Box>
+    </Wrapper>
   );
 };
 

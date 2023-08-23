@@ -5,9 +5,8 @@ import { CartDrawerProvider } from "../../context/CartDrawerContext";
 
 const styles = {
   wrapper: (theme) => ({
-    // border: "1px solid #000",
-    // height: "100vh",
-    // width: "100vw",
+    height: "100vh",
+    width: "100vw",
   }),
 };
 

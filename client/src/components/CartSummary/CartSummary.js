@@ -8,8 +8,7 @@ import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import { setInitialOrderInfo } from "../../actions/userOrderActions";
 import { useCartDrawer } from "../../context/CartDrawerContext";
-
-import styles from "./styles";
+import Wrapper from "../Wrapper/Wrapper";
 
 const CartSummary = () => {
   const dispatch = useDispatch();
@@ -36,51 +35,54 @@ const CartSummary = () => {
   }, 0);
 
   return (
-    <Box sx={styles.wrapper}>
-      <Box sx={styles.pricesWrapper}>
-        <Box sx={styles.price}>
+    <Wrapper id="componentWrapper" flexDirection="column">
+      <Wrapper id="pricesWrapper" flexDirection="column">
+        <Wrapper id="priceItem" justifyContent="space-between">
+          {" "}
           <Typography variant="h6">Free Shipping</Typography>
           <Typography variant="body1">$0</Typography>
-        </Box>
-        <Box sx={styles.price}>
+        </Wrapper>
+        <Wrapper id="priceItem" justifyContent="space-between">
+          {" "}
           <Typography variant="h6">Total</Typography>
           <Typography variant="body1">${cartTotal}</Typography>
-        </Box>
-      </Box>
-      <Box sx={styles.buttonsWrapper}>
-        <Box sx={styles.button}>
-          <Button
-            onClick={() => {
-              cartDrawerContext.setIsOpen(false);
-              navigate("/");
-            }}
-          >
-            Continue shopping
-          </Button>
-        </Box>
-        {detailedCartItems && detailedCartItems.length !== 0 && (
-          <Box sx={styles.button}>
-            <Link component={NavLink} to="/checkout">
-              {" "}
-              <Button
-                onClick={() => {
-                  dispatch(
-                    setInitialOrderInfo({
-                      isGuest,
-                      cartItems,
-                      totalPrice: cartTotal,
-                    })
-                  );
-                  cartDrawerContext.setIsOpen(false);
-                }}
-              >
-                Proceed to checkout
-              </Button>
-            </Link>
+        </Wrapper>
+      </Wrapper>
+        <Wrapper id="buttonsWrapper">
+          {" "}
+          <Box >
+            <Button
+              onClick={() => {
+                cartDrawerContext.setIsOpen(false);
+                navigate("/");
+              }}
+            >
+              Continue shopping
+            </Button>
           </Box>
-        )}
-      </Box>
-    </Box>
+          {detailedCartItems && detailedCartItems.length !== 0 && (
+            <Box>
+              <Link component={NavLink} to="/checkout">
+                {" "}
+                <Button
+                  onClick={() => {
+                    dispatch(
+                      setInitialOrderInfo({
+                        isGuest,
+                        cartItems,
+                        totalPrice: cartTotal,
+                      })
+                    );
+                    cartDrawerContext.setIsOpen(false);
+                  }}
+                >
+                  Proceed to checkout
+                </Button>
+              </Link>
+            </Box>
+          )}
+        </Wrapper>
+    </Wrapper>
   );
 };
 

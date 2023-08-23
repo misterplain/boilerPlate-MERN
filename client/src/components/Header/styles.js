@@ -1,5 +1,4 @@
 
-
 const styles = {
     wrapper: (theme)=>({
         width: "100%",
@@ -9,19 +8,19 @@ const styles = {
         justifyContent: "space-between",
         alignItems: "center",
         backgroundColor: "#b3b3cc",
-        padding: "0 15px",
-        margin: "0 0px",
+        padding: "0px 15px",
+        margin: "0px",
         [theme.breakpoints.up("sm")]: {
-            padding: "0 15px",
-            margin: "0",
+            padding: "0px 15px",
+            margin: "0px",
         },
         [theme.breakpoints.up("md")]: {
-            padding: "0 30px",
-            margin: "0",
+            padding: "0px 30px",
+            margin: "0px",
         },
         [theme.breakpoints.up("lg")]: {
-            padding: "0 40px",
-            margin: "0",
+            padding: "0px 40px",
+            margin: "0px",
         },
 
     }),
@@ -30,6 +29,15 @@ const styles = {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
+    }),
+    collections: (theme)=>({
+        minWidth: 150,
+        background: "white",
+        borderRadius: "5px",
+        margin: "0px 5px",
+        [theme.breakpoints.down("md")]: {
+            display: "none"
+        }
     }),
     logo: (theme)=>({
         width: "100%",

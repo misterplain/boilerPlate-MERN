@@ -1,12 +1,23 @@
-import React from 'react'
+import React from "react";
 import Box from "@mui/material/Box";
-
-import styles from "./styles";
+import Typography from "@mui/material/Typography";
+import Wrapper from "../Wrapper/Wrapper";
 
 const Footer = () => {
   return (
-    <Box sx={styles.footerWrapper}></Box>
-  )
-}
+    <Wrapper
+      customStyles={{
+        position: "fixed",
+        bottom: "2%",
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+      }}
+    >
+      <Typography>Footer</Typography>
+    </Wrapper>
+  );
+};
 
-export default Footer
+export default Footer;

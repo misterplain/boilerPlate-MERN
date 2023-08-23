@@ -29,6 +29,7 @@ const CartDrawer = () => {
         open={isOpen}
         onClose={toggleDrawer(false)}
         onOpen={toggleDrawer(true)}
+        sx={{width: "0px"}}
       >
         {list()}
       </SwipeableDrawer>

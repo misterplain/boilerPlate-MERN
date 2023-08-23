@@ -7,10 +7,7 @@ import {
   placeNewUserOrder,
   placeNewOrderGuest,
 } from "../../../actions/userOrderActions";
-
-const styles = {
-  wrapper: {},
-};
+import Wrapper from "../../Wrapper/Wrapper";
 
 const CheckoutPayment = ({ proceedToNextStep }) => {
   const dispatch = useDispatch();
@@ -40,9 +37,10 @@ const CheckoutPayment = ({ proceedToNextStep }) => {
   };
 
   return (
-    <Box sx={styles.wrapper}>
-      <Button onClick={() => payAndProceed()}>Pay</Button>
-    </Box>
+    <Wrapper justifyContent="center">
+      {" "}
+      <Button size="large" variant="outlined" color="success" sx={{marginTop: "50px"}}onClick={() => payAndProceed()}>Payment functionality coming soon, for now it's just a button</Button>
+    </Wrapper>
   );
 };
 

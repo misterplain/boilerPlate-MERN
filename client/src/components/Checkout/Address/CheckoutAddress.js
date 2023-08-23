@@ -10,12 +10,7 @@ import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { setShippingAddress } from "../../../actions/userOrderActions";
-
-const styles = {
-  wrapper: {
-    border: "1px solid black",
-  },
-};
+import Wrapper from "../../Wrapper/Wrapper";
 
 const validationSchema = Yup.object({
   street: Yup.string().required("Address is required"),
@@ -36,14 +31,19 @@ const CheckoutAddress = ({ proceedToNextStep }) => {
   const { authenticated } = userAuthState;
 
   return (
-    <Box sx={styles.wrapper}>
-      {authenticated && (
-        <Box sx={styles.userAddresses}>
+    <Wrapper id="pageWrapper" justifyContent="space-around" width="100%" customSty> 
+      {authenticated && userDetails && userDetails?.addresses?.length >= 1 && (
+        <Wrapper
+          id="existingAddresses"
+          width="30%"
+          flexDirection="column"
+          alignItems="center"
+        >
           <Typography>Use an existing address</Typography>
-          <Box>
+          <Wrapper justifyContent="center">
             {" "}
             {userDetails?.addresses?.map((address) => (
-              <Box key={address._id}>
+              <Box key={address._id} sx={{border: "1px solid grey", padding: "10px", borderRadius: "10px", margin: "10px"}}>
                 <Typography variant="body1">{address.street}</Typography>
                 <Typography variant="body1">{address.city}</Typography>
                 <Typography variant="body1">{address.postalCode}</Typography>
@@ -54,6 +54,7 @@ const CheckoutAddress = ({ proceedToNextStep }) => {
                 <Button
                   variant="contained"
                   color="success"
+        
                   onClick={() => {
                     const shippingAddress = {
                       street: address.street,
@@ -69,11 +70,10 @@ const CheckoutAddress = ({ proceedToNextStep }) => {
                 </Button>
               </Box>
             ))}
-          </Box>
-        </Box>
+          </Wrapper>
+        </Wrapper>
       )}
-
-      <Box sx={styles.newAddress}>
+      <Wrapper id="newAddress" width="50%">
         {" "}
         <Formik
           initialValues={{
@@ -106,8 +106,16 @@ const CheckoutAddress = ({ proceedToNextStep }) => {
             errors,
             touched,
           }) => (
-            <form onSubmit={handleSubmit}>
-              <FormControl>
+            <form
+              onSubmit={handleSubmit}
+              style={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <FormControl fullWidth>
                 <FormLabel id="street">Address</FormLabel>
                 <FormGroup>
                   <TextField
@@ -120,8 +128,7 @@ const CheckoutAddress = ({ proceedToNextStep }) => {
                   />
                 </FormGroup>
               </FormControl>
-              <hr></hr>
-              <FormControl>
+              <FormControl fullWidth>
                 <FormLabel id="city">Town/City</FormLabel>
                 <FormGroup>
                   <TextField
@@ -134,8 +141,7 @@ const CheckoutAddress = ({ proceedToNextStep }) => {
                   />
                 </FormGroup>
               </FormControl>
-              <hr></hr>
-              <FormControl>
+              <FormControl fullWidth>
                 <FormLabel id="postalCode">Postal Code</FormLabel>
                 <FormGroup>
                   <TextField
@@ -148,8 +154,7 @@ const CheckoutAddress = ({ proceedToNextStep }) => {
                   />
                 </FormGroup>
               </FormControl>
-              <hr></hr>
-              <FormControl>
+              <FormControl fullWidth>
                 <FormLabel id="country">Country</FormLabel>
                 <FormGroup>
                   <TextField
@@ -162,13 +167,12 @@ const CheckoutAddress = ({ proceedToNextStep }) => {
                   />
                 </FormGroup>
               </FormControl>
-              <hr></hr>
               <Button type="submit">Set Shipping Address</Button>{" "}
             </form>
           )}
         </Formik>
-      </Box>
-    </Box>
+      </Wrapper>
+    </Wrapper>
   );
 };
 

@@ -3,16 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-
-const styles = {
-  wrapper: {
-    width: "90%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-  },
-
-};
+import Wrapper from "../../Wrapper/Wrapper";
+import { NavLink } from "react-router-dom";
+import { Link } from "@mui/material";
 
 const CheckoutSummary = ({ proceedToNextStep }) => {
   const dispatch = useDispatch();
@@ -20,58 +13,99 @@ const CheckoutSummary = ({ proceedToNextStep }) => {
   const productState = useSelector((state) => state.productList);
   const { products } = productState;
   const orderState = useSelector((state) => state.userOrder);
-  const { cartItems, isGuest, isPaid, shippingAddress, totalPrice } =
-    orderState;
-
-  const token = userAuthState?.accessToken;
-  const { authenticated } = userAuthState;
+  const {
+    cartItems,
+    shippingAddress,
+    totalPrice,
+    emailAddress,
+  } = orderState;
 
   const detailedCartItems = cartItems?.map((item) => {
     const productDetails = products.find((p) => p._id === item.product);
     return { ...item, product: productDetails };
   });
 
-  return (
-    <Box sx={styles.wrapper}>
-      <Box sx={styles.orderTitle}>
-        <Typography variant="h4">Order Summary</Typography>
-      </Box>
-      <Box sx={styles.orderItems}>
-        <Typography variant="h6" marginBottom>Items</Typography>
-        {detailedCartItems &&
-        detailedCartItems.length === 0 && (
-          <Typography variant="body1">No items in cart</Typography>
-        )}
-        {detailedCartItems &&
-          detailedCartItems.map((item) => (
-            <Box key={item.product._id}>
-              <Typography variant="body1">{item.product.name}</Typography>
-              <Typography variant="body1">x{item.quantity}</Typography>
-              <Typography variant="body1">${item.product.price}</Typography>
-            </Box>
-          ))}
-      </Box>
+  console.log(detailedCartItems);
 
-      <Box sx={styles.price}>
+  if (detailedCartItems && detailedCartItems.length === 0) {
+    return (
+      <Wrapper
+        id="pageWrapper"
+        flexDirection="column"
+        width="80%"
+        alignItems="center"
+        justifyContent="center"
+        customStyles={{
+          border: "1px solid blue",
+        }}
+      >
+        {" "}
+        <Typography variant="h4">No tems in cart</Typography>
+      </Wrapper>
+    );
+  }
+
+  return (
+    <Wrapper
+      id="pageWrapper"
+      flexDirection="column"
+      width="100%"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <Typography variant="h3">Order Summary</Typography>
+      {detailedCartItems &&
+        detailedCartItems.map((item) => (
+          <Wrapper
+            flexDirection="row"
+            key={item.product._id}
+            width="60%"
+            justifyContent="center"
+            customStyles={{
+              margin: "5px",
+              padding: "10px",
+              border: "1px solid grey",
+              borderRadius: "10px",
+            }}
+          >
+            <Typography variant="h5">{item.quantity} x&nbsp;</Typography>
+
+            <Link component={NavLink} to={`/product/${item.product._id}`}>
+              {" "}
+              <Typography variant="h5">{item.product.name}</Typography>
+            </Link>
+
+            <Typography variant="h5">
+              &nbsp;at&nbsp;${item.product.price} each
+            </Typography>
+          </Wrapper>
+        ))}
+      <Wrapper flexDirection="column" alignItems="center">
+        {" "}
         <Typography variant="h6">Shipping - $0</Typography>
         <Typography variant="h6">Total - ${totalPrice}</Typography>
-      </Box>
-      <Box sx={styles.shippingAddress}>
-        <Typography variant="h6">Shipping Address</Typography>
+      </Wrapper>
+      <Wrapper
+        flexDirection="column"
+        alignItems="center"
+        customStyles={{ margin: "20px" }}
+      >
         {shippingAddress && (
           <Box>
-            <Typography variant="body1">{shippingAddress.fullName}</Typography>
             <Typography variant="body1">
-              {shippingAddress.street}, {shippingAddress.city},
-              {shippingAddress.postalCode}, {shippingAddress.country}
+              Contact Email: {emailAddress}
+            </Typography>
+            <Typography variant="body1">
+              Shipping Address: {shippingAddress.street}, {shippingAddress.city}
+              ,{shippingAddress.postalCode}, {shippingAddress.country}
             </Typography>
           </Box>
         )}
-      </Box>
-      <Box sx={styles.payNowButton}>
+      </Wrapper>
+      <Box>
         <Button onClick={proceedToNextStep}>Confirm and Pay Now</Button>
       </Box>
-    </Box>
+    </Wrapper>
   );
 };
 

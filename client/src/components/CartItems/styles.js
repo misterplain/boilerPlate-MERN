@@ -1,21 +1,8 @@
 const styles = {
-  wrapper: {
-    width: "100%",
-  },
-  cartTitle: {},
   image: {
     width: "80px",
     height: "80px",
-  },
-  cartItemsWrapper: {
-    borderBottom: "1px solid black",
-  },
-  cartItem: {},
-  imageTitleDeleteWrapper: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    borderRadius: "10px"
   },
   imageTitle: {
     display: "flex",
@@ -26,9 +13,7 @@ const styles = {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-  },
-  quantity: {
-    display: "flex",
+    alignItems: "center"
   },
 };
 

@@ -94,6 +94,16 @@ const theme = createTheme({
       textTransform: "capitalize",
     },
   },
+  // overrides: {
+  //   // Style sheet name ⚛️
+  //   MuiPrivateSwipeArea: {
+  //     // Name of the rule
+  //     root: {
+  //       // visibility: 'hidden',
+  //       border: "1px solid red"
+  //     },
+  //   },
+  // },
   // components: {
   //   // Name of the component
   //   MuiOutlinedInput: {

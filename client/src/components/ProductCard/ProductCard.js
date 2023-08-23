@@ -24,6 +24,8 @@ const ProductCard = ({ product }) => {
   const userDetailsState = useSelector((state) => state.userDetails);
   const { favorites = [] } = userDetailsState?.userDetails || [];
 
+  console.log(product)
+
   return (
     <Box sx={styles.cardWrapper(theme)}>
       <Link

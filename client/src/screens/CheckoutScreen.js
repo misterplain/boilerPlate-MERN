@@ -9,7 +9,6 @@ import CheckoutSummary from "../components/Checkout/Summary/CheckoutSummary";
 import OrderConfirmation from "../components/Checkout/Confirmation/OrderConfirmation";
 import Wrapper from "../components/Wrapper/Wrapper";
 
-
 const CheckoutScreen = () => {
   const dispatch = useDispatch();
 
@@ -38,7 +37,7 @@ const CheckoutScreen = () => {
   };
 
   return (
-    <Wrapper flexDirection="column">
+    <Wrapper id="pageWrapper">
       <Wrapper
         justifyContent="space-around"
         alignItems="center"
@@ -75,9 +74,9 @@ const CheckoutScreen = () => {
           disabled={isPaid || step < 4}
         >
           Payment
-        </Button>
-      </Wrapper>
-      <Box>{renderStep()}</Box>
+        </Button>{" "}
+      </Wrapper>{" "}
+      <Box sx={{width: "100%"}}>{renderStep()}</Box>
     </Wrapper>
   );
 };

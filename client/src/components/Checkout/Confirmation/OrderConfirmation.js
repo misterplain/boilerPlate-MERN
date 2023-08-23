@@ -1,8 +1,10 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Wrapper from "../../Wrapper/Wrapper";
+import Typography from "@mui/material/Typography";
 
 const OrderConfirmation = () => {
   const navigate = useNavigate();
@@ -15,55 +17,75 @@ const OrderConfirmation = () => {
   const token = userAuthState?.accessToken;
   const { authenticated } = userAuthState;
   return (
-    <Box>
+    <Wrapper id="pageWrapper" flexDirection="column" alignItems="center">
+      {" "}
       {authenticated ? (
-        <>
+        <Wrapper
+          id="userOrderWrapper"
+          width="100%"
+          flexDirection="column"
+          alignItems="center"
+          customStyles={{ margin: "30px 0px" }}
+        >
           {" "}
-          <Box>
+          <Typography variant="h4">Thank you for your order!</Typography>
+          <Typography variant="body2" sx={{ width: "50%", margin: "30px 0px" }}>
             {" "}
-            Thank you for your order! Your order number is #
-            {orderDetails.orderNumber}. You will be sent further inforation at{" "}
-            {orderDetails.emailAddress}, or you can check you order status in
-            your account dashboard.
-          </Box>
-          <Button
-            onClick={() => {
-              dispatch({ type: "CLEAR_ORDER" });
-              navigate("/");
-            }}
-          >
-            Understood
-          </Button>
-          <Button
-            onClick={() => {
-              dispatch({ type: "CLEAR_ORDER" });
-              navigate("/useraccount/orders");
-            }}
-          >
-            View all orders
-          </Button>
-        </>
+            Your order number is #{orderDetails.orderNumber}. You will be sent
+            further inforation at {orderDetails.emailAddress}, or you can check
+            you order status in your account dashboard.
+          </Typography>
+          <Wrapper flexDirection="column" alignItems="center">
+            {" "}
+            <Button
+              onClick={() => {
+                dispatch({ type: "CLEAR_ORDER" });
+                navigate("/");
+              }}
+            >
+              Understood
+            </Button>
+            <Button
+              onClick={() => {
+                dispatch({ type: "CLEAR_ORDER" });
+                navigate("/useraccount/orders");
+              }}
+            >
+              View all orders
+            </Button>
+          </Wrapper>
+        </Wrapper>
       ) : (
-        <>
+        <Wrapper
+          id="guestOrderWrapper"
+          width="100%"
+          flexDirection="column"
+          alignItems="center"
+          customStyles={{ margin: "30px 0px" }}
+        >
           {" "}
-          <Box>
+          <Typography variant="h4">Thank you for your order!</Typography>
+          <Typography variant="body2" sx={{ width: "50%", margin: "30px 0px" }}>
             {" "}
-            Thank you for your order! Your order number is #
-            {orderDetails.orderNumber}. You will be sent further information at{" "}
-            {orderDetails.emailAddress}. If you need to cancel your order, the
-            confirmation email sent will contain further instructions.
-          </Box>
-          <Button
-            onClick={() => {
-              dispatch({ type: "CLEAR_ORDER" });
-              navigate("/");
-            }}
-          >
-            Understood
-          </Button>
-        </>
+            Your order number is #{orderDetails.orderNumber}. You will be sent
+            further information at {orderDetails.emailAddress}. If you need to
+            cancel your order, the confirmation email sent will contain further
+            instructions.
+          </Typography>
+          <Wrapper flexDirection="column" alignItems="center">
+            {" "}
+            <Button
+              onClick={() => {
+                dispatch({ type: "CLEAR_ORDER" });
+                navigate("/");
+              }}
+            >
+              Understood
+            </Button>
+          </Wrapper>
+        </Wrapper>
       )}
-    </Box>
+    </Wrapper>
   );
 };
 

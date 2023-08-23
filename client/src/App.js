@@ -34,21 +34,24 @@ const App = () => {
   }, [theme.breakpoints]);
 
   return (
-    <BrowserRouter>
-      <Layout>
-        <AppRoutes />
-      </Layout>
-      <Box
-        position="fixed"
-        bottom={0}
-        left={0}
-        bgcolor="rgba(255, 255, 255, 0.5)"
-        padding={1}
-        borderRadius={5}
-      >
-        <Typography>{viewport}</Typography>
-      </Box>
-    </BrowserRouter>
+    <Box sx={{ width: "100%"}}>
+      {" "}
+      <BrowserRouter>
+        <Layout>
+          <AppRoutes />
+        </Layout>
+        <Box
+          position="fixed"
+          bottom={0}
+          left={0}
+          bgcolor="rgba(255, 255, 255, 0.5)"
+          padding={1}
+          borderRadius={5}
+        >
+          <Typography>{viewport}</Typography>
+        </Box>
+      </BrowserRouter>
+    </Box>
   );
 };
 

@@ -12,6 +12,7 @@ import { Link, Typography } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { setEmailAddress } from "../../../actions/userOrderActions";
+import Wrapper from "../../Wrapper/Wrapper";
 
 const CheckoutUser = ({ proceedToNextStep }) => {
   const dispatch = useDispatch();
@@ -54,118 +55,109 @@ const CheckoutUser = ({ proceedToNextStep }) => {
     ),
   });
 
-  const styles = {
-    wrapper: {},
-  };
 
   return (
-    <Box sx={styles.wrapper}>
+    <Wrapper gridContainer customStyles={{
+      justifyContent: "center",
+    }}>
       <Grid
-        container
+        item
+        xs={10}
+        sm={8}
+        md={7}
         sx={{
           display: "flex",
           justifyContent: "center",
+          alignItems: "center",
+          borderBottom: "1px solid grey"
         }}
       >
-        <Grid
-          item
-          xs={12}
-          sm={8}
-          md={7}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Link component={NavLink} to="/auth">
-            <Button>Log in</Button>
-          </Link>
-          <Typography>/</Typography>
-          <Link component={NavLink} to="/register">
-            <Button>Sign up</Button>
-          </Link>
-        </Grid>
-
-        <Grid
-          item
-          xs={12}
-          sm={8}
-          md={7}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "cetner",
-            flexDirection: "column",
-          }}
-        >
-          <Typography variant="h6">
-            Checkout as guest with email adress
-          </Typography>
-          <Box sx={styles.guestEmailAddress}>
-            {" "}
-            <Formik
-              initialValues={{
-                email: emailAddress ? emailAddress : "",
-                confirmEmail: emailAddress ? emailAddress : "",
-              }}
-              validationSchema={validationSchema}
-              onSubmit={async (values, { resetForm }) => {
-                dispatch(setEmailAddress(values.email));
-                proceedToNextStep();
-              }}
-            >
-              {({
-                handleSubmit,
-                handleChange,
-                handleBlue,
-                values,
-                isValid,
-                errors,
-                touched,
-              }) => (
-                <form
-                  onSubmit={handleSubmit}
-                  style={{ display: "flex", flexDirection: "column" }}
-                >
-                  <FormControl>
-                    <FormLabel id="email">Email Address</FormLabel>
-                    <FormGroup>
-                      <TextField
-                        name="email"
-                        variant="filled"
-                        color="success"
-                        value={values.email}
-                        onChange={handleChange}
-                        helperText={errors.email}
-                      />
-                    </FormGroup>
-                  </FormControl>
-                  <hr></hr>
-                  <FormControl>
-                    <FormLabel id="confirmEmail">
-                      Confirm Email Address
-                    </FormLabel>
-                    <FormGroup>
-                      <TextField
-                        name="confirmEmail"
-                        variant="filled"
-                        color="success"
-                        value={values.confirmEmail}
-                        onChange={handleChange}
-                        helperText={errors.confirmEmail}
-                      />
-                    </FormGroup>
-                  </FormControl>
-                  <hr></hr>
-                  <Button type="submit">Continue</Button>{" "}
-                </form>
-              )}
-            </Formik>
-          </Box>
-        </Grid>
+        <Link component={NavLink} to="/auth">
+          <Button>Log in</Button>
+        </Link>
+        <Typography>/</Typography>
+        <Link component={NavLink} to="/register">
+          <Button>Sign up</Button>
+        </Link>
       </Grid>
-    </Box>
+
+      <Grid
+        item
+        xs={10}
+        sm={8}
+        md={7}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          margin: "15px 0px"
+        }}
+      >
+        <Typography variant="h6" marginBottom>
+          Or checkout as guest with email adress
+        </Typography>
+        <Box >
+          {" "}
+          <Formik
+            initialValues={{
+              email: emailAddress ? emailAddress : "",
+              confirmEmail: emailAddress ? emailAddress : "",
+            }}
+            validationSchema={validationSchema}
+            onSubmit={async (values, { resetForm }) => {
+              dispatch(setEmailAddress(values.email));
+              proceedToNextStep();
+            }}
+          >
+            {({
+              handleSubmit,
+              handleChange,
+              handleBlue,
+              values,
+              isValid,
+              errors,
+              touched,
+            }) => (
+              <form
+                onSubmit={handleSubmit}
+                style={{ display: "flex", flexDirection: "column" }}
+              >
+                <FormControl >
+                  <FormLabel id="email">Email Address</FormLabel>
+                  <FormGroup>
+                    <TextField
+                      name="email"
+                      variant="filled"
+                      color="success"
+                      value={values.email}
+                      onChange={handleChange}
+                      helperText={errors.email}
+                    />
+                  </FormGroup>
+                </FormControl>
+                <hr></hr>
+                <FormControl>
+                  <FormLabel id="confirmEmail">Confirm Email Address</FormLabel>
+                  <FormGroup>
+                    <TextField
+                      name="confirmEmail"
+                      variant="filled"
+                      color="success"
+                      value={values.confirmEmail}
+                      onChange={handleChange}
+                      helperText={errors.confirmEmail}
+                    />
+                  </FormGroup>
+                </FormControl>
+                <hr></hr>
+                <Button type="submit">Continue</Button>{" "}
+              </form>
+            )}
+          </Formik>
+        </Box>
+      </Grid>
+    </Wrapper>
   );
 };
 

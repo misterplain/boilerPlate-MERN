@@ -67,7 +67,7 @@ root.render(
             info: StyledMaterialDesignContent,
           }}
         >
-          <App />
+          <App/>
         </SnackbarProvider>{" "}
       </ThemeProvider>
     </Provider>
