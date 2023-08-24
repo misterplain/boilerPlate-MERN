@@ -13,27 +13,31 @@ const CartDrawer = () => {
 
   const list = () => (
     <Box
-      sx={{ width: 400 }}
+      sx={{
+        width: 400,
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
       role="presentation"
       onKeyDown={toggleDrawer(false)}
     >
       <CartItems />
-      <CartSummary/>
+      <CartSummary />
     </Box>
   );
 
   return (
-    <div>
-      <SwipeableDrawer
-        anchor="right"
-        open={isOpen}
-        onClose={toggleDrawer(false)}
-        onOpen={toggleDrawer(true)}
-        sx={{width: "0px"}}
-      >
-        {list()}
-      </SwipeableDrawer>
-    </div>
+    <SwipeableDrawer
+      anchor="right"
+      open={isOpen}
+      onClose={toggleDrawer(false)}
+      onOpen={toggleDrawer(true)}
+      sx={{ width: "0px" }}
+    >
+      {list()}
+    </SwipeableDrawer>
   );
 };
 

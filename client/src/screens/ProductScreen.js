@@ -70,14 +70,16 @@ const ProductScreen = () => {
   }, [dispatch, token, displayedProduct]);
 
   return (
-    <Wrapper gridContainer justifyContent="space-around">
+    <Wrapper gridContainer direction="row" justifyContent="space-around" alignItems="center" customStyles={{
+      margin: "20px 0px"
+    }}>
       {" "}
-      <Grid item xs={11} sm={6}>
+      <Grid item xs={8} sm={6}>
         <ProductCarousel product={displayedProduct} />
       </Grid>
       <Grid item xs={10} sm={4}>
         {displayedProduct && (
-          <Wrapper flexDirection="column">
+          <Wrapper flexDirection="column" width="100%" alignItems="flex-start">
             {" "}
             <Typography variant="h3">{displayedProduct?.name}</Typography>
             <Typography variant="h5">
@@ -169,7 +171,7 @@ const ProductScreen = () => {
                 errors,
                 touched,
               }) => (
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} style={{display: "flex", flexDirection: "column", margin: "20px 0px"}}>
                   {!productInBasket && (
                     <FormControl>
                       <FormLabel id="quantity">Quantity</FormLabel>
@@ -192,6 +194,7 @@ const ProductScreen = () => {
                     <Button
                       type="submit"
                       disabled={values.quantity > displayedProduct.stock}
+                      fullWidth
                     >
                       Add to Basket
                     </Button>
@@ -204,7 +207,7 @@ const ProductScreen = () => {
           </Wrapper>
         )}
       </Grid>
-      <Grid item xs={11} sm={10}>
+      <Grid item xs={10} sm={10}>
         {displayedProduct && (
           <ProductReviews productId={displayedProduct._id} />
         )}

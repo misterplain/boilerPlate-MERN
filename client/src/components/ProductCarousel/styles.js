@@ -1,12 +1,14 @@
 const styles = {
+  carouselWrapper: {
+    width: "100%",
 
-    carouselWrapper: {
+  },
+  image: {
+    width: "100%",
+    height: "auto",
+    borderRadius: "20px"
 
-    },
-    image: {
-        width: "100%",
-        height: "auto",
-    }
-}
+  },
+};
 
-export default styles 
+export default styles;

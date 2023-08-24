@@ -35,8 +35,15 @@ const CartSummary = () => {
   }, 0);
 
   return (
-    <Wrapper id="componentWrapper" flexDirection="column">
-      <Wrapper id="pricesWrapper" flexDirection="column">
+    <Wrapper
+      id="componentWrapper"
+      flexDirection="column"
+      width="100%"
+      customStyles={{
+        padding: "15px 0px",
+      }}
+    >
+      <Wrapper id="pricesWrapper" flexDirection="column" alignItems="center">
         <Wrapper id="priceItem" justifyContent="space-between">
           {" "}
           <Typography variant="h6">Free Shipping</Typography>
@@ -48,40 +55,40 @@ const CartSummary = () => {
           <Typography variant="body1">${cartTotal}</Typography>
         </Wrapper>
       </Wrapper>
-        <Wrapper id="buttonsWrapper">
-          {" "}
-          <Box >
+      <Wrapper id="buttonsWrapper" justifyContent="space-between">
+        {" "}
+        <Button
+          onClick={() => {
+            cartDrawerContext.setIsOpen(false);
+            navigate("/");
+          }}
+          variant="outlined"
+          color="secondary"
+        >
+          Continue shopping
+        </Button>
+        {detailedCartItems && detailedCartItems.length !== 0 && (
+          <Link component={NavLink} to="/checkout">
+            {" "}
             <Button
               onClick={() => {
+                dispatch(
+                  setInitialOrderInfo({
+                    isGuest,
+                    cartItems,
+                    totalPrice: cartTotal,
+                  })
+                );
                 cartDrawerContext.setIsOpen(false);
-                navigate("/");
               }}
+              variant="outlined"
+              color="success"
             >
-              Continue shopping
+              Proceed to checkout
             </Button>
-          </Box>
-          {detailedCartItems && detailedCartItems.length !== 0 && (
-            <Box>
-              <Link component={NavLink} to="/checkout">
-                {" "}
-                <Button
-                  onClick={() => {
-                    dispatch(
-                      setInitialOrderInfo({
-                        isGuest,
-                        cartItems,
-                        totalPrice: cartTotal,
-                      })
-                    );
-                    cartDrawerContext.setIsOpen(false);
-                  }}
-                >
-                  Proceed to checkout
-                </Button>
-              </Link>
-            </Box>
-          )}
-        </Wrapper>
+          </Link>
+        )}
+      </Wrapper>
     </Wrapper>
   );
 };

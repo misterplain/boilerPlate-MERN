@@ -45,14 +45,12 @@ const loginSchema = Yup.object({
 });
 
 const RegisterForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
   const shoppingCartState = useSelector((state) => state.shoppingCart);
   const { cartItems } = shoppingCartState;
   const authState = useSelector((state) => state.userAuth);
-  const { authenticated, registerError } = authState;
+  const { registerError } = authState;
 
   const handleSubmit = (values) => {
 

@@ -1,21 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useSelector, useDispatch } from "react-redux";
-import { Route, Routes, Navigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
-import { format } from "date-fns";
 import { cancelOrder, editOrder } from "../../actions/orderHistoryActions";
-// import AdvancedSearch from "./AdvancedSearch";
-// import QuickView from "./QuickView";
-// import OrderSummary from "../../OrderSummary/OrderSummary";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Wrapper from "../Wrapper/Wrapper";
 
 import styles from "./styles";
 
@@ -58,9 +54,14 @@ const OrderSnapshot = ({ order, isAdmin }) => {
   return (
     <Box key={order._id}>
       {" "}
-      <Box  sx={styles.orderWrapper}>
-        <Box sx={styles.orderSummary}>
-          {" "}
+      <Wrapper
+        id="orderWrapper"
+        alignItems="center"
+        justifyContent="space-between"
+        customStyles={styles.orderWrapper}
+      >
+        {" "}
+        <Wrapper id="orderSummary" flexDirection="column">
           <Link
             component={NavLink}
             to={
@@ -73,8 +74,7 @@ const OrderSnapshot = ({ order, isAdmin }) => {
             <Typography variant="h6" marginRight>
               Order #: {order.shortId}
             </Typography>
-          </Link>
-          <Box></Box>{" "}
+          </Link>{" "}
           <Typography variant="body1">Total: {order.totalPrice}</Typography>
           <Typography sx={{ display: "inline-flex" }}>
             Status:{" "}
@@ -83,8 +83,8 @@ const OrderSnapshot = ({ order, isAdmin }) => {
               {orderStatus}
             </Typography>
           </Typography>{" "}
-        </Box>
-        <Box sx={styles.orderOptions}>
+        </Wrapper>
+        <Wrapper id="orderOptions">
           {" "}
           {!order.isShippedToCourier && !order.isCancelled && (
             <Button
@@ -136,8 +136,8 @@ const OrderSnapshot = ({ order, isAdmin }) => {
               Mark as Delivered
             </Button>
           )}
-        </Box>
-      </Box>
+        </Wrapper>
+      </Wrapper>
       <Box sx={styles.cancelAlert}>
         <Dialog
           open={open}

@@ -1,10 +1,8 @@
 const styles = {
   wrapper: {
-
+    margin: "20px 0px",
   },
-  summaryWrapper: {
-
-  },
+  summaryWrapper: {},
   user: {
     display: "flex",
     flexDirection: "row",
@@ -15,7 +13,7 @@ const styles = {
     fontWeight: "bold",
     fontSize: "1.2rem",
     marginLeft: "0.7rem",
-  }
+  },
 };
 
 export default styles;

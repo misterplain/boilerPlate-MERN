@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -38,16 +38,14 @@ const loginSchema = Yup.object({
 });
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
   const shoppingCartState = useSelector((state) => state.shoppingCart);
   const { cartItems } = shoppingCartState;
 
   const authState = useSelector((state) => state.userAuth);
-  const { authenticated, loginError } = authState;
-  const [errorMessage, setErrorMessage] = useState("");
+  const { loginError } = authState;
+
 
   const handleSubmit = (values) => {
     dispatch(loginForm(values.email, values.password, cartItems));

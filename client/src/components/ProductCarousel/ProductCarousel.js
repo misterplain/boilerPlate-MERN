@@ -21,7 +21,7 @@ const ProductCarousel = ({ product }) => {
 
   return (
     <Box sx={styles.carouselWrapper}>
-      <Box sx={{ marginBottom: "50px" }}>
+      <Box sx={{ marginBottom: "50px", borderRadius: "25px" }}>
         {" "}
         {product &&
           product?.images &&
@@ -44,7 +44,7 @@ const ProductCarousel = ({ product }) => {
               steps={product.images.length}
               position="static"
               activeStep={selectedImageStep}
-              sx={{ width: "80%", margin: "0 auto" }}
+              sx={{ width: "80%", margin: "0 auto", border: "1px solid grey", borderRadius: "20px" }}
               nextButton={
                 <Button
                   size="small"

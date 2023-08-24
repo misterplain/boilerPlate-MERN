@@ -138,6 +138,9 @@ const CartItems = () => {
       id="componentWrapper"
       flexDirection="row"
       justifyContent="center"
+      customStyles={{
+        padding: "15px 0px",
+      }}
     >
       <Wrapper id="cartTitle" justifyContent="center">
         <Typography variant="h5" sx={{ textAlign: "center" }}>

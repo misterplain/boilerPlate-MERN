@@ -26,7 +26,7 @@ import { snackbarDispatch } from "../../utils/snackbarDispatch";
 import { useNavigate } from "react-router-dom";
 import { setShopToCollection } from "../../actions/shopActions";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import HomeIcon from '@mui/icons-material/Home';
+import HomeIcon from "@mui/icons-material/Home";
 
 import styles from "./styles";
 
@@ -194,17 +194,17 @@ const Header = ({ isActive }) => {
           </FormControl>
         </Box>
         <Box sx={styles.linksWrapper}>
+          <Button onClick={handleOpenCart}>
+            {" "}
+            <Badge
+              badgeContent={cartItems ? cartItems.length : null}
+              color="secondary"
+            >
+              <AddShoppingCartIcon />
+            </Badge>
+          </Button>
           {authenticated ? (
             <>
-              <Button onClick={handleOpenCart}>
-                {" "}
-                <Badge
-                  badgeContent={cartItems ? cartItems.length : null}
-                  color="secondary"
-                >
-                  <AddShoppingCartIcon />
-                </Badge>
-              </Button>
               <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -274,16 +274,6 @@ const Header = ({ isActive }) => {
             </>
           ) : (
             <>
-              <Button onClick={handleOpenCart}>
-                {" "}
-                <Badge
-                  badgeContent={cartItems ? cartItems.length : null}
-                  color="secondary"
-                >
-                  <AddShoppingCartIcon />
-                </Badge>
-              </Button>
-
               <Link
                 component={NavLink}
                 to="/auth"
@@ -304,7 +294,6 @@ const Header = ({ isActive }) => {
 };
 
 export default Header;
-
 
 //WRAPPER
 
@@ -455,8 +444,8 @@ export default Header;
 //         </Wrapper>
 //         <Wrapper
 //           id="searchBarWrapper"
-//           customStyles={{  
-//             maxWidth: "fit-content", 
+//           customStyles={{
+//             maxWidth: "fit-content",
 //             border: "1px solid white" }}
 //         >
 //           <TextField
