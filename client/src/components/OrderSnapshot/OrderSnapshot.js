@@ -58,10 +58,11 @@ const OrderSnapshot = ({ order, isAdmin }) => {
         id="orderWrapper"
         alignItems="center"
         justifyContent="space-between"
+        width="auto"
         customStyles={styles.orderWrapper}
       >
         {" "}
-        <Wrapper id="orderSummary" flexDirection="column">
+        <Wrapper id="orderSummary" flexDirection="column" width="auto">
           <Link
             component={NavLink}
             to={
@@ -84,7 +85,7 @@ const OrderSnapshot = ({ order, isAdmin }) => {
             </Typography>
           </Typography>{" "}
         </Wrapper>
-        <Wrapper id="orderOptions">
+        <Wrapper id="orderOptions" width="auto">
           {" "}
           {!order.isShippedToCourier && !order.isCancelled && (
             <Button

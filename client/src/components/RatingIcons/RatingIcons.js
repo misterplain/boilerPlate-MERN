@@ -13,20 +13,12 @@ const RatingIcons = ({ rating }) => {
 
   for (let i = 0; i < Math.floor(roundedRating); i++) {
     stars.push(
-      // <BsStarFill
-      //   style={{ color: "yellow", stroke: "black", strokeWidth: "0.1rem" }}
-      //   key={i}
-      // />
       <StarIcon key={i} sx={{color: "#DE970B"}}/>
     );
   }
 
   if (roundedRating % 1 === 0.5) {
     stars.push(
-      // <BsStarHalf
-      //   style={{ color: "yellow", stroke: "black", strokeWidth: "0.1rem" }}
-      //   key={Math.floor(roundedRating)}
-      // />
       <StarHalfIcon key={Math.floor(roundedRating)} sx={{color: "#DE970B"}}/>
     );
   }

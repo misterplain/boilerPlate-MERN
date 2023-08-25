@@ -11,9 +11,9 @@ import Avatar from "../Avatar/Avatar";
 import { snackbarDispatch } from "../../utils/snackbarDispatch";
 import { enqueueSnackbar } from "notistack";
 import AlertMessage from "../AlertMessage/AlertMessage";
-import Rating from '@mui/material/Rating';
-import Stack from '@mui/material/Stack';
+import Rating from "@mui/material/Rating";
 import styles from "./styles";
+import Wrapper from "../Wrapper/Wrapper";
 
 const ProductReviews = ({ productId }) => {
   const dispatch = useDispatch();
@@ -62,11 +62,18 @@ const ProductReviews = ({ productId }) => {
   };
 
   return (
-    <Grid container sx={styles.wrapper}>
-      <Grid item xs={12} sm={4}>
+    <Wrapper
+      gridContainer
+      customStyles={{
+        justifyContent: "flex-start",
+        // marginBottom: "50px"
+      }}
+    >
+      {" "}
+      <Grid item xs={12} sm={4} sx={{margin: "20px 0px"}}>
         {reviews && (
           <Box sx={styles.summaryWrapper}>
-            <ReviewsSummary reviews={reviews} />
+            <ReviewsSummary reviews={reviews} filteredReviews={filteredReviews} />
           </Box>
         )}
       </Grid>
@@ -103,12 +110,17 @@ const ProductReviews = ({ productId }) => {
                   </Typography>
                   <Typography
                     sx={styles.reviewText}
-                    variant="h5"
+                    variant="h6"
                     component="div"
                   >
                     {review.comment}
                   </Typography>
-                  <Rating name="size-small" defaultValue={review.rating} size="small" readOnly/>
+                  <Rating
+                    name="size-small"
+                    defaultValue={review.rating}
+                    size="small"
+                    readOnly
+                  />
                   <Box sx={styles.optionsWrapper}>
                     {userId && userId === review.userId && (
                       <Button
@@ -169,11 +181,13 @@ const ProductReviews = ({ productId }) => {
               <Typography>What others have said</Typography>
             </Box>
           )}
-          {otherReviews && otherReviews?.length <= 0 && userReview?.length <=0  && (
-            <Box sx={styles.reviewType}>
-              <Typography>No reviews for this product</Typography>
-            </Box>
-          )}
+          {otherReviews &&
+            otherReviews?.length <= 0 &&
+            userReview?.length <= 0 && (
+              <Box sx={styles.reviewType}>
+                <Typography>No reviews for this product</Typography>
+              </Box>
+            )}
           {otherReviews &&
             otherReviews.map((review) => (
               <Box sx={styles.singleReview} key={review._id}>
@@ -191,10 +205,15 @@ const ProductReviews = ({ productId }) => {
                 >
                   {review.reviewTitle} - test
                 </Typography>
-                <Typography sx={styles.reviewText} variant="h5" component="div">
+                <Typography sx={styles.reviewText} variant="h6" component="div">
                   {review.comment}
                 </Typography>
-                <Typography>{review.rating}</Typography>
+                <Rating
+                    name="size-small"
+                    defaultValue={review.rating}
+                    size="small"
+                    readOnly
+                  />
                 {isAdmin && (
                   <Button
                     color="secondary"
@@ -210,14 +229,13 @@ const ProductReviews = ({ productId }) => {
             ))}
         </Box>
       </Grid>
-
       <ReviewModal
         open={open}
         handleClose={handleCloseModal}
         review={reviewToEdit}
         productId={productId}
       />
-    </Grid>
+    </Wrapper>
   );
 };
 

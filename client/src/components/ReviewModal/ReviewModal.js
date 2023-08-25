@@ -74,7 +74,6 @@ const ReviewModal = ({ open, handleClose, review, productId }) => {
                 };
                 try {
                   if (review) {
-                    // await dispatch(editReview(token, review._id, reviewData));
                     snackbarDispatch(
                       dispatch(editReview(token, review._id, reviewData)),
                       "Review updated successfully",
@@ -90,7 +89,6 @@ const ReviewModal = ({ open, handleClose, review, productId }) => {
                       ]
                     );
                   } else {
-                    // await dispatch(createReview(token, productId, reviewData));
                     snackbarDispatch(
                       dispatch(createReview(token, productId, reviewData)),
                       "Review created successfully",
@@ -107,8 +105,6 @@ const ReviewModal = ({ open, handleClose, review, productId }) => {
                     );
                   }
 
-                  // handleClose();
-                  // resetForm();
                 } catch (error) {
                   console.log("Review operation failed", error);
                 }
@@ -133,28 +129,8 @@ const ReviewModal = ({ open, handleClose, review, productId }) => {
                       onChange={handleChange}
                       size="large"
                     />
-                    {/* <Rating
-                      name="half-rating-read"
-                      defaultValue={2.5}
-                      precision={0.5}
-                      readOnly
-                    /> */}
+
                   </Stack>
-                  {/* <FormControl>
-                    <FormLabel id="reviewRating">Rating 1-5</FormLabel>
-                    <FormGroup>
-                      <TextField
-                        name="reviewRating"
-                        variant="filled"
-                        color="success"
-                        type="number"
-                        value={values.reviewRating}
-                        onChange={handleChange}
-                        helperText={errors.reviewRating}
-                      />
-                    </FormGroup>
-                  </FormControl>
-                  <hr></hr>{" "} */}
                   <FormControl>
                     <FormLabel id="reviewTitle">Review Title</FormLabel>
                     <FormGroup>

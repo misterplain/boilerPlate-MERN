@@ -6,8 +6,9 @@ import Typography from "@mui/material/Typography";
 import { useDispatch } from "react-redux";
 import { filterReviews, clearFilter } from "../../actions/reviewsActions";
 import styles from "./styles";
+import Wrapper from "../Wrapper/Wrapper";
 
-const ReviewsSummary = ({ reviews }) => {
+const ReviewsSummary = ({ reviews, filteredReviews }) => {
   const dispatch = useDispatch();
   let reviewCounts = {};
   console.log(reviews);
@@ -21,15 +22,18 @@ const ReviewsSummary = ({ reviews }) => {
   populateReviewCounts(reviews);
 
   return (
-    <Box sx={styles.wrapper}>
-      {reviews.length >= 1 && (
-        <Button onClick={() => dispatch(clearFilter())}>CLEAR FILTERs</Button>
+    <Wrapper
+      alignItems="center"
+      justifyContent="flex-start"
+      flexDirection="column"
+    >
+      {" "}
+      {reviews.length >= 1 && filteredReviews.length < reviews.length && (
+        <Button onClick={() => dispatch(clearFilter())}>All Reviews</Button>
       )}
-
-     
-
       {[5, 4, 3, 2, 1].map((rating) => (
-        <Box sx={styles.ratingWrapper} key={rating}>
+        <Wrapper alignItems="center" justifyContent="flex-start" key={rating}>
+          {" "}
           <RatingIcons rating={rating} />
           {reviewCounts[rating] > 0 ? (
             <Typography
@@ -47,9 +51,9 @@ const ReviewsSummary = ({ reviews }) => {
               {")"}
             </Typography>
           )}
-        </Box>
+        </Wrapper>
       ))}
-    </Box>
+    </Wrapper>
   );
 };
 
