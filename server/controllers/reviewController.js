@@ -9,6 +9,7 @@ const createReview = asyncHandler(async (req, res) => {
   const userId = req.userId;
   const username = req.username;
   const userAvatar = req.userAvatar;
+  // console.log(req)
   console.log(username);
   console.log(userAvatar);
   const { reviewTitle, rating, comment } = req.body;
@@ -17,12 +18,12 @@ const createReview = asyncHandler(async (req, res) => {
       return res.status(400).json({ message: "No product id provided" });
     }
 
-     const product = await Product.findById(productId);
-     if (!product) {
-       return res.status(404).json({ message: "Product not found" });
-     }
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
 
-     const productName = product.name;
+    const productName = product.name;
 
     const newReview = await Review.create({
       reviewTitle,
@@ -30,14 +31,19 @@ const createReview = asyncHandler(async (req, res) => {
       comment,
       userId: userId,
       username: username,
+      userAvatar: {
+        url: userAvatar,
+      },
       productId: productId,
-      productName: productName, 
+      productName: productName,
     });
 
     const reply = {
       message: "Review created",
       newReview,
     };
+
+    console.log(reply);
 
     res.status(201).json(reply);
   } catch (error) {

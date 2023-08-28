@@ -13,11 +13,12 @@ const verifyToken = (req, res, next) => {
           .status(500)
           .send({ message: "Failed to authenticate token." });
       }
-      // console.log(userDecoded);
+      console.log(userDecoded);
       req.userId = userDecoded.id;
       req.isAdmin = userDecoded.isAdmin;
       req.username = userDecoded.username;
-      req.avatar = userDecoded.avatar;
+      req.userAvatar = userDecoded.userAvatar;
+      console.log(userDecoded)
     });
   } else {
     req.userId = null;

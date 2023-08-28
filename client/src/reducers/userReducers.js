@@ -8,6 +8,9 @@ import {
   UPDATE_FAVORITE_REQUEST,
   UPDATE_FAVORITE_SUCCESS,
   UPDATE_FAVORITE_FAIL,
+  UPDATE_PROFILE_FAIL,
+  UPDATE_PROFILE_SUCCESS,
+  UPDATE_PROFILE_REQUEST,
 } from "../constants/userConstants";
 
 export const userReducer = (state = { isGuest: true }, action) => {
@@ -23,6 +26,7 @@ export const userReducer = (state = { isGuest: true }, action) => {
           isGuest: false,
           addresses: action.payload.addresses,
           favorites: action.payload.favorites,
+          userAvatar: action.payload.userAvatar,
         },
         isGuest: false,
         orderHistory: action.payload.orders,
@@ -31,11 +35,7 @@ export const userReducer = (state = { isGuest: true }, action) => {
       return {
         ...state,
         userDetails: {
-          username: null,
-          email: null,
-          isAdmin: null,
-          isGuest: true,
-          addresses: [],
+
         },
         isGuest: true,
       };
@@ -94,6 +94,22 @@ export const userReducer = (state = { isGuest: true }, action) => {
         },
       };
     case UPDATE_FAVORITE_FAIL:
+      return {
+        ...state,
+        error: action.payload.message,
+      };
+
+    case UPDATE_PROFILE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case UPDATE_PROFILE_SUCCESS:
+      return {
+        ...state,
+        userDetails: action.payload.data.userToUpdate,
+      };
+    case UPDATE_PROFILE_FAIL:
       return {
         ...state,
         error: action.payload.message,

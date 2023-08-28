@@ -79,7 +79,7 @@ const userSchema = new mongoose.Schema(
       ],
       default: [],
     },
-    avatar: {
+    userAvatar: {
       public_id: {
         type: String,
         // required: true,

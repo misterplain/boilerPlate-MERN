@@ -1,18 +1,24 @@
 const styles = {
-  wrapper: {
-    // border: "1px solid black",
-  },
-  usernameAvatar: {
-    width: "30px",
-    height: "30px",
+  photoAvatar: {
+    width: "100%",
+    height: "100%",
     borderRadius: "50%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: "1.5rem",
-    border: "1px solid black",
+  },
+  usernameAvatar: {
+    // width: "30px",
+    // height: "30px",
+    width: "100%",
+    minHeight: "100%",
+    borderRadius: "50%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: "1.2rem",
     color: "white",
-    backgroundColor: "purple",
+    backgroundColor: "green",
   }
 };
 

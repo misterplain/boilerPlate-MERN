@@ -16,7 +16,10 @@ const reviewSchema = new Schema(
       type: String,
     },
     userAvatar: {
-      type: String,
+      url:{
+        type: String,
+      }
+
     },
     rating: {
       type: Number,
@@ -47,8 +50,8 @@ const reviewSchema = new Schema(
       default: false,
     },
     productName: {
-      type: String
-    }
+      type: String,
+    },
   },
   {
     collection: "boilerPlateReviews",

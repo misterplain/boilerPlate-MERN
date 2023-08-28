@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel.js");
+const cloudinary = require("../utils/cloudinary");
 
 const addAddress = asyncHandler(async (req, res) => {
   const { userId } = req;
@@ -14,7 +15,7 @@ const addAddress = asyncHandler(async (req, res) => {
 
     if (isDefault) {
       userToPopulate.addresses = userToPopulate.addresses.map((address) => ({
-        ...address.toObject(), 
+        ...address.toObject(),
         isDefault: false,
       }));
     }
@@ -40,6 +41,53 @@ const addAddress = asyncHandler(async (req, res) => {
     };
 
     res.status(201).json(reply);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+});
+
+//edit username password and avatar
+const editProfile = asyncHandler(async (req, res) => {
+  const { userId } = req;
+  const { profileData } = req.body;
+  console.log(profileData)
+
+  try {
+    const userToUpdate = await User.findById(userId);
+
+    if (!userToUpdate) {
+      return res.status(400).json({ message: "No user found with that id" });
+    }
+
+    if (profileData.image) {
+      const imageUploadResult = await cloudinary.uploader.upload(
+        profileData.image,
+        {
+          folder: "avatars",
+          width: 300,
+          height: 300,
+          gravity: "face",
+          crop: "fill",
+        }
+      );
+
+      userToUpdate.userAvatar = {
+        public_id: imageUploadResult.public_id,
+        url: imageUploadResult.secure_url,
+      };
+    }
+
+    userToUpdate.username = profileData.username;
+
+    await userToUpdate.save();
+
+    const reply = {
+      message: "Profile updated",
+      userToUpdate,
+    };
+
+    res.status(200).json(reply);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Something went wrong" });
@@ -116,4 +164,4 @@ const updateFavorites = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { addAddress, deleteAddress, updateFavorites };
+module.exports = { addAddress, deleteAddress, updateFavorites, editProfile };

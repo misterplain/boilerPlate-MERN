@@ -14,6 +14,7 @@ import AlertMessage from "../AlertMessage/AlertMessage";
 import Rating from "@mui/material/Rating";
 import styles from "./styles";
 import Wrapper from "../Wrapper/Wrapper";
+import PageTitle from "../PageTitle/PageTitle";
 
 const ProductReviews = ({ productId }) => {
   const dispatch = useDispatch();
@@ -70,10 +71,13 @@ const ProductReviews = ({ productId }) => {
       }}
     >
       {" "}
-      <Grid item xs={12} sm={4} sx={{margin: "20px 0px"}}>
+      <Grid item xs={12} sm={4} sx={{ margin: "20px 0px" }}>
         {reviews && (
           <Box sx={styles.summaryWrapper}>
-            <ReviewsSummary reviews={reviews} filteredReviews={filteredReviews} />
+            <ReviewsSummary
+              reviews={reviews}
+              filteredReviews={filteredReviews}
+            />
           </Box>
         )}
       </Grid>
@@ -84,102 +88,117 @@ const ProductReviews = ({ productId }) => {
           )}
           {error && <AlertMessage type="error">{error}</AlertMessage>}
           {userReview &&
-            userReview.map((review) => (
-              <Box
-                sx={{ ...styles.reviewWrapper, ...getReviewStyle(userReview) }}
-                key={review._id}
-              >
-                <Box sx={styles.reviewType}>
-                  <Typography>What you've said</Typography>
-                </Box>{" "}
-                <Box sx={styles.singleReview}>
-                  <Box sx={styles.user}>
-                    {" "}
-                    <Avatar review={review} />
-                    <Typography sx={styles.username}>
-                      {review.username} says...
-                    </Typography>
-                  </Box>
-
-                  <Typography
-                    sx={styles.reviewTitle}
-                    variant="h5"
-                    component="div"
-                  >
-                    {review.reviewTitle}
-                  </Typography>
-                  <Typography
-                    sx={styles.reviewText}
-                    variant="h6"
-                    component="div"
-                  >
-                    {review.comment}
-                  </Typography>
-                  <Rating
-                    name="size-small"
-                    defaultValue={review.rating}
-                    size="small"
-                    readOnly
-                  />
-                  <Box sx={styles.optionsWrapper}>
-                    {userId && userId === review.userId && (
-                      <Button
-                        color="success"
-                        sx={styles.button}
-                        onClick={() => {
-                          console.log("Edit review");
-                          handleOpenModal(review);
+            userReview.map((review) => {
+              console.log(review);
+              return (
+                <Box
+                  sx={{
+                    ...styles.reviewWrapper,
+                    ...getReviewStyle(userReview),
+                  }}
+                  key={review._id}
+                >
+                  {/* <Box sx={styles.reviewType}>
+                    <Typography>What you've said</Typography>
+                  </Box>{" "} */}
+                  <PageTitle title="What you've said:" size="h6" lineBorder color="purple"/>
+                  <Box sx={styles.singleReview}>
+                    <Box sx={styles.user}>
+                      {" "}
+                      <Box
+                        sx={{
+                          height: "35px",
+                          width: "35px",
+                          padding: "0px",
+                          // margin: "30px",
                         }}
                       >
-                        Edit
-                      </Button>
-                    )}
-                    {(isAdmin || userId === review.userId) &&
-                      !review.isDeleted && (
+                        {" "}
+                        <Avatar item={review} />
+                      </Box>
+                      <Typography sx={styles.username}>
+                        {review.username} says...
+                      </Typography>
+                    </Box>
+
+                    <Typography
+                      sx={styles.reviewTitle}
+                      variant="h5"
+                      component="div"
+                    >
+                      {review.reviewTitle}
+                    </Typography>
+                    <Typography
+                      sx={styles.reviewText}
+                      variant="h6"
+                      component="div"
+                    >
+                      {review.comment}
+                    </Typography>
+                    <Rating
+                      name="size-small"
+                      defaultValue={review.rating}
+                      size="small"
+                      readOnly
+                    />
+                    <Box sx={styles.optionsWrapper}>
+                      {userId && userId === review.userId && (
                         <Button
-                          color="secondary"
+                          color="success"
                           sx={styles.button}
                           onClick={() => {
-                            // dispatch(deleteReview(token, review._id));
-                            snackbarDispatch(
-                              dispatch(deleteReview(token, review._id)),
-                              "Review deleted successfully",
-                              "Error deleting review",
-                              enqueueSnackbar
-                            );
+                            console.log("Edit review");
+                            handleOpenModal(review);
                           }}
                         >
-                          Delete
+                          Edit
                         </Button>
                       )}
-                  </Box>
-                  <Box sx={styles.userReviewStatus}>
-                    {" "}
-                    {review.isDeleted && (
-                      <Typography>
-                        THIS REVIEW IS DELETED, EDIT YOUR REVIEW TO REPOST
-                      </Typography>
-                    )}{" "}
-                    {review.awaitingModeration && !review.isDeleted && (
-                      <Typography>
-                        THIS REVIEW IS AWAITING MODERATION
-                      </Typography>
-                    )}{" "}
-                    {review.approvedByAdmin === false &&
-                      review.awaitingModeration === false && (
+                      {(isAdmin || userId === review.userId) &&
+                        !review.isDeleted && (
+                          <Button
+                            color="secondary"
+                            sx={styles.button}
+                            onClick={() => {
+                              // dispatch(deleteReview(token, review._id));
+                              snackbarDispatch(
+                                dispatch(deleteReview(token, review._id)),
+                                "Review deleted successfully",
+                                "Error deleting review",
+                                enqueueSnackbar
+                              );
+                            }}
+                          >
+                            Delete
+                          </Button>
+                        )}
+                    </Box>
+                    <Box sx={styles.userReviewStatus}>
+                      {" "}
+                      {review.isDeleted && (
                         <Typography>
-                          THIS REVIEW IS NOT APPROVED, EDIT YOUR REVIEW TO TRY
-                          AGAIN OR YOU MAY DELETE YOUR REVIEW
+                          THIS REVIEW IS DELETED, EDIT YOUR REVIEW TO REPOST
                         </Typography>
-                      )}
+                      )}{" "}
+                      {review.awaitingModeration && !review.isDeleted && (
+                        <Typography>
+                          THIS REVIEW IS AWAITING MODERATION
+                        </Typography>
+                      )}{" "}
+                      {review.approvedByAdmin === false &&
+                        review.awaitingModeration === false && (
+                          <Typography>
+                            THIS REVIEW IS NOT APPROVED, EDIT YOUR REVIEW TO TRY
+                            AGAIN OR YOU MAY DELETE YOUR REVIEW
+                          </Typography>
+                        )}
+                    </Box>
                   </Box>
                 </Box>
-              </Box>
-            ))}
+              );
+            })}
           {otherReviews && otherReviews?.length > 0 && (
-            <Box sx={styles.reviewType}>
-              <Typography>What others have said</Typography>
-            </Box>
+                  <PageTitle title="What others have said:" size="h6" lineBorder color="purple"/>
           )}
           {otherReviews &&
             otherReviews?.length <= 0 &&
@@ -193,7 +212,18 @@ const ProductReviews = ({ productId }) => {
               <Box sx={styles.singleReview} key={review._id}>
                 <Box sx={styles.user}>
                   {" "}
-                  <Avatar review={review} />
+                  {" "}
+                      <Box
+                        sx={{
+                          height: "35px",
+                          width: "35px",
+                          padding: "0px",
+                          // margin: "30px",
+                        }}
+                      >
+                        {" "}
+                        <Avatar item={review} />
+                      </Box>
                   <Typography sx={styles.username}>
                     {review.username} says...
                   </Typography>
@@ -209,11 +239,11 @@ const ProductReviews = ({ productId }) => {
                   {review.comment}
                 </Typography>
                 <Rating
-                    name="size-small"
-                    defaultValue={review.rating}
-                    size="small"
-                    readOnly
-                  />
+                  name="size-small"
+                  defaultValue={review.rating}
+                  size="small"
+                  readOnly
+                />
                 {isAdmin && (
                   <Button
                     color="secondary"
