@@ -1,7 +1,5 @@
-
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel.js");
-
 
 const addAddress = asyncHandler(async (req, res) => {
   const { userId } = req;
@@ -13,6 +11,14 @@ const addAddress = asyncHandler(async (req, res) => {
     }
 
     const userToPopulate = await User.findById(userId);
+
+    if (isDefault) {
+      userToPopulate.addresses = userToPopulate.addresses.map((address) => ({
+        ...address.toObject(), 
+        isDefault: false,
+      }));
+    }
+
     const newAddress = {
       street,
       city,

@@ -10,6 +10,8 @@ import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import { setShopToCollection } from "../actions/shopActions";
 import Wrapper from "../components/Wrapper/Wrapper";
+import PageTitle from "../components/PageTitle/PageTitle";
+import Hero from "../components/Hero/Hero";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -31,41 +33,53 @@ const HomeScreen = () => {
     >
       {isLoading && <Loading />}
       {error && <AlertMessage type="error">{error}</AlertMessage>}
+      {!isLoading && !error && <Hero />}
       {products && (
-        <Grid item xs={12}>
-          <Typography variant="h3">Featured Products</Typography>
-        </Grid>
+        <Wrapper width="90%" justifyContent="space-around">
+          {" "}
+          <PageTitle
+            size="h5"
+            title="Featured Products"
+            color="purple"
+            lineBorder
+          />
+          {products
+            ?.filter((product) => product.isFeatured && product.isDisplayed)
+            .map((product) => (
+              <ProductCard product={product} key={product._id} />
+            ))}
+        </Wrapper>
       )}
-      <Wrapper width="80%" justifyContent="space-around">
-        {products
-          ?.filter((product) => product.isFeatured && product.isDisplayed)
-          .map((product) => (
-            <ProductCard product={product} key={product._id} />
-          ))}
-      </Wrapper>
+
       {collections && (
-        <Grid item xs={12}>
-          <Typography variant="h3">Shop by Collection</Typography>
-        </Grid>
+        <Wrapper width="90%" justifyContent="space-around">
+          <PageTitle
+            size="h5"
+            title="Shop by Collection"
+            color="purple"
+            lineBorder
+          />{" "}
+          {collections?.map(
+            (collection) =>
+              collection.products.length >= 1 && (
+                <Link
+                  component={NavLink}
+                  to={"/shop"}
+                  key={collection._id}
+                  onClick={() => {
+                    dispatch(
+                      setShopToCollection(collection._id, collections, {
+                        singleCollection: true,
+                      })
+                    );
+                  }}
+                >
+                  <CollectionCard collection={collection} />
+                </Link>
+              )
+          )}
+        </Wrapper>
       )}
-      <Wrapper width="80%" justifyContent="space-around">
-        {" "}
-        {collections?.map(
-          (collection) =>
-            collection.products.length >= 1 && (
-              <Link
-                component={NavLink}
-                to={"/shop"}
-                key={collection._id}
-                onClick={() => {
-                  dispatch(setShopToCollection(collection._id, collections, {singleCollection: true}));
-                }}
-              >
-                <CollectionCard collection={collection} />
-              </Link>
-            )
-        )}
-      </Wrapper>
     </Wrapper>
   );
 };

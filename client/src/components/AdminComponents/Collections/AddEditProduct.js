@@ -22,7 +22,7 @@ import {
   newProduct,
 } from "../../../actions/productActions";
 import { AiOutlineDelete } from "react-icons/ai";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { snackbarDispatch } from "../../../utils/snackbarDispatch";
 import Wrapper from "../../Wrapper/Wrapper";
@@ -130,12 +130,14 @@ const AddEditProduct = () => {
       <Formik
         initialValues={{
           collectionId: isEdit ? initialCollection?._id : "",
-          isDisplayed: isEdit ? product?.isDisplayed : false,
-          isFeatured: isEdit ? product?.isFeatured : false,
+          isDisplayed: isEdit ? product?.isDisplayed.toString() : "false",
+          isFeatured: isEdit ? product?.isFeatured.toString() : "false",
           name: isEdit ? product?.name : "",
           price: isEdit ? product?.price : "",
           stock: isEdit ? product?.stock : "",
           description: isEdit ? product?.description : "",
+          onSale: isEdit ? product?.onSale.toString() : "false",
+          salePrice: isEdit ? product?.salePrice : "",
         }}
         validationSchema={validationSchema}
         onSubmit={async (values, { resetForm }) => {
@@ -148,6 +150,8 @@ const AddEditProduct = () => {
             stock: values.stock,
             description: values.description,
             images: selectedFile,
+            onSale: values.onSale === "true" ? true : false,
+            salePrice: values.salePrice,
           };
           {
             isEdit
@@ -311,6 +315,49 @@ const AddEditProduct = () => {
               </FormControl>
             </Wrapper>
             <Wrapper
+              id="onSaleWrapper"
+              justifyContent="space-around"
+              customStyles={styles.sectionWrapper}
+            >
+              {" "}
+              <FormControl>
+                <FormLabel id="available">On Sale</FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby="onSale"
+                  name="onSale"
+                  value={String(values.onSale)}
+                  onChange={handleChange}
+                >
+                  <FormControlLabel
+                    value="true"
+                    control={<Radio />}
+                    label="Yes"
+                  />
+                  <FormControlLabel
+                    value="false"
+                    control={<Radio />}
+                    label="No"
+                  />
+                </RadioGroup>
+              </FormControl>
+              <FormControl>
+                <FormLabel id="salePrice">Sale Price</FormLabel>
+                <FormGroup>
+                  <TextField
+                    name="salePrice"
+                    variant="outlined"
+                    color="success"
+                    type="number"
+                    value={values.salePrice}
+                    onChange={handleChange}
+                    helperText={errors.salePrice}
+                    disabled={values.onSale === "false"}
+                  />
+                </FormGroup>
+              </FormControl>
+            </Wrapper>
+            <Wrapper
               id="descriptionWrapper"
               justifyContent="center"
               customStyles={styles.sectionWrapper}
@@ -327,13 +374,16 @@ const AddEditProduct = () => {
                 />
               </FormGroup>
             </Wrapper>
-            <Wrapper id="imagesWrapper" customStyles={{
-              borderBottom: "1px solid grey",
-            }}>
-              <Wrapper id="newImageWrapper" customStyles={{width: "50%"}}>
+            <Wrapper
+              id="imagesWrapper"
+              customStyles={{
+                borderBottom: "1px solid grey",
+              }}
+            >
+              <Wrapper id="newImageWrapper" customStyles={{ width: "50%" }}>
                 {" "}
                 <FormControl>
-                  <FormLabel id="images" >New Image</FormLabel>
+                  <FormLabel id="images">New Image</FormLabel>
                   <Box>
                     {" "}
                     <input
@@ -352,7 +402,6 @@ const AddEditProduct = () => {
                         }}
                         variant="outlined"
                         color="success"
-                        
                       >
                         Upload Photo
                       </Button>
@@ -367,7 +416,10 @@ const AddEditProduct = () => {
                   />
                 </FormControl>
               </Wrapper>
-              <Wrapper id="existingImagesWrapper" customStyles={{width: "50%"}}>
+              <Wrapper
+                id="existingImagesWrapper"
+                customStyles={{ width: "50%" }}
+              >
                 {" "}
                 {isEdit ? (
                   <Box>

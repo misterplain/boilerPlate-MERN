@@ -57,6 +57,14 @@ const productSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    onSale: {
+      type: Boolean,
+      default: false,
+    },
+    salePrice: {
+      type: Number,
+      default: 0,
+    },
     likes: {
       type: [
         {

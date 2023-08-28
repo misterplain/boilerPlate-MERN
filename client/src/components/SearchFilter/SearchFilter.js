@@ -87,6 +87,14 @@ const SearchFilter = () => {
     setStock(event.target.checked);
   };
 
+  //onSale
+  const [onSale, setOnSale] = React.useState(
+    filters?.onSale ? filters?.onSale : false
+  );
+  const handleOnSaleChange = (event) => {
+    setOnSale(event.target.checked);
+  };
+
   //reviews
   const [reviews, setReviews] = React.useState(
     filters?.hasReviews ? filters?.hasReviews : false
@@ -104,6 +112,7 @@ const SearchFilter = () => {
       inStock: stock,
       hasReviews: reviews,
       isDisplayed: true,
+      onSale: onSale,
     };
     console.log(filterQuery);
     dispatch(fetchFilteredProducts({ filterObject: filterQuery }));
@@ -195,6 +204,16 @@ const SearchFilter = () => {
                 <Switch checked={reviews} onChange={handleReviewsChange} />
               }
               label="Has Reviews"
+            />
+          </FormGroup>
+        </Box>{" "}
+        <Box sx={styles.formItem}>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch checked={onSale} onChange={handleOnSaleChange} />
+              }
+              label="On Sale"
             />
           </FormGroup>
         </Box>{" "}

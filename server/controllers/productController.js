@@ -12,6 +12,8 @@ const newProduct = async (req, res) => {
     images,
     description,
     stock,
+    onSale, 
+    salePrice,
     isDisplayed,
     isFeatured,
   } = req.body;
@@ -50,6 +52,8 @@ const newProduct = async (req, res) => {
       stock,
       isDisplayed,
       isFeatured,
+      onSale, 
+      salePrice,
     });
 
     const collectionToPopulate = await Collection.findById(
@@ -189,6 +193,8 @@ const updateProduct = async (req, res) => {
     isFeatured,
     isDisplayed,
     collectionId,
+    onSale, 
+    salePrice,
   } = req.body;
   const { isAdmin } = req;
 
@@ -223,6 +229,8 @@ const updateProduct = async (req, res) => {
       isFeatured,
       isDisplayed,
       collectionId,
+      onSale, 
+      salePrice,
     };
 
     if (images) {
@@ -328,8 +336,13 @@ const getFilteredProducts = async (req, res) => {
   if (typeof filterObject.inStock !== "undefined") {
     if (filterObject.inStock) {
       query.stock = { $gt: 0 };
-    } else {
-      query.stock = 0;
+    } 
+  }
+
+  //onsale
+  if (typeof filterObject.onSale !== "undefined") {
+    if (filterObject.onSale) {
+      query.onSale = true;
     }
   }
 

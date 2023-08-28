@@ -5,20 +5,20 @@ import { CartDrawerProvider } from "../../context/CartDrawerContext";
 
 const styles = {
   wrapper: (theme) => ({
-    height: "100vh",
-    width: "100vw",
+    display: "flex",
+    flexDirection: "column",
   }),
 };
 
 const Layout = ({ children }) => {
   return (
-    <Box sx={styles.wrapper}>
-      <CartDrawerProvider>
+    <CartDrawerProvider>
+      <Box sx={styles.wrapper}>
         <Header />
-        <main>{children}</main>
+        <Box sx={{ minHeight: "100vh" }}>{children}</Box>
         <Footer />
-      </CartDrawerProvider>
-    </Box>
+      </Box>{" "}
+    </CartDrawerProvider>
   );
 };
 

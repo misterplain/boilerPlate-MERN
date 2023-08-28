@@ -9,6 +9,7 @@ import {
 
 const initialState = {
   products: [],
+  hasSearched: false,
   filters: {
     collections: {},
     priceRange: [0, 1000],
@@ -16,6 +17,8 @@ const initialState = {
     inStock: true,
     sortBy: "",
     searchQuery: "",
+    onSale: false,
+    salePrice: 0,
   },
   error: null,
   loading: true,
@@ -28,6 +31,7 @@ export const shopReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
+        hasSearched: true,
         filters: { ...action.filterQuery.filterObject },
       };
     case FILTERED_PRODUCTS_SUCCESS:
@@ -48,11 +52,13 @@ export const shopReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
+        hasSearched: true,
       };
     case SHOP_COLLECTION_SUCCESS:
       console.log(action.filterQuery);
       return {
         ...initialState,
+        hasSearched: true,
         loading: false,
         // filters: { ...action.filterQuery.filterObject },
         filters: {

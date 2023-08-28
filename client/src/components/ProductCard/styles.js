@@ -1,27 +1,30 @@
+import theme from "../../theme";
+
 const styles = {
   cardWrapper: (theme) => ({
+    textDecoration: "none",
     border: "3px solid purple",
     display: "flex",
     flexDirection: "column",
-    alignItems: "flex-start",
-    width: "300px",
-    height: "300px",
+    justifyContent: "space-around",
+    width: "160px",
+    height: "255px",
     background: "white",
     [theme.breakpoints.up("sm")]: {
       width: "200px",
-      height: "240px",
+      height: "265px",
     },
     [theme.breakpoints.up("md")]: {
       width: "200px",
-      height: "240px",
+      height: "265px",
     },
     [theme.breakpoints.up("lg")]: {
-      width: "230px",
-      height: "260px",
+      width: "200px",
+      height: "265px",
     },
     [theme.breakpoints.up("xl")]: {
-      width: "230px",
-      height: "260px",
+      width: "200px",
+      height: "265px",
     },
     borderRadius: "10px",
     padding: "5px",
@@ -31,26 +34,30 @@ const styles = {
       transform: "scale(1.05)",
     },
   }),
-  imageTitleWrapper: (theme) => ({
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    overflow: "hidden",
-    height: "90%",
-    marginBottom: "10px",
-  }),
   namePriceWrapper: (theme) => ({
     width: "95%",
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "center",
     textAlign: "center",
   }),
+  priceWrapper: (theme) => ({
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+  }),
+  salePrice: (theme) => ({
+    color: "",
+  }),
+  stock: (theme) => ({
+  
+    fontSize: "0.3rem",
+  }),
   cardImage: (theme) => ({
     width: "100%",
-    height: "auto",
-    margin: "0 auto",
+    borderRadius: "10px",
+    // height: "50%",
+    margin: "0px 0px",
   }),
   iconsWrapper: (theme) => ({
     width: "100%",
@@ -75,6 +82,10 @@ const styles = {
   numberReviews: (theme) => ({
     fontSize: "0.9rem",
     marginLeft: "5px",
+    display: "none",
+    [theme.breakpoints.up("sm")]: {
+      display: "block",
+    },
   }),
 };
 

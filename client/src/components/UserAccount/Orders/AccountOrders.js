@@ -6,6 +6,7 @@ import {
 } from "../../../actions/orderHistoryActions";
 import { Outlet } from "react-router-dom";
 import OrderSnapshot from "../../OrderSnapshot/OrderSnapshot";
+import PageTitle from "../../PageTitle/PageTitle";
 
 const styles = {
   wrapper: {
@@ -29,6 +30,9 @@ const AccountOrders = () => {
 
   return (
     <Box sx={styles.wrapper}>
+      {orders.length === 0 && (
+        <PageTitle title="No orders found" size="h6"  lineBorder/>
+      )}
       {orders
         ?.sort((a, b) => new Date(b.datePlaced) - new Date(a.datePlaced))
         .map((order) => (

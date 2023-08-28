@@ -7,12 +7,13 @@ const Footer = () => {
   return (
     <Wrapper
       customStyles={{
-        position: "fixed",
-        bottom: "2%",
         width: "100%",
+        height: "40px",
+        borderTop: "1px solid grey",
         display: "flex",
         flexDirection: "row",
         justifyContent: "center",
+        background: "white"
       }}
     >
       <Typography>Footer</Typography>

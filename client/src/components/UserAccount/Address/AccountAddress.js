@@ -14,10 +14,11 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { addAddress, deleteAddress } from "../../../actions/userActions";
+import PageTitle from "../../PageTitle/PageTitle";
+import Address from "../../Address/Address";
 
 const styles = {
-  wrapper: {
-  },
+  wrapper: {},
 };
 
 const validationSchema = Yup.object({
@@ -39,20 +40,33 @@ const AccountAddress = () => {
 
   return (
     <Box sx={styles.wrapper}>
+      {userDetails?.addresses?.length === 0 && (
+        <PageTitle
+          title="No saved addresses, save one below"
+          size="h6"
+          lineBorder
+        />
+      )}
+      {userDetails?.addresses.length > 0 && (
+        <>
+          <PageTitle title="Saved Addresses" size="h6" lineBorder />
+        </>
+      )}
       <Box sx={styles.existingAddresses}>
-        <Typography variant="h6">Existing Addresses</Typography>
         {userDetails?.addresses?.map((address) => (
-          <Box key={address._id}>
-            <Typography variant="body1">{address.street}</Typography>
+          <Box key={address._id} sx={{display: "flex", justifyContent: "space-between", margin: "10px"}}>
+            {/* <Typography variant="body1">{address.street}</Typography>
             <Typography variant="body1">{address.city}</Typography>
             <Typography variant="body1">{address.postalCode}</Typography>
             <Typography variant="body1">{address.country}</Typography>
             <Typography variant="body1">
               {address.isDefault ? "Default" : ""}
-            </Typography>
+            </Typography> */}
+            <Address address={address} />
             <Button
               variant="contained"
               color="error"
+              sx={{ width: "auto", alignSelf: "center" }}
               onClick={() => {
                 dispatch(deleteAddress(token, address._id));
               }}
@@ -63,7 +77,7 @@ const AccountAddress = () => {
         ))}
       </Box>
       <Box sx={styles.newAddress}>
-        {" "}
+      <PageTitle title="Add a new address" size="h6" lineBorder />
         <Formik
           initialValues={{
             street: "",

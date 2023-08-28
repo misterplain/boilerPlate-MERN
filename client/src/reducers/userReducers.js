@@ -41,14 +41,20 @@ export const userReducer = (state = { isGuest: true }, action) => {
       };
 
     case ADD_ADDRESS_SUCCESS:
+      const isDefaultAdded = action.payload.data.newAddress.isDefault;
+
+      const updatedAddresses = isDefaultAdded
+        ? state.userDetails.addresses.map((address) => ({
+            ...address,
+            isDefault: false,
+          }))
+        : [...state.userDetails.addresses];
+
       return {
         ...state,
         userDetails: {
           ...state.userDetails,
-          addresses: [
-            ...state.userDetails.addresses,
-            action.payload.data.newAddress,
-          ],
+          addresses: [...updatedAddresses, action.payload.data.newAddress],
         },
       };
 

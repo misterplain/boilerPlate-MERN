@@ -62,7 +62,7 @@ const UserAccountScreen = () => {
         }}
       >
         {accountButtons.map((button) => (
-          <Link component={NavLink} to={button.link}>
+          <Link component={NavLink} to={button.link} key={button.link}>
             <Button>{button.name}</Button>
           </Link>
         ))}
