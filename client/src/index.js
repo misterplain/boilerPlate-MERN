@@ -60,6 +60,7 @@ root.render(
         {" "}
         <SnackbarProvider
           maxSnack={5}
+          autoHideDuration={2000}
           hideIconVariant
           Components={{
             success: StyledMaterialDesignContent,

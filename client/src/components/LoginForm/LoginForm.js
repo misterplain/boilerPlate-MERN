@@ -7,6 +7,11 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import { loginForm } from "../../actions/authActions";
 import AlertMessage from "../AlertMessage/AlertMessage";
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import OutlinedInput from '@mui/material/OutlinedInput';
 
 const styles = {
   formContainer: {
@@ -24,6 +29,7 @@ const styles = {
   },
   formGroup: {
     width: "100%",
+    
   },
 };
 
@@ -49,6 +55,15 @@ const LoginForm = () => {
 
   const handleSubmit = (values) => {
     dispatch(loginForm(values.email, values.password, cartItems));
+  };
+
+  //show password state
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
 
   return (
@@ -85,13 +100,16 @@ const LoginForm = () => {
                   helperText={
                     touched.email && errors.email ? errors.email : " "
                   }
+
                 />
               </Box>
               <Box sx={styles.formGroup}>
-                <TextField
+                <OutlinedInput
                   name="password"
-                  label="Password"
+                  // label="Password"
+                  placeholder="Password"
                   variant="outlined"
+                  type={showPassword ? 'text' : 'password'}
                   fullWidth
                   value={values.password}
                   onChange={handleChange}
@@ -99,9 +117,21 @@ const LoginForm = () => {
                   helperText={
                     touched.password && errors.password ? errors.password : " "
                   }
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
                 />
               </Box>
-              <Button variant="contained" type="submit" disabled={!isValid}>
+              <Button variant="contained" type="submit" disabled={!isValid} sx={{marginTop: "20px"}}>
                 Login
               </Button>{" "}
             </Box>

@@ -26,78 +26,84 @@ const ProductCard = ({ product }) => {
   const { favorites = [] } = userDetailsState?.userDetails || [];
 
   return (
-    <Link
-      component={NavLink}
-      to={`/product/${product._id}`}
-      style={{ textDecoration: "none" }}
-    >
+    <>
+      {" "}
       <Box sx={styles.cardWrapper(theme)}>
         {" "}
-        <Box
-          sx={styles.cardImage(theme)}
-          component="img"
-          src={
-            product.images.length >= 1
-              ? product.images[0].url
-              : "https://placehold.co/200"
-          }
-        />
-        <Box sx={styles.namePriceWrapper(theme)}>
-          <Typography sx={styles.name} variant="body1" component="div">
-            {product.name}
-          </Typography>
-          {product.stock > 10 && (
-            <Typography
-              sx={{ fontSize: "0.8rem",color: "green" }}
-              variant="body1"
-              component="div"
-            >
-              In stock
+        <Link
+          component={NavLink}
+          to={`/product/${product._id}`}
+          style={{ textDecoration: "none" }}
+        >
+          <Box
+            sx={styles.cardImage(theme)}
+            component="img"
+            src={
+              product.images.length >= 1
+                ? product.images[0].url
+                : "https://placehold.co/200"
+            }
+          />
+          <Box sx={styles.namePriceWrapper(theme)}>
+            <Typography sx={styles.name} variant="body1" component="div">
+              {product.name}
             </Typography>
-          )}
-          {product.stock > 0 && product.stock <= 10 && (
-            <Typography
-              sx={{ fontSize: "0.8rem", color: "orange" }}
-              variant="body1"
-              component="div"
-            >
-              Only {product.stock} left in stock
-            </Typography>
-          )}
-          {product.stock === 0 && (
-            <Typography sx={{fontSize: "0.8rem",color: "grey"}} variant="body1" component="div">
-              Out of stock
-            </Typography>
-          )}
-          <Box id="price" sx={styles.priceWrapper(theme)}>
-            {!product.onSale && (
-              <Typography sx={styles.price} variant="body1" component="div">
-                ${product.price}
+            {product.stock > 10 && (
+              <Typography
+                sx={{ fontSize: "0.8rem", color: "green" }}
+                variant="body1"
+                component="div"
+              >
+                In stock
               </Typography>
             )}
-            {product.onSale && (
-              <>
-                {" "}
-                <Typography
-                  sx={styles.price}
-                  variant="body1"
-                  // component="div"
-                  style={{ textDecoration: "line-through" }}
-                >
+            {product.stock > 0 && product.stock <= 10 && (
+              <Typography
+                sx={{ fontSize: "0.8rem", color: "orange" }}
+                variant="body1"
+                component="div"
+              >
+                Only {product.stock} left in stock
+              </Typography>
+            )}
+            {product.stock === 0 && (
+              <Typography
+                sx={{ fontSize: "0.8rem", color: "grey" }}
+                variant="body1"
+                component="div"
+              >
+                Out of stock
+              </Typography>
+            )}
+            <Box id="price" sx={styles.priceWrapper(theme)}>
+              {!product.onSale && (
+                <Typography sx={styles.price} variant="body1" component="div">
                   ${product.price}
                 </Typography>
-                <Typography>&nbsp;on sale for</Typography>
-                <Typography
-                  sx={styles.salePrice}
-                  variant="body1"
-                  // component="div"
-                >
-                  &nbsp;${product.salePrice}
-                </Typography>
-              </>
-            )}
+              )}
+              {product.onSale && (
+                <>
+                  <Typography
+                    sx={styles.price}
+                    variant="body1"
+                    // component="div"
+                    style={{ textDecoration: "line-through" }}
+                  >
+                    ${product.price}
+                  </Typography>
+                  {/* <Typography >&nbsp;on sale for</Typography> */}
+                  <Typography
+                    sx={styles.salePrice}
+                    variant="body1"
+                    // component="div"
+                  >
+                    &nbsp;${product.salePrice}
+                  </Typography>
+                </>
+              )}
+            </Box>
           </Box>
-        </Box>{" "}
+        </Link>
         <Box sx={styles.iconsWrapper(theme)}>
           <Box sx={styles.ratings}>
             {/* <RatingIcons
@@ -151,8 +157,8 @@ const ProductCard = ({ product }) => {
             </Box>
           )}
         </Box>
-      </Box>{" "}
-    </Link>
+      </Box>
+    </>
   );
 };
 

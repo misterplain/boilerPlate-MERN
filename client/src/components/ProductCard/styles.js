@@ -47,7 +47,7 @@ const styles = {
     justifyContent: "center",
   }),
   salePrice: (theme) => ({
-    color: "",
+    color: "purple",
   }),
   stock: (theme) => ({
   

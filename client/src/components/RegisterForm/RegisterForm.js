@@ -7,6 +7,11 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import { registerForm } from "../../actions/authActions";
 import AlertMessage from "../AlertMessage/AlertMessage";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import OutlinedInput from "@mui/material/OutlinedInput";
 
 const styles = {
   formContainer: {
@@ -18,7 +23,7 @@ const styles = {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    background : "white",
+    background: "white",
     padding: "10px",
     borderRadius: "5px",
   },
@@ -40,8 +45,6 @@ const loginSchema = Yup.object({
     [Yup.ref("password"), null],
     "Passwords must match"
   ),
-
-  
 });
 
 const RegisterForm = () => {
@@ -52,8 +55,16 @@ const RegisterForm = () => {
   const authState = useSelector((state) => state.userAuth);
   const { registerError } = authState;
 
-  const handleSubmit = (values) => {
+  //show password state
+  const [showPassword, setShowPassword] = React.useState(false);
 
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const handleSubmit = (values) => {
     dispatch(
       registerForm(
         values.username,
@@ -67,9 +78,9 @@ const RegisterForm = () => {
 
   return (
     <Box sx={styles.formContainer}>
-        {registerError && <AlertMessage type="error">{registerError}</AlertMessage>}
-
-      {" "}
+      {registerError && (
+        <AlertMessage type="error">{registerError}</AlertMessage>
+      )}{" "}
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={loginSchema}
@@ -115,10 +126,12 @@ const RegisterForm = () => {
                   }
                 />
               </Box>
-              <Box sx={styles.formGroup}>
-                <TextField
+              <Box sx={{ ...styles.formGroup, marginBottom: "30px" }}>
+                <OutlinedInput
                   name="password"
-                  label="Password"
+                  // label="Password"
+                  placeholder="Password"
+                  type={showPassword ? "text" : "password"}
                   variant="outlined"
                   fullWidth
                   value={values.password}
@@ -127,12 +140,26 @@ const RegisterForm = () => {
                   helperText={
                     touched.password && errors.password ? errors.password : " "
                   }
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
                 />
               </Box>
               <Box sx={styles.formGroup}>
-                <TextField
+                <OutlinedInput
                   name="confirmPassword"
-                  label="Confirm Password"
+                  // label="Confirm Password"
+                  placeholder="Confirm Password"
+                  type={showPassword ? "text" : "password"}
                   variant="outlined"
                   fullWidth
                   value={values.confirmPassword}
@@ -143,9 +170,26 @@ const RegisterForm = () => {
                       ? errors.confirmPassword
                       : " "
                   }
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
                 />
               </Box>
-              <Button variant="contained" type="submit" disabled={!isValid}>
+              <Button
+                variant="contained"
+                type="submit"
+                disabled={!isValid}
+                sx={{ marginTop: "20px" }}
+              >
                 Login
               </Button>{" "}
             </Box>
