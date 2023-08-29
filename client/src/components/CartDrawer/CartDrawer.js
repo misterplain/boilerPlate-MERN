@@ -16,6 +16,7 @@ const CartDrawer = () => {
       sx={{
         width: 400,
         height: "100vh",
+        padding: "10px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",

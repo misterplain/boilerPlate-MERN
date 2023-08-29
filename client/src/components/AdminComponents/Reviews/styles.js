@@ -1,4 +1,10 @@
 const styles = {
+  singleReview: {
+    width: "100%",
+    marginBottom: "20px",
+    paddingBottom: "10px",
+    borderBottom: "1px solid lightgrey",
+  },
   user: {
     display: "flex",
     flexDirection: "row",

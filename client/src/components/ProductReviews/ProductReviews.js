@@ -101,7 +101,12 @@ const ProductReviews = ({ productId }) => {
                   {/* <Box sx={styles.reviewType}>
                     <Typography>What you've said</Typography>
                   </Box>{" "} */}
-                  <PageTitle title="What you've said:" size="h6" lineBorder color="purple"/>
+                  <PageTitle
+                    title="What you've said:"
+                    size="h6"
+                    lineBorder
+                    color="purple"
+                  />
                   <Box sx={styles.singleReview}>
                     <Box sx={styles.user}>
                       {" "}
@@ -110,7 +115,7 @@ const ProductReviews = ({ productId }) => {
                           height: "35px",
                           width: "35px",
                           padding: "0px",
-                          // margin: "30px",
+                          margin: "5px",
                         }}
                       >
                         {" "}
@@ -120,7 +125,12 @@ const ProductReviews = ({ productId }) => {
                         {review.username} says...
                       </Typography>
                     </Box>
-
+                    <Rating
+                      name="size-small"
+                      defaultValue={review.rating}
+                      size="small"
+                      readOnly
+                    />
                     <Typography
                       sx={styles.reviewTitle}
                       variant="h5"
@@ -135,12 +145,7 @@ const ProductReviews = ({ productId }) => {
                     >
                       {review.comment}
                     </Typography>
-                    <Rating
-                      name="size-small"
-                      defaultValue={review.rating}
-                      size="small"
-                      readOnly
-                    />
+
                     <Box sx={styles.optionsWrapper}>
                       {userId && userId === review.userId && (
                         <Button
@@ -173,23 +178,23 @@ const ProductReviews = ({ productId }) => {
                           </Button>
                         )}
                     </Box>
-                    <Box sx={styles.userReviewStatus}>
+                    <Box sx={styles.statusWrapper}>
                       {" "}
                       {review.isDeleted && (
-                        <Typography>
-                          THIS REVIEW IS DELETED, EDIT YOUR REVIEW TO REPOST
+                        <Typography sx={styles.reviewStatus}>
+                          This review is deleted, edit your review to repost
                         </Typography>
                       )}{" "}
                       {review.awaitingModeration && !review.isDeleted && (
-                        <Typography>
-                          THIS REVIEW IS AWAITING MODERATION
+                        <Typography sx={styles.reviewStatus}>
+                          This review is awaiting moderation
                         </Typography>
                       )}{" "}
                       {review.approvedByAdmin === false &&
                         review.awaitingModeration === false && (
-                          <Typography>
-                            THIS REVIEW IS NOT APPROVED, EDIT YOUR REVIEW TO TRY
-                            AGAIN OR YOU MAY DELETE YOUR REVIEW
+                          <Typography sx={styles.reviewStatus}>
+                            This review is not approved, edit your review to try
+                            again or you may delete your review
                           </Typography>
                         )}
                     </Box>
@@ -198,7 +203,12 @@ const ProductReviews = ({ productId }) => {
               );
             })}
           {otherReviews && otherReviews?.length > 0 && (
-                  <PageTitle title="What others have said:" size="h6" lineBorder color="purple"/>
+            <PageTitle
+              title="What others have said:"
+              size="h6"
+              lineBorder
+              color="purple"
+            />
           )}
           {otherReviews &&
             otherReviews?.length <= 0 &&
@@ -212,22 +222,27 @@ const ProductReviews = ({ productId }) => {
               <Box sx={styles.singleReview} key={review._id}>
                 <Box sx={styles.user}>
                   {" "}
-                  {" "}
-                      <Box
-                        sx={{
-                          height: "35px",
-                          width: "35px",
-                          padding: "0px",
-                          // margin: "30px",
-                        }}
-                      >
-                        {" "}
-                        <Avatar item={review} />
-                      </Box>
+                  <Box
+                    sx={{
+                      height: "35px",
+                      width: "35px",
+                      padding: "0px",
+                      margin: "5px",
+                    }}
+                  >
+                    {" "}
+                    <Avatar item={review} />
+                  </Box>
                   <Typography sx={styles.username}>
                     {review.username} says...
                   </Typography>
-                </Box>
+                </Box>{" "}
+                <Rating
+                  name="size-small"
+                  defaultValue={review.rating}
+                  size="small"
+                  readOnly
+                />
                 <Typography
                   sx={styles.reviewTitle}
                   variant="h5"
@@ -238,12 +253,6 @@ const ProductReviews = ({ productId }) => {
                 <Typography sx={styles.reviewText} variant="h6" component="div">
                   {review.comment}
                 </Typography>
-                <Rating
-                  name="size-small"
-                  defaultValue={review.rating}
-                  size="small"
-                  readOnly
-                />
                 {isAdmin && (
                   <Button
                     color="secondary"

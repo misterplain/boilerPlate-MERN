@@ -97,6 +97,9 @@ export const reviewsReducer = (state = initialState, action) => {
         ...state,
         error: null,
         loading: false,
+        filteredReviews: state.filteredReviews.filter(
+          (review) => review._id !== action.payload._id
+        ),
         reviews: state.reviews.filter(
           (review) => review._id !== action.payload._id
         ),

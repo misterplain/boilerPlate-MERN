@@ -27,6 +27,7 @@ import { useNavigate } from "react-router-dom";
 import { setShopToCollection } from "../../actions/shopActions";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import HomeIcon from "@mui/icons-material/Home";
+import Avatar from "../Avatar/Avatar";
 
 import styles from "./styles";
 
@@ -39,7 +40,7 @@ const Header = ({ isActive }) => {
   const userAuthState = useSelector((state) => state.userAuth);
   const { authenticated } = userAuthState;
   const userDetailsState = useSelector((state) => state.userDetails);
-  const { username, isAdmin } = userDetailsState?.userDetails || {};
+  const { username, isAdmin, userAvatar } = userDetailsState?.userDetails || {};
   const cartState = useSelector((state) => state.shoppingCart);
   const { cartItems } = cartState || {};
   const collectionsList = useSelector((state) => state.collections);
@@ -214,7 +215,8 @@ const Header = ({ isActive }) => {
                 color="inherit"
               >
                 <Box sx={styles.avatar}>
-                  <CgProfile />
+                  {/* <CgProfile /> */}
+                  <Avatar item={userDetailsState.userDetails} />
                 </Box>
               </IconButton>
               <Menu
@@ -231,45 +233,55 @@ const Header = ({ isActive }) => {
                 }}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
+ 
+            
               >
-                {isAdmin && (
+                <Box sx={styles.dropdownHeading}>
+                  <Typography sx={{ borderBottom: "1px solid grey" }}>
+                    {username}
+                  </Typography>
+                </Box>
+                <Box sx={styles.dropdownOptions}>
+                  {" "}
+                  {isAdmin && (
+                    <MenuItem onClick={handleClose}>
+                      <Link
+                        component={NavLink}
+                        to="/admin"
+                        sx={{ textDecoration: "none" }}
+                      >
+                        <Button variant="contained">Admin Panel</Button>
+                      </Link>
+                    </MenuItem>
+                  )}
                   <MenuItem onClick={handleClose}>
                     <Link
                       component={NavLink}
-                      to="/admin"
+                      to="/favorites"
                       sx={{ textDecoration: "none" }}
                     >
-                      <Button variant="contained">Admin Panel</Button>
+                      Favorites
                     </Link>
                   </MenuItem>
-                )}
-                <MenuItem onClick={handleClose}>
-                  <Link
-                    component={NavLink}
-                    to="/favorites"
-                    sx={{ textDecoration: "none" }}
-                  >
-                    Favorites
-                  </Link>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <Link
-                    component={NavLink}
-                    to="/useraccount"
-                    sx={{ textDecoration: "none" }}
-                  >
-                    Account
-                  </Link>
-                </MenuItem>
-                <MenuItem onClick={logout}>
-                  <Link
-                    component={NavLink}
-                    to="/"
-                    sx={{ textDecoration: "none" }}
-                  >
-                    Logout
-                  </Link>
-                </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link
+                      component={NavLink}
+                      to="/useraccount"
+                      sx={{ textDecoration: "none" }}
+                    >
+                      Account
+                    </Link>
+                  </MenuItem>
+                  <MenuItem onClick={logout}>
+                    <Link
+                      component={NavLink}
+                      to="/"
+                      sx={{ textDecoration: "none" }}
+                    >
+                      Logout
+                    </Link>
+                  </MenuItem>
+                </Box>
               </Menu>
             </>
           ) : (

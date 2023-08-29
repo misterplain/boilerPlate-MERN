@@ -449,9 +449,30 @@ const AddEditProduct = () => {
               </Wrapper>
             </Wrapper>
             <hr></hr>
-            <Button type="submit" variant="outlined" color="secondary">
-              {isEdit ? "Send Edit" : "Create Product"}
-            </Button>{" "}
+            <Box
+              sx={{ display: "flex", width: "40%", justifyContent: "center", flexDirection:"column" }}
+            >
+              {(!values.collectionId ||
+                !values.name ||
+                !values.price ||
+                !values.stock ||
+                !values.description) && <Box>Please fill all fields</Box>}
+              <Button
+                type="submit"
+                variant="contained"
+                color="success"
+                size="large"
+                disabled={
+                  !values.collectionId ||
+                  !values.name ||
+                  !values.price ||
+                  !values.stock ||
+                  !values.description
+                }
+              >
+                {isEdit ? "Send Edit" : "Create Product"}
+              </Button>{" "}
+            </Box>
           </form>
         )}
       </Formik>

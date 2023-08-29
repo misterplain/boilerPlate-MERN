@@ -8,6 +8,7 @@ import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import Rating from "@mui/material/Rating";
 import Wrapper from "../../Wrapper/Wrapper";
+import PageTitle from "../../PageTitle/PageTitle";
 
 import { deleteReview, moderateReview } from "../../../actions/reviewsActions";
 
@@ -27,14 +28,32 @@ const AdminReviews = () => {
         margin: "20px",
       }}
     >
-      {" "}
+      {reviews.length === 0 && (
+        <PageTitle
+          title="No reviews to moderate"
+          customStyles={{ textAlign: "center" }}
+          color="purple"
+          size="h5"
+          lineBorder
+        />
+      )}
       {reviews &&
         reviews.map((review) => (
           <>
             <Box sx={styles.singleReview}>
               <Box sx={styles.user}>
                 {" "}
-                <Avatar review={review} />
+                <Box
+                  sx={{
+                    height: "35px",
+                    width: "35px",
+                    padding: "0px",
+                    margin: "5px",
+                  }}
+                >
+                  {" "}
+                  <Avatar item={review} />
+                </Box>
                 <Typography sx={styles.username}>
                   {review.username} reviewed{" "}
                   <Link component={NavLink} to={`/product/${review.productId}`}>
@@ -52,7 +71,11 @@ const AdminReviews = () => {
               <Typography sx={styles.reviewTitle} variant="h5" component="div">
                 {review.reviewTitle}
               </Typography>
-              <Typography sx={styles.reviewText} variant="body1" component="div">
+              <Typography
+                sx={styles.reviewText}
+                variant="body1"
+                component="div"
+              >
                 {review.comment}
               </Typography>
               <Wrapper id="reviewOptions">

@@ -16,15 +16,15 @@ const styles = {
     },
     [theme.breakpoints.up("md")]: {
       width: "200px",
-      height: "265px",
+      height: "280px",
     },
     [theme.breakpoints.up("lg")]: {
       width: "200px",
-      height: "265px",
+      height: "280px",
     },
     [theme.breakpoints.up("xl")]: {
       width: "200px",
-      height: "265px",
+      height: "280px",
     },
     borderRadius: "10px",
     padding: "5px",
@@ -87,6 +87,7 @@ const styles = {
       display: "block",
     },
   }),
+
 };
 
 export default styles;

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -14,7 +15,7 @@ import AdminReviews from "../components/AdminComponents/Reviews/AdminReviews";
 import { getUnmoderatedReviews } from "../actions/reviewsActions";
 import { useTheme } from "@mui/material/styles";
 import Wrapper from "../components/Wrapper/Wrapper";
-import AddEditProduct from "../components/AdminComponents/Collections/AddEditProduct"
+import AddEditProduct from "../components/AdminComponents/Collections/AddEditProduct";
 
 const styles = {
   buttonsWrapper: (theme) => ({
@@ -54,6 +55,8 @@ const adminButtons = [
 const AdminScreen = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const userAuthState = useSelector((state) => state.userAuth);
   const token = userAuthState?.accessToken;
   const reviewsState = useSelector((state) => state.reviews);
@@ -61,6 +64,10 @@ const AdminScreen = () => {
 
   useEffect(() => {
     dispatch(getUnmoderatedReviews(token));
+
+    if (location.pathname === "/admin" && !location.search) {
+      navigate("/admin/collections");
+    }
   }, [dispatch, token]);
 
   const badgeCounts = {
@@ -121,7 +128,10 @@ const AdminScreen = () => {
           {" "}
           <Route path="collections" element={<AdminCollections />} />
           <Route path="addeditproduct/" element={<AddEditProduct />} />
-          <Route path="addeditproduct/:productId" element={<AddEditProduct />} />
+          <Route
+            path="addeditproduct/:productId"
+            element={<AddEditProduct />}
+          />
           <Route path="users" element={<AdminUsers />} />
           <Route path="orders/*" element={<AdminOrders />} />
           <Route path="reviews" element={<AdminReviews />} />

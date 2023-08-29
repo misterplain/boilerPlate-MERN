@@ -70,6 +70,23 @@ const styles = {
     border: "1px solid white",
     borderRadius: "50%",
   }),
+  dropdownHeading: (theme) => ({
+
+    fontSize: "1.5rem",
+    width: "200px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "10px 0px",
+    flexWrap: "wrap",
+  }),
+  dropdownOptions: (theme) => ({
+    width: "200px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  })
 };
 
 export default styles;
