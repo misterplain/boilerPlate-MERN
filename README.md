@@ -26,7 +26,7 @@ The deployed site can be found [HERE](https://e-commerce-mern-eryu.onrender.com/
 
 #### Installation
 
-  --Frontend--  
+**-Frontend-**  
 
 ```sh
 cd client
@@ -34,13 +34,13 @@ npm install
 npm start
 ```
 
-  .env file - client  
+**-.env file - client-**  
 NODE_ENV=
 REACT_APP_SERVER_API_URL=  
 REACT_APP_CLIENT_URL=  
 PEXELS_API_KEY=  
 
-  -Backend-  
+**-Backend-**  
 
 ```sh
 cd server
@@ -48,7 +48,7 @@ npm install
 npm run server
 ```
 
-  .env file - server  
+**-.env file - server-**    
 NODE_ENV=
 MONGO_URI=
 ACCESS_TOKEN_SECRET=
