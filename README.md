@@ -1,67 +1,67 @@
-### To do list for boilerPlate
+# MERN E-Commerce Boilerplate
+A MERN stack e-commerce template designed for scalability. Ideal as a starting off point with Admin functionality, OAuth login, and custom Material UI theming, this clone-ready base ensures rapid deployment with optimized features. Customize to fit your needs.
 
-## User authentication
+The deployed site can be found  [HERE](https://e-commerce-mern-eryu.onrender.com/)
 
-1. [x] once site is deployed, update whitelist in cors options on backend
-2. [x] logout functionality
-3. [x] implement material ui login form with yup and formik
-4. [x] user model on backend will be (username, email, password, cartItems, favorites, orderHistory, isAdmin, isUser, isDeleted)
-5. [x] take userdata from github/facebook/github to create a userObject, allow user to modify their account details under user Settings
-6. [x] JWT authentication
-7. [ ] refresh token functinality, refresh stored in localstorage, new access token/refresh provided by server
+#### Guest functionality
+- Add and remove cart items
+- Place order, receive orderId
 
-## Admin
+#### User functionality
+- Add and remove cart items
+- Add and remove favorites
+- Rate and review products
+- Place order, view and edit order
+- Edit profile username and avatar
 
-1. [x] Create/Edit/Delete collections
-2. [x] Create/Edit/Delete items / stock
-3. [x] Create/Edit/Delete reviews
-4. [ ] Create/Edit/Delete users
-5. [x] Create/Edit/Delete orders
-6. [x] Advanced search for orders (order number/email/post code/courierTrackingNumber,orderStatus)
+#### Admin functionality
+- Create/Edit/Delete collections of products
+- Create/Edit/Delete products 
+- Moderate reviews
+- Manage orders (quick search and advanced search)
 
-## User
+#### Installation
 
-1. [x] Add / Remove items to cart
-2. [x] Add / Remove Favorites
-3. [x] Rate and review various items
-4. [x] Place order, see and edit order in account settings
-5. [x] Edit profile information, add profile photo
-6. [x] View order history, cancel order when in "production" status
+**--Frontend--**
+```sh
+cd client
+npm install
+npm start
+```
+**.env file - client**
+NODE_ENV=
+REACT_APP_SERVER_API_URL=
+REACT_APP_CLIENT_URL=
+PEXELS_API_KEY=
 
-## Guest
+**-Backend-**
+```sh
+cd server
+npm install
+npm run server
+```
+**.env file - server**
+NODE_ENV=development
+MONGO_URI=
+ACCESS_TOKEN_SECRET= 
+REFRESH_TOKEN_SECRET= 
+GOOGLE_CLIENT_ID= 
+GOOGLE_CLIENT_SECRET=
+GITHUB_CLIENT_ID= 
+GITHUB_CLIENT_SECRET=
+FACEBOOK_CLIENT_ID=
+FACEBOOK_CLIENT_SECRET=
+CLOUD_NAME=
+CLOUD_KEY=
+CLOUD_KEY_SECRET=
+PEXELS_API_KEY=
 
-1. [x] Add / Remove items to cart
-2. [x] Place order, receive orderId and confirmation email
+#### To-do list for this project
+[ ] Refresh tokens
+[ ] Password reset functionality
+[ ] User can report a review, send to moderation
+[ ] Confirmation emails at order status change
+[ ] Global variable - reviews require moderation or not
+[ ] Global variable - admin level style object
 
-## Item
-
-1. [x] collectionId, photos, title, description, longDescription, alt, stock, reviews(ratings), isFeatured, isDisplayed
-
-## MISC
-
-1. [x] placing or cancelling and order changes the backend stock information
-2. [x] Photo carousel on each item
-3. [x] sort functionality on products page / collections (price high to low, most reviewed, highest rated)
-4. [ ] consider adding password reset functionality
-5. [x] Sort items on main page for featured items
-6. [x] cards on main page linking to shop with collectionId as search filter
-7. [ ] rate limiting for the backend
-8. [x] when user goes back to homepage it triggers fetchProducts()
-9. [x] customer cannot add to an order the available stock
-10. [x] when you confirm an order, if anything is out of stock it will reply with error
-11. [ ] user can report a review which removes it and puts it back in moderation
-12. [x] cloudinary formating to maintain aspect ratio, central cropping
-13. [x] replace 1-5 ratings with stars
-14. [x] within ratings, get average rating based on X reviews
-15. [x] When you load the Shop screen, isFeatured products will display before any filterQueries are sent
-16. [x] Favorites screen
-17. [x] New/edit review, set rating to star icon hover
-18. [x] Full order details screen
-19. [x] Admin moderate reviews show product info
-20. [ ] Admin toggle whether reviews need to be moderated
-21. [ ] Back button from new/edit product back to collections
-22. [x] Collections as dropdown menu
-23. [ ] Refresh on product/collections page, re-load if nothing in redux state
-24. [ ] consider: Admin level styling
-25. [x] Add search bar in header and snackbar dispatch, redirect to shop
-26. [x] Custom wrapper component used for flexboxes and grid containers 
+Any and all feedback on this project is welcome, you may contact me [HERE](https://www.linkedin.com/in/patrick-o-brien-6743b044/)!
