@@ -137,6 +137,7 @@ const CartItems = () => {
     <Wrapper
       id="componentWrapper"
       flexDirection="row"
+      width="100%"
       justifyContent="center"
       customStyles={{
         padding: "15px 0px",

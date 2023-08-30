@@ -8,6 +8,7 @@ const PageTitle = ({ size, title, color, lineBorder }) => {
       sx={{
         display: "flex", 
         alignItems: "center", 
+        justifyContent: "center",
         width: "100%",
         color: color,
         "&::before, &::after": {

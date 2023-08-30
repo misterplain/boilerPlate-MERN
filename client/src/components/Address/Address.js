@@ -9,11 +9,11 @@ const styles = {
     padding: "15px",
     display: "flex",
     flexDirection: "column",
-    width: "auto"
+    width: "auto",
   },
 };
 
-const Address = ({address}) => {
+const Address = ({address, email}) => {
   return (
     <Box sx={styles.wrapper}>
       <Typography variant="body1">{address.street}</Typography>
@@ -23,6 +23,7 @@ const Address = ({address}) => {
       <Typography variant="body1" sx={{color: "green"}}>
         {address.isDefault ? "Default" : ""}
       </Typography>
+      {email && <Typography variant="body1" sx={{margin: "15px 0px 0px 0px", color:"purple"}}>{email}</Typography>}
     </Box>
   );
 };

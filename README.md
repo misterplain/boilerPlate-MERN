@@ -25,7 +25,7 @@
 2. [x] Add / Remove Favorites
 3. [x] Rate and review various items
 4. [x] Place order, see and edit order in account settings
-5. [ ] Edit profile information, add profile photo
+5. [x] Edit profile information, add profile photo
 6. [x] View order history, cancel order when in "production" status
 
 ## Guest
@@ -53,15 +53,15 @@
 12. [x] cloudinary formating to maintain aspect ratio, central cropping
 13. [x] replace 1-5 ratings with stars
 14. [x] within ratings, get average rating based on X reviews
-15. [ ] When you load the Shop screen, isFeatured products will display before any filterQueries are sent
-16. [ ] Favorites screen
+15. [x] When you load the Shop screen, isFeatured products will display before any filterQueries are sent
+16. [x] Favorites screen
 17. [x] New/edit review, set rating to star icon hover
-18. [ ] Full order details screen
-19. [ ] Admin moderate reviews show product info
+18. [x] Full order details screen
+19. [x] Admin moderate reviews show product info
 20. [ ] Admin toggle whether reviews need to be moderated
 21. [ ] Back button from new/edit product back to collections
-22. [ ] Collections as dropdown menu
+22. [x] Collections as dropdown menu
 23. [ ] Refresh on product/collections page, re-load if nothing in redux state
 24. [ ] consider: Admin level styling
 25. [x] Add search bar in header and snackbar dispatch, redirect to shop
-26. [ ] Custom wrapper component used for flexboxes and grid containers 
+26. [x] Custom wrapper component used for flexboxes and grid containers 

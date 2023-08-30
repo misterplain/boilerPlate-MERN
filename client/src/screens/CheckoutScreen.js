@@ -41,6 +41,7 @@ const CheckoutScreen = () => {
       <Wrapper
         justifyContent="space-around"
         alignItems="center"
+        width="100%"
         customStyles={{
           padding: "1rem",
         }}
