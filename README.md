@@ -29,10 +29,10 @@ npm install
 npm start
 ```
 **.env file - client**
-NODE_ENV=
-REACT_APP_SERVER_API_URL=
-REACT_APP_CLIENT_URL=
-PEXELS_API_KEY=
+>NODE_ENV=
+>REACT_APP_SERVER_API_URL=
+>REACT_APP_CLIENT_URL=
+>PEXELS_API_KEY=
 
 **-Backend-**
 ```sh
@@ -41,27 +41,27 @@ npm install
 npm run server
 ```
 **.env file - server**
-NODE_ENV=development
-MONGO_URI=
-ACCESS_TOKEN_SECRET= 
-REFRESH_TOKEN_SECRET= 
-GOOGLE_CLIENT_ID= 
-GOOGLE_CLIENT_SECRET=
-GITHUB_CLIENT_ID= 
-GITHUB_CLIENT_SECRET=
-FACEBOOK_CLIENT_ID=
-FACEBOOK_CLIENT_SECRET=
-CLOUD_NAME=
-CLOUD_KEY=
-CLOUD_KEY_SECRET=
-PEXELS_API_KEY=
+>NODE_ENV=development
+>MONGO_URI=
+>ACCESS_TOKEN_SECRET= 
+>REFRESH_TOKEN_SECRET= 
+>GOOGLE_CLIENT_ID= 
+>GOOGLE_CLIENT_SECRET=
+>GITHUB_CLIENT_ID= 
+>GITHUB_CLIENT_SECRET=
+>FACEBOOK_CLIENT_ID=
+>FACEBOOK_CLIENT_SECRET=
+>CLOUD_NAME=
+>CLOUD_KEY=
+>CLOUD_KEY_SECRET=
+>PEXELS_API_KEY=
 
 #### To-do list for this project
-[ ] Refresh tokens
-[ ] Password reset functionality
-[ ] User can report a review, send to moderation
-[ ] Confirmation emails at order status change
-[ ] Global variable - reviews require moderation or not
-[ ] Global variable - admin level style object
+1. [ ] Refresh tokens
+2. [ ] Password reset functionality
+3. [ ] User can report a review, send to moderation
+4. [ ] Confirmation emails at order status change
+5. [ ] Global variable - reviews require moderation or not
+6. [ ] Global variable - admin level style object
 
 Any and all feedback on this project is welcome, you may contact me [HERE](https://www.linkedin.com/in/patrick-o-brien-6743b044/)!
