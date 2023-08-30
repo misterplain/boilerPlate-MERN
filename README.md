@@ -26,7 +26,7 @@ The deployed site can be found [HERE](https://e-commerce-mern-eryu.onrender.com/
 
 #### Installation
 
-**--Frontend--**
+  --Frontend--  
 
 ```sh
 cd client
@@ -34,13 +34,13 @@ npm install
 npm start
 ```
 
-**.env file - client**
-NODE_ENV=**
-REACT_APP_SERVER_API_URL=**
-REACT_APP_CLIENT_URL=**
-PEXELS_API_KEY=**
+  .env file - client  
+NODE_ENV=
+REACT_APP_SERVER_API_URL=  
+REACT_APP_CLIENT_URL=  
+PEXELS_API_KEY=  
 
-**-Backend-**
+  -Backend-  
 
 ```sh
 cd server
@@ -48,21 +48,21 @@ npm install
 npm run server
 ```
 
-**.env file - server**
-NODE_ENV=__
-MONGO_URI=__
-ACCESS_TOKEN_SECRET=__
-REFRESH_TOKEN_SECRET=**
-GOOGLE_CLIENT_ID=**
-GOOGLE_CLIENT_SECRET=**
-GITHUB_CLIENT_ID=**
-GITHUB_CLIENT_SECRET=**
-FACEBOOK_CLIENT_ID=**
-FACEBOOK_CLIENT_SECRET=**
-CLOUD_NAME=**
-CLOUD_KEY=**
-CLOUD_KEY_SECRET=**
-PEXELS_API_KEY=**
+  .env file - server  
+NODE_ENV=
+MONGO_URI=
+ACCESS_TOKEN_SECRET=
+REFRESH_TOKEN_SECRET=  
+GOOGLE_CLIENT_ID=  
+GOOGLE_CLIENT_SECRET=  
+GITHUB_CLIENT_ID=  
+GITHUB_CLIENT_SECRET=  
+FACEBOOK_CLIENT_ID=  
+FACEBOOK_CLIENT_SECRET=  
+CLOUD_NAME=  
+CLOUD_KEY=  
+CLOUD_KEY_SECRET=  
+PEXELS_API_KEY=  
 
 #### To-do list for this project
 
