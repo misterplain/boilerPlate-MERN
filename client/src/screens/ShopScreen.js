@@ -13,6 +13,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import SearchFilter from "../components/SearchFilter/SearchFilter";
 import SearchResults from "../components/SearchResults/SearchResults";
+import { useNavigate } from "react-router-dom";
 import { setShopToCollection } from "../actions/shopActions";
 import Wrapper from "../components/Wrapper/Wrapper";
 
@@ -56,7 +57,6 @@ const AppBar = styled(MuiAppBar, {
     }),
   }),
   ...(!open && {
-
     height: "0px",
   }),
 }));
@@ -71,9 +71,13 @@ const styles = {
 const ShopScreen = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
 
   const collectionsList = useSelector((state) => state.collections);
+  const productList = useSelector((state) => state.productList);
+  const shopState = useSelector((state) => state.shop);
+  const { hasSearched } = shopState;
   const collections = collectionsList?.collections;
 
   const handleDrawerOpen = () => {
@@ -96,14 +100,17 @@ const ShopScreen = () => {
   };
 
   useEffect(() => {
-    console.log("mounted");
-    console.log(window);
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    if (productList?.products?.length === 0) {
+      navigate("/");
+    }
+    // console.log("mounted");
+    // console.log(window);
+    // window.addEventListener("scroll", handleScroll, { passive: true });
 
-    return () => {
-      console.log("unmounted");
-      window.removeEventListener("scroll", handleScroll);
-    };
+    // return () => {
+    //   console.log("unmounted");
+    //   window.removeEventListener("scroll", handleScroll);
+    // };
   }, []);
 
   return (

@@ -4,6 +4,16 @@ A MERN stack e-commerce template designed for scalability. Ideal as a starting o
 
 The deployed site can be found [HERE](https://e-commerce-mern-eryu.onrender.com/)
 
+#### Site Features
+
+- Redux State Management
+- JWT Authentication and Refresh Token functionality
+- OAuth social media login via Passport
+- Material UI themeing 
+- Formik/Yup for validation
+- Cloudinary image upload and hosting
+- Pexel image generator
+
 #### Guest functionality
 
 - Add and remove cart items
@@ -66,11 +76,10 @@ PEXELS_API_KEY=
 
 #### To-do list for this project
 
-1. [ ] Refresh tokens
 2. [ ] Password reset functionality
 3. [ ] User can report a review, send to moderation
 4. [ ] Confirmation emails at order status change
-5. [ ] Global variable - reviews require moderation or not
+5. [ ] Global variable - reviews require moderation or no
 6. [ ] Global variable - admin level style object
 
 Any and all feedback on this project is welcome, you may contact me [HERE](https://www.linkedin.com/in/patrick-o-brien-6743b044/)!
