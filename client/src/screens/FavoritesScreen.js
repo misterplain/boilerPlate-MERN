@@ -18,14 +18,19 @@ const FavoritesScreen = () => {
   );
 
   return (
-    <Wrapper flexDirection="column" width="90%" alignItems="center">
+    <Wrapper flexDirection="column" width="100%" alignItems="center">
       <PageTitle
         title={favorites.length < 1 ? "Nothing favorited yet" : "Favorites"}
         size="h4"
         lineBorder
         color="purple"
       />
-      <Wrapper flexDirection="row" width="100%" justifyContent="center">
+      <Wrapper
+        flexDirection="row"
+        width="100%"
+        justifyContent="space-around"
+        customStyles={{ margin: "20px 0px" }}
+      >
         {" "}
         {favoritesToDisplay.map((product) => (
           <ProductCard product={product} key={product._id} />

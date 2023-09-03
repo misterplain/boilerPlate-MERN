@@ -19,7 +19,7 @@ const QuickView = () => {
   const token = userAuthState?.accessToken;
 
 
-  const [time, setTime] = useState(quickView ? quickView : 30);
+  const [time, setTime] = useState(quickView ? quickView : 7);
 
   const handleChange = (event) => {
     setTime(event.target.value);
@@ -29,7 +29,9 @@ const QuickView = () => {
     <Wrapper id="pageWrapper" flexDirection="column">
       {" "}
       {error && <AlertMessage type="error">{error}</AlertMessage>}
-      <Wrapper id="timeSelect" justifyContent="center">
+      <Wrapper id="timeSelect" justifyContent="center" customStyles={{
+        margin: "20px 0px 20px 0px"
+      }}>
         {" "}
         <FormControl>
           <InputLabel id="timePeriod">Period</InputLabel>
@@ -63,7 +65,7 @@ const QuickView = () => {
         {orders
           ?.sort((a, b) => new Date(b.datePlaced) - new Date(a.datePlaced))
           .map((order) => (
-            <OrderSnapshot order={order} isAdmin={true} />
+            <OrderSnapshot order={order} isAdmin={true}  key={order._id}/>
           ))}
       </Wrapper>
     </Wrapper>

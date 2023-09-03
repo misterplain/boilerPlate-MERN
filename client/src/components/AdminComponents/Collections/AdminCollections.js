@@ -13,6 +13,7 @@ import CollectionCard from "../../CollectionCard/CollectionCard";
 import { snackbarDispatch } from "../../../utils/snackbarDispatch";
 import { enqueueSnackbar } from "notistack";
 import Wrapper from "../../Wrapper/Wrapper";
+import PageTitle from "../../PageTitle/PageTitle";
 
 const styles = {
   sectionWrapper: {
@@ -35,9 +36,9 @@ const styles = {
   gridItem: {
     border: "1px solid grey",
     padding: "5px",
-    background: "white"
+    background: "white",
   },
-}
+};
 
 const AdminCollections = () => {
   const dispatch = useDispatch();
@@ -54,7 +55,6 @@ const AdminCollections = () => {
   const [collectionToEdit, setCollectionToEdit] = useState(null);
 
   const handleOpenModal = (collection) => {
-    console.log(open);
     setCollectionToEdit(collection);
     setOpen(true);
   };
@@ -63,6 +63,10 @@ const AdminCollections = () => {
     setCollectionToEdit(null);
     setOpen(false);
   };
+
+  const filteredProducts =
+    products &&
+    products.filter((product) => product.collectionId === collectionProductsId);
 
   return (
     <>
@@ -100,6 +104,7 @@ const AdminCollections = () => {
                   setCollectionProductsId(collection._id);
                   setCollectionName(collection.name);
                 }}
+                key={collection._id}
               >
                 <CollectionCard collection={collection} productQuantity />
                 <Wrapper id="optionsWrapper" justifyContent="center">
@@ -154,37 +159,32 @@ const AdminCollections = () => {
                 </Link>
               </Box>
             </Wrapper>
-            <Wrapper id="titlesGrid" gridContainer>
-              {" "}
-              <Grid item xs={3} sx={styles.gridItem}>
-                <Typography>Name</Typography>
-              </Grid>
-              <Grid item xs={1} sx={styles.gridItem}>
-                <Typography>Price</Typography>
-              </Grid>
-              <Grid item xs={1} sx={styles.gridItem}>
-                <Typography>Stock</Typography>
-              </Grid>
-              <Grid item xs={2} sx={styles.gridItem}>
-                <Typography>isDisplayed</Typography>
-              </Grid>
-              <Grid item xs={2} sx={styles.gridItem}>
-                <Typography>isFeatured</Typography>
-              </Grid>
-              <Grid item xs={3} sx={styles.gridItem}>
-                <Typography>Actions</Typography>
-              </Grid>
-            </Wrapper>
             {/* </Grid> */}
-            {products &&
-            products.filter(
-              (product) => product.collectionId === collectionProductsId
-            ).length > 0 ? (
-              products
-                .filter(
-                  (product) => product.collectionId === collectionProductsId
-                )
-                .map((product) => (
+            {filteredProducts && filteredProducts.length > 0 ? (
+              <>
+                {" "}
+                <Wrapper id="titlesGrid" gridContainer>
+                  {" "}
+                  <Grid item xs={3} sx={styles.gridItem}>
+                    <Typography>Name</Typography>
+                  </Grid>
+                  <Grid item xs={1} sx={styles.gridItem}>
+                    <Typography>Price</Typography>
+                  </Grid>
+                  <Grid item xs={1} sx={styles.gridItem}>
+                    <Typography>Stock</Typography>
+                  </Grid>
+                  <Grid item xs={2} sx={styles.gridItem}>
+                    <Typography>isDisplayed</Typography>
+                  </Grid>
+                  <Grid item xs={2} sx={styles.gridItem}>
+                    <Typography>isFeatured</Typography>
+                  </Grid>
+                  <Grid item xs={3} sx={styles.gridItem}>
+                    <Typography>Actions</Typography>
+                  </Grid>
+                </Wrapper>
+                {filteredProducts.map((product) => (
                   <Wrapper id="productsGrid" gridContainer key={product._id}>
                     {" "}
                     <Grid item xs={3} sx={styles.gridItem}>
@@ -225,11 +225,10 @@ const AdminCollections = () => {
                       </Link>
                     </Grid>
                   </Wrapper>
-                ))
+                ))}
+              </>
             ) : (
-              <Box sx={styles.noItems}>
-                <Typography>No items within this category</Typography>
-              </Box>
+<PageTitle title="No products in this collection" size="h6" lineBorder />
             )}
           </Wrapper>
         )}

@@ -130,17 +130,16 @@ const Header = ({ isActive }) => {
     <>
       {" "}
       <Box sx={styles.wrapper}>
-        <Box sx={styles.logoWrapper}>
-          <Link component={NavLink} to="/" sx={{ textDecoration: "none" }}>
-            {mediumBreakpoint ? (
-              <Box sx={styles.homeIcon}>
-                <HomeIcon />
-              </Box>
-            ) : (
-              <Typography sx={styles.logo}>MERN E-Commerce</Typography>
-            )}
-          </Link>
-        </Box>
+        <Link component={NavLink} to="/" sx={styles.logoWrapper}>
+          {mediumBreakpoint ? (
+            // <Box >
+            <HomeIcon sx={styles.homeIcon} />
+          ) : (
+            // </Box>
+            <Typography sx={styles.logo}>MERN E-Commerce</Typography>
+          )}
+        </Link>
+
         <Box sx={styles.searchBarWrapper}>
           <TextField
             label="Search"
@@ -154,8 +153,6 @@ const Header = ({ isActive }) => {
             InputProps={{
               endAdornment: (
                 <>
-                  {/* <InputAdornment position="start">kg</InputAdornment>
-                  <InputAdornment position="start">kg</InputAdornment> */}
                   <IconButton
                     aria-label="toggleFilter"
                     onClick={handleSearchBar}
@@ -195,15 +192,14 @@ const Header = ({ isActive }) => {
           </FormControl>
         </Box>
         <Box sx={styles.linksWrapper}>
-          <Button onClick={handleOpenCart}>
-            {" "}
-            <Badge
-              badgeContent={cartItems ? cartItems.length : null}
-              color="secondary"
-            >
-              <AddShoppingCartIcon />
-            </Badge>
-          </Button>
+          {" "}
+          <Badge
+            badgeContent={cartItems ? cartItems.length : null}
+            color="secondary"
+            onClick={handleOpenCart}
+          >
+            <AddShoppingCartIcon sx={styles.linksItem} />
+          </Badge>
           {authenticated ? (
             <>
               <IconButton
@@ -213,8 +209,9 @@ const Header = ({ isActive }) => {
                 aria-haspopup="true"
                 onClick={handleMenu}
                 color="inherit"
+                sx={{ margin: "0px 5px", padding: "0px" }}
               >
-                <Box sx={styles.avatar}>
+                <Box sx={styles.linksItem}>
                   {/* <CgProfile /> */}
                   <Avatar item={userDetailsState.userDetails} />
                 </Box>
@@ -233,8 +230,6 @@ const Header = ({ isActive }) => {
                 }}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
- 
-            
               >
                 <Box sx={styles.dropdownHeading}>
                   <Typography sx={{ borderBottom: "1px solid grey" }}>

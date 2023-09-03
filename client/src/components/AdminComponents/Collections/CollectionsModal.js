@@ -24,6 +24,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
+  overflowY: "scroll",
   width: "60%",
   height: "80%",
   bgcolor: "background.paper",

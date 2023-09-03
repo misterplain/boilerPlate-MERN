@@ -87,7 +87,6 @@ const AddEditProduct = () => {
   const handleImage = (e) => {
     const file = e.target.files[0];
     setFileToBase(file);
-    console.log(file);
   };
 
   const setFileToBase = (file) => {
@@ -117,7 +116,7 @@ const AddEditProduct = () => {
                 "Product deleted successfully",
                 "Error deleting item",
                 enqueueSnackbar,
-                [() => navigate("/admin/products")]
+                [() => navigate("/admin/collections")]
               );
             }}
             variant="outlined"
@@ -426,7 +425,7 @@ const AddEditProduct = () => {
                     <Typography>Existing Images</Typography>
                     {product &&
                       product?.images?.map((image) => (
-                        <Box sx={styles.existingImagesWrapper}>
+                        <Box sx={styles.existingImagesWrapper} key={image._id}>
                           <Box
                             sx={styles.existingImages}
                             component="img"

@@ -19,6 +19,10 @@ const newProduct = async (req, res) => {
   } = req.body;
   const { isAdmin } = req;
 
+  if(!collectionId || !name || !price || !images || !description || !stock ) {
+    return res.status(400).json({ message: "Please fill in all fields and upload at least 1 photo" });
+  }
+
   if (!isAdmin) {
     return res.status(403).json({ message: "Not an admin" });
   }

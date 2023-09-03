@@ -7,7 +7,7 @@ const styles = {
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "#b3b3cc",
-    padding: "0px 25px",
+    padding: "0px 0px",
     margin: "0px",
     [theme.breakpoints.up("sm")]: {
       padding: "0px 30px",
@@ -22,15 +22,22 @@ const styles = {
       margin: "0px",
     },
   }),
+  homeIcon: (theme) => ({
+   padding: "0px",
+   fontSize: "2rem",
+  }),
 
   logoWrapper: (theme) => ({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    margin: "0px 8px",
+    textDecoration: "none"
   }),
   searchBarWrapper: {
-    marginLeft: "auto",
-    marginRight: "auto",
+    // marginLeft: "auto",
+    // marginRight: "auto",
+    
   },
   collections: (theme) => ({
     minWidth: 150,
@@ -53,7 +60,12 @@ const styles = {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
+    // border: "1px solid blue",
+    padding: "0px 0px",
+    // [theme.breakpoints.up("sm")]: {
+    //   margin: "0px 15px",
+    // }
   }),
 
   headerButton: (theme) => ({
@@ -64,11 +76,17 @@ const styles = {
       fontSize: "1.5rem",
     },
   }),
-  avatar: (theme) => ({
-    width: "32px",
-    height: "32px",
+  linksItem: (theme) => ({
+    width: "40px",
+    height: "40px",
+    padding: "3px",
     border: "1px solid white",
     borderRadius: "50%",
+    margin: "0px 5px",
+    [theme.breakpoints.up("sm")]: {
+      margin: "0px 15px",
+    }
+
   }),
   dropdownHeading: (theme) => ({
 

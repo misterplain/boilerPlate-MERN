@@ -14,42 +14,6 @@ import Address from "../Address/Address";
 
 import styles from "./styles";
 
-const example = {
-  shippingAddress: {
-    street: "Ronda de Sant Antoni 46",
-    city: "Barcelona",
-    postalCode: "08001",
-    country: "Spain",
-  },
-  _id: "64ef5b62fac568cb4c395f92",
-  userId: "64ec82b3081beb4f12610699",
-  isGuest: false,
-  emailAddress: "obrien.l.patrick@gmail.com",
-  orderedItems: [
-    {
-      product: "64d38a0bb7d06dd5182723f5",
-      quantity: 1,
-      price: 100,
-      name: "Projector",
-      _id: "64ef5b62fac568cb4c395f93",
-    },
-    {
-      product: "64d38bb9b7d06dd518272501",
-      quantity: 1,
-      price: 15,
-      name: "Electric Tea Kettle",
-      _id: "64ef5b62fac568cb4c395f94",
-    },
-  ],
-  totalPrice: 115,
-  isCancelled: false,
-  isPaid: true,
-  isShippedToCourier: false,
-  isDelivered: false,
-  datePlaced: "2023-08-30T15:08:18.340Z",
-  shortId: "l3xoijQnk",
-  __v: 0,
-};
 
 const OrderSummary = () => {
   const { orderId } = useParams();
@@ -63,8 +27,6 @@ const OrderSummary = () => {
   const { orders, error } = orderHistoryState;
   const userAuthState = useSelector((state) => state.userAuth);
   const token = userAuthState?.accessToken;
-
-  console.log(isAdmin)
 
   const order = orders.find((o) => o._id === orderId);
 
@@ -161,8 +123,9 @@ const OrderSummary = () => {
             id="entireItem"
             justifyContent="space-between"
             key={item._id}
+            width="auto"
           >
-            <Wrapper id="itemInfo">
+            <Wrapper id="itemInfo" width="auto">
               {" "}
               <Typography variant="body1">{item.quantity} x&nbsp;</Typography>
               <Link component={NavLink} to={`/product/${item.product}`}>
@@ -172,7 +135,7 @@ const OrderSummary = () => {
                 &nbsp;at&nbsp;${item.price} each
               </Typography>
             </Wrapper>
-            <Wrapper id="itemPrice">
+            <Wrapper id="itemPrice" width="auto">
               <Typography variant="body1">
                 $&nbsp;{item.quantity * item.price}
               </Typography>
