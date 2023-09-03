@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const passport = require("passport");
-const { signin, signup } = require("../controllers/authController.js");
+const { signin, signup, refresh } = require("../controllers/authController.js");
 const generateUserTokens = require("../middleware/generateToken.js");
 //url
 const SERVER_URL =
@@ -15,6 +15,9 @@ const CLIENT_URL =
 //form signup
 router.post("/signin", signin);
 router.post("/signup", signup);
+
+//refresh
+router.post("/refresh", refresh)
 
 
 //social login routes

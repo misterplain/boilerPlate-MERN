@@ -6,9 +6,11 @@ import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import AppRoutes from "./routes/AppRoutes";
+import {refreshToken} from "./actions/authActions";
 
 const App = () => {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const [viewport, setViewport] = useState("");
 
   useEffect(() => {
@@ -32,6 +34,14 @@ const App = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [theme.breakpoints]);
+
+  //another use effect for refresh token
+  useEffect(() => {
+    const token = localStorage.getItem("profile");
+    if (token) {
+      dispatch(refreshToken(token));
+    }
+  })
 
   return (
     <Box sx={{ width: "100%"}}>

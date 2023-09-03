@@ -11,7 +11,9 @@ import {
   OAUTH_REGISTER_FAIL,
   OAUTH_REGISTER_REQUEST,
   OAUTH_REGISTER_SUCCESS,
-  REFRESH_TOKEN,
+  REFRESH_TOKEN_REQUEST,
+  REFRESH_TOKEN_SUCCESS,
+  REFRESH_TOKEN_FAIL,
   USER_LOGOUT,
 } from "../constants/authConstants";
 
@@ -77,7 +79,7 @@ export const authReducer = (state = { accessToken: null }, action) => {
 
     case OAUTH_REGISTER_REQUEST:
       return { loading: true, error: null };
-      
+
     case OAUTH_REGISTER_SUCCESS:
       localStorage.setItem("profile", action.payload.refreshToken);
       return {
@@ -100,12 +102,20 @@ export const authReducer = (state = { accessToken: null }, action) => {
         refreshToken: null,
       };
 
-    case REFRESH_TOKEN:
+    case REFRESH_TOKEN_REQUEST:
+      return { ...state, loading: true };
+
+    case REFRESH_TOKEN_SUCCESS:
+      console.log(action)
+      localStorage.setItem("profile", action.payload.refreshToken);
       return {
         ...state,
-        accessToken: action.payload.data.accessToken,
-        refreshToken: action.payload.data.refreshToken,
+        authenticated: true,
+        accessToken: action.payload.accessToken,
+        refreshToken: action.payload.refreshToken,
       };
+    case REFRESH_TOKEN_FAIL:
+      return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }

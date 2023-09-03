@@ -39,83 +39,77 @@ const AdminReviews = () => {
       )}
       {reviews &&
         reviews.map((review) => (
-          <>
-            <Box sx={styles.singleReview}>
-              <Box sx={styles.user}>
-                {" "}
-                <Box
-                  sx={{
-                    height: "35px",
-                    width: "35px",
-                    padding: "0px",
-                    margin: "5px",
-                  }}
-                >
-                  {" "}
-                  <Avatar item={review} />
-                </Box>
-                <Typography sx={styles.username}>
-                  {review.username} reviewed{" "}
-                  <Link component={NavLink} to={`/product/${review.productId}`}>
-                    {review.productName}
-                  </Link>
-                </Typography>
-              </Box>{" "}
-              <Rating
-                name="size-small"
-                defaultValue={review.rating}
-                size="small"
-                readOnly
-                style={styles.rating}
-              />
-              <Typography sx={styles.reviewTitle} variant="h5" component="div">
-                {review.reviewTitle}
-              </Typography>
-              <Typography
-                sx={styles.reviewText}
-                variant="body1"
-                component="div"
+          <Box sx={styles.singleReview} key={review._id}>
+            <Box sx={styles.user}>
+              {" "}
+              <Box
+                sx={{
+                  height: "35px",
+                  width: "35px",
+                  padding: "0px",
+                  margin: "5px",
+                }}
               >
-                {review.comment}
-              </Typography>
-              <Wrapper id="reviewOptions">
                 {" "}
-                <Button
-                  onClick={() =>
-                    dispatch(
-                      moderateReview(token, review._id, {
-                        approvedByAdmin: true,
-                        awaitingModeration: false,
-                        isDeleted: false,
-                      })
-                    )
-                  }
-                >
-                  Approve
-                </Button>
-                <Button
-                  onClick={() =>
-                    dispatch(
-                      moderateReview(token, review._id, {
-                        approvedByAdmin: false,
-                        awaitingModeration: false,
-                        isDeleted: false,
-                      })
-                    )
-                  }
-                >
-                  Deny
-                </Button>
-                <Button
-                  onClick={() => {
-                    dispatch(deleteReview(token, review._id));
-                  }}
-                >
-                  Delete
-                </Button>
-              </Wrapper>
-            </Box>
-          </>
+                <Avatar item={review} />
+              </Box>
+              <Typography sx={styles.username}>
+                {review.username} reviewed{" "}
+                <Link component={NavLink} to={`/product/${review.productId}`}>
+                  {review.productName}
+                </Link>
+              </Typography>
+            </Box>{" "}
+            <Rating
+              name="size-small"
+              defaultValue={review.rating}
+              size="small"
+              readOnly
+              style={styles.rating}
+            />
+            <Typography sx={styles.reviewTitle} variant="h5" component="div">
+              {review.reviewTitle}
+            </Typography>
+            <Typography sx={styles.reviewText} variant="body1" component="div">
+              {review.comment}
+            </Typography>
+            <Wrapper id="reviewOptions">
+              {" "}
+              <Button
+                onClick={() =>
+                  dispatch(
+                    moderateReview(token, review._id, {
+                      approvedByAdmin: true,
+                      awaitingModeration: false,
+                      isDeleted: false,
+                    })
+                  )
+                }
+              >
+                Approve
+              </Button>
+              <Button
+                onClick={() =>
+                  dispatch(
+                    moderateReview(token, review._id, {
+                      approvedByAdmin: false,
+                      awaitingModeration: false,
+                      isDeleted: false,
+                    })
+                  )
+                }
+              >
+                Deny
+              </Button>
+              <Button
+                onClick={() => {
+                  dispatch(deleteReview(token, review._id));
+                }}
+              >
+                Delete
+              </Button>
+            </Wrapper>
+          </Box>
         ))}
     </Wrapper>
   );

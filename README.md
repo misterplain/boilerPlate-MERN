@@ -34,7 +34,7 @@ npm install
 npm start
 ```
 
-**-.env file - client-**  
+**.env file - client**  
 NODE_ENV=
 REACT_APP_SERVER_API_URL=  
 REACT_APP_CLIENT_URL=  
@@ -48,7 +48,7 @@ npm install
 npm run server
 ```
 
-**-.env file - server-**    
+**.env file - server**    
 NODE_ENV=
 MONGO_URI=
 ACCESS_TOKEN_SECRET=

@@ -1,5 +1,6 @@
 const UserModel = require("../models/userModel.js");
 const generateUserTokens = require("../middleware/generateToken.js");
+const jwt = require("jsonwebtoken");
 
 const signin = async (req, res) => {
   const { email, password, cart } = req.body;
@@ -15,12 +16,15 @@ const signin = async (req, res) => {
     if (!isPasswordCorrect)
       return res.status(401).json({ message: "Invalid credentials" });
 
-      if (cart && cart.length > 0) {
-        foundUser.cart = cart;
-        await foundUser.save();
-      }
+    if (cart && cart.length > 0) {
+      foundUser.cart = cart;
+      await foundUser.save();
+    }
 
     const { accessToken, refreshToken } = generateUserTokens(foundUser);
+
+    foundUser.refreshToken = refreshToken;
+    await foundUser.save();
 
     res.status(200).json({ foundUser, accessToken, refreshToken });
   } catch (error) {
@@ -50,12 +54,14 @@ const signup = async (req, res) => {
       email,
       password: password,
       username,
-      cart
+      cart,
     });
 
-
     const { accessToken, refreshToken } = generateUserTokens(newUser);
-    
+
+    newUser.refreshToken = refreshToken;
+    await newUser.save();
+
     res.status(201).json({ newUser, accessToken, refreshToken });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
@@ -64,4 +70,44 @@ const signup = async (req, res) => {
   }
 };
 
-module.exports = { signin, signup };
+const refresh = async (req, res) => {
+  const { refreshToken } = req.body;
+
+  console.log("Refresh auth controller", refreshToken);
+
+  if (!refreshToken) {
+    return res.status(400).send({ error: "Refresh token required" });
+  }
+
+  try {
+    jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET,
+      async (err, decoded) => {
+        if (err) {
+          return res.status(403).send({ error: "Invalid refresh token" });
+        }
+
+        const foundUser = await UserModel.findById(decoded.id);
+        if (!foundUser) {
+          return res.status(403).send({ error: "User not found" });
+        }
+
+        const { accessToken, refreshToken } = generateUserTokens(foundUser);
+        console.log(accessToken, refreshToken);
+
+        foundUser.refreshToken = refreshToken;
+        await foundUser.save();
+
+        return res
+          .status(200)
+          .send({ foundUser, accessToken: accessToken, refreshToken: refreshToken });
+      }
+    );
+  } catch (error) {
+    console.log(error)
+  }
+};
+
+
+module.exports = { signin, signup, refresh };

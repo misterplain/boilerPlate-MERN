@@ -19,6 +19,10 @@ import {
   removeCartItemGuest,
 } from "../actions/cartActions";
 import { fetchReviews, clearReviews } from "../actions/reviewsActions";
+import {
+  fetchAllProducts,
+} from "../actions/productActions";
+import { fetchAllCollections } from "../actions/collectionsActions";
 import ProductCarousel from "../components/ProductCarousel/ProductCarousel";
 import ProductReviews from "../components/ProductReviews/ProductReviews";
 import { useSnackbar } from "notistack";
@@ -55,7 +59,14 @@ const ProductScreen = () => {
     quantity: Yup.number().required("Required"),
   });
 
+  console.log(productList)
   useEffect(() => {
+
+    if(productList?.products?.length === 0) {
+      dispatch(fetchAllProducts());
+      dispatch(fetchAllCollections());
+
+    }
     if (!displayedProduct || !displayedProduct._id) return;
 
     if (

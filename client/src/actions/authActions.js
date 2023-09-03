@@ -8,7 +8,9 @@ import {
   OAUTH_LOGIN_FAIL,
   OAUTH_LOGIN_REQUEST,
   OAUTH_LOGIN_SUCCESS,
-  REFRESH_TOKEN,
+  REFRESH_TOKEN_REQUEST,
+  REFRESH_TOKEN_SUCCESS,
+  REFRESH_TOKEN_FAIL,
   USER_LOGOUT,
 } from "../constants/authConstants";
 import {
@@ -237,7 +239,39 @@ export const logoutUser = () => async (dispatch) => {
     dispatch({
       type: CLEAR_ORDER,
     });
+    localStorage.removeItem("profile");
   } catch (error) {
+    console.log(error);
+  }
+};
+
+export const refreshToken = (refreshToken) => async (dispatch) => {
+  try {
+    dispatch({
+      type: REFRESH_TOKEN_REQUEST,
+    });
+    const data = await axios.post("/auth/refresh", { refreshToken });
+
+    console.log(data);
+
+    dispatch({
+      type: REFRESH_TOKEN_SUCCESS,
+      payload: data.data,
+    });
+    dispatch({
+      type: SET_USER_DETAILS,
+      payload: data.data.foundUser,
+    });
+
+    dispatch({
+      type: GET_CARTITEMS_USER_SUCCESS,
+      payload: data.data.foundUser,
+    });
+  } catch (error) {
+    dispatch({
+      type: REFRESH_TOKEN_FAIL,
+      payload: error.message,
+    });
     console.log(error);
   }
 };

@@ -88,7 +88,11 @@ const userSchema = new mongoose.Schema(
         type: String,
         // required: true,
       },
-    }
+    },
+    refreshToken: {
+      type: String,
+      required: false,
+    },
   },
   {
     collection: "boilerPlateUsers",
