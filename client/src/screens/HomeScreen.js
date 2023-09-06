@@ -35,7 +35,9 @@ const HomeScreen = () => {
       {error && <AlertMessage type="error">{error}</AlertMessage>}
       {!isLoading && !error && <Hero />}
       {products && (
-        <Wrapper width="90%" justifyContent="space-around">
+        <Wrapper width="90%" justifyContent="space-around" customStyles={{
+          marginTop: "50px"
+        }}>
           {" "}
           <PageTitle
             size="h5"
@@ -52,7 +54,9 @@ const HomeScreen = () => {
       )}
 
       {collections && (
-        <Wrapper width="90%" justifyContent="space-around">
+        <Wrapper width="90%" justifyContent="space-around" customStyles={{
+          marginTop: "50px"
+        }}>
           <PageTitle
             size="h5"
             title="Shop by Collection"

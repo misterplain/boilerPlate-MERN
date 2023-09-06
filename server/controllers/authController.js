@@ -73,7 +73,7 @@ const signup = async (req, res) => {
 const refresh = async (req, res) => {
   const { refreshToken } = req.body;
 
-  console.log("Refresh auth controller", refreshToken);
+  // console.log("Refresh auth controller", refreshToken);
 
   if (!refreshToken) {
     return res.status(400).send({ error: "Refresh token required" });
@@ -94,7 +94,6 @@ const refresh = async (req, res) => {
         }
 
         const { accessToken, refreshToken } = generateUserTokens(foundUser);
-        console.log(accessToken, refreshToken);
 
         foundUser.refreshToken = refreshToken;
         await foundUser.save();
