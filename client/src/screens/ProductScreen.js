@@ -59,7 +59,6 @@ const ProductScreen = () => {
     quantity: Yup.number().required("Required"),
   });
 
-  console.log(productList)
   useEffect(() => {
 
     if(productList?.products?.length === 0) {

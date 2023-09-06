@@ -9,9 +9,7 @@ const createReview = asyncHandler(async (req, res) => {
   const userId = req.userId;
   const username = req.username;
   const userAvatar = req.userAvatar;
-  // console.log(req)
-  console.log(username);
-  console.log(userAvatar);
+
   const { reviewTitle, rating, comment } = req.body;
   try {
     if (!productId) {
@@ -42,8 +40,6 @@ const createReview = asyncHandler(async (req, res) => {
       message: "Review created",
       newReview,
     };
-
-    console.log(reply);
 
     res.status(201).json(reply);
   } catch (error) {
@@ -91,8 +87,6 @@ const moderateReview = asyncHandler(async (req, res) => {
       message: "Review moderated",
       reviewToModerate,
     };
-
-    console.log(reply);
 
     if (approvedByAdmin && !awaitingModeration) {
       const productToUpdate = await Product.findById(

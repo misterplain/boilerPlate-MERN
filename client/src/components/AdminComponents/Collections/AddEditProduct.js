@@ -435,7 +435,6 @@ const AddEditProduct = () => {
                           <Button
                             style={{ width: "100px", display: "block" }}
                             onClick={() => {
-                              console.log(image);
                               dispatch(deleteImage(productId, token, image));
                             }}
                           >
@@ -454,7 +453,7 @@ const AddEditProduct = () => {
               {(!values.collectionId ||
                 !values.name ||
                 !values.price ||
-                !values.stock ||
+                values.stock < 0  ||
                 !values.description) && <Box>Please fill all fields</Box>}
               <Button
                 type="submit"
@@ -465,7 +464,7 @@ const AddEditProduct = () => {
                   !values.collectionId ||
                   !values.name ||
                   !values.price ||
-                  !values.stock ||
+                  values.stock < 0||
                   !values.description
                 }
               >

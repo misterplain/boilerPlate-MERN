@@ -28,7 +28,6 @@ const productListReducer = (state = { products: [] }, action) => {
         products: action.payload.data.allProducts,
       };
     case PRODUCT_LIST_FAIL:
-      console.log(action.payload)
       return {
         loading: false,
         error: action.payload,
@@ -47,7 +46,6 @@ const productListReducer = (state = { products: [] }, action) => {
         ),
       };
     case PRODUCT_DELETE_FAIL:
-      console.log(action.payload)
       return {
         ...state,
         loading: false,
@@ -69,7 +67,6 @@ const productListReducer = (state = { products: [] }, action) => {
         ),
       };
     case PRODUCT_EDIT_FAIL:
-      console.log(action.payload);
       return {
         ...state,
         loading: false,

@@ -114,7 +114,6 @@ const SearchFilter = () => {
       isDisplayed: true,
       onSale: onSale,
     };
-    console.log(filterQuery);
     dispatch(fetchFilteredProducts({ filterObject: filterQuery }));
   };
 

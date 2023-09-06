@@ -287,11 +287,6 @@ const updateProduct = async (req, res) => {
 
 const getFilteredProducts = async (req, res) => {
   const { filterObject } = req.body;
-  console.log(filterObject, "filterObject");
-  // console.log(req)
-  // console.log(req.body + "req.body");
-  // console.log(req.body.filterObject)
-  // console.log(filterObject.priceRange)
 
   if (!filterObject) {
     return res.status(400).json({ message: "No filter object provided" });
@@ -322,7 +317,6 @@ const getFilteredProducts = async (req, res) => {
     const selectedCollectionIds = Object.keys(filterObject?.collections).filter(
       (key) => filterObject.collections[key]
     );
-    // console.log(selectedCollectionIds);
     if (selectedCollectionIds.length > 0) {
       query.collectionId = { $in: selectedCollectionIds };
     }
@@ -377,7 +371,6 @@ const getFilteredProducts = async (req, res) => {
       filteredProducts,
       maxPrice: maxPriceItem.price,
     };
-    // console.log(reply.filteredProducts.length())
     res.status(200).json(reply);
   } catch (error) {
     console.log(error);

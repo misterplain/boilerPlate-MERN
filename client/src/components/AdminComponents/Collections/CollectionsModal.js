@@ -18,29 +18,12 @@ import {
 import AlertMessage from "../../AlertMessage/AlertMessage";
 import { useSnackbar } from "notistack";
 import { snackbarDispatch } from "../../../utils/snackbarDispatch";
+import { useTheme } from "@mui/material/styles";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  overflowY: "scroll",
-  width: "60%",
-  height: "80%",
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
 
-const styles = {
-  imageToUpload: {
-    width: "40%",
-    height: "auto",
-  },
-};
 
 const CollectionsModal = ({ open, handleClose, collection, productId }) => {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const userAuthState = useSelector((state) => state.userAuth);
   const { enqueueSnackbar } = useSnackbar();
@@ -52,6 +35,28 @@ const CollectionsModal = ({ open, handleClose, collection, productId }) => {
   const validationSchema = Yup.object({
     name: Yup.string().required("Required"),
   });
+
+
+  const style = (theme) => ({
+    position: "absolute",
+    top: "30%",
+    left: "30%",
+    transform: "translate(-30%, -30%)",
+    width: "90%",
+    height: "90%",
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+    [theme.breakpoints.up("sm")]: {
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: "60%",
+      height: "80%",
+    },
+  })
+  
 
   useEffect(() => {
     if (collection && collection.image && collection.image.url) {

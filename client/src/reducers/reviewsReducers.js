@@ -124,7 +124,6 @@ export const reviewsReducer = (state = initialState, action) => {
       };
     case MODERATE_REVIEW_SUCCESS:
       const updatedReview = action.payload;
-      console.log(updatedReview);
       return {
         ...state,
         reviews: state.reviews.filter(
@@ -146,7 +145,6 @@ export const reviewsReducer = (state = initialState, action) => {
       };
 
     case EDIT_REVIEW_SUCCESS:
-      console.log(action.payload);
       return {
         ...state,
         reviews: [...state.reviews],

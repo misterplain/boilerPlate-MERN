@@ -74,7 +74,6 @@ const OrderSummary = () => {
     }
   }
 
-  // console.log(JSON.stringify(order, null, 2));
 
   return (
     <Wrapper

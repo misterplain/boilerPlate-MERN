@@ -16,7 +16,6 @@ const AccountDetails = () => {
   const [open, setOpen] = useState(false);
 
   const handleOpenModal = (collection) => {
-    console.log(open);
     // setCollectionToEdit(collection);
     setOpen(true);
   };

@@ -108,7 +108,6 @@ const editProduct = (productId, token, product) => (dispatch) => {
 };
 
 const deleteImage = (productId, token, image) => async (dispatch) => {
-  console.log(image);
   try {
     dispatch({
       type: PRODUCT_EDIT_REQUEST,

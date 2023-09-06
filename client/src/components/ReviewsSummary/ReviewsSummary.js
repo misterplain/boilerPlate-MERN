@@ -11,7 +11,6 @@ import Wrapper from "../Wrapper/Wrapper";
 const ReviewsSummary = ({ reviews, filteredReviews }) => {
   const dispatch = useDispatch();
   let reviewCounts = {};
-  console.log(reviews);
 
   const populateReviewCounts = (reviews) => {
     for (let i = 1; i <= 5; i++) {

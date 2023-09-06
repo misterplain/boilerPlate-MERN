@@ -63,8 +63,6 @@ const AdvancedSearch = () => {
             courierTrackingNumber: values.courierTrackingNumber,
           };
 
-          console.log(filterQuery);
-
           snackbarDispatch(
             dispatch(searchOrder(filterQuery, token)),
             "Search successful",

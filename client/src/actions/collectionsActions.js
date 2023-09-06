@@ -144,14 +144,14 @@ const fetchPexel = (token, name) => async (dispatch) => {
         Authorization: `Bearer ${token}`,
       },
     };
-    console.log(name);
+
 
     const data = await axios.get(
       "/collection/pexel",
       { params: { name: name } },
       options
     );
-    console.log(data);
+
 
     dispatch({
       type: FETCH_PEXEL_SUCCESS,

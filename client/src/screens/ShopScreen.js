@@ -92,8 +92,6 @@ const ShopScreen = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const handleScroll = () => {
     const position = window.scrollY;
-    console.log(window);
-    console.log(scrollPosition);
     setScrollPosition(position, () => {
       console.log(scrollPosition);
     });
@@ -103,14 +101,6 @@ const ShopScreen = () => {
     if (productList?.products?.length === 0) {
       navigate("/");
     }
-    // console.log("mounted");
-    // console.log(window);
-    // window.addEventListener("scroll", handleScroll, { passive: true });
-
-    // return () => {
-    //   console.log("unmounted");
-    //   window.removeEventListener("scroll", handleScroll);
-    // };
   }, []);
 
   return (

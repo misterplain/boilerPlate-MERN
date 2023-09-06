@@ -13,10 +13,9 @@ const fetchFilteredProducts = (filterQuery) => async (dispatch) => {
     type: FILTERED_PRODUCTS_REQUEST,
     filterQuery: filterQuery,
   });
-  console.log(filterQuery);
+
   try {
     const data = await axios.post(`/product/get/filter`, filterQuery);
-    console.log(data);
 
     dispatch({
       type: FILTERED_PRODUCTS_SUCCESS,

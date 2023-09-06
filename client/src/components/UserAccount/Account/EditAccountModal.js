@@ -11,34 +11,24 @@ import FormLabel from "@mui/material/FormLabel";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "../../../api/axios";
-import {updateProfile } from "../../../actions/userActions";
+import { updateProfile } from "../../../actions/userActions";
 import AlertMessage from "../../AlertMessage/AlertMessage";
 import { useSnackbar } from "notistack";
 import { snackbarDispatch } from "../../../utils/snackbarDispatch";
 import Avatar from "../../Avatar/Avatar";
+import { useTheme } from "@mui/material/styles";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "60%",
-  height: "80%",
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
 
-const styles = {
-  imageToUpload: {
-    width: "40%",
-    height: "auto",
-  },
-};
+
+// const styles = {
+//   imageToUpload: {
+//     width: "40%",
+//     height: "auto",
+//   },
+// };
 
 const EditAccountModal = ({ open, handleClose, userDetails }) => {
-  console.log(userDetails);
+  const theme = useTheme();
   const dispatch = useDispatch();
   const userAuthState = useSelector((state) => state.userAuth);
   const { enqueueSnackbar } = useSnackbar();
@@ -51,15 +41,27 @@ const EditAccountModal = ({ open, handleClose, userDetails }) => {
     username: Yup.string().required("Required"),
   });
 
-  //   useEffect(() => {
-  //     if (collection && collection.image && collection.image.url) {
-  //       setSelectedFile(collection.image.url);
-  //     } else {
-  //       setSelectedFile(null);
-  //     }
-  //   }, [collection]);
 
-  //photo upload
+  const style = (theme) => ({
+    position: "absolute",
+    top: "30%",
+    left: "30%",
+    transform: "translate(-30%, -30%)",
+    width: "90%",
+    height: "90%",
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+    [theme.breakpoints.up("sm")]: {
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: "60%",
+      height: "80%",
+    },
+  });
+
   const [selectedFile, setSelectedFile] = useState(
     userDetails?.userAvatar?.url ? userDetails?.userAvatar?.url : null
   );
@@ -85,7 +87,7 @@ const EditAccountModal = ({ open, handleClose, userDetails }) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={style(theme)}>
           {collectionModalError && (
             <AlertMessage type="error">{collectionModalError}</AlertMessage>
           )}
@@ -194,12 +196,7 @@ const EditAccountModal = ({ open, handleClose, userDetails }) => {
                     </FormGroup>
                   </FormControl>
 
-                  <Button
-                    type="submit"
-        
-                  >
-                    Submit
-                  </Button>
+                  <Button type="submit">Submit</Button>
                 </form>
               )}
             </Formik>

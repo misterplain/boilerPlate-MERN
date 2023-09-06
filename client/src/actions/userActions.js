@@ -92,7 +92,6 @@ const updateFavorites =
   };
 
 const updateProfile = (token, profileData) => async (dispatch) => {
-  console.log(profileData)
   dispatch({
     type: UPDATE_PROFILE_REQUEST,
   });

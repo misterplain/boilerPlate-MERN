@@ -89,7 +89,7 @@ const moderateReview = (token, reviewId, reviewData) => async (dispatch) => {
       reviewData,
       options
     );
-    console.log(data);
+
     dispatch({
       type: MODERATE_REVIEW_SUCCESS,
       payload: data.data.reviewToModerate,

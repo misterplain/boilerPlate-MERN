@@ -106,7 +106,6 @@ export const authReducer = (state = { accessToken: null }, action) => {
       return { ...state, loading: true };
 
     case REFRESH_TOKEN_SUCCESS:
-      console.log(action)
       localStorage.setItem("profile", action.payload.refreshToken);
       return {
         ...state,

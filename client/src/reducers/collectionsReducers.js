@@ -115,7 +115,6 @@ const collectionsReducer = (state = { collections: [] }, action) => {
       };
     }
     case FETCH_PEXEL_SUCCESS:
-      console.log(action.payload);
       return {
         ...state,
         loading: false,
@@ -125,7 +124,6 @@ const collectionsReducer = (state = { collections: [] }, action) => {
       };
 
     case FETCH_PEXEL_FAIL:
-      console.log(action.payload);
       return {
         ...state,
         loading: false,

@@ -16,7 +16,6 @@ import styles from "./styles";
 
 const ProductCard = ({ product }) => {
   const theme = useTheme();
-  // console.log(theme)
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const userAuthState = useSelector((state) => state.userAuth);

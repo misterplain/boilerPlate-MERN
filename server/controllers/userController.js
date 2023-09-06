@@ -51,7 +51,6 @@ const addAddress = asyncHandler(async (req, res) => {
 const editProfile = asyncHandler(async (req, res) => {
   const { userId } = req;
   const { profileData } = req.body;
-  console.log(profileData)
 
   try {
     const userToUpdate = await User.findById(userId);

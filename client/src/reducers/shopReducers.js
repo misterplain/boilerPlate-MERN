@@ -27,7 +27,6 @@ const initialState = {
 export const shopReducer = (state = initialState, action) => {
   switch (action.type) {
     case FILTERED_PRODUCTS_REQUEST:
-      console.log(action.filterQuery);
       return {
         ...state,
         loading: true,
@@ -55,7 +54,6 @@ export const shopReducer = (state = initialState, action) => {
         hasSearched: true,
       };
     case SHOP_COLLECTION_SUCCESS:
-      console.log(action.filterQuery);
       return {
         ...initialState,
         hasSearched: true,

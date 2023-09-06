@@ -18,7 +18,7 @@ import {
 import axios from "../api/axios";
 
 const fetchUserOrders = (token) => async (dispatch) => {
-  console.log("fetchUserOrders");
+
 
   try {
     dispatch({
@@ -114,7 +114,6 @@ const editOrder =
 
 //admin filter
 const filterPeriod = (days, token) => async (dispatch) => {
-  console.log("filter period accessed");
   try {
     dispatch({ type: FILTER_PERIOD_REQUEST });
 
@@ -125,8 +124,6 @@ const filterPeriod = (days, token) => async (dispatch) => {
     };
 
     const data = await axios.get(`/orders/quick-view?days=${days}`, options);
-
-    console.log(data);
 
     dispatch({
       type: FILTER_PERIOD_SUCCESS,
@@ -142,7 +139,6 @@ const filterPeriod = (days, token) => async (dispatch) => {
 };
 
 const searchOrder = (filterQuery, token) => async (dispatch) => {
-  console.log(filterQuery, "filterquery");
   try {
     dispatch({ type: SEARCH_ORDER_REQUEST, filterQuery: filterQuery });
     const options = {
@@ -151,7 +147,6 @@ const searchOrder = (filterQuery, token) => async (dispatch) => {
       },
     };
     const data = await axios.post(`/orders/search`, filterQuery, options);
-    console.log(data);
     dispatch({ type: SEARCH_ORDER_SUCCESS, payload: data.data.filteredOrders });
     return Promise.resolve();
   } catch (error) {

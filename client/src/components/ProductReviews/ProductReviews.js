@@ -89,7 +89,6 @@ const ProductReviews = ({ productId }) => {
           {error && <AlertMessage type="error">{error}</AlertMessage>}
           {userReview &&
             userReview.map((review) => {
-              console.log(review);
               return (
                 <Box
                   sx={{
@@ -152,7 +151,6 @@ const ProductReviews = ({ productId }) => {
                           color="success"
                           sx={styles.button}
                           onClick={() => {
-                            console.log("Edit review");
                             handleOpenModal(review);
                           }}
                         >

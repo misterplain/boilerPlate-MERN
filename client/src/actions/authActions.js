@@ -252,7 +252,6 @@ export const refreshToken = (refreshToken) => async (dispatch) => {
     });
     const data = await axios.post("/auth/refresh", { refreshToken });
 
-    console.log(data);
 
     dispatch({
       type: REFRESH_TOKEN_SUCCESS,
