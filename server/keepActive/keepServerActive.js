@@ -3,7 +3,7 @@ const schedule = require("node-schedule");
 const nodeCron = require("node-cron");
 
 function keepServerActive() {
-  nodeCron.schedule("*/1 * * * *", function logUpdateToServer() {
+  nodeCron.schedule("*/10 * * * *", function logUpdateToServer() {
     try {
       axios.post("https://e-commerce-mern-api.onrender.com/keepActive");
     } catch (error) {
