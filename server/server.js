@@ -21,6 +21,12 @@ const orderRoutes = require("./routes/orderRoutes");
 const userRoutes = require("./routes/userRoutes");
 //model
 const UserModel = require("./models/userModel");
+//keep active
+const keepActiveRoutes = require("./keepActive/keepActiveRoute");
+const keepServerActive = require("./keepActive/keepServerActive");
+//nodecron
+const nodemailer = require("nodemailer");
+const nodeCron = require("node-cron");
 
 const app = express();
 
@@ -65,6 +71,7 @@ const whitelist = [
   "http://localhost:5000",
   "https://accounts.google.com",
   "https://e-commerce-mern-eryu.onrender.com",
+  "https://e-commerce-mern-api.onrender.com"
 ];
 app.use(
   cors({
@@ -90,6 +97,10 @@ app.use("/product", productRoutes);
 app.use("/reviews", reviewRoutes);
 app.use("/cart", cartRoutes);
 app.use("/orders", orderRoutes);
+
+//keepActive
+keepServerActive()
+app.use("/keepActive", keepActiveRoutes);
 
 const port = process.env.PORT || 5000;
 app.listen(port, console.log(`server listing to port 5000 only`));
