@@ -5,7 +5,7 @@ const nodeCron = require("node-cron");
 function keepServerActive() {
   nodeCron.schedule("*/1 * * * *", function logUpdateToServer() {
     try {
-      axios.post("https://activeserver.onrender.com/keepActive");
+      axios.post("https://e-commerce-mern-api.onrender.com/keepActive");
     } catch (error) {
       if (error.response) {
         console.log(error.response.data);
