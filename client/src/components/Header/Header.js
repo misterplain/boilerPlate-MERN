@@ -148,7 +148,8 @@ const Header = ({ isActive }) => {
             value={searchQuery}
             id="outlined-start-adornment"
             // sx={{ m: 1, width: "25ch" }}
-            sx={{ background: "white", borderRadius: "5px" }}
+            sx={styles.searchBar}
+            // sx={{}}
             onChange={handleSearchQueryChange}
             InputProps={{
               endAdornment: (
@@ -280,18 +281,16 @@ const Header = ({ isActive }) => {
               </Menu>
             </>
           ) : (
-            <>
-              <Link
-                component={NavLink}
-                to="/auth"
-                style={({ isActive }) =>
-                  isActive ? { color: "black" } : { color: "white" }
-                }
-                sx={{ textDecoration: "none" }}
-              >
-                <Typography sx={styles.headerButton}>Login</Typography>
-              </Link>
-            </>
+            <Link
+              component={NavLink}
+              to="/auth"
+              style={({ isActive }) =>
+                isActive ? { color: "black" } : { color: "white" }
+              }
+              sx={{ textDecoration: "none" }}
+            >
+              <Typography sx={styles.headerButton}>Login</Typography>
+            </Link>
           )}
         </Box>
       </Box>

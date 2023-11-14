@@ -22,23 +22,39 @@ const styles = {
       margin: "0px",
     },
   }),
-  homeIcon: (theme) => ({
-   padding: "0px",
-   fontSize: "2rem",
-  }),
-
   logoWrapper: (theme) => ({
     display: "flex",
+    flexGrow: 1,
+    minWidth: "15%",
     flexDirection: "row",
-    alignItems: "center",
-    margin: "0px 8px",
-    textDecoration: "none"
-  }),
-  searchBarWrapper: {
-    // marginLeft: "auto",
-    // marginRight: "auto",
+    justifyContent: "center",
+    margin: "0px 5px",
+    textDecoration: "none",
+    [theme.breakpoints.up("sm")]: {
+      minWidth: "25%",
+    },
     
-  },
+
+  }),
+  homeIcon: (theme) => ({
+    fontSize: "2rem",
+  }),
+  logo: (theme) => ({
+    fontSize: "1.4rem",
+    color: "white",
+    textAlign: "center",
+  }),
+  searchBarWrapper: (theme) => ({
+    flexGrow: 2,
+    minWidth: "50%",
+    display: "flex",
+    justifyContent: "center",
+    flexWrap: "nowrap",
+  }),
+  searchBar: (theme) => ({
+    background: "white",
+    borderRadius: "5px",
+  }),
   collections: (theme) => ({
     minWidth: 150,
     background: "white",
@@ -48,32 +64,21 @@ const styles = {
       display: "none",
     },
   }),
-  logo: (theme) => ({
-    width: "100%",
-    fontSize: "1rem",
-    color: "white",
-    [theme.breakpoints.up("sm")]: {
-      fontSize: "1.5rem",
-    },
-  }),
+
   linksWrapper: (theme) => ({
     display: "flex",
+    flexGrow: 1,
+    minWidth: "25%",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-start",
-    // border: "1px solid blue",
-    padding: "0px 0px",
-    // [theme.breakpoints.up("sm")]: {
-    //   margin: "0px 15px",
-    // }
+    justifyContent: "flex-end",
   }),
 
   headerButton: (theme) => ({
     marginLeft: "10px",
     fontSize: "1rem",
     [theme.breakpoints.up("sm")]: {
-      marginLeft: "20px",
-      fontSize: "1.5rem",
+      fontSize: "1.7rem",
     },
   }),
   linksItem: (theme) => ({
@@ -85,11 +90,9 @@ const styles = {
     margin: "0px 5px",
     [theme.breakpoints.up("sm")]: {
       margin: "0px 15px",
-    }
-
+    },
   }),
   dropdownHeading: (theme) => ({
-
     fontSize: "1.5rem",
     width: "200px",
     display: "flex",
@@ -104,7 +107,7 @@ const styles = {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-  })
+  }),
 };
 
 export default styles;
