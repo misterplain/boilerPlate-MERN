@@ -16,7 +16,7 @@ const FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET;
 const FACEBOOK_CLIENT_ID = process.env.FACEBOOK_CLIENT_ID;
 const SERVER_URL =
   process.env.NODE_ENV === "production"
-    ? "https://boilerplate-mern-production.up.railway.app"
+    ? "https://e-commerce-mern-api.onrender.com"
     : "http://localhost:5000";
 const CLIENT_URL =
   process.env.NODE_ENV === "production"
