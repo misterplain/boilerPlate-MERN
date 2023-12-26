@@ -27,9 +27,10 @@ import {
 } from "../constants/cartConstants";
 import { CLEAR_ORDER } from "../constants/userOrderConstants";
 import axios from "../api/axios";
+
 const SERVER_URL =
   process.env.NODE_ENV === "production"
-    ? "https://e-commerce-mern-api.onrender.com"
+    ? "https://boilerplate-mern-production.up.railway.app"
     : "http://localhost:5000";
 const CLIENT_URL =
   process.env.NODE_ENV === "production"
@@ -104,6 +105,7 @@ export const registerForm =
   };
 
 export const loginOAuth = (provider, code) => async (dispatch) => {
+
   const CLIENT_URL =
     process.env.NODE_ENV === "production"
       ? process.env.REACT_APP_SERVER_API_URL
@@ -251,7 +253,6 @@ export const refreshToken = (refreshToken) => async (dispatch) => {
       type: REFRESH_TOKEN_REQUEST,
     });
     const data = await axios.post("/auth/refresh", { refreshToken });
-
 
     dispatch({
       type: REFRESH_TOKEN_SUCCESS,

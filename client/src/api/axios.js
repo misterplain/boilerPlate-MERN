@@ -8,10 +8,7 @@ const api = axios.create({
 
 });
 
-// const api = axios.create({
-//   baseURL: "https://boilerplate-e-commerce-cc38abdec733.herokuapp.com/"
-// });
-
+console.log("test commit2")
 
 //expired token interceptor
 api.interceptors.response.use(
