@@ -32,6 +32,7 @@ const SERVER_URL =
   process.env.NODE_ENV === "production"
     ? "https://boilerplate-mern-production.up.railway.app"
     : "http://localhost:5000";
+
 const CLIENT_URL =
   process.env.NODE_ENV === "production"
     ? "https://e-commerce-mern-eryu.onrender.com"
@@ -105,17 +106,22 @@ export const registerForm =
   };
 
 export const loginOAuth = (provider, code) => async (dispatch) => {
-
   const CLIENT_URL =
     process.env.NODE_ENV === "production"
       ? process.env.REACT_APP_SERVER_API_URL
       : "http://localhost:5000";
+
+  // const CLIENT_URL =
+  //   process.env.NODE_ENV === "production"
+  //     ? "https://e-commerce-mern-eryu.onrender.com"
+  //     : "http://localhost:3000";
 
   return new Promise((resolve, reject) => {
     try {
       dispatch({
         type: OAUTH_LOGIN_REQUEST,
       });
+      console.log(CLIENT_URL)
 
       const oauthWindow = window.open(
         `${CLIENT_URL}/auth/${provider}`,
@@ -146,7 +152,6 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
           });
 
           oauthWindow.close();
-
           resolve({
             user: event.data.user,
             accessToken,
@@ -156,6 +161,7 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
         false
       );
     } catch (error) {
+      console.log(error)
       dispatch({
         type: OAUTH_LOGIN_FAIL,
         payload: error.message,

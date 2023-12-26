@@ -8,7 +8,7 @@ const api = axios.create({
 
 });
 
-console.log("test commit2")
+
 
 //expired token interceptor
 api.interceptors.response.use(

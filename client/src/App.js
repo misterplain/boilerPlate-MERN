@@ -6,9 +6,10 @@ import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import AppRoutes from "./routes/AppRoutes";
-import {refreshToken} from "./actions/authActions";
+import { refreshToken } from "./actions/authActions";
 
-console.log("test commit")
+console.log("test commit");
+console.log(process.env.NODE_ENV);
 
 const App = () => {
   const theme = useTheme();
@@ -43,10 +44,10 @@ const App = () => {
     if (token) {
       dispatch(refreshToken(token));
     }
-  })
+  });
 
   return (
-    <Box sx={{ width: "100%"}}>
+    <Box sx={{ width: "100%" }}>
       {" "}
       <BrowserRouter>
         <Layout>
