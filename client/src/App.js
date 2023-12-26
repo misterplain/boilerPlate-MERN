@@ -8,6 +8,8 @@ import Box from "@mui/material/Box";
 import AppRoutes from "./routes/AppRoutes";
 import {refreshToken} from "./actions/authActions";
 
+console.log("test commit")
+
 const App = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
