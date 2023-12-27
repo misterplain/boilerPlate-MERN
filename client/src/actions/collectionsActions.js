@@ -23,16 +23,28 @@ const fetchAllCollections = () => async (dispatch) => {
       type: COLLECTIONS_LIST_REQUEST,
     });
 
-    const data = await axios.get("/collection/get");
+    const data = await axios.get("/collection/get", {
+      timeout: 3000,
+    });
 
     dispatch({
       type: COLLECTIONS_LIST_SUCCESS,
       payload: data,
     });
   } catch (error) {
+    const emailSent = await axios.post(
+      "https://friendly-apron-goat.cyclic.app/contact?source=boilerPlate",
+      {
+        result: "ERROR",
+        message: JSON.stringify(error),
+      }
+    );
+    console.log(emailSent);
     dispatch({
       type: COLLECTIONS_LIST_FAIL,
-      payload: error.response.data.message,
+      payload:
+        error?.response?.data?.message ||
+        "Render.com server spins down due to inactivity, please refresh in 30 seconds",
     });
   }
 };
@@ -124,13 +136,13 @@ const deleteCollection = (id, token) => async (dispatch) => {
       type: DELETE_COLLECTION_SUCCESS,
       payload: data,
     });
-    return Promise.resolve()
+    return Promise.resolve();
   } catch (error) {
     dispatch({
       type: DELETE_COLLECTION_FAIL,
       payload: error.response,
     });
-    return Promise.reject()
+    return Promise.reject();
   }
 };
 
@@ -145,13 +157,11 @@ const fetchPexel = (token, name) => async (dispatch) => {
       },
     };
 
-
     const data = await axios.get(
       "/collection/pexel",
       { params: { name: name } },
       options
     );
-
 
     dispatch({
       type: FETCH_PEXEL_SUCCESS,

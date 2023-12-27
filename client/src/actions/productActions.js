@@ -21,17 +21,24 @@ const fetchAllProducts = () => async (dispatch) => {
       type: PRODUCT_LIST_REQUEST,
     });
 
-    const data = await axios.get("/product/get");
+    const data = await axios.get("/product/get", { timeout: 3000 });
 
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: data,
     });
   } catch (error) {
-    console.log(error);
+    const emailSent = await axios.post(
+      "https://friendly-apron-goat.cyclic.app/contact?source=boilerPlate",
+      {
+        result: "ERROR",
+        message: JSON.stringify(error),
+      }
+    );
+    console.log(emailSent);
     dispatch({
       type: PRODUCT_LIST_FAIL,
-      payload: error.response.data.message,
+      payload: error?.response?.data?.message || "Render.com server spins down due to inactivity, please refresh in 30 seconds",
     });
   }
 };
@@ -166,7 +173,6 @@ const newProduct = (token, product) => async (dispatch) => {
     return Promise.reject();
   }
 };
-
 
 export {
   fetchAllProducts,
