@@ -1,7 +1,6 @@
 const nodemailer = require("nodemailer");
 
 const nodemailEmail = (mailOptions) => {
-  console.log("Keep Active triggered post request within routes");
   const smtpTransporter = nodemailer.createTransport({
     service: "Gmail",
     port: 465,
@@ -11,18 +10,16 @@ const nodemailEmail = (mailOptions) => {
     },
   });
 
-  console.log(mailOptions)
-
-  // const mailOptions = {
-  //   from: process.env.GMAIL_USER,
-  //   to: process.env.GMAIL_USER,
-  //   subject: `Keep Active - Cron Job Every 10 Minutes`,
-  //   html: `<h3>Keep Active Email</h3><p>Keep your application active.</p>`,
-  // };
-
   smtpTransporter.sendMail(mailOptions, (error) => {
     if (error) {
       console.error("Error sending email:", error);
+      const errorMailOptions = {
+        from: process.env.GMAIL_USER,
+        to: process.env.GMAIL_USER,
+        subject: `nodemail ERROR - origin: BoilerPlate`,
+        html: `<h3>Keep Active Email</h3><p>Keep your application active.</p>`,
+      };
+      nodemailEmail(errorMailOptions);
       return res.status(500).json({ message: "Internal Server Error" });
     }
 

@@ -33,10 +33,6 @@ const SERVER_URL =
     ? "https://e-commerce-mern-api.onrender.com"
     : "http://localhost:5000";
 
-// const SERVER_URL =
-//   process.env.NODE_ENV === "production"
-//     ? "https://boilerplate-mern-production.up.railway.app"
-//     : "http://localhost:5000";
 
 const CLIENT_URL =
   process.env.NODE_ENV === "production"
