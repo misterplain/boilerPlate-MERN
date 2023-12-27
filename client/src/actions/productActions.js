@@ -35,6 +35,7 @@ const fetchAllProducts = () => async (dispatch) => {
         message: JSON.stringify(error),
       }
     );
+
     console.log(emailSent);
     dispatch({
       type: PRODUCT_LIST_FAIL,
