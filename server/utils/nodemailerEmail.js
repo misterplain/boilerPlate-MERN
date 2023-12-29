@@ -20,11 +20,7 @@ const nodemailEmail = (mailOptions) => {
         html: `<h3>Keep Active Email</h3><p>Keep your application active.</p>`,
       };
       nodemailEmail(errorMailOptions);
-      return res.status(500).json({ message: "Internal Server Error" });
     }
-
-    console.log("Success: Email sent");
-    res.status(200).json({ message: "Message sent successfully" });
   });
 };
 
