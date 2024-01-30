@@ -4,46 +4,33 @@ const styles = {
     height: "60px",
     boxSizing: "border-box",
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
-    backgroundColor: "#b3b3cc",
-    padding: "0px 0px",
-    margin: "0px",
-    [theme.breakpoints.up("sm")]: {
-      padding: "0px 30px",
-      margin: "0px",
-    },
-    [theme.breakpoints.up("md")]: {
-      padding: "0px 30px",
-      margin: "0px",
-    },
-    [theme.breakpoints.up("lg")]: {
-      padding: "0px 40px",
-      margin: "0px",
-    },
+
   }),
+  // HOME AND LOGO BUTTON
   logoWrapper: (theme) => ({
     display: "flex",
     flexGrow: 1,
     minWidth: "15%",
     flexDirection: "row",
     justifyContent: "center",
-    margin: "0px 5px",
+    margin: "0px 0px",
     textDecoration: "none",
     [theme.breakpoints.up("sm")]: {
       minWidth: "25%",
     },
-    
-
   }),
   homeIcon: (theme) => ({
     fontSize: "2rem",
+    color: "black",
   }),
   logo: (theme) => ({
-    fontSize: "1.4rem",
-    color: "white",
-    textAlign: "center",
+    fontSize: "1.2rem",
+    color: "black",
+    // textAlign: "center",
   }),
+
   searchBarWrapper: (theme) => ({
     flexGrow: 2,
     minWidth: "50%",
@@ -59,12 +46,13 @@ const styles = {
     minWidth: 150,
     background: "white",
     borderRadius: "5px",
-    margin: "0px 5px",
+    // margin: "0px 5px",
     [theme.breakpoints.down("md")]: {
       display: "none",
     },
   }),
 
+  // LOGIN LINKS
   linksWrapper: (theme) => ({
     display: "flex",
     flexGrow: 1,
@@ -74,11 +62,18 @@ const styles = {
     justifyContent: "flex-end",
   }),
 
-  headerButton: (theme) => ({
+  loginButton: (theme) => ({
     marginLeft: "10px",
+    color: "black",
     fontSize: "1rem",
     [theme.breakpoints.up("sm")]: {
-      fontSize: "1.7rem",
+      fontSize: "1.3rem",
+    },
+  }),
+  shoppingCartIcon: (theme) => ({
+    "&:hover": {
+      cursor: "pointer",
+      color: "purple",
     },
   }),
   linksItem: (theme) => ({
@@ -108,6 +103,8 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
   }),
+
+
 };
 
 export default styles;

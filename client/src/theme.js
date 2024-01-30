@@ -8,10 +8,10 @@ const breakpoints = createBreakpoints({});
 // const fontVariable = "PT Sans, sans-serif"
 // const fontVariable = "Raleway, sans-serif"
 // const fontVariable = "Roboto, sans-serif"
-// const fontVariable = "Work Sans, sans-serif"
+const fontVariable = "Work Sans, sans-serif"
 // const fontVariable = "Montserrat";
 // const fontVariable = "Space Grotesk, sans-serif"
- const fontVariable = "Source Code Pro, monospace"
+//  const fontVariable = "Source Code Pro, monospace"
 // const fontVariable = "Rubik, sans-serif"
 // const fontVariable = "Quicksand, sans-serif"
 // const fontVariable = "Maven Pro, sans-serif"
@@ -46,6 +46,14 @@ const theme = createTheme({
   typography: {
     h1: {
       fontFamily: fontVariable,
+      fontSize: "2.5rem",
+      fontWeight: "bold",
+      [breakpoints.up("sm")]: {
+        fontSize: "3.5rem",
+      },
+      [breakpoints.up("md")]: {
+        fontSize: "4.5rem",
+      },
     },
     h2: {
       fontFamily: fontVariable,

@@ -15,10 +15,13 @@ import {
 import { useCartDrawer } from "../../context/CartDrawerContext";
 import { useSnackbar } from "notistack";
 import Wrapper from "../Wrapper/Wrapper";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import { useTheme } from "@mui/material/styles";
 
 import styles from "./styles";
 
 const CartItems = () => {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const cartDrawerContext = useCartDrawer();
   const { enqueueSnackbar } = useSnackbar();
@@ -140,19 +143,38 @@ const CartItems = () => {
       width="100%"
       justifyContent="center"
       customStyles={{
-        padding: "15px 0px",
+        padding: "0.5re",
       }}
     >
-      <Wrapper id="cartTitle" justifyContent="center">
+      <Wrapper
+        id="cartTitle"
+        justifyContent="space-between"
+        alignItems="center"
+        customStyles={{ marginBottom: "1.5rem" }}
+      >
         <Typography variant="h5" sx={{ textAlign: "center" }}>
           {cartItems?.length === 0 ? "Your cart is empty" : "Your cart"}
         </Typography>
+        <Box
+          sx={{
+            height: "1.5rem",
+            width: "1.5rem",
+            "&:hover": { cursor: "pointer", color: "purple" },
+          }}
+          onClick={() => {
+            cartDrawerContext.setIsOpen(false);
+          }}
+        >
+          {" "}
+          <XMarkIcon aria-hidden="true" />
+        </Box>
       </Wrapper>
 
       {cartItems?.length > 0 && (
         <Wrapper
           id="cartItems"
           justifyContent="column"
+          customStyles={{ paddingBottom: "2rem" }}
         >
           {detailedCartItems &&
             detailedCartItems?.map((item) => {
@@ -160,10 +182,80 @@ const CartItems = () => {
                 return null;
               }
               return (
-                <Wrapper id="cartItem" key={item.product._id}>
-                  <Wrapper
+                <Wrapper
+                  id="cartItem"
+                  key={item.product._id}
+                  flexDirection="row"
+                  justifyContent="space-between"
+                  customStyles={{
+                    borderBottom: "1px solid lightgray",
+                    paddingBottom: "1rem",
+                  }}
+                >
+                  <Box sx={styles.imageWrapper(theme)}>
+                    {" "}
+                    <Link
+                      component={NavLink}
+                      to={`/product/${item.product._id}`}
+                      onClick={() => {
+                        cartDrawerContext.setIsOpen(false);
+                      }}
+                      sx={{ textDecoration: "none" }}
+                    >
+                      {" "}
+                      <Box
+                        sx={styles.image}
+                        component="img"
+                        src={
+                          item.product.images.length >= 1
+                            ? item.product.images[0].url
+                            : "https://placehold.co/80x80"
+                        }
+                      />
+                    </Link>
+                  </Box>
+                  <Box sx={styles.titleAndQuantityWrapper}>
+                    {" "}
+                    <Typography variant="body1" marginLeft>
+                      {item.product.name}
+                    </Typography>
+                    <Box sx={styles.quantitySelect(theme)}>
+                      <Box
+                        sx={styles.quantityIcon}
+                        onClick={() => handleDecreaseQuantity(item)}
+                      >
+                        <AiOutlineMinus />
+                      </Box>
+                      <Typography
+                        variant="body1"
+                        sx={{ margin: "0px 5px 3px 5px" }}
+                      >
+                        Quantity: {item.quantity}
+                      </Typography>
+                      <Box
+                        sx={styles.quantityIcon}
+                        onClick={() => handleIncreaseQuantity(item)}
+                      >
+                        <AiOutlinePlus />
+                      </Box>
+                    </Box>
+                  </Box>
+                  <Box sx={styles.priceAndDeleteWrapper(theme)}>
+                    <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                      €{cartItemTotal(item)}
+                    </Typography>
+                    <Box
+                      onClick={() => {
+                        handleDeleteItem(item);
+                      }}
+                      sx={{ "&:hover": { cursor: "pointer", color: "purple" } }}
+                    >
+                      <DeleteOutlineIcon />
+                    </Box>
+                  </Box>
+                  {/* <Wrapper
                     id="imageTitleDeleteWrapper"
-                    justifyContent="space-between"
+                    justifyContent="space-around"
                     alignItems="center"
                   >
                     <Link
@@ -173,22 +265,11 @@ const CartItems = () => {
                         cartDrawerContext.setIsOpen(false);
                       }}
                     >
-                      {/* <Box sx={styles.imageTitle}> */}
+   
                       <Wrapper alignItems="center">
                         {" "}
-                        <Box
-                          sx={styles.image}
-                          component="img"
-                          src={
-                            item.product.images.length >= 1
-                              ? item.product.images[0].url
-                              : "https://placehold.co/80x80"
-                          }
-                        />
                         <Typography marginLeft>{item.product.name}</Typography>
                       </Wrapper>
-
-                      {/* </Box>{" "} */}
                     </Link>
                     <Box
                       onClick={() => {
@@ -197,8 +278,8 @@ const CartItems = () => {
                     >
                       <DeleteOutlineIcon />
                     </Box>
-                  </Wrapper>
-                  <Wrapper
+                  </Wrapper> */}
+                  {/* <Wrapper
                     id="optionsWrapper"
                     justifyContent="space-between"
                     customStyles={{
@@ -209,25 +290,25 @@ const CartItems = () => {
                   >
                     {" "}
                     <Box sx={styles.cartItemInfoWrapper}>
-                      <Typography>Price-{" "}</Typography>
+                      <Typography>Price- </Typography>
                       <Typography>${cartItemTotal(item)}</Typography>
                     </Box>
                     <Box sx={styles.cartItemInfoWrapper}>
-                        <Box
-                          sx={styles.quantityIcon}
-                          onClick={() => handleIncreaseQuantity(item)}
-                        >
-                          <AiOutlinePlus />
-                        </Box>
-                        <Typography variant="body1">{item.quantity}</Typography>
-                        <Box
-                          sx={styles.quantityIcon}
-                          onClick={() => handleDecreaseQuantity(item)}
-                        >
-                          <AiOutlineMinus />
-                        </Box>
+                      <Box
+                        sx={styles.quantityIcon}
+                        onClick={() => handleIncreaseQuantity(item)}
+                      >
+                        <AiOutlinePlus />
+                      </Box>
+                      <Typography variant="body1">{item.quantity}</Typography>
+                      <Box
+                        sx={styles.quantityIcon}
+                        onClick={() => handleDecreaseQuantity(item)}
+                      >
+                        <AiOutlineMinus />
+                      </Box>
                     </Box>
-                  </Wrapper>
+                  </Wrapper> */}
                 </Wrapper>
               );
             })}

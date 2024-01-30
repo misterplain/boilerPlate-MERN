@@ -5,13 +5,13 @@ const {
   getUnmoderatedReviews,
   deleteReview,
   moderateReview,
-  editReview
+  editReview,
+  getTopTenReviews
 } = require("../controllers/reviewController.js");
 const { verifyToken } = require("../middleware/verifyToken.js");
 
-
+router.get("/top", getTopTenReviews);
 router.get("/get/:productId", verifyToken, getProductReviews)
-
 router.post("/new/:productId", verifyToken, createReview);
 router.delete("/delete/:reviewId", verifyToken, deleteReview);
 router.get("/unmoderated", verifyToken, getUnmoderatedReviews)

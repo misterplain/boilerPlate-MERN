@@ -1,20 +1,52 @@
 const styles = {
+  imageWrapper: (theme) => ({
+    width: "100px",
+    height: "auto",
+    marginRight: "0.5rem",
+  }),
   image: {
-    width: "80px",
-    height: "80px",
-    borderRadius: "10px"
+    borderRadius: "10px",
+    width: "100%",
+   
   },
-  imageTitle: {
+
+  //title and quantity wrapper
+  titleAndQuantityWrapper: (theme) => ({
+    height: "100%",
+    textDecoration: "none",
     display: "flex",
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
-  cartItemInfoWrapper: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+  }),
+  quantitySelect: (theme) => ({
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center"
-  },
+  }),
+  quantityIcon: (theme) => ({
+    fontSize: "1.0rem",
+    color: "purple",
+    "&:hover": { cursor: "pointer", color: "purple" },
+  }),
+  priceAndDeleteWrapper: (theme) => ({
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+
+  }),
+  // imageTitle: {
+  //   display: "flex",
+  //   justifyContent: "flex-start",
+  //   alignItems: "center",
+  // },
+  // cartItemInfoWrapper: {
+  //   display: "flex",
+  //   flexDirection: "row",
+  //   justifyContent: "space-between",
+  //   alignItems: "center",
+  // },
 };
 
 export default styles;

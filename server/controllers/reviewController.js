@@ -4,6 +4,41 @@ const Review = require("../models/reviewModel.js");
 const Product = require("../models/productModel.js");
 const generateUserTokens = require("../middleware/generateToken.js");
 
+//get top ten reviews
+const getTopTenReviews = asyncHandler(async (req, res) => {
+  try {
+    const topTenReviews = await Review.find({
+      approvedByAdmin: true,
+      awaitingModeration: false,
+      isDeleted: false,
+    })
+      .sort({ rating: -1 })
+      .limit(10);
+
+    const productIds = topTenReviews.map((review) => review.productId);
+
+    const products = await Product.find({ _id: { $in: productIds } });
+
+    const reviewsWithProducts = topTenReviews.map((review) => {
+      const product = products.find((product) => product._id.equals(review.productId));
+      return {
+        ...review.toObject(),
+        productInfo: product || {}, 
+      };
+    });
+
+    const reply = {
+      message: "Top ten reviews",
+      topTenReviews: reviewsWithProducts,
+    };
+
+    res.status(200).json(reply);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+});
+
 const createReview = asyncHandler(async (req, res) => {
   const { productId } = req.params;
   const userId = req.userId;
@@ -250,6 +285,7 @@ const deleteReview = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
+  getTopTenReviews,
   createReview,
   getUnmoderatedReviews,
   moderateReview,

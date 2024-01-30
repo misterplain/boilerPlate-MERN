@@ -5,6 +5,9 @@ import {
   FETCH_REVIEWS_REQUEST,
   FETCH_REVIEWS_SUCCESS,
   FETCH_REVIEWS_FAIL,
+  FETCH_TOPREVIEWS_REQUEST,
+  FETCH_TOPREVIEWS_SUCCESS,
+  FETCH_TOPREVIEWS_FAIL,
   FETCH_UNMODERATED_REVIEWS_REQUEST,
   FETCH_UNMODERATED_REVIEWS_SUCCESS,
   FETCH_UNMODERATED_REVIEWS_FAIL,
@@ -22,7 +25,6 @@ import {
   FILTER_REVIEWS_FAIL,
   CLEAR_FILTER,
 } from "../constants/reviewsConstants";
-
 const initialState = {
   reviews: [],
   filteredReviews: [],
@@ -65,6 +67,24 @@ export const reviewsReducer = (state = initialState, action) => {
       };
 
     case FETCH_REVIEWS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    // top reviews
+    case FETCH_TOPREVIEWS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case FETCH_TOPREVIEWS_SUCCESS:
+      return {
+        ...state,
+        error: null,
+        topReviews: action.payload,
+      };
+
+    case FETCH_TOPREVIEWS_FAIL:
       return {
         ...state,
         error: action.payload,
@@ -175,7 +195,7 @@ export const reviewsReducer = (state = initialState, action) => {
     case CLEAR_FILTER:
       return {
         ...state,
-        filteredReviews: state.reviews, 
+        filteredReviews: state.reviews,
       };
 
     default:

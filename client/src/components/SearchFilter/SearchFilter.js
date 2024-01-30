@@ -152,12 +152,17 @@ const SearchFilter = () => {
         </Box>
         <Box sx={styles.formItem}>
           {" "}
+          <Button variant="contained" color="primary" fullWidth onClick={() => handleSubmit()}>Search</Button>
+        </Box>
+        <Box sx={styles.formItem}>
+          {" "}
           <FormControl component="fieldset" variant="standard">
             <FormLabel component="legend">Collection</FormLabel>
             <FormGroup>
               {collections?.map((collection) => (
                 <FormControlLabel
                   key={collection._id}
+                 
                   control={
                     <Checkbox
                       checked={
@@ -166,6 +171,7 @@ const SearchFilter = () => {
                       onChange={handleCollectionChange}
                       name={collection._id}
                       value={collection._id}
+                      size="small"
                     />
                   }
                   label={collection.name}
@@ -186,6 +192,7 @@ const SearchFilter = () => {
             getAriaValueText={valuetext}
             min={0}
             max={600}
+            size="small"
           />
         </Box>
         <Box sx={styles.formItem}>
@@ -216,10 +223,6 @@ const SearchFilter = () => {
             />
           </FormGroup>
         </Box>{" "}
-        <Box sx={styles.formItem}>
-          {" "}
-          <Button onClick={() => handleSubmit()}>Filter</Button>
-        </Box>
       </Box>
     </Box>
   );

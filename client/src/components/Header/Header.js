@@ -28,10 +28,13 @@ import { setShopToCollection } from "../../actions/shopActions";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import HomeIcon from "@mui/icons-material/Home";
 import Avatar from "../Avatar/Avatar";
+import ResponsiveWrapper from "../Wrapper/ResponsiveWrapper";
+import { useTheme } from "@mui/material/styles";
 
 import styles from "./styles";
 
 const Header = ({ isActive }) => {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -127,175 +130,190 @@ const Header = ({ isActive }) => {
     }
   };
   return (
-    <>
-      {" "}
-      <Box sx={styles.wrapper}>
-        <Link component={NavLink} to="/" sx={styles.logoWrapper}>
-          {mediumBreakpoint ? (
-            // <Box >
-            <HomeIcon sx={styles.homeIcon} />
-          ) : (
-            // </Box>
-            <Typography sx={styles.logo}>MERN E-Commerce</Typography>
-          )}
-        </Link>
+    <Box sx={{ width: "100%", backgroundColor: "white" }}>
+      <ResponsiveWrapper>
+        {" "}
+        <Box sx={styles.wrapper}>
+          <Link component={NavLink} to="/" sx={styles.logoWrapper}>
+            {mediumBreakpoint ? (
+              // <Box >
+              <HomeIcon sx={styles.homeIcon} />
+            ) : (
+              // </Box>
+              <Typography sx={styles.logo}>MERN E-Commerce</Typography>
+            )}
+          </Link>
 
-        <Box sx={styles.searchBarWrapper}>
-          <TextField
-            label="Search"
-            variant="outlined"
-            size="small"
-            value={searchQuery}
-            id="outlined-start-adornment"
-            // sx={{ m: 1, width: "25ch" }}
-            sx={styles.searchBar}
-            // sx={{}}
-            onChange={handleSearchQueryChange}
-            InputProps={{
-              endAdornment: (
-                <>
-                  <IconButton
-                    aria-label="toggleFilter"
-                    onClick={handleSearchBar}
-                    edge="end"
-                  >
-                    <SearchIcon />
-                  </IconButton>
-                  <IconButton
-                    aria-label="toggleFilter"
-                    onClick={() => navigate("/shop")}
-                    edge="end"
-                  >
-                    <TuneIcon />
-                  </IconButton>
-                </>
-              ),
-            }}
-          />
-          <FormControl sx={styles.collections} size="small">
-            <InputLabel id="demo-select-small-label">Collections</InputLabel>
-            <Select
-              labelId="collectionLabel"
-              id="collectionLabel"
-              value={collection}
-              label="Collections"
-              onChange={(e) => {
-                handleCollectionChange(e);
+          <Box sx={styles.searchBarWrapper}>
+            <TextField
+              label="Search"
+              variant="outlined"
+              size="small"
+              value={searchQuery}
+              id="outlined-start-adornment"
+              // sx={{ m: 1, width: "25ch" }}
+              sx={styles.searchBar}
+              // sx={{}}
+              onChange={handleSearchQueryChange}
+              InputProps={{
+                endAdornment: (
+                  <>
+                    <IconButton
+                      aria-label="toggleFilter"
+                      onClick={handleSearchBar}
+                      edge="end"
+                    >
+                      <SearchIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-label="toggleFilter"
+                      onClick={() => navigate("/shop")}
+                      edge="end"
+                    >
+                      <TuneIcon />
+                    </IconButton>
+                  </>
+                ),
+              }}
+            />
+            <FormControl sx={styles.collections} size="small">
+              <InputLabel id="demo-select-small-label">Collections</InputLabel>
+              <Select
+                labelId="collectionLabel"
+                id="collectionLabel"
+                value={collection}
+                label="Collections"
+                onChange={(e) => {
+                  handleCollectionChange(e);
+                }}
+              >
+                <MenuItem value={"All"}>All</MenuItem>
+                {collections?.map((collection) => (
+                  <MenuItem value={collection._id} key={collection._id}>
+                    {collection.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+          <Box sx={styles.linksWrapper}>
+            {" "}
+            <Badge
+              badgeContent={cartItems ? cartItems.length : null}
+              color="secondary"
+              onClick={handleOpenCart}
+              variant="button"
+              sx={{
+
+                '& .MuiBadge-hover': {
+                  borderRadius: '1px',
+                  border: "1px solid blue"
+                },
               }}
             >
-              <MenuItem value={"All"}>All</MenuItem>
-              {collections?.map((collection) => (
-                <MenuItem value={collection._id} key={collection._id}>
-                  {collection.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box>
-        <Box sx={styles.linksWrapper}>
-          {" "}
-          <Badge
-            badgeContent={cartItems ? cartItems.length : null}
-            color="secondary"
-            onClick={handleOpenCart}
-          >
-            <AddShoppingCartIcon sx={styles.linksItem} />
-          </Badge>
-          {authenticated ? (
-            <>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-                sx={{ margin: "0px 5px", padding: "0px" }}
-              >
-                <Box sx={styles.linksItem}>
-                  {/* <CgProfile /> */}
-                  <Avatar item={userDetailsState.userDetails} />
-                </Box>
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <Box sx={styles.dropdownHeading}>
-                  <Typography sx={{ borderBottom: "1px solid grey" }}>
-                    {username}
-                  </Typography>
-                </Box>
-                <Box sx={styles.dropdownOptions}>
-                  {" "}
-                  {isAdmin && (
+             
+                {" "}
+                <AddShoppingCartIcon sx={styles.shoppingCartIcon(theme)} />
+           
+            </Badge>
+            {authenticated ? (
+              <>
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  color="inherit"
+                  sx={{ margin: "0px 5px", padding: "0px" }}
+                >
+                  <Box sx={styles.linksItem}>
+                    {/* <CgProfile /> */}
+                    <Avatar item={userDetailsState.userDetails} />
+                  </Box>
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  <Box sx={styles.dropdownHeading}>
+                    <Typography sx={{ borderBottom: "1px solid grey" }}>
+                      {username}
+                    </Typography>
+                  </Box>
+                  <Box sx={styles.dropdownOptions}>
+                    {" "}
+                    {isAdmin && (
+                      <MenuItem onClick={handleClose}>
+                        <Link
+                          component={NavLink}
+                          to="/admin"
+                          sx={{ textDecoration: "none" }}
+                        >
+                          <Button variant="contained">Admin Panel</Button>
+                        </Link>
+                      </MenuItem>
+                    )}
                     <MenuItem onClick={handleClose}>
                       <Link
                         component={NavLink}
-                        to="/admin"
+                        to="/favorites"
                         sx={{ textDecoration: "none" }}
                       >
-                        <Button variant="contained">Admin Panel</Button>
+                        Favorites
                       </Link>
                     </MenuItem>
-                  )}
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      component={NavLink}
-                      to="/favorites"
-                      sx={{ textDecoration: "none" }}
-                    >
-                      Favorites
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      component={NavLink}
-                      to="/useraccount"
-                      sx={{ textDecoration: "none" }}
-                    >
-                      Account
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={logout}>
-                    <Link
-                      component={NavLink}
-                      to="/"
-                      sx={{ textDecoration: "none" }}
-                    >
-                      Logout
-                    </Link>
-                  </MenuItem>
-                </Box>
-              </Menu>
-            </>
-          ) : (
-            <Link
-              component={NavLink}
-              to="/auth"
-              style={({ isActive }) =>
-                isActive ? { color: "black" } : { color: "white" }
-              }
-              sx={{ textDecoration: "none" }}
-            >
-              <Typography sx={styles.headerButton}>Login</Typography>
-            </Link>
-          )}
+                    <MenuItem onClick={handleClose}>
+                      <Link
+                        component={NavLink}
+                        to="/useraccount"
+                        sx={{ textDecoration: "none" }}
+                      >
+                        Account
+                      </Link>
+                    </MenuItem>
+                    <MenuItem onClick={logout}>
+                      <Link
+                        component={NavLink}
+                        to="/"
+                        sx={{ textDecoration: "none" }}
+                      >
+                        Logout
+                      </Link>
+                    </MenuItem>
+                  </Box>
+                </Menu>
+              </>
+            ) : (
+              <Link
+                component={NavLink}
+                to="/auth"
+                style={({ isActive }) =>
+                  isActive ? { color: "black" } : { color: "white" }
+                }
+                sx={{ textDecoration: "none" }}
+              >
+                <Typography sx={styles.loginButton(theme)}>Login</Typography>
+              </Link>
+            )}
+          </Box>
         </Box>
-      </Box>
+     
+      </ResponsiveWrapper>
+
       <CartDrawer isOpen={isOpen} setIsOpen={setIsOpen} />
-    </>
+    </Box>
   );
 };
 

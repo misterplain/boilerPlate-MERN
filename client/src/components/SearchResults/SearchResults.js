@@ -31,7 +31,7 @@ const SearchResults = () => {
           <Box sx={styles.searchStatus}>
             No searches made, please see below out featured products{" "}
           </Box>
-          <Wrapper width="80%" justifyContent="space-around">
+          <Wrapper width="100%" justifyContent="space-around">
             {featuredProducts?.map((product) => (
               <ProductCard product={product} key={product._id} />
             ))}

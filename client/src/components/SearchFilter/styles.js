@@ -9,8 +9,8 @@ const styles = {
   },
   formItem: {
     width: "87%",
-    padding: "10px 0px",
-    borderBottom: "1px solid grey",
+    padding: "5px 0px",
+    borderBottom: "1px solid lightgray",
   },
 };
 

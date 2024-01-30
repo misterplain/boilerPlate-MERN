@@ -37,13 +37,13 @@ const CartSummary = () => {
   return (
     <Wrapper
       id="componentWrapper"
-      flexDirection="column"
+      flexDirection="row"
       width="100%"
       customStyles={{
-        padding: "15px 0px",
+        padding: "0.5rem",
       }}
     >
-      <Wrapper id="pricesWrapper" flexDirection="column" alignItems="center">
+      <Wrapper id="pricesWrapper" flexDirection="column" alignItems="center" customStyles={{marginBottom: "0.8rem", paddingTop: "0.8rem", borderTop: "1px solid lightgray"}}>
         <Wrapper id="priceItem" justifyContent="space-between">
           {" "}
           <Typography variant="h6">Free Shipping</Typography>
@@ -55,20 +55,10 @@ const CartSummary = () => {
           <Typography variant="body1">${cartTotal}</Typography>
         </Wrapper>
       </Wrapper>
-      <Wrapper id="buttonsWrapper" justifyContent="space-between">
+      <Wrapper id="buttonsWrapper" justifyContent="center">
         {" "}
-        <Button
-          onClick={() => {
-            cartDrawerContext.setIsOpen(false);
-            navigate("/");
-          }}
-          variant="outlined"
-          color="secondary"
-        >
-          Continue shopping
-        </Button>
         {detailedCartItems && detailedCartItems.length !== 0 && (
-          <Link component={NavLink} to="/checkout">
+          <Link component={NavLink} to="/checkout" sx={{ width: "100%", marginBottom: "10px" }}>
             {" "}
             <Button
               onClick={() => {
@@ -83,11 +73,24 @@ const CartSummary = () => {
               }}
               variant="outlined"
               color="success"
+              sx={{ width: "100%" }}
+              fullWidth
             >
               Proceed to checkout
             </Button>
           </Link>
         )}
+        <Button
+          onClick={() => {
+            cartDrawerContext.setIsOpen(false);
+            navigate("/");
+          }}
+          variant="outlined"
+          color="secondary"
+          sx={{ width: "100%" }}
+        >
+          Continue shopping
+        </Button>
       </Wrapper>
     </Wrapper>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Typography } from "@mui/material";
 import { Grid } from "@mui/material";
@@ -12,6 +12,8 @@ import { setShopToCollection } from "../actions/shopActions";
 import Wrapper from "../components/Wrapper/Wrapper";
 import PageTitle from "../components/PageTitle/PageTitle";
 import Hero from "../components/Hero/Hero";
+import { fetchTopTenReviews } from "../actions/reviewsActions";
+import Testimonials from "../components/Testimonials/Testimonials";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -22,19 +24,27 @@ const HomeScreen = () => {
   const products = productList?.products;
   const collections = collectionsList?.collections;
 
+  useEffect(() => {
+    dispatch(fetchTopTenReviews());
+  }, [dispatch]);
+
   return (
     <Wrapper
       gridContainer
       customStyles={{
         justifyContent: "space-around",
         alignItems: "stretch",
-        textAlign: "center",
       }}
     >
       {isLoading && <Loading />}
       {error && <AlertMessage type="error">{error}</AlertMessage>}
-      {!isLoading && !error && <Hero />}
-      {products && (
+      {!isLoading && !error && (
+        <>
+          <Hero />
+          <Testimonials />
+        </>
+      )}
+      {/* {products && (
         <Wrapper width="90%" justifyContent="space-around" customStyles={{
           marginTop: "50px"
         }}>
@@ -51,9 +61,9 @@ const HomeScreen = () => {
               <ProductCard product={product} key={product._id} />
             ))}
         </Wrapper>
-      )}
+      )} */}
 
-      {collections && (
+      {/* {collections && (
         <Wrapper width="90%" justifyContent="space-around" customStyles={{
           marginTop: "50px"
         }}>
@@ -83,7 +93,7 @@ const HomeScreen = () => {
               )
           )}
         </Wrapper>
-      )}
+      )} */}
     </Wrapper>
   );
 };
