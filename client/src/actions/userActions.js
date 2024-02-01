@@ -75,6 +75,7 @@ const updateFavorites =
         { method, productId },
         options
       );
+      console.log(data);
 
       dispatch({
         type: UPDATE_FAVORITE_SUCCESS,
@@ -103,7 +104,7 @@ const updateProfile = (token, profileData) => async (dispatch) => {
       },
     };
 
-    const data = await axios.put(`/user/editprofile`, {profileData}, options);
+    const data = await axios.put(`/user/editprofile`, { profileData }, options);
     console.log(data);
     dispatch({
       type: UPDATE_PROFILE_SUCCESS,

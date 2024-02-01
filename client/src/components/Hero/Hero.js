@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -8,6 +8,11 @@ import heroBackGround from "../../assets/heroBackGround.jpg";
 import Wrapper from "../Wrapper/Wrapper";
 import { useTheme } from "@mui/material/styles";
 import ResponsiveWrapper from "../Wrapper/ResponsiveWrapper";
+import { Link, NavLink } from "react-router-dom";
+import { setShopToCollection } from "../../actions/shopActions";
+import { useSnackbar } from "notistack";
+import { snackbarDispatch } from "../../utils/snackbarDispatch";
+import { useNavigate } from "react-router-dom";
 
 const styles = {
   contentWrapper: (theme) => ({
@@ -48,6 +53,13 @@ const styles = {
   collectionItems: (theme) => ({
     color: "gray",
   }),
+  allCollectionsButton: (theme) => ({
+    // border: "1px solid red",
+    alignSelf: "center",
+    // padding: "0.5rem",
+    marginTop: "1rem",
+    // cursor: "pointer",
+  }),
   //admin login bar
   adminLoginBar: (theme) => ({
     height: "45px",
@@ -65,16 +77,16 @@ const styles = {
         backgroundColor: "#7B4E7B", // Intermediate color
       },
       "40%": {
-        backgroundColor: "#5E366E", 
+        backgroundColor: "#5E366E",
       },
       "60%": {
         backgroundColor: "#5E366E",
       },
       "80%": {
-        backgroundColor: "#7B4E7B", 
+        backgroundColor: "#7B4E7B",
       },
       "100%": {
-        backgroundColor: "#A87CA0", 
+        backgroundColor: "#A87CA0",
       },
     },
   }),
@@ -92,6 +104,8 @@ const styles = {
 const Hero = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
   const signInAdmin = () => {
     dispatch(loginForm("admin1@test.com", "123456"));
@@ -104,6 +118,25 @@ const Hero = () => {
   const isAdmin = userDetailsState?.userDetails?.isAdmin;
   const collectionsList = useSelector((state) => state.collections);
   const collections = collectionsList?.collections;
+
+  //route to shop page with all collections query
+
+  //collection
+  const [collection, setCollection] = useState("");
+  const handleCollectionChange = (allCollections) => {
+    setCollection(allCollections);
+    snackbarDispatch(
+      dispatch(
+        setShopToCollection(allCollections, collections, {
+          singleCollection: false,
+        })
+      ),
+      "Collection Filtered",
+      "Error Filtering",
+      enqueueSnackbar,
+      [() => navigate("/shop")]
+    );
+  };
 
   return (
     <Box
@@ -129,7 +162,6 @@ const Hero = () => {
             </Box>{" "}
           </Box>
         )}
-
         <Box id="boxwrapper" sx={styles.contentWrapper(theme)}>
           <Typography variant="h1">
             Grabby hero title to capture attention
@@ -141,11 +173,26 @@ const Hero = () => {
           <Box sx={styles.collectionsCardsWrapper(theme)}>
             {collections?.slice(0, 3).map((collection, index) => (
               <Box sx={styles.collectionsCard(theme)}>
-                <Box
-                  component="img"
-                  sx={styles.cardImage(theme)}
-                  src={collection.image.url}
-                ></Box>
+                <Link
+                  component={NavLink}
+                  to={"/shop"}
+                  key={collection._id}
+                  style={{ textDecoration: "none", width: "100%" }}
+                  onClick={() => {
+                    dispatch(
+                      setShopToCollection(collection._id, collections, {
+                        singleCollection: true,
+                      })
+                    );
+                  }}
+                >
+                  <Box
+                    component="img"
+                    sx={styles.cardImage(theme)}
+                    src={collection.image.url}
+                  ></Box>
+                </Link>
+
                 <Typography variant="body1" sx={styles.collectionName(theme)}>
                   {collection.name}
                 </Typography>
@@ -155,6 +202,16 @@ const Hero = () => {
                 </Typography>
               </Box>
             ))}
+          </Box>
+          <Box sx={styles.allCollectionsButton(theme)}>
+            <Button
+              color="secondary"
+              size="small"
+              variant="outlined"
+              onClick={() => handleCollectionChange("All")}
+            >
+              Browse all collections and products
+            </Button>
           </Box>
         </Box>
       </ResponsiveWrapper>

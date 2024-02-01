@@ -114,6 +114,36 @@ const SearchFilter = () => {
       isDisplayed: true,
       onSale: onSale,
     };
+    console.log(filterQuery);
+    dispatch(fetchFilteredProducts({ filterObject: filterQuery }));
+  };
+
+  const removeAllFilters = () => {
+    //collections
+    const refreshedCheckboxState = collections?.reduce((acc, collection) => {
+      acc[collection._id] = false;
+      return acc;
+    }, {});
+
+    setCollectionsSelected(refreshedCheckboxState);
+    setSort("");
+    setSearch("");
+    setPrice([0, maxPrice ? maxPrice : 1000]);
+    setStock(false);
+    setReviews(false);
+    setOnSale(false);
+
+    const filterQuery = {
+      sortBy: "",
+      searchQuery: "",
+      // collections: initialCheckboxState,
+      // priceRange: maxPrice,
+      inStock: false,
+      hasReviews: false,
+      isDisplayed: true,
+      onSale: false,
+    };
+
     dispatch(fetchFilteredProducts({ filterObject: filterQuery }));
   };
 
@@ -152,7 +182,24 @@ const SearchFilter = () => {
         </Box>
         <Box sx={styles.formItem}>
           {" "}
-          <Button variant="contained" color="primary" fullWidth onClick={() => handleSubmit()}>Search</Button>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            marginBottom
+            onClick={() => handleSubmit()}
+          >
+            Search
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            fullWidth
+            sx={{marginTop: "5px"}}
+            onClick={() => removeAllFilters()}
+          >
+            Clear Filters
+          </Button>
         </Box>
         <Box sx={styles.formItem}>
           {" "}
@@ -162,7 +209,6 @@ const SearchFilter = () => {
               {collections?.map((collection) => (
                 <FormControlLabel
                   key={collection._id}
-                 
                   control={
                     <Checkbox
                       checked={

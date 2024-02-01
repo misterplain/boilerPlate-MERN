@@ -128,6 +128,7 @@ const updateFavorites = asyncHandler(async (req, res) => {
 
   try {
     if (!userId) {
+      console.log("no user id");
       return res.status(400).json({ message: "No user id provided" });
     }
 

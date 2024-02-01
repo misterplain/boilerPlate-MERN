@@ -89,7 +89,7 @@ const OrderSnapshot = ({ order, isAdmin }) => {
           {" "}
           {!order.isShippedToCourier && !order.isCancelled && (
             <Button
-              marginLeft
+        
               color="error"
               variant="filledTonal"
               onClick={handleClickOpen}

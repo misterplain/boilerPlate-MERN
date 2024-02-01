@@ -19,14 +19,15 @@ import {
   removeCartItemGuest,
 } from "../actions/cartActions";
 import { fetchReviews, clearReviews } from "../actions/reviewsActions";
-import {
-  fetchAllProducts,
-} from "../actions/productActions";
+import { fetchAllProducts } from "../actions/productActions";
 import { fetchAllCollections } from "../actions/collectionsActions";
 import ProductCarousel from "../components/ProductCarousel/ProductCarousel";
 import ProductReviews from "../components/ProductReviews/ProductReviews";
 import { useSnackbar } from "notistack";
 import Wrapper from "../components/Wrapper/Wrapper";
+import { updateFavorites } from "../actions/userActions";
+import Box from "@mui/material/Box";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const ProductScreen = () => {
   const location = useLocation();
@@ -44,6 +45,7 @@ const ProductScreen = () => {
   const token = userAuthState?.accessToken;
   const reviewsState = useSelector((state) => state.reviews);
   const { reviews } = reviewsState || {};
+  const { favorites = [] } = userDetailsState?.userDetails || [];
 
   const { isOpen, setIsOpen } = useCartDrawer();
 
@@ -60,11 +62,9 @@ const ProductScreen = () => {
   });
 
   useEffect(() => {
-
-    if(productList?.products?.length === 0) {
+    if (productList?.products?.length === 0) {
       dispatch(fetchAllProducts());
       dispatch(fetchAllCollections());
-
     }
     if (!displayedProduct || !displayedProduct._id) return;
 
@@ -80,9 +80,15 @@ const ProductScreen = () => {
   }, [dispatch, token, displayedProduct]);
 
   return (
-    <Wrapper gridContainer direction="row" justifyContent="space-around" alignItems="center" customStyles={{
-      margin: "20px 0px"
-    }}>
+    <Wrapper
+      gridContainer
+      direction="row"
+      justifyContent="space-around"
+      alignItems="center"
+      customStyles={{
+        margin: "20px 0px",
+      }}
+    >
       {" "}
       <Grid item xs={8} sm={6}>
         <ProductCarousel product={displayedProduct} />
@@ -99,6 +105,50 @@ const ProductScreen = () => {
               {displayedProduct?.stock} in stock
             </Typography>
             <Typography variant="h6">${displayedProduct?.price}</Typography>
+            {authenticated &&
+            favorites &&
+            displayedProduct &&
+            favorites?.includes(displayedProduct?._id) ? (
+              <Box
+                onClick={async () => {
+                  await dispatch(
+                    updateFavorites({
+                      token: token,
+                      method: "REMOVE",
+                      productId: displayedProduct._id,
+                    })
+                  );
+                }}
+                sx={{
+                  color: "purple",
+                  fontSize: "1.5rem",
+                  cursor: "pointer",
+                  marginTop: "10px",
+                }}
+              >
+                <FaHeart />
+              </Box>
+            ) : (
+              <Box
+                onClick={async () => {
+                  await dispatch(
+                    updateFavorites({
+                      token: token,
+                      method: "ADD",
+                      productId: displayedProduct._id,
+                    })
+                  );
+                }}
+                sx={{
+                  color: "purple",
+                  fontSize: "1.5rem",
+                  cursor: "pointer",
+                  marginTop: "10px",
+                }}
+              >
+                <FaRegHeart />
+              </Box>
+            )}
             <Formik
               initialValues={{
                 quantity: 1,
@@ -181,20 +231,28 @@ const ProductScreen = () => {
                 errors,
                 touched,
               }) => (
-                <form onSubmit={handleSubmit} style={{display: "flex", flexDirection: "column", margin: "20px 0px"}}>
+                <form
+                  onSubmit={handleSubmit}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    margin: "20px 0px",
+                  }}
+                >
                   {!productInBasket && (
                     <FormControl>
                       <FormLabel id="quantity">Quantity</FormLabel>
                       <FormGroup>
                         <TextField
                           name="quantity"
-                          variant="filled"
+                          variant="outlined"
                           color="success"
                           type="number"
                           value={values.quantity}
                           onChange={handleChange}
                           helperText={errors.quantity}
                           InputProps={{ inputProps: { min: 1 } }}
+                          sx={{ marginTop: "10px" }}
                         />
                       </FormGroup>
                     </FormControl>
@@ -204,16 +262,66 @@ const ProductScreen = () => {
                     <Button
                       type="submit"
                       disabled={values.quantity > displayedProduct.stock}
+                      variant="outlined"
+                      color="success"
+                      size="small"
                       fullWidth
+                      marginTop="10px"
                     >
                       Add to Basket
                     </Button>
                   ) : (
-                    <Button type="submit">Remove from Basket</Button>
+                    <Button
+                      type="submit"
+                      variant="outlined"
+                      color="success"
+                      size="small"
+                      fullWidth
+                      marginTop="10px"
+                    >
+                      Remove from Basket
+                    </Button>
                   )}
                 </form>
               )}
             </Formik>
+            {/* {authenticated &&
+                  favorites &&
+                  favorites?.includes(displayedProduct._id) ? (
+                    <Button
+                      sx={{ marginTop: "10px" }}
+                      color="danger"
+                      variant="outlined"
+                      onClick={async () => {
+                        await dispatch(
+                          updateFavorites({
+                            token: token,
+                            method: "REMOVE",
+                            productId: displayedProduct._id,
+                          })
+                        );
+                      }}
+                    >
+                      Remove from favorites
+                    </Button>
+                  ) : (
+                    <Button
+                      sx={{ marginTop: "10px" }}
+                      color="success"
+                      variant="outlined"
+                      onClick={async () => {
+                        await dispatch(
+                          updateFavorites({
+                            token: token,
+                            method: "ADD",
+                            productId: displayedProduct._id,
+                          })
+                        );
+                      }}
+                    >
+                      Add to favorites
+                    </Button>
+                  )} */}
           </Wrapper>
         )}
       </Grid>

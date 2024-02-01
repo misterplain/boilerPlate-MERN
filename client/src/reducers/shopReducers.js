@@ -14,7 +14,7 @@ const initialState = {
     collections: {},
     priceRange: [0, 1000],
     hasReviews: false,
-    inStock: true,
+    inStock: false,
     sortBy: "",
     searchQuery: "",
     onSale: false,

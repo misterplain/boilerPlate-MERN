@@ -72,7 +72,7 @@ const ShopScreen = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const navigate = useNavigate();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   const collectionsList = useSelector((state) => state.collections);
   const productList = useSelector((state) => state.productList);
@@ -135,17 +135,23 @@ const ShopScreen = () => {
       <Main open={open}>
         <Box sx={{ ...styles.searchPage, ...(open && { marginTop: "30px" }) }}>
           <IconButton
-            color="green"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            sx={{ mr: 2, ...(open && { display: "none" }) }}
+            sx={{
+              mr: 2,
+              ...(open && { display: "none" }),
+              "&:hover": {
+                backgroundColor: "white",
+              },
+            }}
           >
-            <MenuIcon />
+            <MenuIcon style={{ color: "purple" }} />
             <Typography
+              variant="h6"
               noWrap
               component="div"
-              sx={{ color: "black", margin: "10px" }}
+              sx={{ color: "purple", margin: "10px" }}
             >
               Search Filters
             </Typography>
