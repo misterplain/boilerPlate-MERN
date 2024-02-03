@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import { Route, Routes } from "react-router-dom";
@@ -10,6 +10,7 @@ import AccountAddress from "../components/UserAccount/Address/AccountAddress";
 import OrderSummary from "../components/OrderSummary/OrderSummary";
 import Wrapper from "../components/Wrapper/Wrapper";
 import { useTheme } from "@mui/material/styles";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const accountButtons = [
   {
@@ -30,6 +31,7 @@ const accountButtons = [
 ];
 
 const AccountOrdersWrapper = () => {
+
   return (
     <Routes>
       <Route path="/" element={<AccountOrders />} />
@@ -40,9 +42,22 @@ const AccountOrdersWrapper = () => {
 
 const UserAccountScreen = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/useraccount" && !location.search) {
+      navigate("/useraccount/details", { replace: true });
+    }
+  }, [location]);
   return (
     // <Grid container>
-    <Wrapper gridContainer width="100%" direction="row" justifyContent="space-around">
+    <Wrapper
+      gridContainer
+      width="100%"
+      direction="row"
+      justifyContent="space-around"
+    >
       {" "}
       <Grid
         item

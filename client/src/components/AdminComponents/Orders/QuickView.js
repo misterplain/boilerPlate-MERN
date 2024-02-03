@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -18,20 +18,29 @@ const QuickView = () => {
   const userAuthState = useSelector((state) => state.userAuth);
   const token = userAuthState?.accessToken;
 
-
   const [time, setTime] = useState(quickView ? quickView : 7);
 
   const handleChange = (event) => {
     setTime(event.target.value);
   };
 
+  useEffect(() => {
+    if (!quickView) {
+      dispatch(filterPeriod(7, token));
+    }
+  }, [dispatch, quickView, token]);
+
   return (
     <Wrapper id="pageWrapper" flexDirection="column">
       {" "}
       {error && <AlertMessage type="error">{error}</AlertMessage>}
-      <Wrapper id="timeSelect" justifyContent="center" customStyles={{
-        margin: "20px 0px 20px 0px"
-      }}>
+      <Wrapper
+        id="timeSelect"
+        justifyContent="center"
+        customStyles={{
+          margin: "20px 0px 20px 0px",
+        }}
+      >
         {" "}
         <FormControl>
           <InputLabel id="timePeriod">Period</InputLabel>
@@ -65,7 +74,7 @@ const QuickView = () => {
         {orders
           ?.sort((a, b) => new Date(b.datePlaced) - new Date(a.datePlaced))
           .map((order) => (
-            <OrderSnapshot order={order} isAdmin={true}  key={order._id}/>
+            <OrderSnapshot order={order} isAdmin={true} key={order._id} />
           ))}
       </Wrapper>
     </Wrapper>

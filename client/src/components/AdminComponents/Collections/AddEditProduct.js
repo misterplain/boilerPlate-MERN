@@ -102,7 +102,8 @@ const AddEditProduct = () => {
       id="pageWrapper"
       flexDirection="column"
       customStyles={{
-        margin: "30px",
+        margin: "20px",
+        padding: "10px"
       }}
     >
       {error && <AlertMessage type="error">{error}</AlertMessage>}
@@ -191,7 +192,7 @@ const AddEditProduct = () => {
                 width: "100%",
                 borderBottom: "1px solid grey",
                 margin: "30px 0px",
-                textAlign: "center",
+                textAlign: "left",
               }}
             >
               <FormLabel id="collectionName">Collection</FormLabel>
@@ -216,7 +217,7 @@ const AddEditProduct = () => {
             </FormControl>
             <Wrapper
               id="isOptionsWrapper"
-              justifyContent="space-around"
+              justifyContent="space-between"
               customStyles={styles.sectionWrapper}
             >
               {" "}
@@ -265,7 +266,7 @@ const AddEditProduct = () => {
             </Wrapper>
             <Wrapper
               id="detailsWrapper"
-              justifyContent="space-around"
+              justifyContent="space-between"
               alignItems="center"
               customStyles={styles.sectionWrapper}
             >
@@ -315,7 +316,7 @@ const AddEditProduct = () => {
             </Wrapper>
             <Wrapper
               id="onSaleWrapper"
-              justifyContent="space-around"
+              justifyContent="space-between"
               customStyles={styles.sectionWrapper}
             >
               {" "}

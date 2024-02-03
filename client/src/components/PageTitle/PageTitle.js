@@ -14,7 +14,7 @@ const PageTitle = ({ size, title, color, lineBorder }) => {
         "&::before, &::after": {
           content: lineBorder ? '""' : "none", 
           flex: 1, 
-          borderBottom: "1px solid gray", 
+          borderBottom: "1px solid lightgray", 
           margin: "15px 30px", 
         },
       }}

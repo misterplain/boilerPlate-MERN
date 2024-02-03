@@ -28,6 +28,7 @@ import Wrapper from "../components/Wrapper/Wrapper";
 import { updateFavorites } from "../actions/userActions";
 import Box from "@mui/material/Box";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import FavoritesButton from "../components/FavoritesButton/FavoritesButton";
 
 const ProductScreen = () => {
   const location = useLocation();
@@ -39,6 +40,7 @@ const ProductScreen = () => {
   const userAuthState = useSelector((state) => state.userAuth);
   const { authenticated } = userAuthState;
   const userDetailsState = useSelector((state) => state.userDetails);
+  const { isGuest } = userDetailsState;
   const { email, username, isAdmin } = userDetailsState?.userDetails || {};
   const cartState = useSelector((state) => state.shoppingCart);
   const { cartItems, loading, error } = cartState || {};
@@ -79,6 +81,10 @@ const ProductScreen = () => {
     dispatch(fetchReviews(token, displayedProduct._id));
   }, [dispatch, token, displayedProduct]);
 
+  console.log(isGuest);
+
+  const changeFavorites = async (productId, method) => {};
+
   return (
     <Wrapper
       gridContainer
@@ -105,50 +111,14 @@ const ProductScreen = () => {
               {displayedProduct?.stock} in stock
             </Typography>
             <Typography variant="h6">${displayedProduct?.price}</Typography>
-            {authenticated &&
-            favorites &&
-            displayedProduct &&
-            favorites?.includes(displayedProduct?._id) ? (
-              <Box
-                onClick={async () => {
-                  await dispatch(
-                    updateFavorites({
-                      token: token,
-                      method: "REMOVE",
-                      productId: displayedProduct._id,
-                    })
-                  );
-                }}
-                sx={{
-                  color: "purple",
-                  fontSize: "1.5rem",
-                  cursor: "pointer",
-                  marginTop: "10px",
-                }}
-              >
-                <FaHeart />
-              </Box>
-            ) : (
-              <Box
-                onClick={async () => {
-                  await dispatch(
-                    updateFavorites({
-                      token: token,
-                      method: "ADD",
-                      productId: displayedProduct._id,
-                    })
-                  );
-                }}
-                sx={{
-                  color: "purple",
-                  fontSize: "1.5rem",
-                  cursor: "pointer",
-                  marginTop: "10px",
-                }}
-              >
-                <FaRegHeart />
-              </Box>
-            )}
+            <FavoritesButton
+              authenticated={authenticated}
+              favorites={favorites}
+              displayedProduct={displayedProduct}
+              isGuest={isGuest}
+              token={token}
+              dispatch={dispatch}
+            />
             <Formik
               initialValues={{
                 quantity: 1,
