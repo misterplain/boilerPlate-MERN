@@ -3,8 +3,7 @@ import Box from "@mui/material/Box";
 import styles from "./styles";
 
 const Avatar = ({ item }) => {
-  
-  // const avatar = item?.userAvatar || item?.review
+
   return (
     <>
       {" "}

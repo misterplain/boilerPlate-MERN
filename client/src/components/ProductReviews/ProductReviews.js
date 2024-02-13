@@ -29,7 +29,6 @@ const ProductReviews = ({ productId }) => {
   const { reviews, userReview, filteredReviews, error } = reviewsState || {};
 
   //modal state
-
   const [open, setOpen] = useState(false);
   const [reviewToEdit, setReviewToEdit] = useState(null);
 
@@ -67,7 +66,6 @@ const ProductReviews = ({ productId }) => {
       gridContainer
       customStyles={{
         justifyContent: "flex-start",
-        // marginBottom: "50px"
       }}
     >
       {" "}
@@ -97,9 +95,6 @@ const ProductReviews = ({ productId }) => {
                   }}
                   key={review._id}
                 >
-                  {/* <Box sx={styles.reviewType}>
-                    <Typography>What you've said</Typography>
-                  </Box>{" "} */}
                   <PageTitle
                     title="What you've said:"
                     size="h6"

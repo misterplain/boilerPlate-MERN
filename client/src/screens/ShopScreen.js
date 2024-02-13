@@ -14,8 +14,6 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import SearchFilter from "../components/SearchFilter/SearchFilter";
 import SearchResults from "../components/SearchResults/SearchResults";
 import { useNavigate } from "react-router-dom";
-import { setShopToCollection } from "../actions/shopActions";
-import Wrapper from "../components/Wrapper/Wrapper";
 
 const drawerWidth = 240;
 
@@ -63,22 +61,16 @@ const AppBar = styled(MuiAppBar, {
 
 const styles = {
   searchPage: {
-    // display: "flex",
-    // marginTop: "30px",
+
   },
 };
 
 const ShopScreen = () => {
-  const dispatch = useDispatch();
   const theme = useTheme();
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
 
-  const collectionsList = useSelector((state) => state.collections);
   const productList = useSelector((state) => state.productList);
-  const shopState = useSelector((state) => state.shop);
-  const { hasSearched } = shopState;
-  const collections = collectionsList?.collections;
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -86,15 +78,6 @@ const ShopScreen = () => {
 
   const handleDrawerClose = () => {
     setOpen(false);
-  };
-
-  //scroll
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const handleScroll = () => {
-    const position = window.scrollY;
-    setScrollPosition(position, () => {
-      console.log(scrollPosition);
-    });
   };
 
   useEffect(() => {

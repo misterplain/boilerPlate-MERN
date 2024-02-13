@@ -253,62 +253,6 @@ const CartItems = () => {
                       <DeleteOutlineIcon />
                     </Box>
                   </Box>
-                  {/* <Wrapper
-                    id="imageTitleDeleteWrapper"
-                    justifyContent="space-around"
-                    alignItems="center"
-                  >
-                    <Link
-                      component={NavLink}
-                      to={`/product/${item.product._id}`}
-                      onClick={() => {
-                        cartDrawerContext.setIsOpen(false);
-                      }}
-                    >
-   
-                      <Wrapper alignItems="center">
-                        {" "}
-                        <Typography marginLeft>{item.product.name}</Typography>
-                      </Wrapper>
-                    </Link>
-                    <Box
-                      onClick={() => {
-                        handleDeleteItem(item);
-                      }}
-                    >
-                      <DeleteOutlineIcon />
-                    </Box>
-                  </Wrapper> */}
-                  {/* <Wrapper
-                    id="optionsWrapper"
-                    justifyContent="space-between"
-                    customStyles={{
-                      margin: "10px",
-                      borderBottom: "1px solid grey",
-                      padding: "10px",
-                    }}
-                  >
-                    {" "}
-                    <Box sx={styles.cartItemInfoWrapper}>
-                      <Typography>Price- </Typography>
-                      <Typography>${cartItemTotal(item)}</Typography>
-                    </Box>
-                    <Box sx={styles.cartItemInfoWrapper}>
-                      <Box
-                        sx={styles.quantityIcon}
-                        onClick={() => handleIncreaseQuantity(item)}
-                      >
-                        <AiOutlinePlus />
-                      </Box>
-                      <Typography variant="body1">{item.quantity}</Typography>
-                      <Box
-                        sx={styles.quantityIcon}
-                        onClick={() => handleDecreaseQuantity(item)}
-                      >
-                        <AiOutlineMinus />
-                      </Box>
-                    </Box>
-                  </Wrapper> */}
                 </Wrapper>
               );
             })}

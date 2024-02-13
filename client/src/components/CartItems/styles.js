@@ -36,17 +36,6 @@ const styles = {
     alignItems: "flex-end",
 
   }),
-  // imageTitle: {
-  //   display: "flex",
-  //   justifyContent: "flex-start",
-  //   alignItems: "center",
-  // },
-  // cartItemInfoWrapper: {
-  //   display: "flex",
-  //   flexDirection: "row",
-  //   justifyContent: "space-between",
-  //   alignItems: "center",
-  // },
 };
 
 export default styles;

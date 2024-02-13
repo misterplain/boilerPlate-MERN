@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import Button from "@mui/material/Button";
 import { Route, Routes } from "react-router-dom";
 import { NavLink } from "react-router-dom";
@@ -7,18 +7,17 @@ import AdvancedSearch from "./AdvancedSearch";
 import QuickView from "./QuickView";
 import OrderSummary from "../../OrderSummary/OrderSummary";
 import Wrapper from "../../Wrapper/Wrapper";
-import { useSelector, useDispatch } from "react-redux";
-
 
 const AdminOrders = () => {
-
   return (
     <Wrapper flexDirection="column">
-      <Wrapper justifyContent="space-between" customStyles={{
-        borderBottom: "3px solid black",
-      }}>
+      <Wrapper
+        justifyContent="space-between"
+        customStyles={{
+          borderBottom: "3px solid black",
+        }}
+      >
         <Link component={NavLink} to="quick-view">
-   
           <Button color="success">quick view</Button>
         </Link>
         <Link component={NavLink} to="advanced-search">

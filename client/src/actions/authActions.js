@@ -18,7 +18,6 @@ import {
   SET_USER_DETAILS,
 } from "../constants/userConstants";
 import {
-  GET_CARTITEMS_USER_FAIL,
   GET_CARTITEMS_USER_SUCCESS,
   EMPTY_CART,
   OAUTH_UPDATE_CART_REQUEST,
@@ -33,11 +32,6 @@ const SERVER_URL =
     ? "https://e-commerce-mern-api.onrender.com"
     : "http://localhost:5000";
 
-
-const CLIENT_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://e-commerce-mern-eryu.onrender.com"
-    : "http://localhost:3000";
 
 export const loginForm = (email, password, cart) => async (dispatch) => {
   try {
@@ -111,11 +105,6 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
     process.env.NODE_ENV === "production"
       ? process.env.REACT_APP_SERVER_API_URL
       : "http://localhost:5000";
-
-  // const CLIENT_URL =
-  //   process.env.NODE_ENV === "production"
-  //     ? "https://e-commerce-mern-eryu.onrender.com"
-  //     : "http://localhost:3000";
 
   return new Promise((resolve, reject) => {
     try {

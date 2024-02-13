@@ -16,12 +16,10 @@ const AccountDetails = () => {
   const [open, setOpen] = useState(false);
 
   const handleOpenModal = (collection) => {
-    // setCollectionToEdit(collection);
     setOpen(true);
   };
 
   const handleCloseModal = () => {
-    // setCollectionToEdit(null);
     setOpen(false);
   };
   return (
@@ -50,7 +48,6 @@ const AccountDetails = () => {
       <EditAccountModal
         open={open}
         handleClose={handleCloseModal}
-        // collection={collectionToEdit}
         userDetails={userDetails}
       />
     </Wrapper>

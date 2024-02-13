@@ -8,8 +8,6 @@ const styles = {
     alignItems: "center",
   },
   usernameAvatar: {
-    // width: "30px",
-    // height: "30px",
     width: "100%",
     minHeight: "100%",
     borderRadius: "50%",

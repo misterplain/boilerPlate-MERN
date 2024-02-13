@@ -28,7 +28,6 @@ const styles = {
   logo: (theme) => ({
     fontSize: "1.2rem",
     color: "black",
-    // textAlign: "center",
   }),
 
   searchBarWrapper: (theme) => ({
@@ -46,7 +45,6 @@ const styles = {
     minWidth: 150,
     background: "white",
     borderRadius: "5px",
-    // margin: "0px 5px",
     [theme.breakpoints.down("md")]: {
       display: "none",
     },

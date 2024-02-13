@@ -18,7 +18,6 @@ const Address = ({address, email}) => {
     <Box sx={styles.wrapper}>
       <Typography variant="body1">{address.street}</Typography>
       <Typography variant="body1">{address.city}, {address.postalCode}</Typography>
-      {/* <Typography variant="body1">{address.postalCode}</Typography> */}
       <Typography variant="body1">{address.country}</Typography>
       <Typography variant="body1" sx={{color: "green"}}>
         {address.isDefault ? "Default" : ""}

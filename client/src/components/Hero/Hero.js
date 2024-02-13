@@ -4,8 +4,6 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { loginForm, logoutUser } from "../../actions/authActions";
 import { useDispatch, useSelector } from "react-redux";
-import heroBackGround from "../../assets/heroBackGround.jpg";
-import Wrapper from "../Wrapper/Wrapper";
 import { useTheme } from "@mui/material/styles";
 import ResponsiveWrapper from "../Wrapper/ResponsiveWrapper";
 import { Link, NavLink } from "react-router-dom";
@@ -39,9 +37,6 @@ const styles = {
     [theme.breakpoints.up("md")]: {
       width: "28%",
     },
-    // [theme.breakpoints.up("lg")]: {
-    //   width: "30%",
-    // },
   }),
   cardImage: (theme) => ({
     borderRadius: "8px",
@@ -54,16 +49,12 @@ const styles = {
     color: "gray",
   }),
   allCollectionsButton: (theme) => ({
-    // border: "1px solid red",
     alignSelf: "center",
-    // padding: "0.5rem",
     marginTop: "1rem",
-    // cursor: "pointer",
   }),
   //admin login bar
   adminLoginBar: (theme) => ({
     height: "45px",
-    // backgroundColor: "#A87CA0",
     borderRadius: "40px",
     display: "flex",
     justifyContent: "center",
@@ -118,8 +109,6 @@ const Hero = () => {
   const isAdmin = userDetailsState?.userDetails?.isAdmin;
   const collectionsList = useSelector((state) => state.collections);
   const collections = collectionsList?.collections;
-
-  //route to shop page with all collections query
 
   //collection
   const [collection, setCollection] = useState("");
@@ -217,32 +206,7 @@ const Hero = () => {
       </ResponsiveWrapper>
     </Box>
 
-    // <Box sx={styles.wrapper}>
-    //   {" "}
-    // {!authenticated && (
-    //   <Button
-    //     variant="contained"
-    //     size="large"
-    //     color="secondary"
-    //     sx={styles.adminTestButton}
-    //     onClick={() => signInAdmin()}
-    //   >
-    //     Login with Admin Credentials to test
-    //   </Button>
-    // )}
-    // {authenticated && isAdmin && (
-    //   <Button
-    //     variant="contained"
-    //     size="large"
-    //     color="primary"
-    //     sx={styles.adminTestButton}
-    //     onClick={() => dispatch(logoutUser())}
-    //   >
-    //     Logout of Admin test account
-    //   </Button>
-    // )}
-    //   <Typography sx={styles.heroText}>hero</Typography>
-    // </Box>
+  
   );
 };
 

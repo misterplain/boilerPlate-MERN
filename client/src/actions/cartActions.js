@@ -12,12 +12,8 @@ import {
   GET_CARTITEMS_USER_REQUEST,
   GET_CARTITEMS_USER_SUCCESS,
   GET_CARTITEMS_USER_FAIL,
-  EMPTY_CART,
 } from "../constants/cartConstants";
-import { useSelector } from "react-redux";
-import { getState } from "react-redux";
 import axios from "../api/axios";
-import { useSnackbar } from "notistack";
 
 //cart actions
 const getCartItems = (token) => async (dispatch) => {

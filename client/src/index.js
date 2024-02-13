@@ -11,9 +11,6 @@ import store from "./store";
 import { MaterialDesignContent } from "notistack";
 import { styled } from "@mui/material/styles";
 
-// import "./index.css";
-
-
 //snackbar styles
 const StyledMaterialDesignContent = styled(MaterialDesignContent)(
   ({ theme }) => ({

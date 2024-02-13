@@ -294,17 +294,17 @@ const getFilteredProducts = async (req, res) => {
 
   let query = {};
 
-  // Handle isFeatured
+  //isFeatured
   if (typeof filterObject.isFeatured !== "undefined") {
     query.isFeatured = filterObject.isFeatured;
   }
 
-  // Handle isDisplayed
+  //isDisplayed
   if (typeof filterObject.isDisplayed !== "undefined") {
     query.isDisplayed = filterObject.isDisplayed;
   }
 
-  // Handle searchQuery
+  // searchQuery
   if (filterObject.searchQuery) {
     query.$or = [
       { name: { $regex: filterObject.searchQuery, $options: "i" } },
@@ -313,7 +313,6 @@ const getFilteredProducts = async (req, res) => {
   }
 
   if (filterObject.collections) {
-    // Handle collections, first turn it into a array, check the length, then use $in function
     const selectedCollectionIds = Object.keys(filterObject?.collections).filter(
       (key) => filterObject.collections[key]
     );
@@ -322,7 +321,7 @@ const getFilteredProducts = async (req, res) => {
     }
   }
 
-  // Handle priceRange
+  //priceRange
   if (filterObject.priceRange && filterObject.priceRange.length === 2) {
     query.price = {
       $gte: filterObject.priceRange[0],
@@ -330,7 +329,7 @@ const getFilteredProducts = async (req, res) => {
     };
   }
 
-  // Handle inStock
+  //inStock
   if (typeof filterObject.inStock !== "undefined") {
     if (filterObject.inStock) {
       query.stock = { $gt: 0 };
@@ -344,7 +343,7 @@ const getFilteredProducts = async (req, res) => {
     }
   }
 
-  // Handle hasReviews
+  //hasReviews
   if (filterObject.hasReviews) {
     query.reviews = { $exists: true, $not: { $size: 0 } };
   }

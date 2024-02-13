@@ -19,14 +19,6 @@ import Avatar from "../../Avatar/Avatar";
 import { useTheme } from "@mui/material/styles";
 
 
-
-// const styles = {
-//   imageToUpload: {
-//     width: "40%",
-//     height: "auto",
-//   },
-// };
-
 const EditAccountModal = ({ open, handleClose, userDetails }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -178,9 +170,6 @@ const EditAccountModal = ({ open, handleClose, userDetails }) => {
                         />
                       )}
                     </Box>
-                    {/* <Button onClick={() => fetchPexelImage(token, values.name)}>
-                      FETCH FROM PEXEL BASED ON COLLECTION NAME
-                    </Button> */}
                   </FormControl>
                   <FormControl sx={{ marginBottom: "10px" }}>
                     <FormLabel id="username">Username</FormLabel>

@@ -55,13 +55,6 @@ const AccountAddress = () => {
       <Box sx={styles.existingAddresses}>
         {userDetails?.addresses?.map((address) => (
           <Box key={address._id} sx={{display: "flex", justifyContent: "space-between", margin: "10px"}}>
-            {/* <Typography variant="body1">{address.street}</Typography>
-            <Typography variant="body1">{address.city}</Typography>
-            <Typography variant="body1">{address.postalCode}</Typography>
-            <Typography variant="body1">{address.country}</Typography>
-            <Typography variant="body1">
-              {address.isDefault ? "Default" : ""}
-            </Typography> */}
             <Address address={address} />
             <Button
               variant="contained"

@@ -12,7 +12,6 @@ import Wrapper from "../../Wrapper/Wrapper";
 
 const QuickView = () => {
   const dispatch = useDispatch();
-  const userDetailsState = useSelector((state) => state.userDetails);
   const orderHistoryState = useSelector((state) => state.orderHistory);
   const { orders, error, quickView } = orderHistoryState;
   const userAuthState = useSelector((state) => state.userAuth);

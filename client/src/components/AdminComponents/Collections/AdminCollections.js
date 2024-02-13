@@ -8,10 +8,7 @@ import { NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import { deleteCollection } from "../../../actions/collectionsActions";
 import CollectionsModal from "./CollectionsModal";
-import AlertMessage from "../../AlertMessage/AlertMessage";
 import CollectionCard from "../../CollectionCard/CollectionCard";
-import { snackbarDispatch } from "../../../utils/snackbarDispatch";
-import { enqueueSnackbar } from "notistack";
 import Wrapper from "../../Wrapper/Wrapper";
 import PageTitle from "../../PageTitle/PageTitle";
 
@@ -44,7 +41,6 @@ const AdminCollections = () => {
   const dispatch = useDispatch();
   const [collectionName, setCollectionName] = useState("");
   const collectionsState = useSelector((state) => state.collections);
-  const { collections, error } = collectionsState;
   const productsList = useSelector((state) => state.productList);
   const { products } = productsList;
   const userAuthState = useSelector((state) => state.userAuth);
@@ -139,15 +135,6 @@ const AdminCollections = () => {
                 Products within {collectionName} collection
               </Typography>{" "}
               <Box sx={styles.addProductButton}>
-                {/* <Link component={NavLink} to={"/admin/products/new"}>
-                  <Button
-                    variant="outlined"
-                    color="success"
-                    sx={{ marginRight: "20px" }}
-                  >
-                    New Product
-                  </Button>
-                </Link> */}
                 <Link component={NavLink} to={"/admin/addeditproduct"}>
                   <Button
                     variant="outlined"
@@ -159,7 +146,6 @@ const AdminCollections = () => {
                 </Link>
               </Box>
             </Wrapper>
-            {/* </Grid> */}
             {filteredProducts && filteredProducts.length > 0 ? (
               <>
                 {" "}
@@ -209,13 +195,7 @@ const AdminCollections = () => {
                       </Typography>
                     </Grid>
                     <Grid item xs={3} sx={styles.gridItem}>
-                      {/* <Link
-                        component={NavLink}
-                        to={`/admin/products/edit/${product._id}`}
-                        style={styles.productOptions}
-                      >
-                        <Typography>Edit/Delete</Typography>
-                      </Link> */}
+
                       <Link
                         component={NavLink}
                         to={`/admin/addeditproduct/${product._id}`}

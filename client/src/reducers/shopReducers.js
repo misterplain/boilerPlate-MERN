@@ -58,7 +58,6 @@ export const shopReducer = (state = initialState, action) => {
         ...initialState,
         hasSearched: true,
         loading: false,
-        // filters: { ...action.filterQuery.filterObject },
         filters: {
           ...state.filters,
           collections: action.filterQuery.collections,

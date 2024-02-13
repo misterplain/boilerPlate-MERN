@@ -25,9 +25,6 @@ import ProductCarousel from "../components/ProductCarousel/ProductCarousel";
 import ProductReviews from "../components/ProductReviews/ProductReviews";
 import { useSnackbar } from "notistack";
 import Wrapper from "../components/Wrapper/Wrapper";
-import { updateFavorites } from "../actions/userActions";
-import Box from "@mui/material/Box";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 import FavoritesButton from "../components/FavoritesButton/FavoritesButton";
 
 const ProductScreen = () => {
@@ -41,7 +38,6 @@ const ProductScreen = () => {
   const { authenticated } = userAuthState;
   const userDetailsState = useSelector((state) => state.userDetails);
   const { isGuest } = userDetailsState;
-  const { email, username, isAdmin } = userDetailsState?.userDetails || {};
   const cartState = useSelector((state) => state.shoppingCart);
   const { cartItems, loading, error } = cartState || {};
   const token = userAuthState?.accessToken;
@@ -80,10 +76,6 @@ const ProductScreen = () => {
 
     dispatch(fetchReviews(token, displayedProduct._id));
   }, [dispatch, token, displayedProduct]);
-
-  console.log(isGuest);
-
-  const changeFavorites = async (productId, method) => {};
 
   return (
     <Wrapper
@@ -255,43 +247,6 @@ const ProductScreen = () => {
                 </form>
               )}
             </Formik>
-            {/* {authenticated &&
-                  favorites &&
-                  favorites?.includes(displayedProduct._id) ? (
-                    <Button
-                      sx={{ marginTop: "10px" }}
-                      color="danger"
-                      variant="outlined"
-                      onClick={async () => {
-                        await dispatch(
-                          updateFavorites({
-                            token: token,
-                            method: "REMOVE",
-                            productId: displayedProduct._id,
-                          })
-                        );
-                      }}
-                    >
-                      Remove from favorites
-                    </Button>
-                  ) : (
-                    <Button
-                      sx={{ marginTop: "10px" }}
-                      color="success"
-                      variant="outlined"
-                      onClick={async () => {
-                        await dispatch(
-                          updateFavorites({
-                            token: token,
-                            method: "ADD",
-                            productId: displayedProduct._id,
-                          })
-                        );
-                      }}
-                    >
-                      Add to favorites
-                    </Button>
-                  )} */}
           </Wrapper>
         )}
       </Grid>

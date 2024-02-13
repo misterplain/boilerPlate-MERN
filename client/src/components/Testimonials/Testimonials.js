@@ -13,17 +13,7 @@ import { useTheme } from "@mui/material/styles";
 const Testimonials = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
-
-  const productList = useSelector((state) => state.productList);
-  const userAuthState = useSelector((state) => state.userAuth);
-  const { authenticated } = userAuthState;
-  const userDetailsState = useSelector((state) => state.userDetails);
-  const { email, username, isAdmin } = userDetailsState?.userDetails || {};
-  const cartState = useSelector((state) => state.shoppingCart);
-  const { cartItems, loading, error } = cartState || {};
-  const token = userAuthState?.accessToken;
   const reviewsState = useSelector((state) => state.reviews);
-  const { reviews } = reviewsState || {};
   const { topReviews } = reviewsState || {};
 
   useEffect(() => {

@@ -51,7 +51,6 @@ const UserAccountScreen = () => {
     }
   }, [location]);
   return (
-    // <Grid container>
     <Wrapper
       gridContainer
       width="100%"

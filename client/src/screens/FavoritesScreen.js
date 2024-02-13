@@ -6,10 +6,8 @@ import PageTitle from "../components/PageTitle/PageTitle";
 import Box from "@mui/material/Box";
 
 const FavoritesScreen = () => {
-  const shopState = useSelector((state) => state.shop);
   const productList = useSelector((state) => state.productList);
   const allProducts = productList?.products;
-  const { products, hasSearched } = shopState;
   const userDetailsState = useSelector((state) => state.userDetails);
   const { favorites = [] } = userDetailsState?.userDetails || [];
 

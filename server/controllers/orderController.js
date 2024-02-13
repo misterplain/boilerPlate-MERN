@@ -212,7 +212,6 @@ const placeGuestOrder = async (req, res) => {
     return res.status(400).json({ message: "Missing required data" });
   }
   try {
-    //deduct stock from each item
     for (let item of cartItems) {
       const product = await Product.findById(item.product);
 

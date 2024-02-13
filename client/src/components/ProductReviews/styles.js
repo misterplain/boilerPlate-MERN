@@ -16,7 +16,6 @@ const styles = {
   },
   statusWrapper: (theme) => ({
     display: "flex",
-    // fontSize: "2.8rem",
     justifyContent: "center",
     width: "100%"
   }),

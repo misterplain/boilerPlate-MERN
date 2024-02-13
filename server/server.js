@@ -3,15 +3,11 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
-// const { logger } = require("./middleware/logger");
-// const { logEvents } = require("./middleware/logger");
-//config
 const connectDB = require("./config/connectDB");
-//boilerPlate
 const session = require("express-session");
 const passport = require("./middleware/passport");
 const bodyParser = require("body-parser");
-//boilerPlate routes
+//routes
 const authRoutes = require("./routes/authRoutes");
 const collectionRoutes = require("./routes/collectionRoutes");
 const productRoutes = require("./routes/productRoutes");
@@ -19,21 +15,15 @@ const reviewRoutes = require("./routes/reviewRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const userRoutes = require("./routes/userRoutes");
-//model
-const UserModel = require("./models/userModel");
 //keep active
 const keepActiveRoutes = require("./keepActive/keepActiveRoute");
 const keepServerActive = require("./keepActive/keepServerActive");
-//nodecron
-const nodemailer = require("nodemailer");
-const nodeCron = require("node-cron");
 
 const app = express();
 
 //Connect to Mongo DB
 connectDB();
 
-//express-sessions rather than cookie-session
 app.use(
   session({
     secret: "privateKey",
@@ -53,15 +43,6 @@ app.use(passport.session());
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
-//custom middleware logger
-// app.use(logger);
-// mongoose.connection.on("error", (err) => {
-//   console.log(err);
-//   logEvents(
-//     `${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`,
-//     "mongoErrLog.log"
-//   );
-// });
 
 app.use("/", express.static(path.resolve(path.join(__dirname, "./build"))));
 

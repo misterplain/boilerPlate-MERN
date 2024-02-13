@@ -73,8 +73,6 @@ const signup = async (req, res) => {
 const refresh = async (req, res) => {
   const { refreshToken } = req.body;
 
-  // console.log("Refresh auth controller", refreshToken);
-
   if (!refreshToken) {
     return res.status(400).send({ error: "Refresh token required" });
   }

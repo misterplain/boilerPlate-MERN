@@ -1,11 +1,5 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import { loginForm, logoutUser } from "../../actions/authActions";
-import { useDispatch, useSelector } from "react-redux";
-import heroBackGround from "../../assets/heroBackGround.jpg";
-import Wrapper from "../Wrapper/Wrapper";
 import { useTheme } from "@mui/material/styles";
 
 const styles = {
