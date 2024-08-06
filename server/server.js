@@ -80,8 +80,8 @@ app.use("/cart", cartRoutes);
 app.use("/orders", orderRoutes);
 
 //keepActive
-keepServerActive()
-app.use("/keepActive", keepActiveRoutes);
+// keepServerActive()
+// app.use("/keepActive", keepActiveRoutes);
 
 const port = process.env.PORT || 5000;
 app.listen(port, console.log(`server listing to port 5000 only`));

@@ -1,4 +1,4 @@
-const Collection = require("../models/collectionModel");
+ const Collection = require("../models/collectionModel");
 const { createClient } = require("pexels");
 const cloudinary = require("../utils/cloudinary");
 
