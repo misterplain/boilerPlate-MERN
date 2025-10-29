@@ -29,9 +29,8 @@ import axios from "../api/axios";
 
 const SERVER_URL =
   process.env.NODE_ENV === "production"
-    ? "https://e-commerce-mern-api.onrender.com"
+    ? "https://node-server-4m2h.onrender.com/mern-ecommerce"
     : "http://localhost:5000";
-
 
 export const loginForm = (email, password, cart) => async (dispatch) => {
   try {
@@ -101,27 +100,37 @@ export const registerForm =
   };
 
 export const loginOAuth = (provider, code) => async (dispatch) => {
-  const CLIENT_URL =
-    process.env.NODE_ENV === "production"
-      ? process.env.REACT_APP_SERVER_API_URL
-      : "http://localhost:5000";
+  const SERVER_URL =
+    process.env.REACT_APP_SERVER_API_URL ||
+    "http://localhost:5000/mern-ecommerce";
+  const CLIENT_URL = window.location.origin;
+  
+  // Extract just the origin (protocol + host) from SERVER_URL for postMessage validation
+  const SERVER_ORIGIN = new URL(SERVER_URL).origin;
 
   return new Promise((resolve, reject) => {
     try {
       dispatch({
         type: OAUTH_LOGIN_REQUEST,
       });
-      console.log(CLIENT_URL)
+      console.log(CLIENT_URL);
 
       const oauthWindow = window.open(
-        `${CLIENT_URL}/auth/${provider}`,
+        `${SERVER_URL}/auth/${provider}`,
         "_blank"
       );
 
       window.addEventListener(
         "message",
         function (event) {
-          if (event.origin !== `${CLIENT_URL}`) {
+          // Check against SERVER_ORIGIN (http://localhost:5000) not SERVER_URL
+          if (event.origin !== SERVER_ORIGIN) {
+            console.warn(
+              "Received message from unexpected origin:",
+              event.origin,
+              "Expected:",
+              SERVER_ORIGIN
+            );
             return;
           }
 
@@ -151,7 +160,7 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
         false
       );
     } catch (error) {
-      console.log(error)
+      console.log(error);
       dispatch({
         type: OAUTH_LOGIN_FAIL,
         payload: error.message,
@@ -222,6 +231,10 @@ export const loginOAuthAndSyncCart = (provider, cart) => async (dispatch) => {
 };
 
 export const logoutUser = () => async (dispatch) => {
+  const SERVER_URL =
+    process.env.REACT_APP_SERVER_API_URL ||
+    "http://localhost:5000/mern-ecommerce";
+    
   try {
     dispatch({
       type: USER_LOGOUT,

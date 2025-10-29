@@ -4,7 +4,7 @@ const api = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
       ? process.env.REACT_APP_SERVER_API_URL
-      : "http://localhost:5000",
+      : "http://localhost:5000/mern-ecommerce",
 
 });
 

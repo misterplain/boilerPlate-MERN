@@ -17,7 +17,7 @@ const FACEBOOK_CLIENT_ID = process.env.FACEBOOK_CLIENT_ID;
 const SERVER_URL =
   process.env.NODE_ENV === "production"
     ? "https://e-commerce-mern-api.onrender.com"
-    : "http://localhost:5000";
+    : "http://localhost:5000/mern-ecommerce";
 const CLIENT_URL =
   process.env.NODE_ENV === "production"
     ? "https://e-commerce-mern-eryu.onrender.com"
