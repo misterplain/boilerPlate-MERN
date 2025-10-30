@@ -4,6 +4,8 @@ A MERN stack e-commerce template designed for scalability. Ideal as a starting o
 
 The deployed site can be found [HERE](https://e-commerce-mern-eryu.onrender.com/)
 
+The backend code for this project can be found [HERE](https://github.com/misterplain/node-server/tree/main/hpnotepad)
+
 #### Site Features
 
 - Redux State Management

@@ -29,8 +29,12 @@ import axios from "../api/axios";
 
 const SERVER_URL =
   process.env.NODE_ENV === "production"
-    ? "https://node-server-4m2h.onrender.com/mern-ecommerce"
-    : "http://localhost:5000";
+    ? process.env.REACT_APP_SERVER_API_URL
+    : "http://localhost:5000/mern-ecommerce";
+const CLIENT_URL =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_CLIENT_URL
+    : "http://localhost:3000";
 
 export const loginForm = (email, password, cart) => async (dispatch) => {
   try {
@@ -100,13 +104,15 @@ export const registerForm =
   };
 
 export const loginOAuth = (provider, code) => async (dispatch) => {
-  const SERVER_URL =
-    process.env.REACT_APP_SERVER_API_URL ||
-    "http://localhost:5000/mern-ecommerce";
+
   const CLIENT_URL = window.location.origin;
-  
+
   // Extract just the origin (protocol + host) from SERVER_URL for postMessage validation
   const SERVER_ORIGIN = new URL(SERVER_URL).origin;
+
+  console.log("CLIENT_URL:", window.location.origin);
+  console.log("SERVER_URL:", SERVER_URL);
+  console.log("SERVER_ORIGIN:", SERVER_ORIGIN);
 
   return new Promise((resolve, reject) => {
     try {
@@ -124,6 +130,8 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
         "message",
         function (event) {
           // Check against SERVER_ORIGIN (http://localhost:5000) not SERVER_URL
+            console.log("Received message from origin:", event.origin);
+            console.log("Expected origin:", SERVER_ORIGIN);
           if (event.origin !== SERVER_ORIGIN) {
             console.warn(
               "Received message from unexpected origin:",
@@ -234,7 +242,7 @@ export const logoutUser = () => async (dispatch) => {
   const SERVER_URL =
     process.env.REACT_APP_SERVER_API_URL ||
     "http://localhost:5000/mern-ecommerce";
-    
+
   try {
     dispatch({
       type: USER_LOGOUT,
