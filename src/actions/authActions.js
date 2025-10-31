@@ -104,10 +104,8 @@ export const registerForm =
   };
 
 export const loginOAuth = (provider, code) => async (dispatch) => {
-
   const CLIENT_URL = window.location.origin;
 
-  // Extract just the origin (protocol + host) from SERVER_URL for postMessage validation
   const SERVER_ORIGIN = new URL(SERVER_URL).origin;
 
   console.log("CLIENT_URL:", window.location.origin);
@@ -129,9 +127,8 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
       window.addEventListener(
         "message",
         function (event) {
-          // Check against SERVER_ORIGIN (http://localhost:5000) not SERVER_URL
-            console.log("Received message from origin:", event.origin);
-            console.log("Expected origin:", SERVER_ORIGIN);
+          console.log("Received message from origin:", event.origin);
+          console.log("Expected origin:", SERVER_ORIGIN);
           if (event.origin !== SERVER_ORIGIN) {
             console.warn(
               "Received message from unexpected origin:",
