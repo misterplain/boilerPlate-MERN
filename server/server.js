@@ -52,7 +52,8 @@ const whitelist = [
   "http://localhost:5000",
   "https://accounts.google.com",
   "https://e-commerce-mern-eryu.onrender.com",
-  "https://e-commerce-mern-api.onrender.com"
+  "https://e-commerce-mern-api.onrender.com",
+  "https://server-muddy-river-1999.fly.dev"
 ];
 app.use(
   cors({

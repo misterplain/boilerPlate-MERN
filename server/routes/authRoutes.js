@@ -4,7 +4,8 @@ const { signin, signup, refresh } = require("../controllers/authController.js");
 const generateUserTokens = require("../middleware/generateToken.js");
 const SERVER_URL =
   process.env.NODE_ENV === "production"
-    ? "https://e-commerce-mern-api.onrender.com"
+    ? // ? "https://e-commerce-mern-api.onrender.com"
+      "https://server-muddy-river-1999.fly.dev"
     : "http://localhost:5000";
 const CLIENT_URL =
   process.env.NODE_ENV === "production"
@@ -16,8 +17,7 @@ router.post("/signin", signin);
 router.post("/signup", signup);
 
 //refresh
-router.post("/refresh", refresh)
-
+router.post("/refresh", refresh);
 
 //social login routes
 router.get("/login/success", (req, res) => {
@@ -38,7 +38,6 @@ router.get("/login/failed", (req, res) => {
 
 router.get("/logout", (req, res) => {
   req.logout(function (err) {
-
     if (err) {
       return next(err);
     }
@@ -48,11 +47,11 @@ router.get("/logout", (req, res) => {
 
 router.get(
   "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
+  passport.authenticate("google", { scope: ["profile", "email"] }),
 );
 router.get(
   "/github",
-  passport.authenticate("github", { scope: ["profile", "user:email"] })
+  passport.authenticate("github", { scope: ["profile", "user:email"] }),
 );
 //leaving Facebook login for later as it requires a business account/privacy policy URL in order to access the users email address
 // router.get(
@@ -114,8 +113,6 @@ router.get("/github/callback", function (req, res, next) {
   })(req, res, next);
 });
 
-
-
 //leaving Facebook login for later as it requires a business account/privacy policy URL in order to access the users email address
 // router.get("/facebook/callback", function (req, res, next) {
 //   passport.authenticate("facebook", function (err, user, info) {
@@ -143,6 +140,5 @@ router.get("/github/callback", function (req, res, next) {
 //   `);
 //   })(req, res, next);
 // });
-
 
 module.exports = router;
