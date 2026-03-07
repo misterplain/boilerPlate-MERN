@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for server-muddy-river-1999 on 2026-03-06T14:38:49+01:00
+# fly.toml app configuration file generated for server-muddy-river-1999 on 2026-03-07T14:20:59+01:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -9,7 +9,7 @@ primary_region = 'lhr'
 [build]
 
 [http_service]
-  internal_port = 5000
+  internal_port = 3000
   force_https = true
   auto_stop_machines = 'stop'
   auto_start_machines = true
