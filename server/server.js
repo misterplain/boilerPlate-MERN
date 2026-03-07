@@ -90,4 +90,3 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server listening on ${PORT}`);
 });
 
-app.listen(port, console.log(`server listing to port 5000 only`));
