@@ -21,7 +21,7 @@ const fetchAllProducts = () => async (dispatch) => {
       type: PRODUCT_LIST_REQUEST,
     });
 
-    const data = await axios.get("/product/get", { timeout: 3000 });
+    const data = await axios.get("/product/get", {});
 
     dispatch({
       type: PRODUCT_LIST_SUCCESS,

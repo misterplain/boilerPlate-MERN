@@ -23,9 +23,7 @@ const fetchAllCollections = () => async (dispatch) => {
       type: COLLECTIONS_LIST_REQUEST,
     });
 
-    const data = await axios.get("/collection/get", {
-      timeout: 3000,
-    });
+    const data = await axios.get("/collection/get", {});
 
     dispatch({
       type: COLLECTIONS_LIST_SUCCESS,
