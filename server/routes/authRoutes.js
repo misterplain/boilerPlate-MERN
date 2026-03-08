@@ -2,6 +2,7 @@ const router = require("express").Router();
 const passport = require("passport");
 const { signin, signup, refresh } = require("../controllers/authController.js");
 const generateUserTokens = require("../middleware/generateToken.js");
+const { NotFoundError } = require("../utils/errors");
 const SERVER_URL =
   process.env.NODE_ENV === "production"
     ? // ? "https://e-commerce-mern-api.onrender.com"
@@ -36,7 +37,7 @@ router.get("/login/failed", (req, res) => {
   });
 });
 
-router.get("/logout", (req, res) => {
+router.get("/logout", (req, res, next) => {
   req.logout(function (err) {
     if (err) {
       return next(err);
@@ -53,19 +54,14 @@ router.get(
   "/github",
   passport.authenticate("github", { scope: ["profile", "user:email"] }),
 );
-//leaving Facebook login for later as it requires a business account/privacy policy URL in order to access the users email address
-// router.get(
-//   "/facebook",
-//   passport.authenticate("facebook", { scope: ["email", "public_profile"] })
-// );
 
 router.get("/google/callback", function (req, res, next) {
   passport.authenticate("google", function (err, user, info) {
     if (err) {
-      return res.status(500).json({ message: "Error while authenticating" });
+      return next(err);
     }
     if (!user) {
-      return res.status(400).json({ message: "No user found" });
+      return next(new NotFoundError("User"));
     }
     const tokens = generateUserTokens(user);
     const { accessToken, refreshToken } = tokens;
@@ -89,10 +85,10 @@ router.get("/google/callback", function (req, res, next) {
 router.get("/github/callback", function (req, res, next) {
   passport.authenticate("github", function (err, user, info) {
     if (err) {
-      return res.status(500).json({ message: "Error while authenticating" });
+      return next(err);
     }
     if (!user) {
-      return res.status(400).json({ message: "No user found" });
+      return next(new NotFoundError("User"));
     }
     const tokens = generateUserTokens(user);
     const { accessToken, refreshToken } = tokens;
@@ -112,33 +108,5 @@ router.get("/github/callback", function (req, res, next) {
   `);
   })(req, res, next);
 });
-
-//leaving Facebook login for later as it requires a business account/privacy policy URL in order to access the users email address
-// router.get("/facebook/callback", function (req, res, next) {
-//   passport.authenticate("facebook", function (err, user, info) {
-//     if (err) {
-//       return res.status(500).json({ message: "Error while authenticating" });
-//     }
-//     if (!user) {
-//       return res.status(400).json({ message: "No user found" });
-//     }
-//     const tokens = generateUserTokens(user);
-//     const { accessToken, refreshToken } = tokens;
-
-//     res.send(`
-//     <script>
-//       window.opener.postMessage(
-//         {
-//           accessToken: "${accessToken}",
-//           refreshToken: "${refreshToken}",
-//           user: ${JSON.stringify(user)} // stringify the user object
-//         },
-//         "${CLIENT_URL}"
-//       );
-//       window.close();
-//     </script>
-//   `);
-//   })(req, res, next);
-// });
 
 module.exports = router;

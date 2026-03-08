@@ -8,6 +8,7 @@ const { default: axios } = require("axios");
 const crypto = require("crypto");
 const generateUserTokens = require("../middleware/generateToken.js");
 const { Octokit } = require("@octokit/core");
+const logger = require("../utils/logger");
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
@@ -16,8 +17,8 @@ const FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET;
 const FACEBOOK_CLIENT_ID = process.env.FACEBOOK_CLIENT_ID;
 const SERVER_URL =
   process.env.NODE_ENV === "production"
-    // ? "https://e-commerce-mern-api.onrender.com"
-    ? "https://server-muddy-river-1999.fly.dev"
+    ? // ? "https://e-commerce-mern-api.onrender.com"
+      "https://server-muddy-river-1999.fly.dev"
     : "http://localhost:5000/mern-ecommerce";
 const CLIENT_URL =
   process.env.NODE_ENV === "production"
@@ -51,8 +52,8 @@ passport.use(
       } catch (err) {
         done(err);
       }
-    }
-  )
+    },
+  ),
 );
 
 passport.use(
@@ -74,7 +75,7 @@ passport.use(
 
         const emails = response.data;
         const primaryEmail = emails.find(
-          (email) => email.primary === true && email.verified === true
+          (email) => email.primary === true && email.verified === true,
         ).email;
 
         let user = await UserModel.findOne({ email: primaryEmail });
@@ -88,37 +89,16 @@ passport.use(
         }
         done(null, user);
       } catch (error) {
-        console.error("Error occurred:", error);
+        logger.error("GitHub OAuth callback failed", {
+          error: error.message,
+          stack: error.stack,
+          username: profile?.username,
+        });
         done(error);
       }
-    }
-  )
+    },
+  ),
 );
-
-//leaving Facebook login for later as it requires a business account/privacy policy URL in order to access the users email address
-// passport.use(
-//   new FacebookStrategy(
-//     {
-//       clientID: FACEBOOK_CLIENT_ID,
-//       clientSecret: FACEBOOK_CLIENT_SECRET,
-//       callbackURL: `${SERVER_URL}/auth/facebook/callback`,
-//       profileFields: ["id", "emails", "name"],
-//     },
-//     async function (accessToken, refreshToken, profile, done) {
-//       console.log({
-//         message: "email",
-//         email: email,
-//       })
-//       console.log({
-//         message: "profile",
-//         profile: profile,
-//       })
-
-//       done()
-
-//     }
-//   )
-// );
 
 passport.serializeUser((user, done) => {
   done(null, user._id);

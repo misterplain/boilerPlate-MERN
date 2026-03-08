@@ -2,10 +2,16 @@ const Product = require("../models/productModel");
 const Collection = require("../models/collectionModel");
 const cloudinary = require("../utils/cloudinary");
 const logger = require("../utils/logger");
+const {
+  BadRequestError,
+  ConflictError,
+  ForbiddenError,
+  NotFoundError,
+} = require("../utils/errors");
 
 //new product
 //protected route - admin only
-const newProduct = async (req, res) => {
+const newProduct = async (req, res, next) => {
   const {
     collectionId,
     name,
@@ -21,20 +27,22 @@ const newProduct = async (req, res) => {
   const { isAdmin } = req;
 
   if (!collectionId || !name || !price || !images || !description || !stock) {
-    return res.status(400).json({
-      message: "Please fill in all fields and upload at least 1 photo",
-    });
+    return next(
+      new BadRequestError(
+        "Please fill in all fields and upload at least 1 photo",
+      ),
+    );
   }
 
   if (!isAdmin) {
-    return res.status(403).json({ message: "Not an admin" });
+    return next(new ForbiddenError("Not an admin"));
   }
 
   try {
     const foundProduct = await Product.findOne({ name });
 
     if (foundProduct) {
-      return res.status(400).json({ message: "Product already exists" });
+      throw new ConflictError("Product already exists");
     }
 
     //cloudinary
@@ -72,8 +80,9 @@ const newProduct = async (req, res) => {
     Collection.findById(newProduct.collectionId)
       .populate("products")
       .exec(function (err, populatedCollection) {
-        if (err)
-          return res.status(500).json({ message: "Something went wrong" });
+        if (err) {
+          return next(err);
+        }
       });
     const reply = {
       message: "Product created",
@@ -90,44 +99,39 @@ const newProduct = async (req, res) => {
 
     res.status(201).json(reply);
   } catch (error) {
-    logger.error("newProduct failed", {
-      error: error.message,
-      stack: error.stack,
-      collectionId: req.body.collectionId,
-      productName: req.body.name,
-      adminId: req.userId,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "newProduct failed" });
+    next(error);
   }
 };
 
 //delete image from mongoDB database and cloudinary
 //protected route - admin only
-const deleteImage = async (req, res) => {
+const deleteImage = async (req, res, next) => {
   const { productId } = req.params;
   const image = req.body;
   const { isAdmin } = req;
 
   if (!isAdmin) {
-    return res.status(403).json({ message: "Not an admin" });
+    return next(new ForbiddenError("Not an admin"));
   }
 
-  if (!productId)
-    return res.status(400).json({ message: "No product id provided" });
+  if (!productId) {
+    return next(new BadRequestError("No product id provided"));
+  }
 
   try {
     const productToUpdate = await Product.findById(productId);
 
-    if (!productToUpdate)
-      return res.status(400).json({ message: "No product found with that id" });
+    if (!productToUpdate) {
+      throw new NotFoundError("Product", productId);
+    }
 
     const imageToRemove = productToUpdate.images.find(
       (img) => img._id == image._id,
     );
 
-    if (!imageToRemove)
-      return res.status(400).json({ message: "No image found with that id" });
+    if (!imageToRemove) {
+      throw new NotFoundError("Image", image._id);
+    }
 
     await cloudinary.uploader.destroy(image.public_id);
 
@@ -150,20 +154,13 @@ const deleteImage = async (req, res) => {
 
     res.json(reply);
   } catch (error) {
-    logger.error("deleteImage failed", {
-      error: error.message,
-      stack: error.stack,
-      productId: req.params.productId,
-      adminId: req.userId,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "deleteImage failed" });
+    next(error);
   }
 };
 
 //get all products
 //public route
-const getAllProducts = async (req, res) => {
+const getAllProducts = async (req, res, next) => {
   try {
     const allProducts = await Product.find({});
     const reply = {
@@ -178,33 +175,30 @@ const getAllProducts = async (req, res) => {
 
     res.status(200).json(reply);
   } catch (error) {
-    logger.error("getAllProducts failed", {
-      error: error.message,
-      stack: error.stack,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "getAllProducts failed" });
+    next(error);
   }
 };
 
 //delete product
 //protected route - admin only
-const deleteProduct = async (req, res) => {
+const deleteProduct = async (req, res, next) => {
   const { productId } = req.params;
   const { isAdmin } = req;
 
   try {
     if (!isAdmin) {
-      return res.status(403).json({ message: "Not an admin" });
+      throw new ForbiddenError("Not an admin");
     }
 
-    if (!productId)
-      return res.status(400).json({ message: "No product id provided" });
+    if (!productId) {
+      throw new BadRequestError("No product id provided");
+    }
 
     const productToDelete = await Product.findById(productId);
 
-    if (!productToDelete)
-      return res.status(400).json({ message: "No product found with that id" });
+    if (!productToDelete) {
+      throw new NotFoundError("Product", productId);
+    }
 
     const deletedProduct = await Product.findByIdAndDelete(productId);
 
@@ -229,20 +223,13 @@ const deleteProduct = async (req, res) => {
 
     res.json(reply);
   } catch (error) {
-    logger.error("deleteProduct failed", {
-      error: error.message,
-      stack: error.stack,
-      productId: req.params.productId,
-      adminId: req.userId,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "deleteProduct failed" });
+    next(error);
   }
 };
 
 //update product
 //protected route - admin only
-const updateProduct = async (req, res) => {
+const updateProduct = async (req, res, next) => {
   const { productId } = req.params;
   const {
     name,
@@ -259,17 +246,19 @@ const updateProduct = async (req, res) => {
   const { isAdmin } = req;
 
   if (!isAdmin) {
-    return res.status(403).json({ message: "Not an admin" });
+    return next(new ForbiddenError("Not an admin"));
   }
 
-  if (!productId)
-    return res.status(400).json({ message: "No product id provided" });
+  if (!productId) {
+    return next(new BadRequestError("No product id provided"));
+  }
 
   try {
     const productToUpdate = await Product.findById(productId);
 
-    if (!productToUpdate)
-      return res.status(400).json({ message: "No product found with that id" });
+    if (!productToUpdate) {
+      throw new NotFoundError("Product", productId);
+    }
 
     const oldCollectionId = productToUpdate.collectionId;
 
@@ -345,22 +334,15 @@ const updateProduct = async (req, res) => {
 
     res.json(reply);
   } catch (error) {
-    logger.error("updateProduct failed", {
-      error: error.message,
-      stack: error.stack,
-      productId: req.params.productId,
-      adminId: req.userId,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "updateProduct failed" });
+    next(error);
   }
 };
 
-const getFilteredProducts = async (req, res) => {
+const getFilteredProducts = async (req, res, next) => {
   const { filterObject } = req.body;
 
   if (!filterObject) {
-    return res.status(400).json({ message: "No filter object provided" });
+    return next(new BadRequestError("No filter object provided"));
   }
 
   let query = {};
@@ -450,13 +432,7 @@ const getFilteredProducts = async (req, res) => {
 
     res.status(200).json(reply);
   } catch (error) {
-    logger.error("getFilteredProducts failed", {
-      error: error.message,
-      stack: error.stack,
-      filterObject: req.body.filterObject,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "getFilteredProducts failed" });
+    next(error);
   }
 };
 

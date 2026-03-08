@@ -3,9 +3,16 @@ const Product = require("../models/productModel");
 const User = require("../models/userModel");
 const shortid = require("shortid");
 const logger = require("../utils/logger");
+const {
+  BadRequestError,
+  ForbiddenError,
+  InsufficientStockError,
+  NotFoundError,
+  UnauthorizedError,
+} = require("../utils/errors");
 
 //get all orders
-const getAllOrders = async (req, res) => {
+const getAllOrders = async (req, res, next) => {
   try {
     const allOrders = await Order.find({});
     const reply = {
@@ -21,20 +28,18 @@ const getAllOrders = async (req, res) => {
 
     res.status(200).json(reply);
   } catch (error) {
-    logger.error("getAllOrders failed", {
-      error: error.message,
-      stack: error.stack,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "getAllOrders failed" });
+    next(error);
   }
 };
 
 //get user order
-const getUserOrder = async (req, res) => {
+const getUserOrder = async (req, res, next) => {
   const { userId } = req;
   try {
     const user = await User.findById(userId).populate("orders");
+    if (!user) {
+      throw new NotFoundError("User", userId);
+    }
     const reply = {
       message: "User orders",
       userOrders: user.orders,
@@ -48,23 +53,17 @@ const getUserOrder = async (req, res) => {
 
     res.status(200).json(reply);
   } catch (error) {
-    logger.error("getUserOrder failed", {
-      error: error.message,
-      stack: error.stack,
-      userId: req.userId,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "getUserOrder failed" });
+    next(error);
   }
 };
 
 //admin - get orders based on time period
-const getOrdersTimePeriod = async (req, res) => {
+const getOrdersTimePeriod = async (req, res, next) => {
   const { isAdmin } = req;
   const { days } = req.query;
 
   if (!isAdmin) {
-    return res.status(403).json({ message: "Not an admin" });
+    return next(new ForbiddenError("Not an admin"));
   }
 
   try {
@@ -94,22 +93,15 @@ const getOrdersTimePeriod = async (req, res) => {
 
     res.status(200).json(reply);
   } catch (error) {
-    logger.error("getOrdersTimePeriod failed", {
-      error: error.message,
-      stack: error.stack,
-      days: req.query.days,
-      adminId: req.userId,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "getOrdersTimePeriod failed" });
+    next(error);
   }
 };
 
-const searchOrders = async (req, res) => {
+const searchOrders = async (req, res, next) => {
   const { isAdmin } = req;
   const filterObject = req.body;
   if (!filterObject) {
-    return res.status(400).json({ message: "No filter object provided" });
+    return next(new BadRequestError("No filter object provided"));
   }
 
   let query = {};
@@ -171,43 +163,39 @@ const searchOrders = async (req, res) => {
 
     res.status(200).json(reply);
   } catch (error) {
-    logger.error("searchOrders failed", {
-      error: error.message,
-      stack: error.stack,
-      filterObject: req.body,
-      adminId: req.userId,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "searchOrders failed" });
+    next(error);
   }
 };
 
 //place order
 //protected
-const placeOrder = async (req, res) => {
+const placeOrder = async (req, res, next) => {
   const { userId } = req;
   const { cartItems, isGuest, totalPrice, emailAddress, isPaid } = req.body;
   const { street, city, postalCode, country } = req.body.shippingAddress;
 
   try {
     const userOrdered = await User.findById(userId);
+    if (!userOrdered) {
+      throw new NotFoundError("User", userId);
+    }
 
     //deduct stock from each item
     for (let item of cartItems) {
       const product = await Product.findById(item.product);
 
       if (!product) {
-        return res
-          .status(404)
-          .json({ message: `Product with ID ${item.product} not found` });
+        throw new NotFoundError("Product", item.product);
       }
 
       product.stock -= item.quantity;
 
       if (product.stock < 0) {
-        return res
-          .status(400)
-          .json({ message: `Product ${item.name} has insufficient stock` });
+        throw new InsufficientStockError(
+          item.name,
+          product.stock + item.quantity,
+          item.quantity,
+        );
       }
 
       await product.save();
@@ -258,41 +246,33 @@ const placeOrder = async (req, res) => {
 
     res.status(201).json(reply);
   } catch (error) {
-    logger.error("placeOrder failed", {
-      error: error.message,
-      stack: error.stack,
-      userId: req.userId,
-      totalPrice: req.body.totalPrice,
-      itemCount: req.body.cartItems?.length,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "placeOrder failed" });
+    next(error);
   }
 };
 
-const placeGuestOrder = async (req, res) => {
+const placeGuestOrder = async (req, res, next) => {
   const { cartItems, isGuest, totalPrice, emailAddress, isPaid } = req.body;
   const { street, city, postalCode, country } = req.body.shippingAddress;
 
   if (!cartItems || !isGuest || !emailAddress) {
-    return res.status(400).json({ message: "Missing required data" });
+    return next(new BadRequestError("Missing required data"));
   }
   try {
     for (let item of cartItems) {
       const product = await Product.findById(item.product);
 
       if (!product) {
-        return res
-          .status(404)
-          .json({ message: `Product with ID ${item.product} not found` });
+        throw new NotFoundError("Product", item.product);
       }
 
       product.stock -= item.quantity;
 
       if (product.stock < 0) {
-        return res
-          .status(400)
-          .json({ message: `Product ${item.name} has insufficient stock` });
+        throw new InsufficientStockError(
+          item.name,
+          product.stock + item.quantity,
+          item.quantity,
+        );
       }
 
       await product.save();
@@ -333,27 +313,19 @@ const placeGuestOrder = async (req, res) => {
 
     res.status(201).json(reply);
   } catch (error) {
-    logger.error("placeGuestOrder failed", {
-      error: error.message,
-      stack: error.stack,
-      totalPrice: req.body.totalPrice,
-      itemCount: req.body.cartItems?.length,
-      emailAddress: req.body.emailAddress,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "placeGuestOrder failed" });
+    next(error);
   }
 };
 //delete order
 //protected route - admin only
-const cancelOrder = async (req, res) => {
+const cancelOrder = async (req, res, next) => {
   const { orderId } = req.params;
   const { userId, isAdmin } = req;
 
   try {
     const order = await Order.findById(orderId);
     if (!order) {
-      return res.status(404).json({ message: "Order not found" });
+      throw new NotFoundError("Order", orderId);
     }
 
     if (isAdmin || order.userId.toString() === userId.toString()) {
@@ -362,9 +334,7 @@ const cancelOrder = async (req, res) => {
         const product = await Product.findById(item.product);
 
         if (!product) {
-          return res
-            .status(404)
-            .json({ message: `Product with ID ${item.product} not found` });
+          throw new NotFoundError("Product", item.product);
         }
 
         product.stock += item.quantity;
@@ -392,21 +362,14 @@ const cancelOrder = async (req, res) => {
 
       res.status(200).json(reply);
     } else {
-      res.status(401).json({ message: "Not authorized" });
+      throw new UnauthorizedError("Not authorized");
     }
   } catch (error) {
-    logger.error("cancelOrder failed", {
-      error: error.message,
-      stack: error.stack,
-      orderId: req.params.orderId,
-      userId: req.userId,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "cancelOrder failed" });
+    next(error);
   }
 };
 
-const editOrder = async (req, res) => {
+const editOrder = async (req, res, next) => {
   const { orderId } = req.params;
   const { isAdmin } = req;
   const { editRequest } = req.body;
@@ -414,7 +377,7 @@ const editOrder = async (req, res) => {
   try {
     const order = await Order.findById(orderId);
     if (!order) {
-      return res.status(404).json({ message: "Order not found" });
+      throw new NotFoundError("Order", orderId);
     }
 
     let update = {};
@@ -434,7 +397,7 @@ const editOrder = async (req, res) => {
         };
         break;
       default:
-        return res.status(400).json({ message: "Invalid edit type" });
+        throw new BadRequestError("Invalid edit type");
     }
 
     if (isAdmin) {
@@ -455,18 +418,10 @@ const editOrder = async (req, res) => {
 
       res.status(200).json(reply);
     } else {
-      res.status(401).json({ message: "Not authorized" });
+      throw new UnauthorizedError("Not authorized");
     }
   } catch (error) {
-    logger.error("editOrder failed", {
-      error: error.message,
-      stack: error.stack,
-      orderId: req.params.orderId,
-      editType: req.body.editRequest?.type,
-      adminId: req.userId,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "editOrder failed" });
+    next(error);
   }
 };
 

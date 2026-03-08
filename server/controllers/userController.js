@@ -2,6 +2,11 @@ const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel.js");
 const cloudinary = require("../utils/cloudinary");
 const logger = require("../utils/logger");
+const {
+  BadRequestError,
+  ConflictError,
+  NotFoundError,
+} = require("../utils/errors");
 
 const addAddress = asyncHandler(async (req, res) => {
   const { userId } = req;
@@ -9,10 +14,13 @@ const addAddress = asyncHandler(async (req, res) => {
 
   try {
     if (!userId) {
-      return res.status(400).json({ message: "No user id provided" });
+      throw new BadRequestError("No user id provided");
     }
 
     const userToPopulate = await User.findById(userId);
+    if (!userToPopulate) {
+      throw new NotFoundError("User", userId);
+    }
 
     if (isDefault) {
       userToPopulate.addresses = userToPopulate.addresses.map((address) => ({
@@ -50,13 +58,7 @@ const addAddress = asyncHandler(async (req, res) => {
 
     res.status(201).json(reply);
   } catch (error) {
-    logger.error("addAddress failed", {
-      error: error.message,
-      stack: error.stack,
-      userId: req.userId,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "addAddress failed" });
+    throw error;
   }
 });
 
@@ -69,7 +71,7 @@ const editProfile = asyncHandler(async (req, res) => {
     const userToUpdate = await User.findById(userId);
 
     if (!userToUpdate) {
-      return res.status(400).json({ message: "No user found with that id" });
+      throw new NotFoundError("User", userId);
     }
 
     if (profileData.image) {
@@ -107,13 +109,7 @@ const editProfile = asyncHandler(async (req, res) => {
 
     res.status(200).json(reply);
   } catch (error) {
-    logger.error("editProfile failed", {
-      error: error.message,
-      stack: error.stack,
-      userId: req.userId,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "editProfile failed" });
+    throw error;
   }
 });
 
@@ -123,10 +119,13 @@ const deleteAddress = asyncHandler(async (req, res) => {
   const { addressId } = req.params;
   try {
     if (!userId) {
-      return res.status(400).json({ message: "No user id provided" });
+      throw new BadRequestError("No user id provided");
     }
 
     const userToPopulate = await User.findById(userId);
+    if (!userToPopulate) {
+      throw new NotFoundError("User", userId);
+    }
     const addressToDelete = userToPopulate.addresses.find(
       (address) => address._id.toString() === addressId.toString(),
     );
@@ -146,14 +145,7 @@ const deleteAddress = asyncHandler(async (req, res) => {
 
     res.status(201).json(reply);
   } catch (error) {
-    logger.error("deleteAddress failed", {
-      error: error.message,
-      stack: error.stack,
-      userId: req.userId,
-      addressId: req.params.addressId,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "deleteAddress failed" });
+    throw error;
   }
 });
 
@@ -163,22 +155,23 @@ const updateFavorites = asyncHandler(async (req, res) => {
 
   try {
     if (!userId) {
-      return res.status(400).json({ message: "No user id provided" });
+      throw new BadRequestError("No user id provided");
     }
 
     const updatedUser = await User.findById(userId);
+    if (!updatedUser) {
+      throw new NotFoundError("User", userId);
+    }
 
     if (method === "ADD") {
       if (updatedUser.favorites.includes(productId)) {
-        return res
-          .status(400)
-          .json({ message: "Product already in favorites" });
+        throw new ConflictError("Product already in favorites");
       } else {
         updatedUser.favorites.push(productId);
       }
     } else if (method === "REMOVE") {
       if (!updatedUser.favorites.includes(productId)) {
-        return res.status(400).json({ message: "Product not in favorites" });
+        throw new BadRequestError("Product not in favorites");
       } else {
         updatedUser.favorites.pull(productId);
       }
@@ -200,15 +193,7 @@ const updateFavorites = asyncHandler(async (req, res) => {
 
     res.status(201).json(reply);
   } catch (error) {
-    logger.error("updateFavorites failed", {
-      error: error.message,
-      stack: error.stack,
-      userId: req.userId,
-      productId: req.body.productId,
-      method: req.body.method,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "updateFavorites failed" });
+    throw error;
   }
 });
 

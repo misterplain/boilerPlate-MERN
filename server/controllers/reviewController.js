@@ -4,6 +4,11 @@ const Review = require("../models/reviewModel.js");
 const Product = require("../models/productModel.js");
 const generateUserTokens = require("../middleware/generateToken.js");
 const logger = require("../utils/logger");
+const {
+  BadRequestError,
+  NotFoundError,
+  UnauthorizedError,
+} = require("../utils/errors");
 
 //get top ten reviews
 const getTopTenReviews = asyncHandler(async (req, res) => {
@@ -42,12 +47,7 @@ const getTopTenReviews = asyncHandler(async (req, res) => {
 
     res.status(200).json(reply);
   } catch (error) {
-    logger.error("getTopTenReviews failed", {
-      error: error.message,
-      stack: error.stack,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "getTopTenReviews failed" });
+    throw error;
   }
 });
 
@@ -60,12 +60,12 @@ const createReview = asyncHandler(async (req, res) => {
   const { reviewTitle, rating, comment } = req.body;
   try {
     if (!productId) {
-      return res.status(400).json({ message: "No product id provided" });
+      throw new BadRequestError("No product id provided");
     }
 
     const product = await Product.findById(productId);
     if (!product) {
-      return res.status(404).json({ message: "Product not found" });
+      throw new NotFoundError("Product", productId);
     }
 
     const productName = product.name;
@@ -97,14 +97,7 @@ const createReview = asyncHandler(async (req, res) => {
 
     res.status(201).json(reply);
   } catch (error) {
-    logger.error("createReview failed", {
-      error: error.message,
-      stack: error.stack,
-      productId: req.params.productId,
-      userId: req.userId,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "createReview failed" });
+    throw error;
   }
 });
 
@@ -127,13 +120,7 @@ const getUnmoderatedReviews = asyncHandler(async (req, res) => {
 
     res.status(200).json(reply);
   } catch (error) {
-    logger.error("getUnmoderatedReviews failed", {
-      error: error.message,
-      stack: error.stack,
-      adminId: req.userId,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "getUnmoderatedReviews failed" });
+    throw error;
   }
 });
 
@@ -143,12 +130,12 @@ const moderateReview = asyncHandler(async (req, res) => {
 
   try {
     if (!reviewId) {
-      return res.status(400).json({ message: "No review id provided" });
+      throw new BadRequestError("No review id provided");
     }
 
     const reviewToModerate = await Review.findById(reviewId);
     if (!reviewToModerate) {
-      return res.status(404).json({ message: "Review not found" });
+      throw new NotFoundError("Review", reviewId);
     }
 
     reviewToModerate.awaitingModeration = awaitingModeration;
@@ -186,14 +173,7 @@ const moderateReview = asyncHandler(async (req, res) => {
 
     res.status(200).json(reply);
   } catch (error) {
-    logger.error("moderateReview failed", {
-      error: error.message,
-      stack: error.stack,
-      reviewId: req.params.reviewId,
-      adminId: req.userId,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "moderateReview failed" });
+    throw error;
   }
 });
 
@@ -203,7 +183,7 @@ const getProductReviews = asyncHandler(async (req, res) => {
 
   try {
     if (!productId) {
-      return res.status(400).json({ message: "No product id provided" });
+      throw new BadRequestError("No product id provided");
     }
 
     let userReviews = [];
@@ -233,14 +213,7 @@ const getProductReviews = asyncHandler(async (req, res) => {
 
     res.status(200).json(reply);
   } catch (error) {
-    logger.error("getProductReviews failed", {
-      error: error.message,
-      stack: error.stack,
-      productId: req.params.productId,
-      userId: req.userId,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "getProductReviews failed" });
+    throw error;
   }
 });
 
@@ -251,14 +224,15 @@ const editReview = asyncHandler(async (req, res) => {
 
   try {
     if (!reviewId) {
-      return res.status(400).json({ message: "No review id provided" });
+      throw new BadRequestError("No review id provided");
     }
 
     const reviewToEdit = await Review.findById(reviewId);
+    if (!reviewToEdit) {
+      throw new NotFoundError("Review", reviewId);
+    }
     if (reviewToEdit.userId.toString() !== userId) {
-      return res
-        .status(401)
-        .json({ message: "You are not authorized to edit this review" });
+      throw new UnauthorizedError("You are not authorized to edit this review");
     }
 
     if (reviewToEdit.approvedByAdmin && !reviewToEdit.awaitingModeration) {
@@ -300,14 +274,7 @@ const editReview = asyncHandler(async (req, res) => {
 
     res.status(200).json(reply);
   } catch (error) {
-    logger.error("editReview failed", {
-      error: error.message,
-      stack: error.stack,
-      reviewId: req.params.reviewId,
-      userId: req.userId,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "editReview failed" });
+    throw error;
   }
 });
 
@@ -317,14 +284,17 @@ const deleteReview = asyncHandler(async (req, res) => {
   const { isAdmin } = req;
   try {
     if (!reviewId) {
-      return res.status(400).json({ message: "No review id provided" });
+      throw new BadRequestError("No review id provided");
     }
 
     const reviewToDelete = await Review.findById(reviewId);
+    if (!reviewToDelete) {
+      throw new NotFoundError("Review", reviewId);
+    }
     if (reviewToDelete.userId.toString() !== userId && !isAdmin) {
-      return res
-        .status(401)
-        .json({ message: "You are not authorized to delete this review" });
+      throw new UnauthorizedError(
+        "You are not authorized to delete this review",
+      );
     }
 
     const updatedReview = await Review.findByIdAndUpdate(
@@ -361,14 +331,7 @@ const deleteReview = asyncHandler(async (req, res) => {
 
     res.status(200).json(reply);
   } catch (error) {
-    logger.error("deleteReview failed", {
-      error: error.message,
-      stack: error.stack,
-      reviewId: req.params.reviewId,
-      userId: req.userId,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "deleteReview failed" });
+    throw error;
   }
 });
 

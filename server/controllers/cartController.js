@@ -1,11 +1,15 @@
 const User = require("../models/userModel");
 const logger = require("../utils/logger");
+const { NotFoundError } = require("../utils/errors");
 
-const getCartItems = async (req, res) => {
+const getCartItems = async (req, res, next) => {
   const { userId } = req;
 
   try {
     const user = await User.findById(userId);
+    if (!user) {
+      throw new NotFoundError("User", userId);
+    }
     const reply = {
       message: "All cart items",
       cart: user.cart,
@@ -18,23 +22,20 @@ const getCartItems = async (req, res) => {
 
     res.status(200).json(reply);
   } catch (error) {
-    logger.error("getCartItems failed", {
-      error: error.message,
-      stack: error.stack,
-      email: req.body.email,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "getCartItems failed" });
+    next(error);
   }
 };
 
-const addCartItem = async (req, res) => {
+const addCartItem = async (req, res, next) => {
   const { userId } = req;
   const { productId } = req.params;
   const { quantity, price, name } = req.body;
 
   try {
     const user = await User.findById(userId);
+    if (!user) {
+      throw new NotFoundError("User", userId);
+    }
     const itemIndex = user.cart.findIndex(
       (item) => item.product.toString() === productId.toString(),
     );
@@ -78,23 +79,20 @@ const addCartItem = async (req, res) => {
       res.status(200).json({ message: "Item added to cart", cart: user.cart });
     }
   } catch (error) {
-    logger.error("addCartItem failed", {
-      error: error.message,
-      stack: error.stack,
-      email: req.body.email,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "addCartItem failed" });
+    next(error);
   }
 };
 
-const deleteCartItem = async (req, res) => {
+const deleteCartItem = async (req, res, next) => {
   const { userId } = req;
   const { quantity, price, name } = req.body;
   const { productId } = req.params;
 
   try {
     const user = await User.findById(userId);
+    if (!user) {
+      throw new NotFoundError("User", userId);
+    }
     const itemIndex = user.cart.findIndex(
       (item) => item.product.toString() === productId.toString(),
     );
@@ -129,17 +127,11 @@ const deleteCartItem = async (req, res) => {
       });
     }
   } catch (error) {
-    logger.error("deleteCartItem failed", {
-      error: error.message,
-      stack: error.stack,
-      email: req.body.email,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "deleteCartItem failed" });
+    next(error);
   }
 };
 
-const updateCart = async (req, res) => {
+const updateCart = async (req, res, next) => {
   const { userId } = req;
   const { cartItems } = req.body;
 
@@ -147,7 +139,7 @@ const updateCart = async (req, res) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      throw new NotFoundError("User", userId);
     }
 
     user.cart = cartItems;
@@ -161,13 +153,7 @@ const updateCart = async (req, res) => {
 
     res.status(200).json(updatedUser);
   } catch (error) {
-    logger.error("updateCart failed", {
-      error: error.message,
-      stack: error.stack,
-      email: req.body.email,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "updateCart failed" });
+    next(error);
   }
 };
 

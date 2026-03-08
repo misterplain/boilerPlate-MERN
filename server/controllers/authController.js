@@ -2,20 +2,28 @@ const UserModel = require("../models/userModel.js");
 const generateUserTokens = require("../middleware/generateToken.js");
 const jwt = require("jsonwebtoken");
 const logger = require("../utils/logger");
+const {
+  BadRequestError,
+  ConflictError,
+  NotFoundError,
+  UnauthorizedError,
+} = require("../utils/errors");
 
-const signin = async (req, res) => {
+const signin = async (req, res, next) => {
   const { email, password, cart } = req.body;
 
   try {
     const foundUser = await UserModel.findOne({ email });
 
-    if (!foundUser)
-      return res.status(404).json({ message: "User doesn't exist" });
+    if (!foundUser) {
+      throw new NotFoundError("User");
+    }
 
     const isPasswordCorrect = await foundUser.isPasswordMatch(password);
 
-    if (!isPasswordCorrect)
-      return res.status(401).json({ message: "Invalid credentials" });
+    if (!isPasswordCorrect) {
+      throw new UnauthorizedError("Invalid credentials");
+    }
 
     if (cart && cart.length > 0) {
       foundUser.cart = cart;
@@ -35,32 +43,27 @@ const signin = async (req, res) => {
 
     res.status(200).json({ foundUser, accessToken, refreshToken });
   } catch (error) {
-    logger.error("Signin failed", {
-      error: error.message,
-      stack: error.stack,
-      email: req.body.email,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "Signin failed" });
+    next(error);
   }
 };
 
-const signup = async (req, res) => {
+const signup = async (req, res, next) => {
   const { email, password, confirmPassword, username, cart } = req.body;
 
   if (!username || !password || !email) {
-    return res.status(400).json({ message: "Please fill in all fields" });
+    return next(new BadRequestError("Please fill in all fields"));
   }
 
   if (password !== confirmPassword) {
-    return res.status(400).json({ message: "Passwords do not match" });
+    return next(new BadRequestError("Passwords do not match"));
   }
 
   try {
     const foundUser = await UserModel.findOne({ email });
 
-    if (foundUser)
-      return res.status(400).json({ message: "User already exists" });
+    if (foundUser) {
+      throw new ConflictError("User already exists");
+    }
 
     const newUser = await UserModel.create({
       email,
@@ -83,63 +86,44 @@ const signup = async (req, res) => {
 
     res.status(201).json({ newUser, accessToken, refreshToken });
   } catch (error) {
-    logger.error("Signup failed", {
-      error: error.message,
-      stack: error.stack,
-      email: req.body.email,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "Signup failed" });
+    next(error);
   }
 };
 
-const refresh = async (req, res) => {
+const refresh = async (req, res, next) => {
   const { refreshToken } = req.body;
 
   if (!refreshToken) {
-    return res.status(400).send({ error: "Refresh token required" });
+    return next(new BadRequestError("Refresh token required"));
   }
 
   try {
-    jwt.verify(
-      refreshToken,
-      process.env.REFRESH_TOKEN_SECRET,
-      async (err, decoded) => {
-        if (err) {
-          return res.status(403).send({ error: "Invalid refresh token" });
-        }
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
-        const foundUser = await UserModel.findById(decoded.id);
-        if (!foundUser) {
-          return res.status(403).send({ error: "User not found" });
-        }
+    const foundUser = await UserModel.findById(decoded.id);
+    if (!foundUser) {
+      throw new NotFoundError("User", decoded.id);
+    }
 
-        const { accessToken, refreshToken } = generateUserTokens(foundUser);
+    const { accessToken, refreshToken: newRefreshToken } =
+      generateUserTokens(foundUser);
 
-        foundUser.refreshToken = refreshToken;
-        await foundUser.save();
+    foundUser.refreshToken = newRefreshToken;
+    await foundUser.save();
 
-        logger.info("Token refreshed", {
-          userId: foundUser._id,
-          email: foundUser.email,
-          ip: req.ip,
-        });
-
-        return res.status(200).send({
-          foundUser,
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-        });
-      },
-    );
-  } catch (error) {
-    logger.error("Refresh token failed", {
-      error: error.message,
-      stack: error.stack,
-      email: req.body.email,
+    logger.info("Token refreshed", {
+      userId: foundUser._id,
+      email: foundUser.email,
       ip: req.ip,
     });
-    res.status(500).json({ message: "Refresh token failed" });
+
+    return res.status(200).send({
+      foundUser,
+      accessToken,
+      refreshToken: newRefreshToken,
+    });
+  } catch (error) {
+    next(error);
   }
 };
 

@@ -2,10 +2,16 @@ const Collection = require("../models/collectionModel");
 const { createClient } = require("pexels");
 const cloudinary = require("../utils/cloudinary");
 const logger = require("../utils/logger");
+const {
+  BadRequestError,
+  ConflictError,
+  ForbiddenError,
+  NotFoundError,
+} = require("../utils/errors");
 
 //get all collections
 //public
-const getAllCollections = async (req, res) => {
+const getAllCollections = async (req, res, next) => {
   try {
     const allCollections = await Collection.find({});
     const reply = {
@@ -20,17 +26,11 @@ const getAllCollections = async (req, res) => {
 
     res.status(200).json(reply);
   } catch (error) {
-    logger.error("getAllCollections failed", {
-      error: error.message,
-      stack: error.stack,
-      email: req.body.email,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "getAllCollections failed" });
+    next(error);
   }
 };
 
-const getCollection = async (req, res) => {
+const getCollection = async (req, res, next) => {
   const { collectionId } = req.params;
 
   try {
@@ -41,8 +41,9 @@ const getCollection = async (req, res) => {
       },
     });
 
-    if (!foundCollection)
-      return res.status(400).json({ message: "Collection not found" });
+    if (!foundCollection) {
+      throw new NotFoundError("Collection", collectionId);
+    }
     const reply = {
       message: "Collection found",
       foundCollection,
@@ -56,20 +57,14 @@ const getCollection = async (req, res) => {
 
     res.status(200).json(reply);
   } catch (error) {
-    logger.error("getCollection failed", {
-      error: error.message,
-      stack: error.stack,
-      email: req.body.email,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "getCollection failed" });
+    next(error);
   }
 };
-const getPexel = async (req, res) => {
+const getPexel = async (req, res, next) => {
   const { name } = req.query;
 
   if (!name) {
-    return res.status(400).json({ message: "No name provided" });
+    return next(new BadRequestError("No name provided"));
   }
   try {
     const client = createClient(process.env.PEXELS_API_KEY);
@@ -79,7 +74,7 @@ const getPexel = async (req, res) => {
       .search({ query, per_page: 1, orientation: "landscape", size: "medium" })
       .then((photos) => {
         if (photos.photos.length === 0) {
-          return res.status(400).json({ message: "No results found" });
+          return res.status(404).json({ message: "No results found" });
         }
         const photoUrl = photos?.photos[0]?.src?.landscape;
         const photoId = photos?.photos[0]?.id;
@@ -91,41 +86,30 @@ const getPexel = async (req, res) => {
         res.status(200).json({ photoUrl, photoId });
       })
       .catch((error) => {
-        logger.error("pexelPhoto failed", {
-          error: error.message,
-          stack: error.stack,
-          email: req.body.email,
-          ip: req.ip,
-        });
-        res.status(400).json({ message: "pexelPhoto failed" });
+        next(error);
       });
   } catch (error) {
-    logger.error("getPexel failed", {
-      error: error.message,
-      stack: error.stack,
-      email: req.body.email,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "getPexel failed" });
+    next(error);
   }
 };
 
 //new collection
 //auth account only
-const newCollection = async (req, res) => {
+const newCollection = async (req, res, next) => {
   const { collectionData } = req.body;
   const { isAdmin } = req;
 
   if (!isAdmin) {
-    return res.status(403).json({ message: "Not an admin" });
+    return next(new ForbiddenError("Not an admin"));
   }
 
   try {
     const name = collectionData.name;
     const foundCollection = await Collection.findOne({ name });
 
-    if (foundCollection)
-      return res.status(400).json({ message: "Collection already exists" });
+    if (foundCollection) {
+      throw new ConflictError("Collection already exists");
+    }
 
     //cloudinary
     const imageUploadResult = await cloudinary.uploader.upload(
@@ -157,39 +141,33 @@ const newCollection = async (req, res) => {
 
     res.status(201).json(reply);
   } catch (error) {
-    logger.error("newCollection failed", {
-      error: error.message,
-      stack: error.stack,
-      email: req.body.email,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "newCollection failed" });
+    next(error);
   }
 };
 
 //delete collection
 //auth account only
-const deleteCollection = async (req, res) => {
+const deleteCollection = async (req, res, next) => {
   const { collectionId } = req.params;
   const { isAdmin } = req;
 
   if (!isAdmin) {
-    return res.status(403).json({ message: "Not an admin" });
+    return next(new ForbiddenError("Not an admin"));
   }
 
-  if (!collectionId)
-    return res.status(400).json({ message: "No collection id provided" });
+  if (!collectionId) {
+    return next(new BadRequestError("No collection id provided"));
+  }
 
   try {
     const collectionToDelete = await Collection.findById(collectionId);
-    if (!collectionToDelete)
-      return res
-        .status(400)
-        .json({ message: "No collection found with that id" });
+    if (!collectionToDelete) {
+      throw new NotFoundError("Collection", collectionId);
+    }
     if (collectionToDelete.products && collectionToDelete.products.length > 0) {
-      return res.status(400).json({
-        message: "Collection contains products. Please delete products first.",
-      });
+      throw new ConflictError(
+        "Collection contains products. Please delete products first.",
+      );
     } else {
       await collectionToDelete.remove();
 
@@ -206,34 +184,28 @@ const deleteCollection = async (req, res) => {
       res.status(200).json(reply);
     }
   } catch (error) {
-    logger.error("deleteCollection failed", {
-      error: error.message,
-      stack: error.stack,
-      email: req.body.email,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "deleteCollection failed" });
+    next(error);
   }
 };
 
-const updateCollection = async (req, res) => {
+const updateCollection = async (req, res, next) => {
   const { collectionId } = req.params;
   const { collectionData } = req.body;
   const { isAdmin } = req;
 
   if (!isAdmin) {
-    return res.status(403).json({ message: "Not an admin" });
+    return next(new ForbiddenError("Not an admin"));
   }
 
-  if (!collectionId)
-    return res.status(400).json({ message: "No collection id provided" });
+  if (!collectionId) {
+    return next(new BadRequestError("No collection id provided"));
+  }
 
   try {
     const collectionToUpdate = await Collection.findById(collectionId);
-    if (!collectionToUpdate)
-      return res
-        .status(400)
-        .json({ message: "No collection found with that id" });
+    if (!collectionToUpdate) {
+      throw new NotFoundError("Collection", collectionId);
+    }
 
     collectionToUpdate.name = collectionData.name;
 
@@ -266,13 +238,7 @@ const updateCollection = async (req, res) => {
 
     res.status(200).json(reply);
   } catch (error) {
-    logger.error("updateCollection failed", {
-      error: error.message,
-      stack: error.stack,
-      email: req.body.email,
-      ip: req.ip,
-    });
-    res.status(500).json({ message: "updateCollection failed" });
+    next(error);
   }
 };
 
