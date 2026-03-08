@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const logger = require("../utils/logger");
 
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -14,14 +15,24 @@ const verifyToken = (req, res, next) => {
       req.username = userDecoded.username;
       req.userAvatar = userDecoded.userAvatar;
     } catch (error) {
-      console.log(error);
+      logger.error("Token failed", {
+        error: error.message,
+        stack: error.stack,
+        ip: req.ip,
+      });
 
-      if (error.message && error.message.includes("jwt malformed") || error.message.includes("jwt expired")) {
+      if (
+        (error.message && error.message.includes("jwt malformed")) ||
+        error.message.includes("jwt expired")
+      ) {
         return res.status(400).send({
-          message: "Your session has expired or is invalid. Please refresh the page.",
+          message:
+            "Your session has expired or is invalid. Please refresh the page.",
         });
       } else {
-        return res.status(500).send({ message: "Failed to authenticate token." });
+        return res
+          .status(500)
+          .send({ message: "Failed to authenticate token." });
       }
     }
   } else {

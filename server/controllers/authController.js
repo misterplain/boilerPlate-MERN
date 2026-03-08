@@ -1,6 +1,7 @@
 const UserModel = require("../models/userModel.js");
 const generateUserTokens = require("../middleware/generateToken.js");
 const jwt = require("jsonwebtoken");
+const logger = require("../utils/logger");
 
 const signin = async (req, res) => {
   const { email, password, cart } = req.body;
@@ -26,10 +27,21 @@ const signin = async (req, res) => {
     foundUser.refreshToken = refreshToken;
     await foundUser.save();
 
+    logger.info("User signed in", {
+      userId: foundUser._id,
+      email: foundUser.email,
+      ip: req.ip,
+    });
+
     res.status(200).json({ foundUser, accessToken, refreshToken });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("Signin failed", {
+      error: error.message,
+      stack: error.stack,
+      email: req.body.email,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "Signin failed" });
   }
 };
 
@@ -62,11 +74,22 @@ const signup = async (req, res) => {
     newUser.refreshToken = refreshToken;
     await newUser.save();
 
+    logger.info("User signed up", {
+      userId: newUser._id,
+      email: newUser.email,
+      username: newUser.username,
+      ip: req.ip,
+    });
+
     res.status(201).json({ newUser, accessToken, refreshToken });
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
-
-    console.log(error);
+    logger.error("Signup failed", {
+      error: error.message,
+      stack: error.stack,
+      email: req.body.email,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "Signup failed" });
   }
 };
 
@@ -96,15 +119,28 @@ const refresh = async (req, res) => {
         foundUser.refreshToken = refreshToken;
         await foundUser.save();
 
-        return res
-          .status(200)
-          .send({ foundUser, accessToken: accessToken, refreshToken: refreshToken });
-      }
+        logger.info("Token refreshed", {
+          userId: foundUser._id,
+          email: foundUser.email,
+          ip: req.ip,
+        });
+
+        return res.status(200).send({
+          foundUser,
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+        });
+      },
     );
   } catch (error) {
-    console.log(error)
+    logger.error("Refresh token failed", {
+      error: error.message,
+      stack: error.stack,
+      email: req.body.email,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "Refresh token failed" });
   }
 };
-
 
 module.exports = { signin, signup, refresh };

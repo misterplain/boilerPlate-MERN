@@ -3,6 +3,7 @@ const asyncHandler = require("express-async-handler");
 const Review = require("../models/reviewModel.js");
 const Product = require("../models/productModel.js");
 const generateUserTokens = require("../middleware/generateToken.js");
+const logger = require("../utils/logger");
 
 //get top ten reviews
 const getTopTenReviews = asyncHandler(async (req, res) => {
@@ -20,10 +21,12 @@ const getTopTenReviews = asyncHandler(async (req, res) => {
     const products = await Product.find({ _id: { $in: productIds } });
 
     const reviewsWithProducts = topTenReviews.map((review) => {
-      const product = products.find((product) => product._id.equals(review.productId));
+      const product = products.find((product) =>
+        product._id.equals(review.productId),
+      );
       return {
         ...review.toObject(),
-        productInfo: product || {}, 
+        productInfo: product || {},
       };
     });
 
@@ -32,10 +35,19 @@ const getTopTenReviews = asyncHandler(async (req, res) => {
       topTenReviews: reviewsWithProducts,
     };
 
+    logger.info("Top ten reviews received", {
+      count: reviewsWithProducts.length,
+      ip: req.ip,
+    });
+
     res.status(200).json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("getTopTenReviews failed", {
+      error: error.message,
+      stack: error.stack,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "getTopTenReviews failed" });
   }
 });
 
@@ -76,10 +88,23 @@ const createReview = asyncHandler(async (req, res) => {
       newReview,
     };
 
+    logger.info("Review created", {
+      reviewId: newReview._id,
+      productId: newReview.productId,
+      userId: newReview.userId,
+      rating: newReview.rating,
+    });
+
     res.status(201).json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("createReview failed", {
+      error: error.message,
+      stack: error.stack,
+      productId: req.params.productId,
+      userId: req.userId,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "createReview failed" });
   }
 });
 
@@ -93,10 +118,22 @@ const getUnmoderatedReviews = asyncHandler(async (req, res) => {
       message: "Unmoderated reviews",
       unmoderatedReviews,
     };
+
+    logger.info("Unmoderated reviews received", {
+      count: unmoderatedReviews.length,
+      adminId: req.userId,
+      ip: req.ip,
+    });
+
     res.status(200).json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("getUnmoderatedReviews failed", {
+      error: error.message,
+      stack: error.stack,
+      adminId: req.userId,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "getUnmoderatedReviews failed" });
   }
 });
 
@@ -125,7 +162,7 @@ const moderateReview = asyncHandler(async (req, res) => {
 
     if (approvedByAdmin && !awaitingModeration) {
       const productToUpdate = await Product.findById(
-        reviewToModerate.productId
+        reviewToModerate.productId,
       );
       productToUpdate.reviews.push(reviewId);
 
@@ -140,10 +177,23 @@ const moderateReview = asyncHandler(async (req, res) => {
       await productToUpdate.save();
     }
 
+    logger.info("Review moderated", {
+      reviewId: reviewToModerate._id,
+      approved: approvedByAdmin,
+      productId: reviewToModerate.productId,
+      adminId: req.userId,
+    });
+
     res.status(200).json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("moderateReview failed", {
+      error: error.message,
+      stack: error.stack,
+      reviewId: req.params.reviewId,
+      adminId: req.userId,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "moderateReview failed" });
   }
 });
 
@@ -165,9 +215,8 @@ const getProductReviews = asyncHandler(async (req, res) => {
       });
     }
 
-    const productToPopulate = await Product.findById(productId).populate(
-      "reviews"
-    );
+    const productToPopulate =
+      await Product.findById(productId).populate("reviews");
 
     const reply = {
       message: "Product reviews",
@@ -175,10 +224,23 @@ const getProductReviews = asyncHandler(async (req, res) => {
       productReviews: productToPopulate.reviews,
     };
 
+    logger.info("Product reviews received", {
+      productId,
+      userId: userId || null,
+      reviewCount: productToPopulate.reviews.length,
+      ip: req.ip,
+    });
+
     res.status(200).json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("getProductReviews failed", {
+      error: error.message,
+      stack: error.stack,
+      productId: req.params.productId,
+      userId: req.userId,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "getProductReviews failed" });
   }
 });
 
@@ -229,10 +291,23 @@ const editReview = asyncHandler(async (req, res) => {
       reviewToEdit,
     };
 
+    logger.info("Review edited", {
+      reviewId: reviewToEdit._id,
+      productId: reviewToEdit.productId,
+      userId: reviewToEdit.userId,
+      rating: reviewToEdit.rating,
+    });
+
     res.status(200).json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("editReview failed", {
+      error: error.message,
+      stack: error.stack,
+      reviewId: req.params.reviewId,
+      userId: req.userId,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "editReview failed" });
   }
 });
 
@@ -255,7 +330,7 @@ const deleteReview = asyncHandler(async (req, res) => {
     const updatedReview = await Review.findByIdAndUpdate(
       reviewId,
       { isDeleted: true },
-      { new: true }
+      { new: true },
     );
 
     //pull reviewId from product reviews array
@@ -277,10 +352,23 @@ const deleteReview = asyncHandler(async (req, res) => {
       updatedReview,
     };
 
+    logger.info("Review deleted", {
+      reviewId: updatedReview._id,
+      productId: updatedReview.productId,
+      userId: updatedReview.userId,
+      deletedBy: req.isAdmin ? "admin" : "user",
+    });
+
     res.status(200).json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("deleteReview failed", {
+      error: error.message,
+      stack: error.stack,
+      reviewId: req.params.reviewId,
+      userId: req.userId,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "deleteReview failed" });
   }
 });
 

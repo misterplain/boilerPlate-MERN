@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const logger = require("../utils/logger");
 
 const getCartItems = async (req, res) => {
   const { userId } = req;
@@ -9,9 +10,21 @@ const getCartItems = async (req, res) => {
       message: "All cart items",
       cart: user.cart,
     };
+
+    logger.info("Cart items received", {
+      userId: user._id,
+      itemCount: user.cart.length,
+    });
+
     res.status(200).json(reply);
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("getCartItems failed", {
+      error: error.message,
+      stack: error.stack,
+      email: req.body.email,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "getCartItems failed" });
   }
 };
 
@@ -23,7 +36,7 @@ const addCartItem = async (req, res) => {
   try {
     const user = await User.findById(userId);
     const itemIndex = user.cart.findIndex(
-      (item) => item.product.toString() === productId.toString()
+      (item) => item.product.toString() === productId.toString(),
     );
 
     if (itemIndex > -1) {
@@ -35,6 +48,13 @@ const addCartItem = async (req, res) => {
       };
 
       await user.save();
+
+      logger.info("Cart item quantity increased", {
+        userId: user._id,
+        productId: productId,
+        newQuantity: user.cart[itemIndex].quantity,
+      });
+
       res.status(200).json({
         message: `Item already in cart, quantity increased by ${quantity}`,
         cart: user.cart,
@@ -48,10 +68,23 @@ const addCartItem = async (req, res) => {
       };
       user.cart.push(item);
       await user.save();
+
+      logger.info("Item added to cart", {
+        userId: user._id,
+        productId: productId,
+        quantity: quantity,
+      });
+
       res.status(200).json({ message: "Item added to cart", cart: user.cart });
     }
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("addCartItem failed", {
+      error: error.message,
+      stack: error.stack,
+      email: req.body.email,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "addCartItem failed" });
   }
 };
 
@@ -63,7 +96,7 @@ const deleteCartItem = async (req, res) => {
   try {
     const user = await User.findById(userId);
     const itemIndex = user.cart.findIndex(
-      (item) => item.product.toString() === productId.toString()
+      (item) => item.product.toString() === productId.toString(),
     );
     if (itemIndex > -1) {
       user.cart[itemIndex] = {
@@ -77,6 +110,14 @@ const deleteCartItem = async (req, res) => {
       }
 
       await user.save();
+
+      logger.info("Item removed from cart", {
+        userId: user._id,
+        productId: productId,
+        remainingQuantity: user.cart[itemIndex]?.quantity || 0,
+        fullyRemoved: user.cart[itemIndex]?.quantity <= 0,
+      });
+
       res.status(200).json({
         message: "Item removed from cart",
         cart: user.cart,
@@ -88,7 +129,13 @@ const deleteCartItem = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("deleteCartItem failed", {
+      error: error.message,
+      stack: error.stack,
+      email: req.body.email,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "deleteCartItem failed" });
   }
 };
 
@@ -106,10 +153,21 @@ const updateCart = async (req, res) => {
     user.cart = cartItems;
 
     const updatedUser = await user.save();
+
+    logger.info("Cart updated", {
+      userId: user._id,
+      itemCount: cartItems.length,
+    });
+
     res.status(200).json(updatedUser);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("updateCart failed", {
+      error: error.message,
+      stack: error.stack,
+      email: req.body.email,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "updateCart failed" });
   }
 };
 

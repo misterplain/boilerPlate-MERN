@@ -1,6 +1,7 @@
 const Product = require("../models/productModel");
 const Collection = require("../models/collectionModel");
 const cloudinary = require("../utils/cloudinary");
+const logger = require("../utils/logger");
 
 //new product
 //protected route - admin only
@@ -12,15 +13,17 @@ const newProduct = async (req, res) => {
     images,
     description,
     stock,
-    onSale, 
+    onSale,
     salePrice,
     isDisplayed,
     isFeatured,
   } = req.body;
   const { isAdmin } = req;
 
-  if(!collectionId || !name || !price || !images || !description || !stock ) {
-    return res.status(400).json({ message: "Please fill in all fields and upload at least 1 photo" });
+  if (!collectionId || !name || !price || !images || !description || !stock) {
+    return res.status(400).json({
+      message: "Please fill in all fields and upload at least 1 photo",
+    });
   }
 
   if (!isAdmin) {
@@ -56,12 +59,12 @@ const newProduct = async (req, res) => {
       stock,
       isDisplayed,
       isFeatured,
-      onSale, 
+      onSale,
       salePrice,
     });
 
     const collectionToPopulate = await Collection.findById(
-      newProduct.collectionId
+      newProduct.collectionId,
     );
     collectionToPopulate.products?.push(newProduct);
     await collectionToPopulate.save();
@@ -76,10 +79,26 @@ const newProduct = async (req, res) => {
       message: "Product created",
       newProduct,
     };
+
+    logger.info("Product created", {
+      productId: newProduct._id,
+      name: newProduct.name,
+      price: newProduct.price,
+      collectionId: newProduct.collectionId,
+      adminId: req.userId,
+    });
+
     res.status(201).json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("newProduct failed", {
+      error: error.message,
+      stack: error.stack,
+      collectionId: req.body.collectionId,
+      productName: req.body.name,
+      adminId: req.userId,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "newProduct failed" });
   }
 };
 
@@ -104,7 +123,7 @@ const deleteImage = async (req, res) => {
       return res.status(400).json({ message: "No product found with that id" });
 
     const imageToRemove = productToUpdate.images.find(
-      (img) => img._id == image._id
+      (img) => img._id == image._id,
     );
 
     if (!imageToRemove)
@@ -115,17 +134,30 @@ const deleteImage = async (req, res) => {
     const updatedProduct = await Product.findByIdAndUpdate(
       productId,
       { $pull: { images: { _id: image._id } } },
-      { new: true }
+      { new: true },
     );
 
     const reply = {
       message: "Image deleted",
       updatedProduct,
     };
+
+    logger.info("Image deleted", {
+      productId: updatedProduct._id,
+      imagePublicId: image.public_id,
+      adminId: req.userId,
+    });
+
     res.json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("deleteImage failed", {
+      error: error.message,
+      stack: error.stack,
+      productId: req.params.productId,
+      adminId: req.userId,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "deleteImage failed" });
   }
 };
 
@@ -138,10 +170,20 @@ const getAllProducts = async (req, res) => {
       message: "All products",
       allProducts,
     };
+
+    logger.info("All products received", {
+      count: allProducts.length,
+      ip: req.ip,
+    });
+
     res.status(200).json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Could not fetch products" });
+    logger.error("getAllProducts failed", {
+      error: error.message,
+      stack: error.stack,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "getAllProducts failed" });
   }
 };
 
@@ -167,7 +209,7 @@ const deleteProduct = async (req, res) => {
     const deletedProduct = await Product.findByIdAndDelete(productId);
 
     const collectionToUpdate = await Collection.findById(
-      deletedProduct.collectionId
+      deletedProduct.collectionId,
     );
     collectionToUpdate.products.pull(deletedProduct);
     await collectionToUpdate.save();
@@ -177,10 +219,24 @@ const deleteProduct = async (req, res) => {
       deletedProduct,
       collectionToUpdate,
     };
+
+    logger.info("Product deleted", {
+      productId: deletedProduct._id,
+      productName: deletedProduct.name,
+      collectionId: deletedProduct.collectionId,
+      adminId: req.userId,
+    });
+
     res.json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("deleteProduct failed", {
+      error: error.message,
+      stack: error.stack,
+      productId: req.params.productId,
+      adminId: req.userId,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "deleteProduct failed" });
   }
 };
 
@@ -197,7 +253,7 @@ const updateProduct = async (req, res) => {
     isFeatured,
     isDisplayed,
     collectionId,
-    onSale, 
+    onSale,
     salePrice,
   } = req.body;
   const { isAdmin } = req;
@@ -220,7 +276,7 @@ const updateProduct = async (req, res) => {
     if (oldCollectionId !== collectionId) {
       await Collection.updateOne(
         { _id: oldCollectionId },
-        { $pull: { products: productId } }
+        { $pull: { products: productId } },
       );
     }
 
@@ -233,7 +289,7 @@ const updateProduct = async (req, res) => {
       isFeatured,
       isDisplayed,
       collectionId,
-      onSale, 
+      onSale,
       salePrice,
     };
 
@@ -263,13 +319,13 @@ const updateProduct = async (req, res) => {
     const updatedProduct = await Product.findByIdAndUpdate(
       productId,
       updateObject,
-      { new: true }
+      { new: true },
     );
 
     if (oldCollectionId !== collectionId) {
       await Collection.updateOne(
         { _id: collectionId },
-        { $push: { products: productId } }
+        { $push: { products: productId } },
       );
     }
 
@@ -278,10 +334,25 @@ const updateProduct = async (req, res) => {
       updatedProduct,
       oldCollectionId,
     };
+
+    logger.info("Product updated", {
+      productId: updatedProduct._id,
+      productName: updatedProduct.name,
+      oldCollectionId,
+      newCollectionId: updatedProduct.collectionId,
+      adminId: req.userId,
+    });
+
     res.json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("updateProduct failed", {
+      error: error.message,
+      stack: error.stack,
+      productId: req.params.productId,
+      adminId: req.userId,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "updateProduct failed" });
   }
 };
 
@@ -314,7 +385,7 @@ const getFilteredProducts = async (req, res) => {
 
   if (filterObject.collections) {
     const selectedCollectionIds = Object.keys(filterObject?.collections).filter(
-      (key) => filterObject.collections[key]
+      (key) => filterObject.collections[key],
     );
     if (selectedCollectionIds.length > 0) {
       query.collectionId = { $in: selectedCollectionIds };
@@ -333,7 +404,7 @@ const getFilteredProducts = async (req, res) => {
   if (typeof filterObject.inStock !== "undefined") {
     if (filterObject.inStock) {
       query.stock = { $gt: 0 };
-    } 
+    }
   }
 
   //onsale
@@ -370,10 +441,22 @@ const getFilteredProducts = async (req, res) => {
       filteredProducts,
       maxPrice: maxPriceItem.price,
     };
+
+    logger.info("Filtered products received", {
+      count: filteredProducts.length,
+      maxPrice: maxPriceItem.price,
+      ip: req.ip,
+    });
+
     res.status(200).json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("getFilteredProducts failed", {
+      error: error.message,
+      stack: error.stack,
+      filterObject: req.body.filterObject,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "getFilteredProducts failed" });
   }
 };
 

@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel.js");
 const cloudinary = require("../utils/cloudinary");
+const logger = require("../utils/logger");
 
 const addAddress = asyncHandler(async (req, res) => {
   const { userId } = req;
@@ -40,10 +41,22 @@ const addAddress = asyncHandler(async (req, res) => {
       newAddress: newAddressWithId,
     };
 
+    logger.info("Address added", {
+      userId: updatedUser._id,
+      addressId: newAddressWithId._id,
+      city: newAddressWithId.city,
+      country: newAddressWithId.country,
+    });
+
     res.status(201).json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("addAddress failed", {
+      error: error.message,
+      stack: error.stack,
+      userId: req.userId,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "addAddress failed" });
   }
 });
 
@@ -68,7 +81,7 @@ const editProfile = asyncHandler(async (req, res) => {
           height: 300,
           gravity: "face",
           crop: "fill",
-        }
+        },
       );
 
       userToUpdate.userAvatar = {
@@ -86,10 +99,21 @@ const editProfile = asyncHandler(async (req, res) => {
       userToUpdate,
     };
 
+    logger.info("Profile updated", {
+      userId: userToUpdate._id,
+      username: userToUpdate.username,
+      avatarUpdated: !!profileData.image,
+    });
+
     res.status(200).json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("editProfile failed", {
+      error: error.message,
+      stack: error.stack,
+      userId: req.userId,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "editProfile failed" });
   }
 });
 
@@ -104,7 +128,7 @@ const deleteAddress = asyncHandler(async (req, res) => {
 
     const userToPopulate = await User.findById(userId);
     const addressToDelete = userToPopulate.addresses.find(
-      (address) => address._id.toString() === addressId.toString()
+      (address) => address._id.toString() === addressId.toString(),
     );
     userToPopulate.addresses.pull(addressId);
     await userToPopulate.save();
@@ -115,10 +139,21 @@ const deleteAddress = asyncHandler(async (req, res) => {
       addressToDelete,
     };
 
+    logger.info("Address removed", {
+      userId: userToPopulate._id,
+      addressId: addressId,
+    });
+
     res.status(201).json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("deleteAddress failed", {
+      error: error.message,
+      stack: error.stack,
+      userId: req.userId,
+      addressId: req.params.addressId,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "deleteAddress failed" });
   }
 });
 
@@ -128,7 +163,6 @@ const updateFavorites = asyncHandler(async (req, res) => {
 
   try {
     if (!userId) {
-      console.log("no user id");
       return res.status(400).json({ message: "No user id provided" });
     }
 
@@ -157,10 +191,24 @@ const updateFavorites = asyncHandler(async (req, res) => {
       updatedUser,
     };
 
+    logger.info("Favorites updated", {
+      userId: updatedUser._id,
+      productId: productId,
+      method: method,
+      favoritesCount: updatedUser.favorites.length,
+    });
+
     res.status(201).json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("updateFavorites failed", {
+      error: error.message,
+      stack: error.stack,
+      userId: req.userId,
+      productId: req.body.productId,
+      method: req.body.method,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "updateFavorites failed" });
   }
 });
 

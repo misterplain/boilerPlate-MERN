@@ -1,6 +1,7 @@
- const Collection = require("../models/collectionModel");
+const Collection = require("../models/collectionModel");
 const { createClient } = require("pexels");
 const cloudinary = require("../utils/cloudinary");
+const logger = require("../utils/logger");
 
 //get all collections
 //public
@@ -11,10 +12,21 @@ const getAllCollections = async (req, res) => {
       message: "All collections",
       allCollections,
     };
+
+    logger.info("All collections received", {
+      ip: req.ip,
+      count: allCollections.length,
+    });
+
     res.status(200).json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Could not fetch collections" });
+    logger.error("getAllCollections failed", {
+      error: error.message,
+      stack: error.stack,
+      email: req.body.email,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "getAllCollections failed" });
   }
 };
 
@@ -35,10 +47,22 @@ const getCollection = async (req, res) => {
       message: "Collection found",
       foundCollection,
     };
+
+    logger.info("Collection received", {
+      collectionId,
+      name: foundCollection.name,
+      ip: req.ip,
+    });
+
     res.status(200).json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("getCollection failed", {
+      error: error.message,
+      stack: error.stack,
+      email: req.body.email,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "getCollection failed" });
   }
 };
 const getPexel = async (req, res) => {
@@ -59,15 +83,30 @@ const getPexel = async (req, res) => {
         }
         const photoUrl = photos?.photos[0]?.src?.landscape;
         const photoId = photos?.photos[0]?.id;
+        logger.info("Pexel photo received", {
+          query,
+          photoId,
+          ip: req.ip,
+        });
         res.status(200).json({ photoUrl, photoId });
       })
       .catch((error) => {
-        console.log(error);
-        res.status(400).json({ message: "Something went wrong" });
+        logger.error("pexelPhoto failed", {
+          error: error.message,
+          stack: error.stack,
+          email: req.body.email,
+          ip: req.ip,
+        });
+        res.status(400).json({ message: "pexelPhoto failed" });
       });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("getPexel failed", {
+      error: error.message,
+      stack: error.stack,
+      email: req.body.email,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "getPexel failed" });
   }
 };
 
@@ -95,7 +134,7 @@ const newCollection = async (req, res) => {
         folder: "collections",
         width: 300,
         crop: "scale",
-      }
+      },
     );
 
     const newCollection = await Collection.create({
@@ -109,10 +148,22 @@ const newCollection = async (req, res) => {
       message: "Collection created",
       newCollection,
     };
+
+    logger.info("Collection created", {
+      collectionId: newCollection._id,
+      name: newCollection.name,
+      adminId: req.userId,
+    });
+
     res.status(201).json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("newCollection failed", {
+      error: error.message,
+      stack: error.stack,
+      email: req.body.email,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "newCollection failed" });
   }
 };
 
@@ -141,6 +192,13 @@ const deleteCollection = async (req, res) => {
       });
     } else {
       await collectionToDelete.remove();
+
+      logger.info("Collection deleted", {
+        collectionId: collectionToDelete._id,
+        name: collectionToDelete.name,
+        adminId: req.userId,
+      });
+
       const reply = {
         message: "Collection deleted",
         collectionToDelete,
@@ -148,8 +206,13 @@ const deleteCollection = async (req, res) => {
       res.status(200).json(reply);
     }
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("deleteCollection failed", {
+      error: error.message,
+      stack: error.stack,
+      email: req.body.email,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "deleteCollection failed" });
   }
 };
 
@@ -181,7 +244,7 @@ const updateCollection = async (req, res) => {
         folder: "collections",
         width: 300,
         crop: "scale",
-      }
+      },
     );
     collectionToUpdate.image = {
       public_id: imageUploadResult.public_id,
@@ -190,6 +253,12 @@ const updateCollection = async (req, res) => {
 
     await collectionToUpdate.save();
 
+    logger.info("Collection updated", {
+      collectionId: collectionToUpdate._id,
+      name: collectionToUpdate.name,
+      adminId: req.userId,
+    });
+
     const reply = {
       message: "Collection Name updated",
       collectionToUpdate,
@@ -197,8 +266,13 @@ const updateCollection = async (req, res) => {
 
     res.status(200).json(reply);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    logger.error("updateCollection failed", {
+      error: error.message,
+      stack: error.stack,
+      email: req.body.email,
+      ip: req.ip,
+    });
+    res.status(500).json({ message: "updateCollection failed" });
   }
 };
 
