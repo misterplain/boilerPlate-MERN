@@ -15,9 +15,7 @@ const reviewRoutes = require("./routes/reviewRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const userRoutes = require("./routes/userRoutes");
-//keep active
-const keepActiveRoutes = require("./keepActive/keepActiveRoute");
-const keepServerActive = require("./keepActive/keepServerActive");
+
 
 const app = express();
 
