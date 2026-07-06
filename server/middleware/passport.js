@@ -1,29 +1,15 @@
-const dotenv = require("dotenv");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const GithubStrategy = require("passport-github2").Strategy;
-const FacebookStrategy = require("passport-facebook").Strategy;
 const UserModel = require("../models/userModel.js");
-const { default: axios } = require("axios");
 const crypto = require("crypto");
-const generateUserTokens = require("../middleware/generateToken.js");
 const { Octokit } = require("@octokit/core");
 const logger = require("../utils/logger");
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
-const FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET;
-const FACEBOOK_CLIENT_ID = process.env.FACEBOOK_CLIENT_ID;
-const SERVER_URL =
-  process.env.NODE_ENV === "production"
-    ? // ? "https://e-commerce-mern-api.onrender.com"
-      "https://server-muddy-river-1999.fly.dev"
-    : "http://localhost:5000/mern-ecommerce";
-const CLIENT_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://e-commerce-mern-eryu.onrender.com"
-    : "http://localhost:3000";
+const SERVER_URL = process.env.SERVER_URL;
 
 passport.use(
   new GoogleStrategy(

@@ -25,7 +25,6 @@ const CheckoutSummary = ({ proceedToNextStep }) => {
     return { ...item, product: productDetails };
   });
 
-  console.log(detailedCartItems);
 
   if (detailedCartItems && detailedCartItems.length === 0) {
     return (

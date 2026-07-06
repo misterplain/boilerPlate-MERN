@@ -11,7 +11,6 @@ export const snackbarDispatch = (
       if (afterSuccess) afterSuccess.forEach((fn) => fn());
     })
     .catch((error) => {
-      console.log(error);
       enqueueSnackbar(errorMessage, { variant: "error" });
     });
 };

@@ -1,6 +1,5 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
-import logger from "redux-logger";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { authReducer } from "./reducers/authReducers";
 import { userReducer } from "./reducers/userReducers";
@@ -9,9 +8,9 @@ import { productListReducer } from "./reducers/productReducers";
 import { collectionsReducer } from "./reducers/collectionsReducers";
 import { orderReducer } from "./reducers/userOrderReducers";
 import { reviewsReducer } from "./reducers/reviewsReducers";
-// import { ordersReducer } from "./reducers/adminOrdersReducers";
 import { orderHistoryReducer } from "./reducers/orderHistoryReducers";
-import {shopReducer} from './reducers/shopReducers'
+import { shopReducer } from "./reducers/shopReducers";
+
 const reducer = combineReducers({
   userAuth: authReducer,
   userDetails: userReducer,
@@ -22,23 +21,16 @@ const reducer = combineReducers({
   reviews: reviewsReducer,
   orderHistory: orderHistoryReducer,
   shop: shopReducer,
-  // adminOrders: ordersReducer,
 });
 
 const initialState = {};
 
 const middleware = [thunk];
 
-// if (process.env.NODE_ENV === "development") {
-//   middleware.push(logger);
-// }
-
-middleware.push(logger);
-
 const store = createStore(
   reducer,
   initialState,
-  composeWithDevTools(applyMiddleware(...middleware))
+  composeWithDevTools(applyMiddleware(...middleware)),
 );
 
 export default store;

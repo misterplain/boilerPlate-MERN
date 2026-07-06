@@ -26,7 +26,6 @@ const addAddress = (token, address) => async (dispatch) => {
       payload: data,
     });
   } catch (error) {
-    console.log(error);
     dispatch({
       type: ADD_ADDRESS_FAIL,
       payload: error.message,
@@ -52,7 +51,6 @@ const deleteAddress = (token, addressId) => async (dispatch) => {
       payload: data,
     });
   } catch (error) {
-    console.log(error);
     dispatch({
       type: REMOVE_ADDRESS_FAIL,
       payload: error.message,
@@ -75,7 +73,6 @@ const updateFavorites =
         { method, productId },
         options
       );
-      console.log(data);
 
       dispatch({
         type: UPDATE_FAVORITE_SUCCESS,
@@ -83,7 +80,6 @@ const updateFavorites =
       });
       return Promise.resolve();
     } catch (error) {
-      console.log(error);
       dispatch({
         type: UPDATE_FAVORITE_FAIL,
         payload: error.message,
@@ -105,7 +101,6 @@ const updateProfile = (token, profileData) => async (dispatch) => {
     };
 
     const data = await axios.put(`/user/editprofile`, { profileData }, options);
-    console.log(data);
     dispatch({
       type: UPDATE_PROFILE_SUCCESS,
       payload: data,

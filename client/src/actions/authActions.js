@@ -26,7 +26,7 @@ import {
 } from "../constants/cartConstants";
 import { CLEAR_ORDER } from "../constants/userOrderConstants";
 import axios from "../api/axios";
-import { SERVER_URL, CLIENT_URL } from "../config/apiConfig";
+import { SERVER_URL } from "../config/apiConfig";
 
 export const loginForm = (email, password, cart) => async (dispatch) => {
   try {
@@ -95,21 +95,14 @@ export const registerForm =
     }
   };
 
-export const loginOAuth = (provider, code) => async (dispatch) => {
-  const CLIENT_URL = window.location.origin;
-
+export const loginOAuth = (provider) => async (dispatch) => {
   const SERVER_ORIGIN = new URL(SERVER_URL).origin;
-
-  console.log("CLIENT_URL:", window.location.origin);
-  console.log("SERVER_URL:", SERVER_URL);
-  console.log("SERVER_ORIGIN:", SERVER_ORIGIN);
 
   return new Promise((resolve, reject) => {
     try {
       dispatch({
         type: OAUTH_LOGIN_REQUEST,
       });
-      console.log(CLIENT_URL);
 
       const oauthWindow = window.open(
         `${SERVER_URL}/auth/${provider}`,
@@ -119,15 +112,7 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
       window.addEventListener(
         "message",
         function (event) {
-          console.log("Received message from origin:", event.origin);
-          console.log("Expected origin:", SERVER_ORIGIN);
           if (event.origin !== SERVER_ORIGIN) {
-            console.warn(
-              "Received message from unexpected origin:",
-              event.origin,
-              "Expected:",
-              SERVER_ORIGIN,
-            );
             return;
           }
 
@@ -157,7 +142,6 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
         false,
       );
     } catch (error) {
-      console.log(error);
       dispatch({
         type: OAUTH_LOGIN_FAIL,
         payload: error.message,
@@ -170,9 +154,7 @@ export const loginOAuth = (provider, code) => async (dispatch) => {
 
 export const loginOAuthAndSyncCart = (provider, cart) => async (dispatch) => {
   try {
-    const { user, accessToken, refreshToken } = await dispatch(
-      loginOAuth(provider),
-    );
+    const { accessToken } = await dispatch(loginOAuth(provider));
     if (cart.length > 0) {
       try {
         dispatch({
@@ -194,7 +176,6 @@ export const loginOAuthAndSyncCart = (provider, cart) => async (dispatch) => {
           payload: data.data.cart,
         });
       } catch (error) {
-        console.log(error);
         dispatch({
           type: OAUTH_UPDATE_CART_FAIL,
           payload: error.response.data.message,
@@ -215,7 +196,6 @@ export const loginOAuthAndSyncCart = (provider, cart) => async (dispatch) => {
           payload: data.data.cart,
         });
       } catch (error) {
-        console.log(error);
         dispatch({
           type: OAUTH_UPDATE_CART_FAIL,
           payload: error.response.data.message,
@@ -223,30 +203,29 @@ export const loginOAuthAndSyncCart = (provider, cart) => async (dispatch) => {
       }
     }
   } catch (error) {
-    console.log(error);
+    dispatch({
+      type: OAUTH_LOGIN_FAIL,
+      payload: error.message,
+    });
   }
 };
 
 export const logoutUser = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: USER_LOGOUT,
-    });
-    window.open(SERVER_URL + "/auth/logout", "_self");
-    dispatch({
-      type: CLEAR_USER_DETAILS,
-    });
+  dispatch({
+    type: USER_LOGOUT,
+  });
+  window.open(SERVER_URL + "/auth/logout", "_self");
+  dispatch({
+    type: CLEAR_USER_DETAILS,
+  });
 
-    dispatch({
-      type: EMPTY_CART,
-    });
-    dispatch({
-      type: CLEAR_ORDER,
-    });
-    localStorage.removeItem("profile");
-  } catch (error) {
-    console.log(error);
-  }
+  dispatch({
+    type: EMPTY_CART,
+  });
+  dispatch({
+    type: CLEAR_ORDER,
+  });
+  localStorage.removeItem("profile");
 };
 
 export const refreshToken = (refreshToken) => async (dispatch) => {
@@ -274,6 +253,5 @@ export const refreshToken = (refreshToken) => async (dispatch) => {
       type: REFRESH_TOKEN_FAIL,
       payload: error.message,
     });
-    console.log(error);
   }
 };

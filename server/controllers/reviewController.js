@@ -12,43 +12,39 @@ const {
 
 //get top ten reviews
 const getTopTenReviews = asyncHandler(async (req, res) => {
-  try {
-    const topTenReviews = await Review.find({
-      approvedByAdmin: true,
-      awaitingModeration: false,
-      isDeleted: false,
-    })
-      .sort({ rating: -1 })
-      .limit(10);
+  const topTenReviews = await Review.find({
+    approvedByAdmin: true,
+    awaitingModeration: false,
+    isDeleted: false,
+  })
+    .sort({ rating: -1 })
+    .limit(10);
 
-    const productIds = topTenReviews.map((review) => review.productId);
+  const productIds = topTenReviews.map((review) => review.productId);
 
-    const products = await Product.find({ _id: { $in: productIds } });
+  const products = await Product.find({ _id: { $in: productIds } });
 
-    const reviewsWithProducts = topTenReviews.map((review) => {
-      const product = products.find((product) =>
-        product._id.equals(review.productId),
-      );
-      return {
-        ...review.toObject(),
-        productInfo: product || {},
-      };
-    });
-
-    const reply = {
-      message: "Top ten reviews",
-      topTenReviews: reviewsWithProducts,
+  const reviewsWithProducts = topTenReviews.map((review) => {
+    const product = products.find((product) =>
+      product._id.equals(review.productId),
+    );
+    return {
+      ...review.toObject(),
+      productInfo: product || {},
     };
+  });
 
-    logger.info("Top ten reviews received", {
-      count: reviewsWithProducts.length,
-      ip: req.ip,
-    });
+  const reply = {
+    message: "Top ten reviews",
+    topTenReviews: reviewsWithProducts,
+  };
 
-    res.status(200).json(reply);
-  } catch (error) {
-    throw error;
-  }
+  logger.info("Top ten reviews received", {
+    count: reviewsWithProducts.length,
+    ip: req.ip,
+  });
+
+  res.status(200).json(reply);
 });
 
 const createReview = asyncHandler(async (req, res) => {
@@ -58,70 +54,63 @@ const createReview = asyncHandler(async (req, res) => {
   const userAvatar = req.userAvatar;
 
   const { reviewTitle, rating, comment } = req.body;
-  try {
-    if (!productId) {
-      throw new BadRequestError("No product id provided");
-    }
 
-    const product = await Product.findById(productId);
-    if (!product) {
-      throw new NotFoundError("Product", productId);
-    }
-
-    const productName = product.name;
-
-    const newReview = await Review.create({
-      reviewTitle,
-      rating,
-      comment,
-      userId: userId,
-      username: username,
-      userAvatar: {
-        url: userAvatar,
-      },
-      productId: productId,
-      productName: productName,
-    });
-
-    const reply = {
-      message: "Review created",
-      newReview,
-    };
-
-    logger.info("Review created", {
-      reviewId: newReview._id,
-      productId: newReview.productId,
-      userId: newReview.userId,
-      rating: newReview.rating,
-    });
-
-    res.status(201).json(reply);
-  } catch (error) {
-    throw error;
+  if (!productId) {
+    throw new BadRequestError("No product id provided");
   }
+
+  const product = await Product.findById(productId);
+  if (!product) {
+    throw new NotFoundError("Product", productId);
+  }
+
+  const productName = product.name;
+
+  const newReview = await Review.create({
+    reviewTitle,
+    rating,
+    comment,
+    userId: userId,
+    username: username,
+    userAvatar: {
+      url: userAvatar,
+    },
+    productId: productId,
+    productName: productName,
+  });
+
+  const reply = {
+    message: "Review created",
+    newReview,
+  };
+
+  logger.info("Review created", {
+    reviewId: newReview._id,
+    productId: newReview.productId,
+    userId: newReview.userId,
+    rating: newReview.rating,
+  });
+
+  res.status(201).json(reply);
 });
 
 const getUnmoderatedReviews = asyncHandler(async (req, res) => {
-  try {
-    const unmoderatedReviews = await Review.find({
-      awaitingModeration: true,
-      isDeleted: false,
-    });
-    const reply = {
-      message: "Unmoderated reviews",
-      unmoderatedReviews,
-    };
+  const unmoderatedReviews = await Review.find({
+    awaitingModeration: true,
+    isDeleted: false,
+  });
+  const reply = {
+    message: "Unmoderated reviews",
+    unmoderatedReviews,
+  };
 
-    logger.info("Unmoderated reviews received", {
-      count: unmoderatedReviews.length,
-      adminId: req.userId,
-      ip: req.ip,
-    });
+  logger.info("Unmoderated reviews received", {
+    count: unmoderatedReviews.length,
+    adminId: req.userId,
+    ip: req.ip,
+  });
 
-    res.status(200).json(reply);
-  } catch (error) {
-    throw error;
-  }
+  res.status(200).json(reply);
 });
 
 const moderateReview = asyncHandler(async (req, res) => {

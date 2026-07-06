@@ -24,7 +24,6 @@ const fetchFilteredProducts = (filterQuery) => async (dispatch) => {
     });
     return Promise.resolve();
   } catch (error) {
-    console.log(error);
 
     dispatch({
       type: FILTERED_PRODUCTS_FAIL,
@@ -68,7 +67,6 @@ const setShopToCollection =
       });
       return Promise.resolve()
     } catch (error) {
-      console.log(error);
       dispatch({
         type: SHOP_COLLECTION_FAIL,
         payload: error.response.data.message,

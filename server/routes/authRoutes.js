@@ -2,23 +2,22 @@ const router = require("express").Router();
 const passport = require("passport");
 const { signin, signup, refresh } = require("../controllers/authController.js");
 const generateUserTokens = require("../middleware/generateToken.js");
+const { authLimiter } = require("../middleware/rateLimiter");
+const validate = require("../middleware/validate");
+const {
+  signinValidation,
+  signupValidation,
+  refreshValidation,
+} = require("../validators/authValidators");
 const { NotFoundError } = require("../utils/errors");
-const SERVER_URL =
-  process.env.NODE_ENV === "production"
-    ? // ? "https://e-commerce-mern-api.onrender.com"
-      "https://server-muddy-river-1999.fly.dev"
-    : "http://localhost:5000";
-const CLIENT_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://e-commerce-mern-eryu.onrender.com"
-    : "http://localhost:3000";
+const CLIENT_URL = process.env.CLIENT_URL;
 
 //form signup
-router.post("/signin", signin);
-router.post("/signup", signup);
+router.post("/signin", authLimiter, signinValidation, validate, signin);
+router.post("/signup", authLimiter, signupValidation, validate, signup);
 
 //refresh
-router.post("/refresh", refresh);
+router.post("/refresh", authLimiter, refreshValidation, validate, refresh);
 
 //social login routes
 router.get("/login/success", (req, res) => {

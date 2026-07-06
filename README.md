@@ -1,87 +1,161 @@
 # MERN E-Commerce Boilerplate
 
-A MERN stack e-commerce template designed for scalability. Ideal as a starting off point with Admin functionality, OAuth login, and custom Material UI theming, this clone-ready base ensures rapid deployment with optimized features. Customize to fit your needs.
+A full-stack e-commerce starter built with MongoDB, Express, React, and Node.js.
+This project includes authentication, cart and order flows, admin management tools,
+and image hosting integration.
 
-The deployed site can be found [HERE](https://e-commerce-mern-eryu.onrender.com/)
+## Live Demo
 
-The backend code for this project can be found [HERE](https://github.com/misterplain/node-server/tree/main/hpnotepad)
+- Frontend: https://e-commerce-mern-eryu.onrender.com/
 
-#### Site Features
+## Core Features
 
-- Redux State Management
-- JWT Authentication and Refresh Token functionality
-- OAuth social media login via Passport
-- Material UI themeing 
-- Formik/Yup for validation
-- Cloudinary image upload and hosting
-- Pexel image generator
+### Storefront
 
-#### Guest functionality
+- Browse products by collection
+- Search and filter catalog results
+- Add/remove cart items
+- Guest checkout and authenticated checkout
+- Product reviews and ratings
 
-- Add and remove cart items
-- Place order, receive orderId
+### Authentication
 
-#### User functionality
+- Email/password signup and signin
+- JWT access + refresh token flow
+- OAuth login (Google and GitHub)
 
-- Add and remove cart items
-- Add and remove favorites
-- Rate and review products
-- Place order, view and edit order
-- Edit profile username and avatar
+### User Account
 
-#### Admin functionality
+- Manage profile and avatar
+- Manage saved addresses
+- Manage favorites
+- View personal order history
 
-- Create/Edit/Delete collections of products
-- Create/Edit/Delete products
-- Moderate reviews
-- Manage orders (quick search and advanced search)
+### Admin
 
-#### Installation
+- Create, edit, and delete collections
+- Create, edit, and delete products
+- Moderate product reviews
+- Search and manage orders
 
-**-Frontend-**  
+## Tech Stack
 
-```sh
+- Frontend: React, Redux, Material UI, Formik, Yup, Axios
+- Backend: Node.js, Express, Mongoose, Passport, Winston
+- Services: MongoDB, Cloudinary, OAuth providers
+
+## Project Structure
+
+```text
+client/   # React frontend
+server/   # Express API + MongoDB logic
+review/   # Architecture and improvement notes
+```
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 16+
+- npm 8+
+- MongoDB instance (local or hosted)
+
+### 1) Install Dependencies
+
+```bash
+# frontend
 cd client
 npm install
+
+# backend
+cd ../server
+npm install
+```
+
+### 2) Configure Environment Variables
+
+Create `client/.env`:
+
+```bash
+NODE_ENV=development
+REACT_APP_SERVER_API_URL=http://localhost:5000
+REACT_APP_CLIENT_URL=http://localhost:3000
+PEXELS_API_KEY=your_pexels_api_key
+```
+
+Create `server/.env` (see `server/.env.example` for full template):
+
+```bash
+NODE_ENV=development
+PORT=5000
+MONGO_URI=your_mongo_connection_string
+ACCESS_TOKEN_SECRET=your_access_token_secret
+REFRESH_TOKEN_SECRET=your_refresh_token_secret
+CLIENT_URL=http://localhost:3000
+SERVER_URL=http://localhost:5000
+
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+
+CLOUD_NAME=your_cloud_name
+CLOUD_KEY=your_cloud_key
+CLOUD_KEY_SECRET=your_cloud_key_secret
+```
+
+### 3) Run the App
+
+```bash
+# backend
+cd server
+npm run dev
+
+# frontend (new terminal)
+cd client
 npm start
 ```
 
-**.env file - client**  
-NODE_ENV=
-REACT_APP_SERVER_API_URL=  
-REACT_APP_CLIENT_URL=  
-PEXELS_API_KEY=  
+## Scripts
 
-**-Backend-**  
+### Frontend (`client/package.json`)
 
-```sh
-cd server
-npm install
-npm run server
-```
+- `npm start`: run React development server
+- `npm run build`: production build
+- `npm test`: run frontend tests
 
-**.env file - server**    
-NODE_ENV=
-MONGO_URI=
-ACCESS_TOKEN_SECRET=
-REFRESH_TOKEN_SECRET=  
-GOOGLE_CLIENT_ID=  
-GOOGLE_CLIENT_SECRET=  
-GITHUB_CLIENT_ID=  
-GITHUB_CLIENT_SECRET=  
-FACEBOOK_CLIENT_ID=  
-FACEBOOK_CLIENT_SECRET=  
-CLOUD_NAME=  
-CLOUD_KEY=  
-CLOUD_KEY_SECRET=  
-PEXELS_API_KEY=  
+### Backend (`server/package.json`)
 
-#### To-do list for this project
+- `npm run dev`: run API with nodemon
+- `npm run start`: run API with node
 
-2. [ ] Password reset functionality
-3. [ ] User can report a review, send to moderation
-4. [ ] Confirmation emails at order status change
-5. [ ] Global variable - reviews require moderation or no
-6. [ ] Global variable - admin level style object
+## API Overview
 
-Any and all feedback on this project is welcome, you may contact me [HERE](https://www.linkedin.com/in/patrick-o-brien-6743b044/)!
+Main route groups:
+
+- `/auth`
+- `/user`
+- `/collection`
+- `/product`
+- `/reviews`
+- `/cart`
+- `/orders`
+
+## Quality and Conventions
+
+- Centralized server-side error middleware
+- Structured server logging with Winston
+- No debug `console.log` statements in application code
+- camelCase naming for variables/functions, PascalCase for React components
+
+## Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a PR.
+
+## Roadmap
+
+Current improvement roadmap and prioritization live in `review/todo.md`.
+
+## Contact
+
+Feedback is welcome: https://www.linkedin.com/in/patrick-o-brien-6743b044/

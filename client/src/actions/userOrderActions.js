@@ -74,7 +74,6 @@ const placeNewUserOrder =
       proceedToNextStep();
       dispatch({ type: EMPTY_CART });
     } catch (error) {
-      console.log(error);
       dispatch({ type: NEW_USER_ORDER_FAIL, payload: error });
     }
   };
@@ -90,7 +89,6 @@ const placeNewOrderGuest = (order, proceedToNextStep) => async (dispatch) => {
     proceedToNextStep();
     dispatch({ type: EMPTY_CART });
   } catch (error) {
-    console.log(error);
     dispatch({ type: NEW_GUEST_ORDER_FAIL, payload: error });
   }
 };

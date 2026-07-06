@@ -60,7 +60,6 @@ const cancelOrder = (token, orderId) => async (dispatch) => {
     });
   } catch (error) {
     dispatch({ type: CANCEL_ORDER_FAIL, payload: error });
-    console.log(error);
   }
 };
 

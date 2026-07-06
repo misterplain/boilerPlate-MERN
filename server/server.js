@@ -4,8 +4,10 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const connectDB = require("./config/connectDB");
+const validateEnv = require("./config/validateEnv");
 const session = require("express-session");
 const passport = require("./middleware/passport");
+const configureSecurityMiddleware = require("./middleware/security");
 const bodyParser = require("body-parser");
 const logger = require("./utils/logger");
 //routes
@@ -21,17 +23,21 @@ const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
 
+validateEnv();
+
 //Connect to Mongo DB
 connectDB();
 
 app.use(
   session({
-    secret: "privateKey",
+    secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
       maxAge: 24 * 60 * 60 * 1000,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      sameSite: "lax",
     },
   }),
 );
@@ -46,14 +52,13 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use("/", express.static(path.resolve(path.join(__dirname, "./build"))));
 
 app.use(express.json());
-const whitelist = [
-  "http://localhost:3000",
-  "http://localhost:5000",
-  "https://accounts.google.com",
-  "https://e-commerce-mern-eryu.onrender.com",
-  "https://e-commerce-mern-api.onrender.com",
-  "https://server-muddy-river-1999.fly.dev",
-];
+const whitelist = (process.env.CORS_ALLOWED_ORIGINS || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+if (process.env.CLIENT_URL) whitelist.push(process.env.CLIENT_URL);
+if (process.env.SERVER_URL) whitelist.push(process.env.SERVER_URL);
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -72,6 +77,7 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 
 app.use(requestId);
+configureSecurityMiddleware(app);
 
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);

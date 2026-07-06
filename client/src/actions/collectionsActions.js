@@ -164,7 +164,6 @@ const fetchPexel = (token, name) => async (dispatch) => {
       type: FETCH_PEXEL_FAIL,
       payload: error.response.data.message,
     });
-    console.log(error);
   }
 };
 

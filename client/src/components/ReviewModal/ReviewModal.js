@@ -106,7 +106,6 @@ const ReviewModal = ({ open, handleClose, review, productId }) => {
                   }
 
                 } catch (error) {
-                  console.log("Review operation failed", error);
                 }
               }}
             >

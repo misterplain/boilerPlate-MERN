@@ -10,7 +10,6 @@ const logFormat = winston.format.combine(
 );
 
 // Create logger instance
-console.log("[Logger Init] Creating Winston logger, logs directory: ./logs");
 const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || "info",
   format: logFormat,
